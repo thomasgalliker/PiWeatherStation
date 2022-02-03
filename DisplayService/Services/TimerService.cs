@@ -4,12 +4,12 @@ using System.Timers;
 
 namespace DisplayService.Services
 {
-    public class TimerService : ITimerService, IDisposable
+    public class TimerService : ITimerService
     {
         private readonly Timer timer;
 
-        private DateTime _dueTime;
-        private bool _disposed = false;
+        private DateTime dueTime;
+        private bool disposed = false;
 
         public event ElapsedEventHandler Elapsed;
         //{
@@ -19,7 +19,7 @@ namespace DisplayService.Services
 
         public TimerService()
         {
-            timer = new Timer
+            this.timer = new Timer
             {
                 AutoReset = true,
             };
@@ -70,7 +70,7 @@ namespace DisplayService.Services
         {
             get
             {
-                return (_dueTime - DateTime.Now).TotalMilliseconds;
+                return (dueTime - DateTime.Now).TotalMilliseconds;
             }
         }
 
@@ -127,7 +127,7 @@ namespace DisplayService.Services
 
             // Update the interval to prevent clock drift
             //Interval = next;
-            _dueTime = now.AddMilliseconds(next);
+            dueTime = now.AddMilliseconds(next);
         }
 
         private void ElapsedAction(object sender, ElapsedEventArgs e)
@@ -142,26 +142,26 @@ namespace DisplayService.Services
 
         protected void Dispose(bool disposing)
         {
-            if (_disposed)
+            if (this.disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                timer.Elapsed -= ElapsedAction;
-                timer.Dispose();
+                this.timer.Elapsed -= this.ElapsedAction;
+                this.timer.Dispose();
             }
 
-            _disposed = true;
+            this.disposed = true;
         }
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        ~TimerService() => Dispose(false);
+        ~TimerService() => this.Dispose(false);
     }
 }

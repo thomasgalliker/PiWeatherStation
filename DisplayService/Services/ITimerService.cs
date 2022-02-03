@@ -3,7 +3,7 @@ using System.Timers;
 
 namespace DisplayService.Services
 {
-    public interface ITimerService
+    public interface ITimerService : IDisposable
     {
         TimeSpan Interval { get; set; }
 
