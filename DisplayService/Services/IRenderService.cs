@@ -1,0 +1,21 @@
+﻿using System;
+using System.IO;
+using DisplayService.Model;
+
+namespace DisplayService.Services
+{
+    public interface IRenderService : IDisposable
+    {
+        Stream GetScreen();
+
+        void Clear();
+
+        void Refresh();
+
+        void Image(RenderActions.Image image);
+
+        void Graphic(RenderActions.Graphic graphic);
+
+        void Text(RenderActions.Text text);
+    }
+}
