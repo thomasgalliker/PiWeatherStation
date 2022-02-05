@@ -1,9 +1,9 @@
 ﻿using System;
 using Xunit;
 
-namespace DisplayService.Tests
+namespace DisplayService.Tests.Services
 {
-    public class UnitTest1
+    public class DisplayManagerTests
     {
         [Fact]
         public void Test1()

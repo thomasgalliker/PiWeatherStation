@@ -17,5 +17,7 @@ namespace DisplayService.Services
         void Graphic(RenderActions.Graphic graphic);
 
         void Text(RenderActions.Text text);
+
+        void Rectangle(RenderActions.Rectangle rectangle);
     }
 }

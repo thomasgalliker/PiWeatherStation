@@ -1,9 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading.Tasks;
 using System.Timers;
+using DisplayService.ConsoleApp.Service;
 using DisplayService.Model;
 using DisplayService.Services;
 using DisplayService.Settings;
+using SkiaSharp;
 
 namespace DisplayService.ConsoleApp
 {
@@ -13,70 +17,152 @@ namespace DisplayService.ConsoleApp
         private static IRenderService renderService;
         private static ICacheService cacheService;
 
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
+            var longitude = 24.1567359d;
+            var latitude = 67.6039143d;
+
+            var cultureInfo = new CultureInfo("de-CH");
+            CultureInfo.CurrentCulture = cultureInfo;
+            CultureInfo.CurrentUICulture = cultureInfo;
+
+            //var openWeatherMapConfiguration = new OpenWeatherMapConfiguration();
+            //var openWeatherMapService = new OpenWeatherMapService(openWeatherMapConfiguration);
+            var openWeatherMapService = new NullOpenWeatherMapService();
+
             // Setup services, wire-up dependencies
             // TODO: Use Microsoft DependencyInjection
             //displayService = new WsEPaperDisplayService("WaveShare7In5_V2");
 
             displayService = new NullDisplayService();
 
-            IRenderSettings renderSettings = new RenderSettings(); // TODO: Load from appsettings
+            // TODO: Load from appsettings
+            IRenderSettings renderSettings = new RenderSettings
+            {
+                Background = SKColor.Parse("#FFFFFFFF"),
+            };
             renderSettings.Resize(displayService.Width, displayService.Height);
 
-            var displayManager = new DisplayManager(renderSettings, displayService);
-            /*
+            IDisplayManager displayManager = new DisplayManager(renderSettings, displayService);
+
             displayManager.AddRenderActions(
-                new List<Func<IRenderAction>>
+                () => new List<IRenderAction>
                 {
-                    () => new RenderActions.Clear(),
-                    () => new RenderActions.Text
+                    new RenderActions.Rectangle
                     {
                         X = 0,
                         Y = 0,
-                        Value = $"{DateTime.Now:O}",
-                        FontSize = 40,
+                        Height = 90,
+                        Width = 800,
+                        BackgroundColor = "#99FEFF",
                     },
-                    () => new RenderActions.Text
+                    new RenderActions.Text
                     {
-                        X = 0,
-                        Y = 60,
-                        Value = $"Test",
-                        FontSize = 40,
-                    },
-                },
-                TimeSpan.FromSeconds(20));
-            */
-            displayManager.AddRenderActions(
-                new List<Func<IRenderAction>>
-                {
-                    () => new RenderActions.Text
-                    {
-                        X = 0,
-                        Y = 0,
-                        HorizAlign = -1,
-                        VertAlign = -1,
+                        X = 20,
+                        Y = 20,
+                        HorizontalTextAlignment = HorizontalAlignment.Left,
+                        VerticalTextAlignment = VerticalAlignment.Top,
                         Value = $"Display Demo",
-                        FontSize = 44,
+                        ForegroundColor = "#B983FF",
+                        FontSize = 70,
                         Bold = true,
                     },
-                },
-                TimeSpan.FromDays(1));
-            displayManager.AddRenderActions(
-                new List<Func<IRenderAction>>
-                {
-                    () => new RenderActions.Text
+                    new RenderActions.Rectangle
                     {
-                        X = 800,
-                        Y = 11,
-                        HorizAlign = 1,
-                        VertAlign = -1,
-                        Value = $"{DateTime.Now:G}",
-                        FontSize = 22,
-                    },
+                        X = 0,
+                        Y = 440,
+                        Height = 40,
+                        Width = 800,
+                        BackgroundColor = "#99FEFF",
+                    }
+                });
+
+            int dayCounter = 0;
+            displayManager.AddRenderActions(
+                () =>
+                {
+                    var dateTimeNow = DateTime.Now.AddDays(dayCounter++);
+                    return new List<IRenderAction>
+                    {
+                        new RenderActions.Rectangle
+                        {
+                            X = 780,
+                            Y = 19,
+                            Height = 25,
+                            Width = 300,
+                            VerticalAlignment = VerticalAlignment.Top,
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            BackgroundColor = "#99FEFF",
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 780,
+                            Y = 20,
+                            HorizontalTextAlignment = HorizontalAlignment.Right,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"{dateTimeNow:dddd}, {dateTimeNow:M}",
+                            ForegroundColor = "#99FEFF",
+                            BackgroundColor = "#B983FF",
+                            FontSize = 22,
+                        }
+                    };
                 },
-                TimeSpan.FromSeconds(20));
-            displayManager.Start();
+                TimeSpan.FromSeconds(1)); // TODO: Use crontab-like scheduling
+
+            displayManager.AddRenderActions(
+                () =>
+                {
+                    var dateTimeNow = DateTime.Now;
+                    return new List<IRenderAction>
+                    {
+                        new RenderActions.Rectangle
+                        {
+                            X = 780,
+                            Y = 19,
+                            Height = 25,
+                            Width = 300,
+                            VerticalAlignment = VerticalAlignment.Top,
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            BackgroundColor = "#99FEFF",
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 780,
+                            Y = 50,
+                            HorizontalTextAlignment = HorizontalAlignment.Right,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"{dateTimeNow:t}",
+                            ForegroundColor = "#99FEFF",
+                            BackgroundColor = "#B983FF",
+                            FontSize = 22,
+                        }
+                    };
+                },
+                TimeSpan.FromMinutes(1));
+
+            displayManager.AddRenderActionsAsync(
+                async () =>
+                {
+                    var weatherResponse = await openWeatherMapService.GetWeatherInfoAsync(longitude, latitude);
+
+                    return new List<IRenderAction>
+                    {
+                        new RenderActions.Text
+                        {
+                            X = 400,
+                            Y = 240,
+                            HorizontalTextAlignment = HorizontalAlignment.Center,
+                            VerticalTextAlignment = VerticalAlignment.Center,
+                            Value = $"{weatherResponse.Temperature:F1}°C",
+                            ForegroundColor = "#B983FF",
+                            BackgroundColor = "#00FFFFFF",
+                            FontSize = 80,
+                        }
+};
+                },
+                TimeSpan.FromSeconds(15));
+
+            await displayManager.StartAsync();
 
             Console.WriteLine("Press any key to exit");
             Console.ReadLine();

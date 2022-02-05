@@ -15,8 +15,6 @@ namespace DisplayService.Settings
 
         SKColor Background { get; }
 
-        SKColor Foreground { get; }
-
         void Resize(int width, int height);
     }
 }

@@ -22,10 +22,10 @@ namespace DisplayService.Services
             canvas = new SKCanvas(screen);
             canvas.Clear(this.renderSettings.Background);
 
-           //if (this.cacheService.Exists())
-           //{
-           //    this.AddImage(new RenderActions.Image { X = 0, Y = 0, Filename = this.cacheService.CacheFile });
-           //}
+            //if (this.cacheService.Exists())
+            //{
+            //    this.AddImage(new RenderActions.Image { X = 0, Y = 0, Filename = this.cacheService.CacheFile });
+            //}
         }
 
         public void Clear()
@@ -48,62 +48,106 @@ namespace DisplayService.Services
 
         public void Refresh()
         {
-            RefreshScreen();
+            this.RefreshScreen();
         }
 
         public void Image(RenderActions.Image image)
         {
-            AddImage(image);
+            this.AddImage(image);
         }
 
         public void Graphic(RenderActions.Graphic graphic)
         {
-            AddGraphic(graphic);
+            this.AddGraphic(graphic);
         }
 
         public void Text(RenderActions.Text text)
         {
-            int width = 0;
-            int height = 0;
-
-            if (string.IsNullOrWhiteSpace(text.Value))
-            {
-                return;
-            }
-
-            if (text.FontSize == 0)
-            {
-                text.FontSize = 32;
-            }
-
             text.Value = text.Value.Replace("\r", " ").Replace("\n", string.Empty);
-            SKPaint paint = null;
-            int horizontalOffset, verticalOffset, left, top;
+
             try
             {
-                (paint, width, height, horizontalOffset, verticalOffset, left, top) = RenderTools.GetPaint(renderSettings, text.X, text.Y, text.Value, text.HorizAlign, text.VertAlign, text.Font, text.FontSize, text.FontWeight, text.FontWidth, text.HexColor, text.Bold);
+                var paint = RenderTools.GetPaint(text.Font, text.FontSize, text.FontWeight, text.FontWidth, text.ForegroundColor, text.Bold);
+                var (width, height, horizontalOffset, verticalOffset, left, top) = RenderTools.GetBounds(text.X, text.Y, text.Value, text.HorizontalTextAlignment, text.VerticalTextAlignment, paint);
                 var textXPosition = text.X + horizontalOffset;
                 var textYPosition = text.Y + verticalOffset;
+
+                // Draw text background
+                var backgroundPaint = new SKPaint { Color = SKColor.Parse(text.BackgroundColor) };
+                this.canvas.DrawRect(x: left, y: top, w: width, h: height, backgroundPaint);
+                backgroundPaint.Dispose();
+
+                // Draw text foreground
                 Console.WriteLine($"DrawText(text=\"{ text.Value}\", x={textXPosition}, y={textYPosition})");
-                canvas.DrawText(text.Value, text.X + horizontalOffset, text.Y + verticalOffset, paint);
-            }
-            catch (ArgumentException)
-            {
-                throw;
+                this.canvas.DrawText(text.Value, textXPosition, textYPosition, paint);
             }
             catch (Exception ex)
             {
-                throw new ArgumentException("An exception occurred trying to add text to the canvas:" + ex.Message, nameof(text), ex);
+                throw new Exception($"DrawText failed with exception: {ex.Message}", ex);
             }
-            finally
-            {
-                if (paint != null)
-                {
-                    paint.Dispose();
-                }
-            }
+        }
 
-            OnScreenChanged(left, top, width, height, text.Delay, "text", null /*JsonSerializer.Serialize<RenderActions.Text>(text)*/);
+        public void Rectangle(RenderActions.Rectangle rectangle)
+        {
+            try
+            {
+                float x = rectangle.X;
+                switch (rectangle.HorizontalAlignment)
+                {
+                    case HorizontalAlignment.Left:
+                        x = rectangle.X;
+                        break;
+                    case HorizontalAlignment.Center:
+                        x = rectangle.X - (rectangle.Width / 2);
+                        break;
+                    case HorizontalAlignment.Right:
+                        x = rectangle.X - rectangle.Width;
+                        break;
+                }
+
+                float y = rectangle.Y;
+                switch (rectangle.VerticalAlignment)
+                {
+                    case VerticalAlignment.Top:
+                        y = rectangle.Y;
+                        break;
+                    case VerticalAlignment.Center:
+                        y = rectangle.Y - (rectangle.Height / 2);
+                        break;
+                    case VerticalAlignment.Bottom:
+                        y = rectangle.Y - rectangle.Width;
+                        break;
+                }
+
+                Console.WriteLine($"DrawRect(x: {x}, y: {y}, width: {rectangle.Width}, height: {rectangle.Height})");
+
+                var rect = SKRect.Create(x, y, width: rectangle.Width, height: rectangle.Height);
+
+                // the brush (fill with blue)
+                var paint = new SKPaint
+                {
+                    Style = SKPaintStyle.Fill,
+                    Color = SKColor.Parse(rectangle.BackgroundColor),
+                };
+
+                // Draw fill
+                this.canvas.DrawRect(rect, paint);
+
+                // Draw stroke (if set)
+                if (rectangle.StrokeWidth > 0)
+                {
+                    paint.Style = SKPaintStyle.Stroke;
+                    paint.Color = SKColor.Parse(rectangle.StrokeColor);
+                    paint.StrokeWidth = rectangle.StrokeWidth;
+                    this.canvas.DrawRect(rect, paint);
+                }
+
+                paint.Dispose();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"DrawRect failed with exception: {ex.Message}", ex);
+            }
         }
 
         [Obsolete]

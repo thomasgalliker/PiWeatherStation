@@ -19,8 +19,6 @@ namespace DisplayService.Settings
 
         public SKColor Background { get; set; }
 
-        public SKColor Foreground { get; set; }
-
         public void Resize(int width, int height)
         {
             if (width < 1 || width > 9999)
@@ -33,17 +31,17 @@ namespace DisplayService.Settings
                 // throw new ArgumentException("Height must be greater than 0 and less than 10000", nameof(height));
             }
 
-            if (Rotation == 0 || Rotation == 180)
+            if (this.Rotation == 0 || this.Rotation == 180)
             {
                 this.Width = width;
                 this.Height = height;
-                IsPortrait = false;
+                this.IsPortrait = false;
             }
-            else if (Rotation == 90 || Rotation == 270)
+            else if (this.Rotation == 90 || this.Rotation == 270)
             {
                 this.Width = height;
                 this.Height = width;
-                IsPortrait = true;
+                this.IsPortrait = true;
             }
             else
             {

@@ -2,9 +2,9 @@
 using System;
 using System.IO;
 using System.Text.RegularExpressions;
+using DisplayService.Model;
 using DisplayService.Settings;
 using SkiaSharp;
-//using Svg.Skia;
 
 namespace DisplayService.Services
 {
@@ -119,42 +119,22 @@ namespace DisplayService.Services
         /// <summary>
         /// Get a paint object for text
         /// </summary>
-        /// <param name="settings">Settings to use</param>
-        /// <param name="x">X coordinate to use</param>
-        /// <param name="y">Y coordinate to use</param>
-        /// <param name="text">Text to paint</param>
-        /// <param name="horizAlign">Horizontal text alignment</param>
-        /// <param name="vertAlign">Vertical text alignment</param>
         /// <param name="font">Font to use</param>
         /// <param name="fontSize">Font size</param>
         /// <param name="fontWeight">Font weight</param>
         /// <param name="fontWidth">Font width</param>
-        /// <param name="hexColor">Font hex color</param>
+        /// <param name="foregroundColor">Font hex color</param>
         /// <param name="bold">Bold setting</param>
+        /// 
+        /// 
+        /// 
+        /// 
+        /// 
+        /// 
         /// <returns>Returns a paint object for the text</returns>
         // TODO: Split this very chaotic method into several single-purpose methods
-        public static (SKPaint paint, int width, int height, int hoffset, int voffset, int left, int top) GetPaint(IRenderSettings settings, int x, int y, string text, int horizAlign, int vertAlign, string font, float fontSize, int fontWeight, int fontWidth, string hexColor, bool bold)
+        public static SKPaint GetPaint(string font, float fontSize, int fontWeight, int fontWidth, string foregroundColor, bool bold)
         {
-            //if (x < 0 || x >= settings.Width)
-            //{
-            //    throw new ArgumentOutOfRangeException(nameof(x), x, "X coordinate is not within the screen");
-            //}
-            //
-            //if (y < 0 || y >= settings.Height)
-            //{
-            //    throw new ArgumentOutOfRangeException(nameof(y), y, "Y coordinate is not within the screen");
-            //}
-
-            if (horizAlign < -1 || horizAlign > 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(horizAlign), horizAlign, "Horizontal alignment must be -1, 0 or 1");
-            }
-
-            if (vertAlign < -1 || vertAlign > 1)
-            {
-                throw new ArgumentOutOfRangeException(nameof(vertAlign), vertAlign, "Vertical alignment must be -1, 0 or 1");
-            }
-
             if (fontSize <= 0 || fontSize > 9999)
             {
                 throw new ArgumentOutOfRangeException(nameof(fontSize), fontSize, "Font size must be greater than zero and less than 10000");
@@ -170,7 +150,7 @@ namespace DisplayService.Services
                 throw new ArgumentOutOfRangeException(nameof(fontWidth), fontWidth, "Font width must be between 1 and to 9");
             }
 
-            SKPaint paint = new ()
+            SKPaint paint = new()
             {
                 TextSize = fontSize,
                 IsAntialias = true,
@@ -180,65 +160,99 @@ namespace DisplayService.Services
                 paint.Typeface = GetTypeface(font, fontWeight, fontWidth) ?? throw new ArgumentException("Font not found", nameof(font));
             }
 
-            if (string.IsNullOrWhiteSpace(hexColor))
+            if (string.IsNullOrWhiteSpace(foregroundColor))
             {
-                paint.Color = new (0, 0, 0);
+                paint.Color = new(0, 0, 0);
             }
             else
             {
                 try
                 {
-                    paint.Color = SKColor.Parse(hexColor);
+                    paint.Color = SKColor.Parse(foregroundColor);
                 }
                 catch (ArgumentException ex)
                 {
-                    throw new ArgumentException("Invalid hexColor", nameof(hexColor), ex);
+                    throw new ArgumentException("Invalid hexColor", nameof(foregroundColor), ex);
                 }
             }
 
             paint.FakeBoldText = bold;
             paint.IsStroke = false;
-            SKRect bound = new ();
-            float width = paint.MeasureText(text, ref bound);
-            float height = bound.Height;
-            float hoffset;
-            float voffset;
+
+            return paint;
+        }
+
+        public static (int width, int height, int horizontalOffset, int verticalOffset, int left, int top) GetBounds(int x, int y, string text, HorizontalAlignment horizontalTextAlignment, VerticalAlignment verticalTextAlignment, SKPaint paint)
+        {
+            var rect = new SKRect();
+            var width = paint.MeasureText(text, ref rect);
+            var height = rect.Height;
+
+            (float horizontalOffset, float left) = CalculateHorizontalBounds(x, horizontalTextAlignment, rect, width);
+
+            (float verticalOffset, float top) = CalculateVerticalBounds(y, verticalTextAlignment, rect);
+
+            return ((int)Math.Round(width), (int)Math.Round(height), (int)Math.Round(horizontalOffset), (int)Math.Round(verticalOffset), (int)Math.Round(left), (int)Math.Round(top));
+        }
+
+        //public static (int width, int height, int horizontalOffset, int verticalOffset, int left, int top) GetBounds(int x, int y, SKRect rect, HorizontalAlignment horizontalTextAlignment, VerticalAlignment verticalTextAlignment, SKPaint paint)
+        //{
+        //    var width = rect.Width;
+        //    var height = rect.Height;
+        //
+        //    (float horizontalOffset, float left) = CalculateHorizontalBounds(x, horizontalTextAlignment, rect, width);
+        //
+        //    (float verticalOffset, float top) = CalculateVerticalBounds(y, verticalTextAlignment, rect);
+        //
+        //    return ((int)Math.Round(width), (int)Math.Round(height), (int)Math.Round(horizontalOffset), (int)Math.Round(verticalOffset), (int)Math.Round(left), (int)Math.Round(top));
+        //}
+
+        private static (float horizontalOffset, float left) CalculateHorizontalBounds(int x, HorizontalAlignment horizontalAlignment, SKRect rect, float width)
+        {
+            float horizontalOffset;
             float left;
-            if (horizAlign == -1) // Left
+
+            if (horizontalAlignment == HorizontalAlignment.Left)
             {
-                hoffset = 0;
-                left = x + bound.Left;
+                horizontalOffset = 0;
+                left = x + rect.Left;
             }
-            else if (horizAlign == 1) // Right
+            else if (horizontalAlignment == HorizontalAlignment.Right)
             {
-                hoffset = 1 - width - bound.Left;
+                horizontalOffset = 1 - width - rect.Left;
                 left = x - width + 1;
             }
             else
             {
-                hoffset = 0 - bound.MidX;
-                left = x - bound.MidX + bound.Left;
+                horizontalOffset = 0 - rect.MidX;
+                left = x - rect.MidX + rect.Left;
             }
 
+            return (horizontalOffset, left);
+        }
+
+        private static (float verticalOffset, float top) CalculateVerticalBounds(int y, VerticalAlignment verticalAlignment, SKRect rect)
+        {
+            float verticalOffset;
             float top;
-            if (vertAlign == -1) // Top
+
+            if (verticalAlignment == VerticalAlignment.Top)
             {
-                voffset = 0 - bound.Top;
+                verticalOffset = 0 - rect.Top;
                 top = y;
             }
-            else if (vertAlign == 1) // Bottom
+            else if (verticalAlignment == VerticalAlignment.Bottom)
             {
-                voffset = 0;
-                top = y + bound.Top;
+                verticalOffset = 0;
+                top = y + rect.Top;
             }
             else
             {
-                voffset = 1 - bound.MidY;
-                top = y - bound.MidY + bound.Top + 1;
+                verticalOffset = 1 - rect.MidY;
+                top = y - rect.MidY + rect.Top + 1;
             }
 
-            return (paint, (int)Math.Round(width), (int)Math.Round(height), (int)Math.Round(hoffset), (int)Math.Round(voffset), (int)Math.Round(left), (int)Math.Round(top));
+            return (verticalOffset, top);
         }
-
     }
 }

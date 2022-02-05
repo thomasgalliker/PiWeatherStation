@@ -1,4 +1,5 @@
-﻿using DisplayService.Services;
+﻿using System;
+using DisplayService.Services;
 
 namespace DisplayService.Model
 {
@@ -9,6 +10,9 @@ namespace DisplayService.Model
         /// </summary>
         public class Text : IRenderAction
         {
+            private float fontSize = 32;
+            private string value;
+
             /// <summary>
             /// X coordinate to place the text.
             /// </summary>
@@ -25,19 +29,31 @@ namespace DisplayService.Model
             /// Text value to place
             /// </summary>
             /// <example>Welcome Home</example>
-            public string Value { get; set; }
+            public string Value
+            {
+                get => this.value;
+                set
+                {
+                    if (string.IsNullOrWhiteSpace(value))
+                    {
+                        throw new ArgumentException("Value must not be null or empty", nameof(this.Value));
+                    }
+
+                    this.value = value;
+                }
+            }
 
             /// <summary>
             /// Text horizontal alignment (-1 = Left, 0 = Center, 1 = Right, optional)
             /// </summary>
             /// <example>0</example>
-            public int HorizAlign { get; set; } = -1;
+            public HorizontalAlignment HorizontalTextAlignment { get; set; }
 
             /// <summary>
             /// Text vertical alignment (-1 = Top, 0 = Middle, 1 = Bottom, optional)
             /// </summary>
             /// <example>0</example>
-            public int VertAlign { get; set; } = -1;
+            public VerticalAlignment VerticalTextAlignment { get; set; }
 
             /// <summary>
             /// Filename or font family of the font to use (optional)
@@ -51,8 +67,19 @@ namespace DisplayService.Model
             /// Font size of the text (optional)
             /// </summary>
             /// <example>60</example>
-            public float FontSize { get; set; } = 32;
+            public float FontSize
+            {
+                get => this.fontSize;
+                set
+                {
+                    if (value <= 0)
+                    {
+                        throw new ArgumentException("FontSize must be greater than 0.", nameof(this.FontSize));
+                    }
 
+                    this.fontSize = value;
+                }
+            }
             /// <summary>
             /// Font weight of the text (100 - 900, optional)
             /// </summary>
@@ -69,7 +96,9 @@ namespace DisplayService.Model
             /// Hex color string representing the color of the text (optional)
             /// </summary>
             /// <example>#000000</example>
-            public string HexColor { get; set; } = "#000000";
+            public string ForegroundColor { get; set; } = "#FF000000";
+
+            public string BackgroundColor { get; set; } = "#00000000";
 
             /// <summary>
             /// Delay screen update (optional)

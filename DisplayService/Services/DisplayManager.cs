@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Timers;
 using DisplayService.Model;
 using DisplayService.Settings;
@@ -9,7 +10,7 @@ namespace DisplayService.Services
 {
     public class DisplayManager : IDisplayManager
     {
-        private readonly IDictionary<Guid, (ITimerService Timer, IEnumerable<Func<IRenderAction>> RenderActions)> renderingSetup = new Dictionary<Guid, (ITimerService, IEnumerable<Func<IRenderAction>>)>();
+        private readonly IDictionary<Guid, (ITimerService Timer, object RenderActions)> renderingSetup = new Dictionary<Guid, (ITimerService, object)>();
         private readonly ICacheService cacheService;
         private readonly IRenderService renderService;
         private readonly IDisplay display;
@@ -22,39 +23,75 @@ namespace DisplayService.Services
             this.display = display;
         }
 
-        public void AddRenderActions(IEnumerable<Func<IRenderAction>> renderActions, TimeSpan? updateInterval = null)
+        public void AddRenderActions(Func<IEnumerable<IRenderAction>> renderActions)
         {
-            if (updateInterval is TimeSpan updateIntervalValue)
+            this.AddRenderActions(renderActions, TimeSpan.Zero);
+        }
+
+        public void AddRenderActions(Func<IEnumerable<IRenderAction>> renderActions, TimeSpan updateInterval)
+        {
+            var updateTimer = this.CreateUpdateTimer(updateInterval);
+            this.renderingSetup.Add(Guid.NewGuid(), new(updateTimer, renderActions));
+        }
+
+        public void AddRenderActionsAsync(Func<Task<IEnumerable<IRenderAction>>> renderActions)
+        {
+            this.AddRenderActionsAsync(renderActions, TimeSpan.Zero);
+        }
+
+        public void AddRenderActionsAsync(Func<Task<IEnumerable<IRenderAction>>> renderActions, TimeSpan updateInterval)
+        {
+            var updateTimer = this.CreateUpdateTimer(updateInterval);
+            this.renderingSetup.Add(Guid.NewGuid(), new(updateTimer, renderActions));
+        }
+
+        private ITimerService CreateUpdateTimer(TimeSpan? updateInterval)
+        {
+            ITimerService updateTimer = null;
+
+            if (updateInterval is TimeSpan updateIntervalValue && updateIntervalValue > TimeSpan.Zero)
             {
-                ITimerService updateTimer = new TimerService
+                updateTimer = new TimerService
                 {
                     Interval = updateIntervalValue,
                 };
                 updateTimer.Elapsed += this.OnUpdateTimerElapsed;
-
-                this.renderingSetup.Add(Guid.NewGuid(), new(updateTimer, renderActions));
             }
 
+            return updateTimer;
         }
 
-        private void OnUpdateTimerElapsed(object sender, ElapsedEventArgs e)
+        private async void OnUpdateTimerElapsed(object sender, ElapsedEventArgs e)
         {
-            var timer = (ITimerService)sender;
-            var setup = this.renderingSetup.Single(r => r.Value.Timer == timer);
-            var renderActions = setup.Value.RenderActions;
-            this.UpdateDisplay(renderActions);
+            try
+            {
+                var timer = (ITimerService)sender;
+                var setup = this.renderingSetup.Single(r => r.Value.Timer == timer);
+                var renderActionFactory = setup.Value.RenderActions;
+                var renderActions = await GetRenderActionsAsync(renderActionFactory);
+                this.UpdateDisplay(renderActions);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"OnUpdateTimerElapsed failed with exception: {ex.Message}");
+            }
         }
 
-        private void UpdateDisplay(IEnumerable<Func<IRenderAction>> renderActions)
+        private void UpdateDisplay(IEnumerable<IRenderAction> renderActions)
         {
             try
             {
                 // TODO: Lock parallel renderings
+
+                // Send render actions to rendering service
+                // in order to draw on canvas
                 foreach (var renderAction in renderActions)
                 {
-                    renderAction().Render(this.renderService);
+                    renderAction.Render(this.renderService);
                 }
 
+                // Get rendered image from rendering service
+                // and send it to the display
                 var bitmapStream = this.renderService.GetScreen(); // TODO: Use using/Dispose
                 this.display.DisplayImage(bitmapStream);
                 this.cacheService.SaveToCache(bitmapStream);
@@ -63,19 +100,52 @@ namespace DisplayService.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine("An exception occurred trying to update display. " + ex.Message);
+                Console.WriteLine($"UpdateDisplay failed with exception: {ex.Message}");
             }
         }
 
-        public void Start()
+        private static async Task<IEnumerable<IRenderAction>> GetRenderActionsAsync(object renderActionFactory)
         {
-            var renderActions = this.renderingSetup.SelectMany(r => r.Value.RenderActions).ToList();
-            this.UpdateDisplay(renderActions);
+            IEnumerable<IRenderAction> renderActions;
 
-            var timers = this.GetAllTimers();
-            if (TryForEach(timers, t => t.Start(), out var exceptions))
+            if (renderActionFactory is Func<Task<IEnumerable<IRenderAction>>> asyncRenderActionsFactory)
             {
-                throw new AggregateException("Start failed with exception", exceptions);
+                renderActions = await asyncRenderActionsFactory();
+            }
+            else if (renderActionFactory is Func<IEnumerable<IRenderAction>> syncRenderActionsFactory)
+            {
+                renderActions = syncRenderActionsFactory();
+            }
+            //else if (renderActionFactory is IEnumerable<Func<IRenderAction>> syncEnumerableFuncRenderActions)
+            //{
+            //    renderActions = syncEnumerableFuncRenderActions.Select(func => func());
+            //}
+            else
+            {
+                throw new NotSupportedException($"Render action factory of type {renderActionFactory?.GetType().Name ?? "<null>"} is not supported");
+            }
+
+            return renderActions;
+        }
+
+        public async Task StartAsync()
+        {
+            try
+            {
+                var renderActionFactories = this.renderingSetup.Select(r => r.Value.RenderActions).ToList();
+                var renderActionFactoryTasks = renderActionFactories.Select(renderActionFactory => GetRenderActionsAsync(renderActionFactory));
+                var renderActions = (await Task.WhenAll(renderActionFactoryTasks)).SelectMany(ra => ra).ToList();
+                this.UpdateDisplay(renderActions);
+
+                var timers = this.GetAllTimers();
+                if (TryForEach(timers, t => t.Start(), out var exceptions))
+                {
+                    throw new AggregateException("Start failed with exception", exceptions);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"StartAsync failed with exception: {ex.Message}");
             }
         }
 
@@ -109,7 +179,7 @@ namespace DisplayService.Services
 
         private IEnumerable<ITimerService> GetAllTimers()
         {
-            return this.renderingSetup.Select(r => r.Value.Timer);
+            return this.renderingSetup.Select(r => r.Value.Timer).Where(t => t != null);
         }
 
         protected void Dispose(bool disposing)
