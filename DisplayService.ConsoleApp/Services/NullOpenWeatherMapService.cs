@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace DisplayService.ConsoleApp.Service
+namespace DisplayService.ConsoleApp.Services
 {
     public class NullOpenWeatherMapService : IOpenWeatherMapService
     {

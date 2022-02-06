@@ -1,7 +1,11 @@
 ﻿namespace DisplayService.ConsoleApp
 {
-    internal class Place
+    public class Place
     {
+        public Place()
+        {
+        }
+
         public Place(string name, double latitude, double longitude)
         {
             this.Name = name;
@@ -9,10 +13,10 @@
             this.Longitude = longitude;
         }
 
-        public string Name { get; }
+        public string Name { get; set; }
 
-        public double Latitude { get; }
+        public double Latitude { get; set; }
 
-        public double Longitude { get; }
+        public double Longitude { get; set; }
     }
 }

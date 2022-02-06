@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace DisplayService.ConsoleApp.Service
+namespace DisplayService.ConsoleApp.Services
 {
     /// <summary>
     ///     OpenWeatherMap API Documentation:

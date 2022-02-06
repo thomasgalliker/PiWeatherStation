@@ -1,4 +1,5 @@
-﻿namespace DisplayService.ConsoleApp.Service
+﻿
+namespace DisplayService.ConsoleApp.Services
 {
     public interface IOpenWeatherMapConfiguration
     {

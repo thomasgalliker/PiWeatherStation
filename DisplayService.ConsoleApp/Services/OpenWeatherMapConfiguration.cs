@@ -1,9 +1,13 @@
-﻿namespace DisplayService.ConsoleApp.Service
+﻿namespace DisplayService.ConsoleApp.Services
 {
     public class OpenWeatherMapConfiguration : IOpenWeatherMapConfiguration
     {
-        public string ApiKey => "001c4dffbe586e8e2542fb379031bc99";
+        public OpenWeatherMapConfiguration()
+        {
+        }
 
-        public string UnitSystem => "metric";
+        public string ApiKey { get; set; }
+
+        public string UnitSystem { get; set; }
     }
 }

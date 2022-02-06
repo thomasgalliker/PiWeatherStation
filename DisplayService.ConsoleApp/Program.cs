@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
-using DisplayService.ConsoleApp.Service;
+using DisplayService.ConsoleApp.Model;
+using DisplayService.ConsoleApp.Services;
 using DisplayService.Model;
 using DisplayService.Services;
 using DisplayService.Settings;
+using Microsoft.Extensions.Configuration;
 
 namespace DisplayService.ConsoleApp
 {
@@ -17,17 +18,23 @@ namespace DisplayService.ConsoleApp
 
         public static async Task Main(string[] args)
         {
-            var places = new List<Place>
-            {
-                new Place("Cham", 47.1823761, 8.4611036),
-                new Place("Äläslompolo", 67.6039143d, 24.1567359d),
-            };
+            IConfiguration config = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
 
-            var cultureInfo = new CultureInfo("de-CH");
-            CultureInfo.CurrentCulture = cultureInfo;
-            CultureInfo.CurrentUICulture = cultureInfo;
+            var apiSettings = new AppSettings();
+            var appSettingsSection = config.GetSection("AppSettings");
+            appSettingsSection.Bind(apiSettings);
 
             var openWeatherMapConfiguration = new OpenWeatherMapConfiguration();
+            var openWeatherMapSection = config.GetSection("OpenWeatherMap");
+            openWeatherMapSection.Bind(openWeatherMapConfiguration);
+
+            var places = apiSettings.Places;
+
+            CultureInfo.CurrentCulture = apiSettings.CultureInfo;
+            CultureInfo.CurrentUICulture = apiSettings.CultureInfo;
+
             var openWeatherMapService = new OpenWeatherMapService(openWeatherMapConfiguration);
             //var openWeatherMapService = new NullOpenWeatherMapService();
 
@@ -63,7 +70,7 @@ namespace DisplayService.ConsoleApp
                         Y = 20,
                         HorizontalTextAlignment = HorizontalAlignment.Left,
                         VerticalTextAlignment = VerticalAlignment.Top,
-                        Value = $"Display Demo",
+                        Value = apiSettings.Title,
                         ForegroundColor = "#B983FF",
                         FontSize = 70,
                         Bold = true,
@@ -154,7 +161,7 @@ namespace DisplayService.ConsoleApp
                             Y = 200,
                             HorizontalTextAlignment = HorizontalAlignment.Center,
                             VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = $"{weatherResponse.LocationName}",
+                            Value = $"{place.Name ?? weatherResponse.LocationName}",
                             ForegroundColor = "#B983FF",
                             BackgroundColor = "#00FFFFFF",
                             FontSize = 20,
