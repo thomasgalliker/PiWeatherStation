@@ -17,7 +17,7 @@ namespace DisplayService.Settings
 
         public bool IsPortrait { get; private set; }
 
-        public SKColor Background { get; set; }
+        public string BackgroundColor { get; set; } = "#FFFFFFFF";
 
         public void Resize(int width, int height)
         {

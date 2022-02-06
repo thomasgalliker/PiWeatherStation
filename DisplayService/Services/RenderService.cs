@@ -20,7 +20,7 @@ namespace DisplayService.Services
 
             this.screen = new SKBitmap(this.renderSettings.Width, this.renderSettings.Height);
             this.canvas = new SKCanvas(this.screen);
-            this.canvas.Clear(this.renderSettings.Background);
+            this.ClearCanvas();
 
             //if (this.cacheService.Exists())
             //{
@@ -28,20 +28,15 @@ namespace DisplayService.Services
             //}
         }
 
+        private void ClearCanvas()
+        {
+            Console.WriteLine($"Clear(color={this.renderSettings.BackgroundColor})");
+            this.canvas.Clear(SKColor.Parse(this.renderSettings.BackgroundColor));
+        }
+
         public void Clear()
         {
-            Console.WriteLine($"Clear(color={renderSettings.Background})");
-            this.canvas.Clear(renderSettings.Background);
-
-            //if (clearState && renderSettings.Statefolder != null)
-            //{
-            //    string screenpath = renderSettings.Statefolder + "IoTDisplayScreen.png";
-            //
-            //    if (File.Exists(screenpath))
-            //    {
-            //        File.Delete(screenpath);
-            //    }
-            //}
+            this.ClearCanvas();
 
             OnScreenChanged(0, 0, renderSettings.Width, renderSettings.Height, false, "clear", null);
         }
@@ -220,7 +215,7 @@ namespace DisplayService.Services
 
         private void RefreshScreen()
         {
-            this.canvas.Clear(this.renderSettings.Background);
+            this.ClearCanvas();
             //Import();
 
             OnScreenChanged(0, 0, renderSettings.Width, renderSettings.Height, false, "refresh", null);
@@ -232,9 +227,9 @@ namespace DisplayService.Services
             int height = 0;
             try
             {
-                using SKBitmap img = RenderTools.GetImage(renderSettings, image.X, image.Y, image.Filename);
+                using SKBitmap img = RenderTools.GetImage(this.renderSettings, image.X, image.Y, image.Filename);
                 Console.WriteLine($"DrawBitmap(img.ByteCount=\"{img.ByteCount}\", image.X={image.X}, image.Y={image.Y})");
-                canvas.DrawBitmap(img, image.X, image.Y);
+                this.canvas.DrawBitmap(img, image.X, image.Y);
                 width = img.Width;
                 height = img.Height;
             }

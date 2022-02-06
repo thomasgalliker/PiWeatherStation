@@ -1,7 +1,4 @@
-﻿
-using SkiaSharp;
-
-namespace DisplayService.Settings
+﻿namespace DisplayService.Settings
 {
     public interface IRenderSettings
     {
@@ -13,7 +10,7 @@ namespace DisplayService.Settings
 
         int Rotation { get; }
 
-        SKColor Background { get; }
+        string BackgroundColor { get; }
 
         void Resize(int width, int height);
     }
