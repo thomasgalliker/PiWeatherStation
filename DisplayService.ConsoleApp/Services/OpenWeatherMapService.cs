@@ -29,7 +29,7 @@ namespace DisplayService.ConsoleApp.Service
             this.httpClient = new HttpClient();
         }
 
-        public async Task<WeatherResponse> GetWeatherInfoAsync(double longitude, double latitude)
+        public async Task<WeatherResponse> GetWeatherInfoAsync(double latitude, double longitude)
         {
             var lat = latitude.ToString("0.0000", CultureInfo.InvariantCulture);
             var lon = longitude.ToString("0.0000", CultureInfo.InvariantCulture);

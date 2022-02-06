@@ -27,8 +27,8 @@ namespace DisplayService.Tests.Services
                 .Returns(480);
             renderSettingsMock.SetupGet(r => r.Width)
                 .Returns(800);
-            renderSettingsMock.SetupGet(r => r.Background)
-                .Returns(SKColors.White);
+            renderSettingsMock.SetupGet(r => r.BackgroundColor)
+                .Returns(SKColors.White.ToString());
         }
 
         [Fact]

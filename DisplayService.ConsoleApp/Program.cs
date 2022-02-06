@@ -1,34 +1,35 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using DisplayService.ConsoleApp.Service;
 using DisplayService.Model;
 using DisplayService.Services;
 using DisplayService.Settings;
-using SkiaSharp;
 
 namespace DisplayService.ConsoleApp
 {
     class MainClass
     {
         private static IDisplay displayService;
-        private static IRenderService renderService;
-        private static ICacheService cacheService;
 
         public static async Task Main(string[] args)
         {
-            var longitude = 24.1567359d;
-            var latitude = 67.6039143d;
+            var places = new List<Place>
+            {
+                new Place("Cham", 47.1823761, 8.4611036),
+                new Place("Äläslompolo", 67.6039143d, 24.1567359d),
+            };
 
             var cultureInfo = new CultureInfo("de-CH");
             CultureInfo.CurrentCulture = cultureInfo;
             CultureInfo.CurrentUICulture = cultureInfo;
 
-            //var openWeatherMapConfiguration = new OpenWeatherMapConfiguration();
-            //var openWeatherMapService = new OpenWeatherMapService(openWeatherMapConfiguration);
-            var openWeatherMapService = new NullOpenWeatherMapService();
+            var openWeatherMapConfiguration = new OpenWeatherMapConfiguration();
+            var openWeatherMapService = new OpenWeatherMapService(openWeatherMapConfiguration);
+            //var openWeatherMapService = new NullOpenWeatherMapService();
 
             // Setup services, wire-up dependencies
             // TODO: Use Microsoft DependencyInjection
@@ -39,7 +40,7 @@ namespace DisplayService.ConsoleApp
             // TODO: Load from appsettings
             IRenderSettings renderSettings = new RenderSettings
             {
-                Background = SKColor.Parse("#FFFFFFFF"),
+                BackgroundColor = "#FFFFFFFF",
             };
             renderSettings.Resize(displayService.Width, displayService.Height);
 
@@ -77,11 +78,10 @@ namespace DisplayService.ConsoleApp
                     }
                 });
 
-            int dayCounter = 0;
             displayManager.AddRenderActions(
                 () =>
                 {
-                    var dateTimeNow = DateTime.Now.AddDays(dayCounter++);
+                    var dateTimeNow = DateTime.Now;
                     return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
@@ -107,7 +107,7 @@ namespace DisplayService.ConsoleApp
                         }
                     };
                 },
-                TimeSpan.FromSeconds(1)); // TODO: Use crontab-like scheduling
+                TimeSpan.FromDays(1)); // TODO: Use crontab-like scheduling
 
             displayManager.AddRenderActions(
                 () =>
@@ -143,17 +143,29 @@ namespace DisplayService.ConsoleApp
             displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var weatherResponse = await openWeatherMapService.GetWeatherInfoAsync(longitude, latitude);
+                    var place = places.First();
+                    var weatherResponse = await openWeatherMapService.GetWeatherInfoAsync(place.Latitude, place.Longitude);
 
                     return new List<IRenderAction>
                     {
                         new RenderActions.Text
                         {
                             X = 400,
+                            Y = 200,
+                            HorizontalTextAlignment = HorizontalAlignment.Center,
+                            VerticalTextAlignment = VerticalAlignment.Center,
+                            Value = $"{weatherResponse.LocationName}",
+                            ForegroundColor = "#B983FF",
+                            BackgroundColor = "#00FFFFFF",
+                            FontSize = 20,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 400,
                             Y = 240,
                             HorizontalTextAlignment = HorizontalAlignment.Center,
                             VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = $"{weatherResponse.Temperature:F1}°C",
+                            Value = FormatTemperature(weatherResponse),
                             ForegroundColor = "#B983FF",
                             BackgroundColor = "#00FFFFFF",
                             FontSize = 80,
@@ -201,6 +213,19 @@ namespace DisplayService.ConsoleApp
             updateTimer.Elapsed -= OnUpdateTimerElapsed;
             updateTimer.Stop();
             */
+        }
+
+        private static string FormatTemperature(WeatherResponse weatherResponse)
+        {
+            switch (weatherResponse.UnitSystem)
+            {
+                case "metric":
+                    return $"{weatherResponse.Temperature:F1}°C";
+                case "imperial":
+                    return $"{weatherResponse.Temperature:F1}°F";
+                default:
+                    throw new NotSupportedException($"Unit system {weatherResponse.UnitSystem} not supported");
+            }
         }
     }
 }

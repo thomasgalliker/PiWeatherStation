@@ -4,7 +4,7 @@ namespace DisplayService.ConsoleApp.Service
 {
     public class NullOpenWeatherMapService : IOpenWeatherMapService
     {
-        public Task<WeatherResponse> GetWeatherInfoAsync(double longitude, double latitude)
+        public Task<WeatherResponse> GetWeatherInfoAsync(double latitude, double longitude)
         {
             return Task.FromResult(new WeatherResponse
             {

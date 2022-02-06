@@ -4,6 +4,6 @@ namespace DisplayService.ConsoleApp.Service
 {
     public interface IOpenWeatherMapService
     {
-        Task<WeatherResponse> GetWeatherInfoAsync(double longitude, double latitude);
+        Task<WeatherResponse> GetWeatherInfoAsync(double latitude, double longitude);
     }
 }
