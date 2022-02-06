@@ -158,9 +158,9 @@ namespace DisplayService.ConsoleApp
                             BackgroundColor = "#00FFFFFF",
                             FontSize = 80,
                         }
-};
+                    };
                 },
-                TimeSpan.FromSeconds(15));
+                TimeSpan.FromHours(1));
 
             await displayManager.StartAsync();
 
@@ -201,43 +201,6 @@ namespace DisplayService.ConsoleApp
             updateTimer.Elapsed -= OnUpdateTimerElapsed;
             updateTimer.Stop();
             */
-        }
-
-        private static void OnUpdateTimerElapsed(object sender, ElapsedEventArgs e)
-        {
-            UpdateDisplay();
-        }
-
-        private static void UpdateDisplay()
-        {
-            try
-            {
-                renderService.Clear();
-                renderService.Text(new RenderActions.Text
-                {
-                    X = 0,
-                    Y = 0,
-                    Value = $"{DateTime.Now:O}",
-                    FontSize = 40,
-                });
-                renderService.Text(new RenderActions.Text
-                {
-                    X = 0,
-                    Y = 60,
-                    Value = $"Test",
-                    FontSize = 40,
-                });
-
-                var bitmapStream = renderService.GetScreen(); // TODO: Use using/Dispose
-                displayService.DisplayImage(bitmapStream);
-                cacheService.SaveToCache(bitmapStream);
-                bitmapStream.Close(); // TODO Remove?
-                bitmapStream.Dispose();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("An exception occurred trying to update display. " + ex.Message);
-            }
         }
     }
 }

@@ -23,7 +23,7 @@ namespace DisplayService.Services
 
         public void SaveToCache(Stream bitmapStream)
         {
-            var cacheFile = CacheFile;
+            var cacheFile = this.CacheFile;
 
             try
             {
@@ -42,7 +42,7 @@ namespace DisplayService.Services
 
         public Stream LoadFromCache()
         {
-            var cacheFile = CacheFile;
+            var cacheFile = this.CacheFile;
 
             try
             {

@@ -18,9 +18,9 @@ namespace DisplayService.Services
         {
             this.renderSettings = renderSettings;
 
-            screen = new SKBitmap(this.renderSettings.Width, this.renderSettings.Height);
-            canvas = new SKCanvas(screen);
-            canvas.Clear(this.renderSettings.Background);
+            this.screen = new SKBitmap(this.renderSettings.Width, this.renderSettings.Height);
+            this.canvas = new SKCanvas(this.screen);
+            this.canvas.Clear(this.renderSettings.Background);
 
             //if (this.cacheService.Exists())
             //{
@@ -115,7 +115,7 @@ namespace DisplayService.Services
                         y = rectangle.Y - (rectangle.Height / 2);
                         break;
                     case VerticalAlignment.Bottom:
-                        y = rectangle.Y - rectangle.Width;
+                        y = rectangle.Y - rectangle.Height;
                         break;
                 }
 
@@ -186,28 +186,31 @@ namespace DisplayService.Services
             var memoryStream = new MemoryStream();
             using (var wstream = new SKManagedWStream(memoryStream))
             {
-                if (renderSettings.Rotation == 0)
+                if (this.renderSettings.Rotation == 0)
                 {
-                    screen.Encode(wstream, SKEncodedImageFormat.Png, 100);
+                    this.screen.Encode(wstream, SKEncodedImageFormat.Png, 100);
                 }
                 else
                 {
-                    int newWidth = renderSettings.Width;
-                    int newHeight = renderSettings.Height;
+                    var newWidth = this.renderSettings.Width;
+                    var newHeight = this.renderSettings.Height;
 
-                    if (renderSettings.IsPortrait)
+                    if (this.renderSettings.IsPortrait)
                     {
-                        newWidth = renderSettings.Height;
-                        newHeight = renderSettings.Width;
+                        newWidth = this.renderSettings.Height;
+                        newHeight = this.renderSettings.Width;
                     }
 
-                    using SKBitmap image = new(newWidth, newHeight, screen.ColorType, screen.AlphaType, screen.ColorSpace);
-
-                    using SKCanvas surface = new(image);
-                    surface.Translate(newWidth, 0);
-                    surface.RotateDegrees(renderSettings.Rotation);
-                    surface.DrawBitmap(screen, 0, 0);
-                    image.Encode(wstream, SKEncodedImageFormat.Png, 100);
+                    using (var image = new SKBitmap(newWidth, newHeight, this.screen.ColorType, this.screen.AlphaType, this.screen.ColorSpace))
+                    {
+                        using (var surface = new SKCanvas(image))
+                        {
+                            surface.Translate(newWidth, 0);
+                            surface.RotateDegrees(this.renderSettings.Rotation);
+                            surface.DrawBitmap(this.screen, 0, 0);
+                            image.Encode(wstream, SKEncodedImageFormat.Png, 100);
+                        }
+                    }
                 }
             }
 
@@ -217,7 +220,7 @@ namespace DisplayService.Services
 
         private void RefreshScreen()
         {
-            canvas.Clear(renderSettings.Background);
+            this.canvas.Clear(this.renderSettings.Background);
             //Import();
 
             OnScreenChanged(0, 0, renderSettings.Width, renderSettings.Height, false, "refresh", null);
