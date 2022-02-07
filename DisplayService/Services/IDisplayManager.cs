@@ -14,7 +14,7 @@ namespace DisplayService.Services
         void AddRenderActions(Func<IEnumerable<IRenderAction>> renderActions);
 
         void AddRenderActions(Func<IEnumerable<IRenderAction>> renderActions, TimeSpan updateInterval);
-        
+
         void AddRenderActionsAsync(Func<Task<IEnumerable<IRenderAction>>> renderActions);
 
         void AddRenderActionsAsync(Func<Task<IEnumerable<IRenderAction>>> renderActions, TimeSpan updateInterval);

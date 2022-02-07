@@ -1,6 +1,4 @@
-﻿using System;
-using DisplayService.Services;
-using Xunit;
+﻿using Xunit;
 
 namespace DisplayService.Tests.Services
 {

@@ -1,14 +1,11 @@
-﻿using System;
-using System.IO;
-using System.Runtime.CompilerServices;
+﻿using DisplayService.Model;
 using DisplayService.Services;
 using DisplayService.Settings;
 using FluentAssertions;
+using Moq.AutoMock;
+using SkiaSharp;
 using Xunit;
 using Xunit.Abstractions;
-using Moq.AutoMock;
-using DisplayService.Model;
-using SkiaSharp;
 
 namespace DisplayService.Tests.Services
 {

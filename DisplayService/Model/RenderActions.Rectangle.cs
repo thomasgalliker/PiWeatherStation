@@ -1,5 +1,4 @@
-﻿using System;
-using DisplayService.Services;
+﻿using DisplayService.Services;
 
 namespace DisplayService.Model
 {

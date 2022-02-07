@@ -1,5 +1,4 @@
 ﻿using System;
-using SkiaSharp;
 
 namespace DisplayService.Settings
 {
