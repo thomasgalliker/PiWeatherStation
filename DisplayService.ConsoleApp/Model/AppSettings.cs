@@ -16,6 +16,8 @@ namespace DisplayService.ConsoleApp.Model
 
         public CultureInfo CultureInfo { get; set; }
 
+        public bool IsDebug { get; set; }
+
         public List<DisplaySetting> Displays { get; set; }
 
         public List<Place> Places { get; set; }

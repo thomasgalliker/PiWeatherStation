@@ -22,27 +22,41 @@ namespace DisplayService.ConsoleApp
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var apiSettings = new AppSettings();
+            var appSettings = new AppSettings();
             var appSettingsSection = config.GetSection("AppSettings");
-            appSettingsSection.Bind(apiSettings);
+            appSettingsSection.Bind(appSettings);
 
             var openWeatherMapConfiguration = new OpenWeatherMapConfiguration();
             var openWeatherMapSection = config.GetSection("OpenWeatherMap");
             openWeatherMapSection.Bind(openWeatherMapConfiguration);
 
-            var places = apiSettings.Places;
+            var places = appSettings.Places;
 
-            CultureInfo.CurrentCulture = apiSettings.CultureInfo;
-            CultureInfo.CurrentUICulture = apiSettings.CultureInfo;
+            CultureInfo.CurrentCulture = appSettings.CultureInfo;
+            CultureInfo.CurrentUICulture = appSettings.CultureInfo;
 
             var openWeatherMapService = new OpenWeatherMapService(openWeatherMapConfiguration);
             //var openWeatherMapService = new NullOpenWeatherMapService();
 
             // Setup services, wire-up dependencies
             // TODO: Use Microsoft DependencyInjection
-            //displayService = new WsEPaperDisplayService("WaveShare7In5_V2");
 
-            displayService = new NullDisplayService();
+            if (appSettings.IsDebug)
+            {
+                displayService = new NullDisplayService();
+            }
+            else
+            {
+                var display = appSettings.Displays.First(); // Supports only one display at the time
+                switch (display.DriverType)
+                {
+                    case "WaveShareDisplay":
+                        displayService = new WaveShareDisplay(display.Driver);
+                        break;
+                    default:
+                        throw new NotSupportedException($"DriverType '{display.DriverType}' is not supported");
+                }
+            }
 
             // TODO: Load from appsettings
             IRenderSettings renderSettings = new RenderSettings
@@ -70,7 +84,7 @@ namespace DisplayService.ConsoleApp
                         Y = 20,
                         HorizontalTextAlignment = HorizontalAlignment.Left,
                         VerticalTextAlignment = VerticalAlignment.Top,
-                        Value = apiSettings.Title,
+                        Value = appSettings.Title,
                         ForegroundColor = "#B983FF",
                         FontSize = 70,
                         Bold = true,
