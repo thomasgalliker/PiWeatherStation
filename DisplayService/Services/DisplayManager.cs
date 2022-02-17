@@ -5,22 +5,25 @@ using System.Threading.Tasks;
 using System.Timers;
 using DisplayService.Model;
 using DisplayService.Settings;
+using Microsoft.Extensions.Logging;
 
 namespace DisplayService.Services
 {
     public class DisplayManager : IDisplayManager
     {
         private readonly IDictionary<Guid, (ITimerService Timer, object RenderActions)> renderingSetup = new Dictionary<Guid, (ITimerService, object)>();
+        private readonly ILogger<DisplayManager> logger;
         private readonly ICacheService cacheService;
         private readonly IRenderService renderService;
         private readonly IDisplay display;
         private bool disposed;
 
-        public DisplayManager(IRenderSettings renderSettings, IDisplay display)
+        public DisplayManager(ILogger<DisplayManager> logger, IRenderService renderService, IDisplay display)
         {
-            this.cacheService = new CacheService();
-            this.renderService = new RenderService((RenderSettings)renderSettings);
+            this.logger = logger;
             this.display = display;
+            this.cacheService = new CacheService();
+            this.renderService = renderService;
         }
 
         public void AddRenderActions(Func<IEnumerable<IRenderAction>> renderActions)
@@ -73,7 +76,7 @@ namespace DisplayService.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"OnUpdateTimerElapsed failed with exception: {ex.Message}");
+                this.logger.LogError(ex, $"OnUpdateTimerElapsed failed with exception: {ex.Message}");
             }
         }
 
@@ -90,6 +93,18 @@ namespace DisplayService.Services
                     renderAction.Render(this.renderService);
                 }
 
+                this.UpdateDisplay();
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, $"UpdateDisplay failed with exception: {ex.Message}");
+            }
+        }
+
+        private void UpdateDisplay()
+        {
+            try
+            {
                 // Get rendered image from rendering service
                 // and send it to the display
                 var bitmapStream = this.renderService.GetScreen(); // TODO: Use using/Dispose
@@ -100,7 +115,7 @@ namespace DisplayService.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"UpdateDisplay failed with exception: {ex.Message}");
+                this.logger.LogError(ex, $"UpdateDisplay failed with exception: {ex.Message}");
             }
         }
 
@@ -130,6 +145,8 @@ namespace DisplayService.Services
 
         public async Task StartAsync()
         {
+            this.logger.LogDebug($"Start rendering...");
+
             try
             {
                 var renderActionFactories = this.renderingSetup.Select(r => r.Value.RenderActions).ToList();
@@ -145,7 +162,7 @@ namespace DisplayService.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"StartAsync failed with exception: {ex.Message}");
+                this.logger.LogError(ex, $"StartAsync failed with exception: {ex.Message}");
             }
         }
 
@@ -156,6 +173,13 @@ namespace DisplayService.Services
             {
                 throw new AggregateException("Stop failed with exception", exceptions);
             }
+        }
+
+        public void Clear()
+        {
+            this.Stop();
+            this.renderService.Clear();
+            this.UpdateDisplay();
         }
 
         private static bool TryForEach<T>(IEnumerable<T> items, Action<T> action, out IEnumerable<Exception> exceptions)

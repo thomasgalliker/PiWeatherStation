@@ -13,7 +13,6 @@ namespace DisplayService.Services
 {
     public class WaveShareDisplay : IDisplay
     {
-
         private static readonly TimerService _updateTimer;
         private static readonly TimerService _refreshTimer;
 

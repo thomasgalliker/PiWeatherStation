@@ -2,20 +2,23 @@
 using System.IO;
 using DisplayService.Model;
 using DisplayService.Settings;
+using Microsoft.Extensions.Logging;
 using SkiaSharp;
 
 namespace DisplayService.Services
 {
     public class RenderService : IRenderService
     {
+        private readonly ILogger<RenderService> logger;
         private readonly IRenderSettings renderSettings = null;
         private readonly SKBitmap screen;
         private readonly SKCanvas canvas;
 
         private bool disposed = false;
 
-        public RenderService(IRenderSettings renderSettings)
+        public RenderService(ILogger<RenderService> logger, IRenderSettings renderSettings)
         {
+            this.logger = logger;
             this.renderSettings = renderSettings;
 
             this.screen = new SKBitmap(this.renderSettings.Width, this.renderSettings.Height);
@@ -30,7 +33,7 @@ namespace DisplayService.Services
 
         private void ClearCanvas()
         {
-            Console.WriteLine($"Clear(color={this.renderSettings.BackgroundColor})");
+            this.logger.LogDebug($"Clear(color={this.renderSettings.BackgroundColor})");
             this.canvas.Clear(SKColor.Parse(this.renderSettings.BackgroundColor));
         }
 
@@ -38,7 +41,7 @@ namespace DisplayService.Services
         {
             this.ClearCanvas();
 
-            OnScreenChanged(0, 0, renderSettings.Width, renderSettings.Height, false, "clear", null);
+            this.OnScreenChanged(0, 0, this.renderSettings.Width, this.renderSettings.Height, false, "clear", null);
         }
 
         public void Refresh()
@@ -73,7 +76,7 @@ namespace DisplayService.Services
                 backgroundPaint.Dispose();
 
                 // Draw text foreground
-                Console.WriteLine($"DrawText(text=\"{ text.Value}\", x={textXPosition}, y={textYPosition})");
+                this.logger.LogDebug($"DrawText(text=\"{ text.Value}\", x={textXPosition}, y={textYPosition})");
                 this.canvas.DrawText(text.Value, textXPosition, textYPosition, paint);
             }
             catch (Exception ex)
@@ -114,7 +117,7 @@ namespace DisplayService.Services
                         break;
                 }
 
-                Console.WriteLine($"DrawRect(x: {x}, y: {y}, width: {rectangle.Width}, height: {rectangle.Height})");
+                this.logger.LogDebug($"DrawRect(x: {x}, y: {y}, width: {rectangle.Width}, height: {rectangle.Height})");
 
                 var rect = SKRect.Create(x, y, width: rectangle.Width, height: rectangle.Height);
 
@@ -162,7 +165,7 @@ namespace DisplayService.Services
             y += voffset;
             height -= voffset;
 
-            if (x < renderSettings.Width && y < renderSettings.Height)
+            if (x < this.renderSettings.Width && y < this.renderSettings.Height)
             {
                 //ScreenChangedEventArgs evt = new()
                 //{
@@ -218,7 +221,7 @@ namespace DisplayService.Services
             this.ClearCanvas();
             //Import();
 
-            OnScreenChanged(0, 0, renderSettings.Width, renderSettings.Height, false, "refresh", null);
+            this.OnScreenChanged(0, 0, this.renderSettings.Width, this.renderSettings.Height, false, "refresh", null);
         }
 
         private void AddImage(RenderActions.Image image)
@@ -228,7 +231,7 @@ namespace DisplayService.Services
             try
             {
                 using SKBitmap img = RenderTools.GetImage(this.renderSettings, image.X, image.Y, image.Filename);
-                Console.WriteLine($"DrawBitmap(img.ByteCount=\"{img.ByteCount}\", image.X={image.X}, image.Y={image.Y})");
+                this.logger.LogDebug($"DrawBitmap(img.ByteCount=\"{img.ByteCount}\", image.X={image.X}, image.Y={image.Y})");
                 this.canvas.DrawBitmap(img, image.X, image.Y);
                 width = img.Width;
                 height = img.Height;
@@ -244,17 +247,17 @@ namespace DisplayService.Services
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
             }
 
-            OnScreenChanged(image.X, image.Y, width, height, image.Delay, "image", null /*JsonSerializer.Serialize<RenderActions.Image>(image)*/);
+            this.OnScreenChanged(image.X, image.Y, width, height, image.Delay, "image", null /*JsonSerializer.Serialize<RenderActions.Image>(image)*/);
         }
 
         private void AddGraphic(RenderActions.Graphic graphic)
         {
-            if (graphic.X < 0 || graphic.X >= renderSettings.Width)
+            if (graphic.X < 0 || graphic.X >= this.renderSettings.Width)
             {
                 throw new ArgumentOutOfRangeException(nameof(graphic.X), graphic.X, "X coordinate is not within the screen");
             }
 
-            if (graphic.Y < 0 || graphic.Y >= renderSettings.Height)
+            if (graphic.Y < 0 || graphic.Y >= this.renderSettings.Height)
             {
                 throw new ArgumentOutOfRangeException(nameof(graphic.Y), graphic.Y, "Y coordinate is not within the screen");
             }
@@ -264,8 +267,8 @@ namespace DisplayService.Services
             try
             {
                 using SKBitmap img = SKBitmap.Decode(graphic.Data);
-                Console.WriteLine($"DrawBitmap(img.ByteCount=\"{img.ByteCount}\", graphic.X={graphic.X}, graphic.Y={graphic.Y})");
-                canvas.DrawBitmap(img, graphic.X, graphic.Y);
+                this.logger.LogDebug($"DrawBitmap(img.ByteCount=\"{img.ByteCount}\", graphic.X={graphic.X}, graphic.Y={graphic.Y})");
+                this.canvas.DrawBitmap(img, graphic.X, graphic.Y);
                 width = img.Width;
                 height = img.Height;
             }
@@ -280,32 +283,32 @@ namespace DisplayService.Services
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
             }
 
-            OnScreenChanged(graphic.X, graphic.Y, width, height, graphic.Delay, "graphic", null);
+            this.OnScreenChanged(graphic.X, graphic.Y, width, height, graphic.Delay, "graphic", null);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
+            if (this.disposed)
             {
                 return;
             }
 
             if (disposing)
             {
-                canvas.Dispose();
-                screen.Dispose();
+                this.canvas.Dispose();
+                this.screen.Dispose();
             }
 
-            disposed = true;
+            this.disposed = true;
         }
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        ~RenderService() => Dispose(false);
+        ~RenderService() => this.Dispose(false);
 
     }
 }

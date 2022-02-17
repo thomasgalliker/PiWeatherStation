@@ -4,7 +4,7 @@ using System.Globalization;
 
 namespace DisplayService.ConsoleApp.Model
 {
-    public class AppSettings
+    public class AppSettings : IAppSettings
     {
         public AppSettings()
         {

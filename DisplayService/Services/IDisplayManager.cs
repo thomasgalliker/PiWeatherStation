@@ -23,7 +23,9 @@ namespace DisplayService.Services
         /// Starts rendering the defined render actions and schedules the update timers (if defined).
         /// </summary>
         Task StartAsync();
-
+        
         void Stop();
+        
+        void Clear();
     }
 }

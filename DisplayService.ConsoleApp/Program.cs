@@ -1,60 +1,122 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.CommandLine;
+using System.CommandLine.Builder;
+using System.CommandLine.Parsing;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using DisplayService.ConsoleApp.Commands;
 using DisplayService.ConsoleApp.Model;
 using DisplayService.ConsoleApp.Services;
-using DisplayService.Model;
 using DisplayService.Services;
 using DisplayService.Settings;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace DisplayService.ConsoleApp
 {
-    class MainClass
+    class Program
     {
-        private static IDisplay displayService;
-
-        public static async Task Main(string[] args)
+        static async Task<int> Main(string[] args)
         {
-            IConfiguration config = new ConfigurationBuilder()
-                .AddJsonFile("appsettings.json")
+            Console.WriteLine(
+                $"WeatherStation version {typeof(Program).Assembly.GetName().Version} {Environment.NewLine}" +
+                $"Copyright(C) superdev GmbH. All rights reserved.{Environment.NewLine}");
+
+            var serviceProvider = BuildServiceProvider();
+            var parser = BuildParser(serviceProvider);
+
+            if (args.Length == 0)
+            {
+                // Use default parameter 'start' in case no parameter is used
+                args = new string[] { StartCommand.CommandName };
+            }
+
+            var result = await parser.InvokeAsync(args).ConfigureAwait(false);
+
+            if (args.Contains(StartCommand.CommandName))
+            {
+                Console.ReadLine();
+            }
+
+            return result;
+        }
+
+        private static Parser BuildParser(IServiceProvider serviceProvider)
+        {
+            var rootCommand = new RootCommand();
+            //rootCommand.Description = $"Simplify nuget package administration.";
+
+            rootCommand.AddGlobalOption(ProgramOptions.ClearOption);
+
+            var commandLineBuilder = new CommandLineBuilder(rootCommand);
+
+            var commands = serviceProvider.GetServices<Command>();
+            foreach (var command in commands)
+            {
+                commandLineBuilder.Command.Add(command);
+            }
+
+            return commandLineBuilder
+                .UseDefaults()
                 .Build();
+        }
+
+        private static IServiceProvider BuildServiceProvider()
+        {
+            var services = new ServiceCollection();
+
+            services.AddLogging(o =>
+            {
+                o.ClearProviders();
+                o.SetMinimumLevel(LogLevel.Debug);
+                o.AddDebug();
+                o.AddSimpleConsole(o =>
+                {
+                    o.SingleLine = true;
+                    o.TimestampFormat = "hh:mm:ss ";
+                });
+            });
+
+            IConfiguration config = new ConfigurationBuilder()
+               .AddJsonFile("appsettings.json")
+               .Build();
 
             var appSettings = new AppSettings();
             var appSettingsSection = config.GetSection("AppSettings");
             appSettingsSection.Bind(appSettings);
 
+            CultureInfo.CurrentCulture = appSettings.CultureInfo;
+            CultureInfo.CurrentUICulture = appSettings.CultureInfo;
+
             var openWeatherMapConfiguration = new OpenWeatherMapConfiguration();
             var openWeatherMapSection = config.GetSection("OpenWeatherMap");
             openWeatherMapSection.Bind(openWeatherMapConfiguration);
 
-            var places = appSettings.Places;
-
-            CultureInfo.CurrentCulture = appSettings.CultureInfo;
-            CultureInfo.CurrentUICulture = appSettings.CultureInfo;
-
-            var openWeatherMapService = new OpenWeatherMapService(openWeatherMapConfiguration);
-            //var openWeatherMapService = new NullOpenWeatherMapService();
-
-            // Setup services, wire-up dependencies
-            // TODO: Use Microsoft DependencyInjection
-
+            IDisplay display;
             if (appSettings.IsDebug)
             {
-                displayService = new NullDisplayService();
+                display = new NullDisplayService();
             }
             else
             {
-                var display = appSettings.Displays.First(); // Supports only one display at the time
-                switch (display.DriverType)
+                try
                 {
-                    case "WaveShareDisplay":
-                        displayService = new WaveShareDisplay(display.Driver);
-                        break;
-                    default:
-                        throw new NotSupportedException($"DriverType '{display.DriverType}' is not supported");
+                    var displayConfig = appSettings.Displays.First(); // Supports only one display at the time
+                    switch (displayConfig.DriverType)
+                    {
+                        case "WaveShareDisplay":
+                            display = new WaveShareDisplay(displayConfig.Driver);
+                            break;
+                        default:
+                            throw new NotSupportedException($"DriverType '{displayConfig.DriverType}' is not supported");
+                    }
+                }
+                catch (Exception)
+                {
+                    Console.WriteLine("Failed to initialize display");
+                    display = new NullDisplayService();
                 }
             }
 
@@ -63,190 +125,30 @@ namespace DisplayService.ConsoleApp
             {
                 BackgroundColor = "#FFFFFFFF",
             };
-            renderSettings.Resize(displayService.Width, displayService.Height);
+            renderSettings.Resize(display.Width, display.Height);
 
-            IDisplayManager displayManager = new DisplayManager(renderSettings, displayService);
+            services.AddSingleton<Command, StartCommand>();
+            services.AddSingleton<Command, SilentCommand>();
+            services.AddSingleton<Command, ClearCommand>();
 
-            displayManager.AddRenderActions(
-                () => new List<IRenderAction>
-                {
-                    new RenderActions.Rectangle
-                    {
-                        X = 0,
-                        Y = 0,
-                        Height = 90,
-                        Width = 800,
-                        BackgroundColor = "#99FEFF",
-                    },
-                    new RenderActions.Text
-                    {
-                        X = 20,
-                        Y = 20,
-                        HorizontalTextAlignment = HorizontalAlignment.Left,
-                        VerticalTextAlignment = VerticalAlignment.Top,
-                        Value = appSettings.Title,
-                        ForegroundColor = "#B983FF",
-                        FontSize = 70,
-                        Bold = true,
-                    },
-                    new RenderActions.Rectangle
-                    {
-                        X = 0,
-                        Y = 440,
-                        Height = 40,
-                        Width = 800,
-                        BackgroundColor = "#99FEFF",
-                    }
-                });
+            services.AddSingleton<IAppSettings>(appSettings);
+            services.AddSingleton<IRenderService, RenderService>();
+            services.AddSingleton<IRenderSettings>(renderSettings);
+            services.AddSingleton<IDisplay>(display);
+            services.AddSingleton<IDisplayManager, DisplayManager>();
+            services.AddSingleton<IOpenWeatherMapConfiguration>(openWeatherMapConfiguration);
 
-            displayManager.AddRenderActions(
-                () =>
-                {
-                    var dateTimeNow = DateTime.Now;
-                    return new List<IRenderAction>
-                    {
-                        new RenderActions.Rectangle
-                        {
-                            X = 780,
-                            Y = 19,
-                            Height = 25,
-                            Width = 300,
-                            VerticalAlignment = VerticalAlignment.Top,
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            BackgroundColor = "#99FEFF",
-                        },
-                        new RenderActions.Text
-                        {
-                            X = 780,
-                            Y = 20,
-                            HorizontalTextAlignment = HorizontalAlignment.Right,
-                            VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{dateTimeNow:dddd}, {dateTimeNow:M}",
-                            ForegroundColor = "#99FEFF",
-                            BackgroundColor = "#B983FF",
-                            FontSize = 22,
-                        }
-                    };
-                },
-                TimeSpan.FromDays(1)); // TODO: Use crontab-like scheduling
-
-            displayManager.AddRenderActions(
-                () =>
-                {
-                    var dateTimeNow = DateTime.Now;
-                    return new List<IRenderAction>
-                    {
-                        new RenderActions.Rectangle
-                        {
-                            X = 780,
-                            Y = 19,
-                            Height = 25,
-                            Width = 300,
-                            VerticalAlignment = VerticalAlignment.Top,
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            BackgroundColor = "#99FEFF",
-                        },
-                        new RenderActions.Text
-                        {
-                            X = 780,
-                            Y = 50,
-                            HorizontalTextAlignment = HorizontalAlignment.Right,
-                            VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{dateTimeNow:t}",
-                            ForegroundColor = "#99FEFF",
-                            BackgroundColor = "#B983FF",
-                            FontSize = 22,
-                        }
-                    };
-                },
-                TimeSpan.FromMinutes(1));
-
-            displayManager.AddRenderActionsAsync(
-                async () =>
-                {
-                    var place = places.First();
-                    var weatherResponse = await openWeatherMapService.GetWeatherInfoAsync(place.Latitude, place.Longitude);
-
-                    return new List<IRenderAction>
-                    {
-                        new RenderActions.Text
-                        {
-                            X = 400,
-                            Y = 200,
-                            HorizontalTextAlignment = HorizontalAlignment.Center,
-                            VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = $"{place.Name ?? weatherResponse.LocationName}",
-                            ForegroundColor = "#B983FF",
-                            BackgroundColor = "#00FFFFFF",
-                            FontSize = 20,
-                        },
-                        new RenderActions.Text
-                        {
-                            X = 400,
-                            Y = 240,
-                            HorizontalTextAlignment = HorizontalAlignment.Center,
-                            VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = FormatTemperature(weatherResponse),
-                            ForegroundColor = "#B983FF",
-                            BackgroundColor = "#00FFFFFF",
-                            FontSize = 80,
-                        }
-                    };
-                },
-                TimeSpan.FromHours(1));
-
-            await displayManager.StartAsync();
-
-            Console.WriteLine("Press any key to exit");
-            Console.ReadLine();
-
-            /*
-            cacheService = new CacheService();
-            renderService = new RenderService((RenderSettings)renderSettings, cacheService);
-
-            // TODO: InitializeFromCache()
-            if (cacheService.Exists())
+            if (appSettings.IsDebug)
             {
-                renderService.Image(new RenderActions.Image
-                {
-                    X = 0,
-                    Y = 0,
-                    Filename = cacheService.CacheFile
-                });
+                services.AddSingleton<IOpenWeatherMapService, NullOpenWeatherMapService>();
+            }
+            else
+            {
+                services.AddSingleton<IOpenWeatherMapService, OpenWeatherMapService>();
             }
 
-            // Initialize display
-            UpdateDisplay();
-
-            // Start timer to automatically refresh the display
-            ITimerService updateTimer = new TimerService()
-            {
-                TargetMillisecond = 1000,
-                ToleranceMillisecond = 0,
-                Enabled = true
-            };
-            updateTimer.Elapsed += OnUpdateTimerElapsed;
-            updateTimer.Start();
-
-            Console.WriteLine("Press any key to exit");
-            Console.ReadLine();
-
-            updateTimer.Elapsed -= OnUpdateTimerElapsed;
-            updateTimer.Stop();
-            */
-        }
-
-        private static string FormatTemperature(WeatherResponse weatherResponse)
-        {
-            switch (weatherResponse.UnitSystem)
-            {
-                case "metric":
-                    return $"{weatherResponse.Temperature:F1}°C";
-                case "imperial":
-                    return $"{weatherResponse.Temperature:F1}°F";
-                default:
-                    throw new NotSupportedException($"Unit system {weatherResponse.UnitSystem} not supported");
-            }
+            var serviceProvider = services.BuildServiceProvider();
+            return serviceProvider;
         }
     }
 }
