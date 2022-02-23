@@ -17,13 +17,19 @@ Weather Station for RasperryPi and Waveshare ePaper Displays
 [Unit]
 Description=WeatherDisplay.Api Service
 
+# When this service should be started up
+After=network-online.target firewalld.service
+
+# Is dependent on this target
+Wants=network-online.target
+
 [Service]
 Type=notify
 # will set the Current Working Directory (CWD)
 WorkingDirectory=/home/pi/WeatherDisplay.Api
 # systemd will run this executable to start the service
 ExecStart=/home/pi/WeatherDisplay.Api/WeatherDisplay.Api
-# to query logs using journalctl, set a logical name here  
+# to query logs using journalctl, set a logical name here
 SyslogIdentifier=WeatherDisplay.Api
 
 # Use your username to keep things simple, for production scenario's I recommend a dedicated user/group.
@@ -35,7 +41,7 @@ Group=pi
 
 # ensure the service restarts after crashing
 Restart=always
-# amount of time to wait before restarting the service              
+# amount of time to wait before restarting the service
 RestartSec=5
 
 # Copied from dotnet documentation at
@@ -112,3 +118,5 @@ https://procodeguide.com/programming/how-to-set-start-url-in-aspnet-core/
 https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoints?view=aspnetcore-6.0
 
 https://richstokoe.com/2017/12/10/running-asp-net-core-raspbian-linux-raspberry-pi-https/
+
+https://github.com/alastairgould/dotnet-core-systemd/blob/7eb500a1f1ffe4e27278edb14ef85fb0a11bf8bf/webapplication.service
