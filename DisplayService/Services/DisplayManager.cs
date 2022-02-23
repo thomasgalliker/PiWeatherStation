@@ -149,12 +149,14 @@ namespace DisplayService.Services
 
             try
             {
+                var timers = this.GetAllTimers();
+                StopTimers(timers);
+
                 var renderActionFactories = this.renderingSetup.Select(r => r.Value.RenderActions).ToList();
                 var renderActionFactoryTasks = renderActionFactories.Select(renderActionFactory => GetRenderActionsAsync(renderActionFactory));
                 var renderActions = (await Task.WhenAll(renderActionFactoryTasks)).SelectMany(ra => ra).ToList();
                 this.UpdateDisplay(renderActions);
 
-                var timers = this.GetAllTimers();
                 if (TryForEach(timers, t => t.Start(), out var exceptions))
                 {
                     throw new AggregateException("Start failed with exception", exceptions);
@@ -169,6 +171,11 @@ namespace DisplayService.Services
         public void Stop()
         {
             var timers = this.GetAllTimers();
+            StopTimers(timers);
+        }
+
+        private static void StopTimers(IEnumerable<ITimerService> timers)
+        {
             if (TryForEach(timers, t => t.Stop(), out var exceptions))
             {
                 throw new AggregateException("Stop failed with exception", exceptions);
