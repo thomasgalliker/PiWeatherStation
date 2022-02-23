@@ -2,18 +2,13 @@
 using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using DisplayService.ConsoleApp.Commands;
-using DisplayService.Services;
-using DisplayService.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using WeatherDisplay.Extensions;
-using WeatherDisplay.Model;
-using WeatherDisplay.Services;
+using WeatherDisplay;
 
 namespace DisplayService.ConsoleApp
 {
