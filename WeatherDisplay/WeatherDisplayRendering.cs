@@ -1,25 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.CommandLine;
-using System.CommandLine.Invocation;
 using System.Linq;
-using System.Threading.Tasks;
-using DisplayService.ConsoleApp.Model;
-using DisplayService.ConsoleApp.Services;
 using DisplayService.Model;
 using DisplayService.Services;
+using WeatherDisplay.Model;
+using WeatherDisplay.Model.OpenWeatherMap;
+using WeatherDisplay.Services;
 
-namespace DisplayService.ConsoleApp.Commands
+namespace WeatherDisplay
 {
-    public class StartCommand : Command
+    public static class WeatherDisplayRendering
     {
-        public const string CommandName = "start";
-
-        public StartCommand(IDisplayManager displayManager, IOpenWeatherMapService openWeatherMapService, IAppSettings appSettings) : base(CommandName, "Starts the scheduled rendering process")
+        public static void AddWeatherRenderActions(this IDisplayManager displayManager, IOpenWeatherMapService openWeatherMapService, IAppSettings appSettings)
         {
-            this.Handler = new StartCommandHandler(displayManager);
-
-
             displayManager.AddRenderActions(
                 () => new List<IRenderAction>
                 {
@@ -149,6 +142,7 @@ namespace DisplayService.ConsoleApp.Commands
                 TimeSpan.FromHours(1));
         }
 
+
         private static string FormatTemperature(WeatherResponse weatherResponse)
         {
             switch (weatherResponse.UnitSystem)
@@ -162,21 +156,5 @@ namespace DisplayService.ConsoleApp.Commands
             }
         }
 
-        private class StartCommandHandler : ICommandHandler
-        {
-            private readonly IDisplayManager displayManager;
-
-            public StartCommandHandler(IDisplayManager displayManager)
-            {
-                this.displayManager = displayManager;
-            }
-
-            public async Task<int> InvokeAsync(InvocationContext context)
-            {
-                await this.displayManager.StartAsync();
-
-                return 0;
-            }
-        }
     }
 }

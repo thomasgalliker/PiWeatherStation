@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 
-namespace DisplayService.ConsoleApp.Model
+namespace WeatherDisplay.Model
 {
     public interface IAppSettings
     {

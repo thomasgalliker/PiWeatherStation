@@ -24,8 +24,6 @@
     <None Remove="Microsoft.Extensions.Configuration.Binder" />
   </ItemGroup>
   <ItemGroup>
-    <None Update="appsettings.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Folder Include="Properties\PublishProfiles\" />
   </ItemGroup>
 </Project>
