@@ -4,7 +4,7 @@ using WeatherDisplay.Services;
 
 namespace WeatherDisplay.Api.Services
 {
-    public class AutoStartupBackgroundService : BackgroundService
+    public class AutoStartupBackgroundService : IHostedService
     {
         private readonly IDisplayManager displayManager;
 
@@ -14,15 +14,15 @@ namespace WeatherDisplay.Api.Services
             this.displayManager.AddWeatherRenderActions(openWeatherMapService, appSettings);
         }
 
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        public async Task StartAsync(CancellationToken cancellationToken)
         {
             await this.displayManager.StartAsync();
         }
 
-        public override Task StopAsync(CancellationToken cancellationToken)
+        public Task StopAsync(CancellationToken cancellationToken)
         {
             this.displayManager.Clear();
-            return base.StopAsync(cancellationToken);
+            return Task.CompletedTask;
         }
     }
 }
