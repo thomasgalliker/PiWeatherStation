@@ -23,11 +23,11 @@ namespace DisplayService.Services
             {
                 AutoReset = true,
             };
-            timer.Elapsed += ElapsedAction;
+            this.timer.Elapsed += this.ElapsedAction;
 
-            TargetTime = default;
-            TargetMillisecond = 0;
-            ToleranceMillisecond = 0;
+            this.TargetTime = default;
+            this.TargetMillisecond = 0;
+            this.ToleranceMillisecond = 0;
         }
 
         public TimeSpan TargetTime { get; set; }
@@ -40,7 +40,7 @@ namespace DisplayService.Services
         {
             get
             {
-                return timer.Enabled;
+                return this.timer.Enabled;
             }
             set
             {
@@ -49,41 +49,35 @@ namespace DisplayService.Services
                     //SetInterval();
                 }
 
-                timer.Enabled = value;
+                this.timer.Enabled = value;
             }
         }
 
         public TimeSpan Interval
         {
-            get => TimeSpan.FromMilliseconds(timer.Interval);
+            get => TimeSpan.FromMilliseconds(this.timer.Interval);
             set
             {
-                timer.Interval = value.TotalMilliseconds;
+                this.timer.Interval = value.TotalMilliseconds;
                 if (value == TimeSpan.Zero)
                 {
-                    Stop();
+                    this.Stop();
                 }
             }
         }
 
-        public double TimeLeft
-        {
-            get
-            {
-                return (dueTime - DateTime.Now).TotalMilliseconds;
-            }
-        }
+        public double TimeLeft => (this.dueTime - DateTime.Now).TotalMilliseconds;
 
         public void Start()
         {
             //SetInterval();
-            timer.Start();
+            this.timer.Start();
         }
 
         public void Stop()
         {
             this.Enabled = false;
-            timer.Stop();
+            this.timer.Stop();
         }
 
         private void SetInterval()
@@ -92,18 +86,18 @@ namespace DisplayService.Services
             int next;
             // Calculate how long to wait for the next interval, shooting for the target
             // millisecond mark but not less than tolerance millisecond due to display update time.
-            if (TargetTime == default)
+            if (this.TargetTime == default)
             {
-                int targetminute = 0;
-                int targetsecond = TargetMillisecond;
-                if (TargetMillisecond > 59999)
+                var targetminute = 0;
+                var targetsecond = this.TargetMillisecond;
+                if (this.TargetMillisecond > 59999)
                 {
-                    targetminute = TargetMillisecond / 60000;
-                    targetsecond = TargetMillisecond % 60000;
+                    targetminute = this.TargetMillisecond / 60000;
+                    targetsecond = this.TargetMillisecond % 60000;
                 }
 
                 next = targetsecond - (now.Second * 1000 + now.Millisecond);
-                if (next <= ToleranceMillisecond)
+                if (next <= this.ToleranceMillisecond)
                 {
                     next += 60000;
                 }
@@ -118,8 +112,8 @@ namespace DisplayService.Services
             // but not less than tolerance millisecond due to display update time.
             else
             {
-                next = (int)(TargetTime - now.TimeOfDay).TotalMilliseconds;
-                if (next <= ToleranceMillisecond)
+                next = (int)(this.TargetTime - now.TimeOfDay).TotalMilliseconds;
+                if (next <= this.ToleranceMillisecond)
                 {
                     next += 24 * 60 * 60000;
                 }
@@ -127,14 +121,14 @@ namespace DisplayService.Services
 
             // Update the interval to prevent clock drift
             //Interval = next;
-            dueTime = now.AddMilliseconds(next);
+            this.dueTime = now.AddMilliseconds(next);
         }
 
         private void ElapsedAction(object sender, ElapsedEventArgs e)
         {
             this.Elapsed?.Invoke(this, e);
 
-            if (timer.AutoReset) // TODO: Always!?
+            if (this.timer.AutoReset) // TODO: Always!?
             {
                 //SetInterval();
             }
