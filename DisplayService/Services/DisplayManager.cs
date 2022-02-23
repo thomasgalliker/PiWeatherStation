@@ -145,7 +145,7 @@ namespace DisplayService.Services
 
         public async Task StartAsync()
         {
-            this.logger.LogDebug($"Start rendering...");
+            this.logger.LogInformation($"Start rendering...");
 
             try
             {
@@ -170,6 +170,12 @@ namespace DisplayService.Services
 
         public void Stop()
         {
+            this.logger.LogInformation("Stop");
+            this.StopInternal();
+        }
+
+        public void StopInternal()
+        {
             var timers = this.GetAllTimers();
             StopTimers(timers);
         }
@@ -184,7 +190,9 @@ namespace DisplayService.Services
 
         public void Clear()
         {
-            this.Stop();
+            this.logger.LogInformation("Clear");
+
+            this.StopInternal();
             this.renderService.Clear();
             this.UpdateDisplay();
         }

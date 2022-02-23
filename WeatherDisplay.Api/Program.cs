@@ -1,27 +1,47 @@
 using WeatherDisplay;
+using WeatherDisplay.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Host.UseSystemd();
+builder.Host.UseWindowsService();
 
-// Add services to the container.
+// Configure Logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
+
+// Configure Services
 var services = builder.Services;
+services.AddEndpointsApiExplorer();
 services.AddControllers();
 services.AddEndpointsApiExplorer();
 services.AddSwaggerGen();
 services.AddWeatherDisplay(builder.Configuration);
+services.AddHostedService<AutoStartupBackgroundService>();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
+app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllers();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+});
+
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.Run();

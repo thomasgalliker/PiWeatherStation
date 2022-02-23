@@ -4,15 +4,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace WeatherDisplay.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class DisplayManagerController : ControllerBase
     {
-        private readonly ILogger logger;
         private readonly IDisplayManager displayManager;
 
-        public DisplayManagerController(ILogger<DisplayManagerController> logger, IDisplayManager displayManager)
+        public DisplayManagerController(IDisplayManager displayManager)
         {
-            this.logger = logger;
             this.displayManager = displayManager;
         }
 
@@ -20,6 +18,12 @@ namespace WeatherDisplay.Api.Controllers
         public async Task StartAsync()
         {
             await this.displayManager.StartAsync();
+        }
+
+        [HttpGet("stop")]
+        public void Stop()
+        {
+            this.displayManager.Stop();
         }
 
         [HttpGet("clear")]
