@@ -133,7 +133,7 @@ namespace WeatherDisplay
                             HorizontalTextAlignment = HorizontalAlignment.Center,
                             VerticalTextAlignment = VerticalAlignment.Center,
                             Value = FormatTemperature(weatherResponse),
-                            ForegroundColor = "#191919",
+                            ForegroundColor = "#000000",
                             BackgroundColor = "#00FFFFFF",
                             FontSize = 80,
                         }
