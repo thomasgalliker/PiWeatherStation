@@ -19,7 +19,7 @@ namespace WeatherDisplay.Api.Controllers
         {
             await this.displayManager.StartAsync();
         }
-
+        
         [HttpGet("stop")]
         public void Stop()
         {

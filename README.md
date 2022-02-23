@@ -18,18 +18,35 @@ Weather Station for RasperryPi and Waveshare ePaper Displays
 Description=WeatherDisplay.Api Service
 
 [Service]
-ExecStart=/home/pi/dotnet/dotnet /home/pi/WeatherDisplay.Api/WeatherDisplay.Api.dll
-WorkingDirectory=/home/pi/WeatherDisplay.Api/
+Type=notify
+# will set the Current Working Directory (CWD)
+WorkingDirectory=/home/pi/WeatherDisplay.Api
+# systemd will run this executable to start the service
+ExecStart=/home/pi/WeatherDisplay.Api/WeatherDisplay.Api
+# to query logs using journalctl, set a logical name here  
+SyslogIdentifier=WeatherDisplay.Api
+
+# Use your username to keep things simple, for production scenario's I recommend a dedicated user/group.
+# If you pick a different user, make sure dotnet and all permissions are set correctly to run the app.
+# To update permissions, use 'chown pi -R /home/pi/WeatherDisplay.Api' to take ownership of the folder and files,
+#       Use 'chmod +x /home/pi/WeatherDisplay.Api/WeatherDisplay.Api' to allow execution of the executable file.
 User=pi
 Group=pi
-Restart=on-failure
-SyslogIdentifier=iotdisplay
 
 # ensure the service restarts after crashing
 Restart=always
-
-# amount of time to wait before restarting the service
+# amount of time to wait before restarting the service              
 RestartSec=5
+
+# Copied from dotnet documentation at
+# https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-3.1#code-try-7
+KillSignal=SIGINT
+Environment=ASPNETCORE_ENVIRONMENT=Production
+Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
+
+# This environment variable is necessary when dotnet isn't loaded for the specified user.
+# To figure out this value, run 'env | grep DOTNET_ROOT' when dotnet has been loaded into your shell.
+Environment=DOTNET_ROOT=/home/pi/dotnet
 
 [Install]
 WantedBy=multi-user.target
@@ -85,6 +102,8 @@ content-length: 1460
 #### Links
 
 https://swimburger.net/blog/dotnet/how-to-run-a-dotnet-core-console-app-as-a-service-using-systemd-on-linux
+
+https://swimburger.net/blog/dotnet/how-to-run-aspnet-core-as-a-service-on-linux
 
 https://docs.microsoft.com/en-us/troubleshoot/developer/webapps/aspnetcore/practice-troubleshoot-linux/2-6-run-two-aspnetcore-applications-same-time
 
