@@ -1,5 +1,5 @@
-using WeatherDisplay;
 using WeatherDisplay.Api.Services;
+using WeatherDisplay.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSystemd();

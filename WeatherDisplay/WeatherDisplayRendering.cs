@@ -4,6 +4,7 @@ using System.Linq;
 using DisplayService.Model;
 using DisplayService.Services;
 using WeatherDisplay.Model;
+using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Services;
 
 namespace WeatherDisplay

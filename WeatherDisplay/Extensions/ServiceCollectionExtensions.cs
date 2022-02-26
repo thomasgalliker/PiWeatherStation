@@ -8,7 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using WeatherDisplay.Model;
 using WeatherDisplay.Services;
 
-namespace WeatherDisplay
+namespace WeatherDisplay.Extensions
 {
     public static class ServiceCollectionExtensions
     {
@@ -61,8 +61,8 @@ namespace WeatherDisplay
             services.AddSingleton<IDateTime, SystemDateTime>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton<ITimerServiceFactory, TimerServiceFactory>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton<IRenderService, RenderService>(); // TODO Move to separate ServiceCollectionExtensions
-            services.AddSingleton<IRenderSettings>(renderSettings);
-            services.AddSingleton<IDisplay>(display);
+            services.AddSingleton(renderSettings);
+            services.AddSingleton(display);
             services.AddSingleton<IDisplayManager, DisplayManager>();
             services.AddSingleton<IOpenWeatherMapConfiguration>(openWeatherMapConfiguration);
 
