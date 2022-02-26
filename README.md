@@ -12,6 +12,11 @@ sudo apt update
 sudo apt upgrade
 ```
 
+- Install the GDI+ library. This library is later used to render images via SkiaSharp.
+```
+sudo apt install libgdiplus
+```
+
 - Reboot the system.
 ```
 sudo reboot
@@ -60,22 +65,21 @@ Runtime Environment:
  ...
 ```
 
-#### Enable GPIO
+#### Attach the Waveshare Display & enable GPIO
+- Shutdown the the Raspberry using `sudo shutdown -h "now"`. Disconnect the Raspberry from all power sources.
+- Attach the Waveshare Display Hat to the GPIO port of the Raspberry. Start the Raspberry up again.
 - Edit the [config.txt](https://www.raspberrypi.com/documentation/computers/config_txt.html) in order to enable the SPI interface.
 ```
 sudo nano /boot/config.txt
 ```
 
-- Enable the SPI interface and [twist some SPI pins](https://github.com/eXoCooLd/Waveshare.EPaperDisplay/issues/17).
+- Enable the SPI interface.
 ```
 dtparam=spi=on
-#Add this line if you get "System.IO.IOException: Device or resource busy : '/sys/class/gpio/export'"
+```
+- Add this line if you get `IOException: Device or resource busy : '/sys/class/gpio/export'`. More info [here](https://github.com/eXoCooLd/Waveshare.EPaperDisplay/issues/17).
+```
 #dtoverlay=spi0-1cs,cs0_pin=28
-```
-
-- Reboot the system.
-```
-sudo apt install libgdiplus
 ```
 
 - Reboot the system.
@@ -84,10 +88,30 @@ sudo reboot
 ```
 
 #### Deploy WeatherDisplay.Api
+- Prepare the project folder on the Raspberry Pi:
+```
+cd ~
+mkdir WeatherDisplay.Api
+```
 
-`dotnet publish -r linux-arm`
+- Build the project with `RELEASE` build configuration and copy the binaries to the Raspberry Pi using WinSCP (or any other file transfer tool).
+There are other ways (like `dotnet publish`) to get a set of release-ready binaries.
+- Take ownership of the folder and file.
+```
+sudo chown pi -R /home/pi/WeatherDisplay.Api
+```
+- Update permissions to allow execution of the executable file `WeatherDisplay.Api`.
+```
+sudo chmod +x /home/pi/WeatherDisplay.Api/WeatherDisplay.Api
+```
 
-#### Create Auto-Start Service for WeatherDisplay.Api
+- Test the ASP.NET Core web service by starting it manually. (Alternatively, you can also run the executable by calling: `./WeatherDisplay.Api`)
+```
+dotnet WeatherDisplay.Api.dll
+```
+
+#### Create background service for WeatherDisplay.Api
+If everything works fine so far, we can setup the WeatherDisplay.Api as a service. This ensures that the display is regularly updated with latest information even if the ssh console is closed. Services are also automatically started if the system is rebooted.
 - Navigate to /etc/systemd/system and create a new service definition:
 
 ```
@@ -157,38 +181,44 @@ sudo systemctl daemon-reload
 sudo systemctl start weatherdisplay.api
 ```
 
-#### Update and Restart Service
--  Stop the service to release any file locks or http listeners.
+### Troubleshooting & Maintenance
+#### Update and restart the service
+If anything in the service definition (weatherdisplay.api.service file) is changed, the service needs to be stopped and restarted.
+The same procedure is necessary if we want to re-deploy the WeatherDisplay.Api binaries.
 
+-  Stop the service to release any file locks or http listeners.
 ```
 sudo systemctl stop weatherdisplay.api
 ```
 
 - Rebuild the web API project and copy the output to the raspberry.
-
+- Restart the weatherdisplay.api.service.
 ```
 sudo systemctl daemon-reload
-```
-
-```
 sudo systemctl start weatherdisplay.api
 ```
 
-### Troubleshooting
 #### Service Operations
-`sudo systemctl start weatherdisplay.api`
-`sudo systemctl stop weatherdisplay.api`
-`sudo systemctl restart weatherdisplay.api`
+```
+sudo systemctl start weatherdisplay.api
+sudo systemctl stop weatherdisplay.api
+sudo systemctl restart weatherdisplay.api
+```
 
 #### Check Service Log
-`journalctl -u weatherdisplay.api.service -f`
+```
+journalctl -u weatherdisplay.api.service -f
+```
 
 #### Check Listening Network Ports
-`sudo netstat -tulpn | grep LISTEN`
+```
+sudo netstat -tulpn | grep LISTEN
+```
 
 #### Call URL using cURL
-`curl -I -k https://localhost:5000/swagger/index.html`
 ```
+curl -I -k https://localhost:5000/swagger/index.html
+
 HTTP/2 200
 content-type: text/html
 date: Wed, 23 Feb 2022 16:35:52 GMT
