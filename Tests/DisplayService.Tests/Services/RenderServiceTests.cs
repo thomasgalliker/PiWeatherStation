@@ -87,7 +87,6 @@ namespace DisplayService.Tests.Services
             };
             renderService.Text(textTopRight);
 
-
             var textCenterLeft = new RenderActions.Text
             {
                 X = 0,

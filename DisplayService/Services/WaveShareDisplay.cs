@@ -13,22 +13,22 @@ namespace DisplayService.Services
 {
     public class WaveShareDisplay : IDisplay
     {
-        private static readonly TimerService _updateTimer;
-        private static readonly TimerService _refreshTimer;
+        private static readonly TimerService UpdateTimer;
+        private static readonly TimerService RefreshTimer;
 
         private readonly IEPaperDisplay ePaperDisplay;
-        private readonly int _displayLockTimeout = 60000;
-        private readonly object _updatelock = new();
-        private readonly int _updateLockTimeout = 60000;
+        private readonly int displayLockTimeout = 60000;
+        private readonly object updatelock = new();
+        private readonly int updateLockTimeout = 60000;
 
-        private int _sectionX1 = int.MaxValue;
-        private int _sectionY1 = int.MaxValue;
-        private int _sectionX2 = int.MinValue;
-        private int _sectionY2 = int.MinValue;
-        private DateTime _lastUpdated;
-        private bool _updating = false;
-        private bool _delayed = false;
-        private bool _disposed = false;
+        private int sectionX1 = int.MaxValue;
+        private int sectionY1 = int.MaxValue;
+        private int sectionX2 = int.MinValue;
+        private int sectionY2 = int.MinValue;
+        private DateTime lastUpdated;
+        private bool updating = false;
+        private bool delayed = false;
+        private bool disposed = false;
 
         public WaveShareDisplay(string displayType)
         {
@@ -39,7 +39,7 @@ namespace DisplayService.Services
             Console.WriteLine($"WaveShareDisplay created for display type {this.ePaperDisplay}");
         }
 
-        public DateTime LastUpdated => this._lastUpdated;
+        public DateTime LastUpdated => this.lastUpdated;
 
         public int Width => this.ePaperDisplay.Width;
 
@@ -99,7 +99,7 @@ namespace DisplayService.Services
         {
             if (this.ePaperDisplay == null)
             {
-                this._lastUpdated = DateTime.UtcNow;
+                this.lastUpdated = DateTime.UtcNow;
             }
             else
             {
@@ -107,27 +107,27 @@ namespace DisplayService.Services
                 var lockSuccess = false;
                 try
                 {
-                    Monitor.TryEnter(this._updatelock, this._updateLockTimeout, ref lockSuccess);
+                    Monitor.TryEnter(this.updatelock, this.updateLockTimeout, ref lockSuccess);
                     if (!lockSuccess)
                     {
                         throw new TimeoutException("A wait for update lock timed out.");
                     }
 
-                    if (!this._updating)
+                    if (!this.updating)
                     {
                         if (args.Delay)
                         {
-                            this._delayed = true;
+                            this.delayed = true;
                         }
                         else
                         {
                             var x2 = args.Width + args.X - 1;
                             var y2 = args.Height + args.Y - 1;
-                            this._sectionX1 = Math.Min(args.X, this._sectionX1);
-                            this._sectionY1 = Math.Min(args.Y, this._sectionY1);
-                            this._sectionX2 = Math.Max(x2, this._sectionX2);
-                            this._sectionY2 = Math.Max(y2, this._sectionY2);
-                            this._updating = true;
+                            this.sectionX1 = Math.Min(args.X, this.sectionX1);
+                            this.sectionY1 = Math.Min(args.Y, this.sectionY1);
+                            this.sectionX2 = Math.Max(x2, this.sectionX2);
+                            this.sectionY2 = Math.Max(y2, this.sectionY2);
+                            this.updating = true;
                             //_updateTimer.Interval = 5000;
                         }
                     }
@@ -140,20 +140,20 @@ namespace DisplayService.Services
                 {
                     if (lockSuccess)
                     {
-                        Monitor.Exit(this._updatelock);
+                        Monitor.Exit(this.updatelock);
                     }
                 }
             }
         }
 
-        private void UpdateScreen(object source, ElapsedEventArgs e)
+        private void UpdateScreen(object source, TimerElapsedEventArgs e)
         {
-            if (this._delayed || this._updating)
+            if (this.delayed || this.updating)
             {
                 var lockSuccess = false;
                 try
                 {
-                    Monitor.TryEnter(this.ePaperDisplay, this._displayLockTimeout, ref lockSuccess);
+                    Monitor.TryEnter(this.ePaperDisplay, this.displayLockTimeout, ref lockSuccess);
                     if (!lockSuccess)
                     {
                         throw new TimeoutException("A wait for display lock timed out.");
@@ -163,15 +163,15 @@ namespace DisplayService.Services
                     try
                     {
                         lockSuccess = false;
-                        Monitor.TryEnter(this._updatelock, this._updateLockTimeout, ref lockSuccess);
+                        Monitor.TryEnter(this.updatelock, this.updateLockTimeout, ref lockSuccess);
                         if (!lockSuccess)
                         {
                             throw new TimeoutException("A wait for update lock timed out.");
                         }
 
                         //memStream = _renderer.GetScreen();
-                        this._updating = false;
-                        this._delayed = false;
+                        this.updating = false;
+                        this.delayed = false;
                     }
                     catch (Exception ex)
                     {
@@ -181,7 +181,7 @@ namespace DisplayService.Services
                     {
                         if (lockSuccess)
                         {
-                            Monitor.Exit(this._updatelock);
+                            Monitor.Exit(this.updatelock);
                         }
                     }
 
@@ -191,7 +191,7 @@ namespace DisplayService.Services
                     this.ePaperDisplay.PowerOff();
                     memStream.Close();
                     memStream.Dispose();
-                    this._lastUpdated = DateTime.UtcNow;
+                    this.lastUpdated = DateTime.UtcNow;
                 }
                 catch (Exception ex)
                 {
@@ -207,7 +207,7 @@ namespace DisplayService.Services
             }
         }
 
-        private void RefreshScreen(object source, ElapsedEventArgs e)
+        private void RefreshScreen(object source, TimerElapsedEventArgs e)
         {
             // Screen flushing.  Cycle three times:
             //   Color: black, white, white, black, white, white
@@ -215,7 +215,7 @@ namespace DisplayService.Services
             var lockSuccess = false;
             try
             {
-                Monitor.TryEnter(this.ePaperDisplay, this._displayLockTimeout, ref lockSuccess);
+                Monitor.TryEnter(this.ePaperDisplay, this.displayLockTimeout, ref lockSuccess);
                 if (!lockSuccess)
                 {
                     throw new TimeoutException("A wait for display lock timed out.");
@@ -249,7 +249,7 @@ namespace DisplayService.Services
 
         protected virtual void Dispose(bool disposing)
         {
-            if (this._disposed)
+            if (this.disposed)
             {
                 return;
             }
@@ -258,18 +258,18 @@ namespace DisplayService.Services
             {
                 if (this.ePaperDisplay != null)
                 {
-                    if (_updateTimer != null)
+                    if (UpdateTimer != null)
                     {
-                        _updateTimer.Elapsed -= this.UpdateScreen;
-                        _updateTimer.Enabled = false;
-                        _updateTimer.Dispose();
+                        UpdateTimer.Elapsed -= this.UpdateScreen;
+                        UpdateTimer.Enabled = false;
+                        UpdateTimer.Dispose();
                     }
 
-                    if (_refreshTimer != null)
+                    if (RefreshTimer != null)
                     {
-                        _refreshTimer.Elapsed -= this.RefreshScreen;
-                        _refreshTimer.Enabled = false;
-                        _refreshTimer.Dispose();
+                        RefreshTimer.Elapsed -= this.RefreshScreen;
+                        RefreshTimer.Enabled = false;
+                        RefreshTimer.Dispose();
                     }
 
                     this.ePaperDisplay.Sleep();
@@ -277,7 +277,7 @@ namespace DisplayService.Services
                 }
             }
 
-            this._disposed = true;
+            this.disposed = true;
         }
 
         public void Dispose()
