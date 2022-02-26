@@ -169,6 +169,7 @@ namespace DisplayService.Services
                 var renderActionFactories = this.renderingSetup.Select(r => r.Value.RenderActions).ToList();
                 var renderActionFactoryTasks = renderActionFactories.Select(renderActionFactory => GetRenderActionsAsync(renderActionFactory));
                 var renderActions = (await Task.WhenAll(renderActionFactoryTasks)).SelectMany(ra => ra).ToList();
+                this.renderService.Clear();
                 this.UpdateDisplay(renderActions);
 
                 if (TryForEach(timers, t => t.Start(), out var exceptions))
