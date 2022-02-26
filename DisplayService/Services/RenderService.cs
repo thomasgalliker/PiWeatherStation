@@ -39,6 +39,8 @@ namespace DisplayService.Services
 
         public void Clear()
         {
+            this.logger.LogDebug("Clear");
+
             this.ClearCanvas();
 
             this.OnScreenChanged(0, 0, this.renderSettings.Width, this.renderSettings.Height, false, "clear", null);
@@ -157,11 +159,11 @@ namespace DisplayService.Services
             }
 
             // Clip to ensure dimensions are within screen
-            int hoffset = x < 0 ? 0 - x : 0;
+            var hoffset = x < 0 ? 0 - x : 0;
             x += hoffset;
             width -= hoffset;
 
-            int voffset = y < 0 ? 0 - y : 0;
+            var voffset = y < 0 ? 0 - y : 0;
             y += voffset;
             height -= voffset;
 
@@ -226,28 +228,36 @@ namespace DisplayService.Services
 
         private void AddImage(RenderActions.Image image)
         {
-            int width = 0;
-            int height = 0;
-            try
+            if (image is null)
             {
-                using SKBitmap img = RenderTools.GetImage(this.renderSettings, image.X, image.Y, image.Filename);
-                this.logger.LogDebug($"DrawBitmap(img.ByteCount=\"{img.ByteCount}\", image.X={image.X}, image.Y={image.Y})");
-                this.canvas.DrawBitmap(img, image.X, image.Y);
-                width = img.Width;
-                height = img.Height;
-            }
-            catch (ArgumentException)
-            {
-                throw;
-            }
-            catch (Exception ex)
-            {
-#pragma warning disable CA2208 // Instantiate argument exceptions correctly
-                throw new ArgumentException("An exception occurred trying to add image to the canvas: " + ex.Message, nameof(image.Filename), ex);
-#pragma warning restore CA2208 // Instantiate argument exceptions correctly
+                throw new ArgumentNullException(nameof(image));
             }
 
-            this.OnScreenChanged(image.X, image.Y, width, height, image.Delay, "image", null /*JsonSerializer.Serialize<RenderActions.Image>(image)*/);
+            SKBitmap skBitmap;
+
+            if (image is RenderActions.FileImage fileImage)
+            {
+                skBitmap = RenderTools.GetImage(this.renderSettings, image.X, image.Y, fileImage.Filename);
+            }
+            else if (image is RenderActions.StreamImage embeddedResourceImage)
+            {
+                skBitmap = RenderTools.GetImage(this.renderSettings, image.X, image.Y, embeddedResourceImage.Image);
+            }
+            else
+            {
+                throw new NotSupportedException($"Image of type {image.GetType().Name} is not supported");
+            }
+
+            if (skBitmap != null)
+            {
+                using (skBitmap)
+                {
+                    this.logger.LogDebug($"DrawBitmap(img.ByteCount=\"{skBitmap.ByteCount}\", image.X={image.X}, image.Y={image.Y})");
+                    this.canvas.DrawBitmap(skBitmap, image.X, image.Y);
+                }
+            }
+
+            //this.OnScreenChanged(image.X, image.Y, width, height, image.Delay, "image", null /*JsonSerializer.Serialize<RenderActions.Image>(image)*/);
         }
 
         private void AddGraphic(RenderActions.Graphic graphic)
@@ -262,11 +272,11 @@ namespace DisplayService.Services
                 throw new ArgumentOutOfRangeException(nameof(graphic.Y), graphic.Y, "Y coordinate is not within the screen");
             }
 
-            int width = 0;
-            int height = 0;
+            var width = 0;
+            var height = 0;
             try
             {
-                using SKBitmap img = SKBitmap.Decode(graphic.Data);
+                using var img = SKBitmap.Decode(graphic.Data);
                 this.logger.LogDebug($"DrawBitmap(img.ByteCount=\"{img.ByteCount}\", graphic.X={graphic.X}, graphic.Y={graphic.Y})");
                 this.canvas.DrawBitmap(img, graphic.X, graphic.Y);
                 width = img.Width;

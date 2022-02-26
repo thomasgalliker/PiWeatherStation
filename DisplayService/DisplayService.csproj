@@ -11,19 +11,16 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Services\" />
-    <None Remove="Settings\" />
-    <None Remove="Model\" />
-    <None Remove="SkiaSharp" />
-    <None Remove="eXoCooLd.Waveshare.EPaperDisplay" />
+    <None Remove="Resources\TestImage1.png" />
+    <None Remove="Resources\TestImage2.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Services\" />
-    <Folder Include="Settings\" />
-    <Folder Include="Model\" />
+    <EmbeddedResource Include="Resources\TestImage1.png" />
+    <EmbeddedResource Include="Resources\TestImage2.png" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.0" />
+    <PackageReference Include="ResourceLoader" Version="3.2.4" />
     <PackageReference Include="SkiaSharp" Version="2.80.3" />
     <PackageReference Include="eXoCooLd.Waveshare.EPaperDisplay" Version="1.0.4" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.80.3" />

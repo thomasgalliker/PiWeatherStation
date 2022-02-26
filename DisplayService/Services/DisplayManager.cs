@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Timers;
 using DisplayService.Model;
-using DisplayService.Settings;
 using Microsoft.Extensions.Logging;
 
 namespace DisplayService.Services
@@ -24,6 +23,17 @@ namespace DisplayService.Services
             this.display = display;
             this.cacheService = new CacheService();
             this.renderService = renderService;
+        }
+
+        public void AddRenderAction(Func<IRenderAction> renderAction)
+        {
+            this.AddRenderAction(renderAction, TimeSpan.Zero);
+        }
+
+        public void AddRenderAction(Func<IRenderAction> renderAction, TimeSpan updateInterval)
+        {
+            var updateTimer = this.CreateUpdateTimer(updateInterval);
+            this.renderingSetup.Add(Guid.NewGuid(), new(updateTimer, renderAction));
         }
 
         public void AddRenderActions(Func<IEnumerable<IRenderAction>> renderActions)
@@ -131,6 +141,10 @@ namespace DisplayService.Services
             {
                 renderActions = syncRenderActionsFactory();
             }
+            else if (renderActionFactory is Func<IRenderAction> syncRenderActionFactory)
+            {
+                renderActions = new List<IRenderAction> { syncRenderActionFactory() };
+            }
             //else if (renderActionFactory is IEnumerable<Func<IRenderAction>> syncEnumerableFuncRenderActions)
             //{
             //    renderActions = syncEnumerableFuncRenderActions.Select(func => func());
@@ -168,14 +182,10 @@ namespace DisplayService.Services
             }
         }
 
-        public void Stop()
+        public void StopTimers()
         {
-            this.logger.LogInformation("Stop");
-            this.StopInternal();
-        }
+            this.logger.LogDebug("StopTimers");
 
-        public void StopInternal()
-        {
             var timers = this.GetAllTimers();
             StopTimers(timers);
         }
@@ -190,11 +200,20 @@ namespace DisplayService.Services
 
         public void Clear()
         {
-            this.logger.LogInformation("Clear");
+            using (this.logger.BeginScope("Clear"))
+            {
+                this.logger.LogInformation("Clear");
 
-            this.StopInternal();
-            this.renderService.Clear();
-            this.UpdateDisplay();
+                // Stop all timers
+                this.StopTimers();
+
+                // Remove existing rendering setups
+                this.renderingSetup.Clear();
+
+                // Clear display
+                this.renderService.Clear();
+                this.UpdateDisplay();
+            }
         }
 
         private static bool TryForEach<T>(IEnumerable<T> items, Action<T> action, out IEnumerable<Exception> exceptions)

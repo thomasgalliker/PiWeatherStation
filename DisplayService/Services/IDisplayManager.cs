@@ -7,7 +7,7 @@ namespace DisplayService.Services
 {
     public interface IDisplayManager : IDisposable
     {
-        //void AddRenderAction(Func<IRenderAction> renderAction);
+        void AddRenderAction(Func<IRenderAction> renderAction);
 
         //void AddRenderAction(TimeSpan? updateInterval, Func<IRenderAction> renderAction);
 
@@ -24,7 +24,7 @@ namespace DisplayService.Services
         /// </summary>
         Task StartAsync();
         
-        void Stop();
+        void StopTimers();
         
         void Clear();
     }

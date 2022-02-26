@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace WeatherDisplay.Api.Controllers
 {
     [ApiController]
-    [Route("api/[controller]")]
+    [Route("api/displaymanager")]
     public class DisplayManagerController : ControllerBase
     {
         private readonly IDisplayManager displayManager;
@@ -23,7 +23,7 @@ namespace WeatherDisplay.Api.Controllers
         [HttpGet("stop")]
         public void Stop()
         {
-            this.displayManager.Stop();
+            this.displayManager.StopTimers();
         }
 
         [HttpGet("clear")]

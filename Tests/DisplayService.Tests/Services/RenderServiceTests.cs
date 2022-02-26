@@ -1,4 +1,5 @@
 ﻿using DisplayService.Model;
+using DisplayService.Resources;
 using DisplayService.Services;
 using DisplayService.Settings;
 using FluentAssertions;
@@ -280,6 +281,50 @@ namespace DisplayService.Tests.Services
                 BackgroundColor = SKColors.Green.ToString(),
             };
             renderService.Rectangle(rectangleBottomRight);
+
+            // Act
+            var bitmapStream = renderService.GetScreen();
+
+            // Assert
+            bitmapStream.Should().NotBeNull();
+            this.testHelper.WriteFile(bitmapStream);
+        }
+
+        [Fact]
+        public void ShouldGetScreen_TestImage1()
+        {
+            // Arrange
+            IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
+
+            var image = new RenderActions.StreamImage
+            {
+                X = 0,
+                Y = 0,
+                Image = TestImages.GetTestImage1(),
+            };
+            renderService.Image(image);
+
+            // Act
+            var bitmapStream = renderService.GetScreen();
+
+            // Assert
+            bitmapStream.Should().NotBeNull();
+            this.testHelper.WriteFile(bitmapStream);
+        }
+
+        [Fact]
+        public void ShouldGetScreen_TestImage2()
+        {
+            // Arrange
+            IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
+
+            var image = new RenderActions.StreamImage
+            {
+                X = 0,
+                Y = 0,
+                Image = TestImages.GetTestImage2(),
+            };
+            renderService.Image(image);
 
             // Act
             var bitmapStream = renderService.GetScreen();

@@ -80,7 +80,6 @@ namespace DisplayService.Services
         /// <returns>Returns a bitmap of the image</returns>
         public static SKBitmap GetImage(IRenderSettings settings, int x, int y, string filename)
         {
-            SKBitmap img = null;
             if (x < 0 || x >= settings.Width)
             {
                 throw new ArgumentOutOfRangeException(nameof(x), x, "X coordinate is not within the screen");
@@ -91,28 +90,64 @@ namespace DisplayService.Services
                 throw new ArgumentOutOfRangeException(nameof(y), y, "Y coordinate is not within the screen");
             }
 
-            if (File.Exists(filename))
-            {
-                try
-                {
-                    img = SKBitmap.Decode(filename) ?? throw new ArgumentException("Unable to decode image", nameof(filename));
-                }
-                catch (Exception ex)
-                {
-                    if (img != null)
-                    {
-                        img.Dispose();
-                    }
-
-                    throw new ArgumentException("An exception occurred trying to load image: " + ex.Message, nameof(filename), ex);
-                }
-            }
-            else
+            if (!File.Exists(filename))
             {
                 throw new ArgumentException("File not found", nameof(filename));
             }
 
-            return img;
+            SKBitmap skBitmap = null;
+
+            try
+            {
+                skBitmap = SKBitmap.Decode(filename) ?? throw new ArgumentException("Unable to decode image", nameof(filename));
+            }
+            catch (Exception ex)
+            {
+                if (skBitmap != null)
+                {
+                    skBitmap.Dispose();
+                }
+
+                throw new ArgumentException("An exception occurred trying to load image: " + ex.Message, nameof(filename), ex);
+            }
+
+            return skBitmap;
+        }
+
+        public static SKBitmap GetImage(IRenderSettings settings, int x, int y, Stream imageStream)
+        {
+            if (x < 0 || x >= settings.Width)
+            {
+                throw new ArgumentOutOfRangeException(nameof(x), x, "X coordinate is not within the screen");
+            }
+
+            if (y < 0 || y >= settings.Height)
+            {
+                throw new ArgumentOutOfRangeException(nameof(y), y, "Y coordinate is not within the screen");
+            }
+
+            if (imageStream == null || imageStream.Length == 0)
+            {
+                throw new ArgumentException("Image stream must not be empty", nameof(imageStream));
+            }
+
+            SKBitmap skBitmap = null;
+
+            try
+            {
+                skBitmap = SKBitmap.Decode(imageStream) ?? throw new ArgumentException("Unable to decode image", nameof(imageStream));
+            }
+            catch (Exception ex)
+            {
+                if (skBitmap != null)
+                {
+                    skBitmap.Dispose();
+                }
+
+                throw new ArgumentException("An exception occurred trying to load image: " + ex.Message, nameof(imageStream), ex);
+            }
+
+            return skBitmap;
         }
 
 
