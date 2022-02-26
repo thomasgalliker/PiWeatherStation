@@ -155,12 +155,15 @@ namespace WeatherDisplay
 
         private static string FormatTemperature(WeatherResponse weatherResponse)
         {
+            var temperatureRounded = Math.Round(weatherResponse.Temperature, 0);
+            var temperatureString = $"{temperatureRounded:F0}";
+
             switch (weatherResponse.UnitSystem)
             {
                 case "metric":
-                    return $"{weatherResponse.Temperature:F1}°C";
+                    return $"{temperatureString}°C";
                 case "imperial":
-                    return $"{weatherResponse.Temperature:F1}°F";
+                    return $"{temperatureString}°F";
                 default:
                     throw new NotSupportedException($"Unit system {weatherResponse.UnitSystem} not supported");
             }
