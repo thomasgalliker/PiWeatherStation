@@ -56,12 +56,12 @@ namespace WeatherDisplay.Tests
         {
             // Arrange
             var openWeatherMapServiceMock = this.autoMocker.GetMock<IOpenWeatherMapService>();
-            openWeatherMapServiceMock.SetupSequence(w => w.GetWeatherInfoAsync(It.IsAny<double>(), It.IsAny<double>()))
-                .ReturnsAsync(new WeatherResponse { LocationName = "Test Location", Temperature = 1.2f, UnitSystem = "metric" })
-                .ReturnsAsync(new WeatherResponse { LocationName = "Test Location", Temperature = 12.34f, UnitSystem = "metric" })
-                .ReturnsAsync(new WeatherResponse { LocationName = "Test Location", Temperature = 123.456f, UnitSystem = "metric" })
-                .ReturnsAsync(new WeatherResponse { LocationName = "Test Location", Temperature = 12.34f, UnitSystem = "metric" })
-                .ReturnsAsync(new WeatherResponse { LocationName = "Test Location", Temperature = 1.8f, UnitSystem = "metric" })
+            openWeatherMapServiceMock.SetupSequence(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(new WeatherInfo { Name = "Test Location", Main = new TemperatureInfo { Temperature = new Temperature(1.2f, TemperatureUnit.Celsius) }, })
+                .ReturnsAsync(new WeatherInfo { Name = "Test Location", Main = new TemperatureInfo { Temperature = new Temperature(12.34f, TemperatureUnit.Celsius) }, })
+                .ReturnsAsync(new WeatherInfo { Name = "Test Location", Main = new TemperatureInfo { Temperature = new Temperature(123.456f, TemperatureUnit.Celsius) }, })
+                .ReturnsAsync(new WeatherInfo { Name = "Test Location", Main = new TemperatureInfo { Temperature = new Temperature(12.34f, TemperatureUnit.Celsius) }, })
+                .ReturnsAsync(new WeatherInfo { Name = "Test Location", Main = new TemperatureInfo { Temperature = new Temperature(1.8f, TemperatureUnit.Celsius) }, })
                 ;
 
             var timerMocks = new List<Mock<ITimerService>>();
@@ -82,8 +82,8 @@ namespace WeatherDisplay.Tests
             // Assert
             var bitmapStream = this.testDisplay.GetDisplayImage();
             this.testHelper.WriteFile(bitmapStream);
-            
-            openWeatherMapServiceMock.Verify(w => w.GetWeatherInfoAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(5));
+
+            openWeatherMapServiceMock.Verify(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(5));
         }
 
         [Fact]
@@ -91,8 +91,8 @@ namespace WeatherDisplay.Tests
         {
             // Arrange
             var openWeatherMapServiceMock = this.autoMocker.GetMock<IOpenWeatherMapService>();
-            openWeatherMapServiceMock.Setup(w => w.GetWeatherInfoAsync(It.IsAny<double>(), It.IsAny<double>()))
-                .ReturnsAsync(new WeatherResponse { LocationName = "Test Location", Temperature = -99f, UnitSystem = "metric" });
+            openWeatherMapServiceMock.Setup(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(new WeatherInfo { Name = "Test Location", Main = new TemperatureInfo { Temperature = Temperature.FromCelsius(-99d) }, });
 
             var beginOfYear = new DateTime(2000, 01, 01, 23, 59, 59, DateTimeKind.Local);
             var endOfYear = beginOfYear.AddYears(1).AddDays(-1);

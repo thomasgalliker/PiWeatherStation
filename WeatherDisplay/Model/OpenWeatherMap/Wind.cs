@@ -1,9 +1,13 @@
-﻿namespace WeatherDisplay.Model.OpenWeatherMap
+﻿using Newtonsoft.Json;
+
+namespace WeatherDisplay.Model.OpenWeatherMap
 {
     public class Wind
     {
-        public float speed { get; set; }
+        [JsonProperty("speed")]
+        public double WindSpeed { get; set; }
 
-        public float deg { get; set; }
+        [JsonProperty("gust")]
+        public double Gust { get; set; }
     }
 }

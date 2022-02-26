@@ -1,4 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+using DisplayService.Resources;
 using WeatherDisplay.Model.OpenWeatherMap;
 
 namespace WeatherDisplay.Services
@@ -12,14 +15,21 @@ namespace WeatherDisplay.Services
             this.openWeatherMapConfiguration = openWeatherMapConfiguration;
         }
 
-        public Task<WeatherResponse> GetWeatherInfoAsync(double latitude, double longitude)
+        public Task<WeatherInfo> GetCurrentWeatherAsync(double latitude, double longitude)
         {
-            return Task.FromResult(new WeatherResponse
+            return Task.FromResult(new WeatherInfo
             {
-                ConditionId = 1,
-                Temperature = -27,
-                UnitSystem = this.openWeatherMapConfiguration.UnitSystem,
+                Main = new TemperatureInfo
+                {
+                    Temperature = new Temperature(-27d, TemperatureUnit.Celsius),
+                }
             });
+        }
+
+        public Task<Stream> GetWeatherIconAsync(WeatherCondition weatherCondition)
+        {
+            //return TestImages.WeatherIcon;
+            throw new NotImplementedException();
         }
     }
 }

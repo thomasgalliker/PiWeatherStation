@@ -1,10 +1,11 @@
 using System;
 using System.Globalization;
-using System.Linq;
+using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WeatherDisplay.Model.OpenWeatherMap;
+using WeatherDisplay.Model.OpenWeatherMap.Converters;
 
 namespace WeatherDisplay.Services
 {
@@ -19,6 +20,7 @@ namespace WeatherDisplay.Services
         private const string ImageApiEndpoint = "https://openweathermap.org/img/wn";
 
         private readonly HttpClient httpClient;
+        private readonly JsonSerializerSettings serializerSettings;
         private readonly string openWeatherMapApiKey;
         private readonly string unitSystem;
 
@@ -28,9 +30,25 @@ namespace WeatherDisplay.Services
             this.unitSystem = openWeatherMapConfiguration.UnitSystem;
 
             this.httpClient = new HttpClient();
+            this.serializerSettings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+            };
+
+            switch (openWeatherMapConfiguration.UnitSystem)
+            {
+                case "metric":
+                    this.serializerSettings.Converters.Add(new CelsiusTemperatureJsonConverter());
+                    break;
+                case "imperial":
+                    this.serializerSettings.Converters.Add(new FahrenheitTemperatureJsonConverter());
+                    break;
+                default:
+                    break;
+            }
         }
 
-        public async Task<WeatherResponse> GetWeatherInfoAsync(double latitude, double longitude)
+        public async Task<WeatherInfo> GetCurrentWeatherAsync(double latitude, double longitude)
         {
             var lat = latitude.ToString("0.0000", CultureInfo.InvariantCulture);
             var lon = longitude.ToString("0.0000", CultureInfo.InvariantCulture);
@@ -43,32 +61,23 @@ namespace WeatherDisplay.Services
             var uri = builder.ToString();
 
             var response = await this.httpClient.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                var responseJson = await response.Content.ReadAsStringAsync();
-                var openWeatherMapResponse = JsonConvert.DeserializeObject<OpenWeatherMapResponse>(responseJson);
-                int? conditionId = null;
-                string iconUrl = null;
-                var primaryWeather = openWeatherMapResponse.weather.FirstOrDefault();
-                if (primaryWeather != null)
-                {
-                    conditionId = primaryWeather.id;
-                    iconUrl = $"{ImageApiEndpoint}/{primaryWeather.icon}@2x.png";
-                }
+            response.EnsureSuccessStatusCode();
 
-                var weatherInfo = new WeatherResponse
-                {
-                    Temperature = openWeatherMapResponse.main.temp,
-                    UnitSystem = this.unitSystem,
-                    LocationName = openWeatherMapResponse.name,
-                    ConditionId = conditionId,
-                    IconUrl = iconUrl
-                };
+            var responseJson = await response.Content.ReadAsStringAsync();
+            var weatherInfo = JsonConvert.DeserializeObject<WeatherInfo>(responseJson, this.serializerSettings);
 
-                return weatherInfo;
-            }
+            return weatherInfo;
+        }
 
-            throw new Exception("OpenWeatherMap API answered with: " + (response != null ? $"StatusCode={response.StatusCode}." : "Invalid response."));
+        public async Task<Stream> GetWeatherIconAsync(WeatherCondition weatherCondition)
+        {
+            var iconUrl = $"{ImageApiEndpoint}{weatherCondition.IconId}@2x.png";
+
+            var response = await this.httpClient.GetAsync(iconUrl);
+            response.EnsureSuccessStatusCode();
+
+            var responseStream = await response.Content.ReadAsStreamAsync();
+            return responseStream;
         }
     }
 }

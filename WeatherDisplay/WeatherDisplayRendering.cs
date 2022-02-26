@@ -4,7 +4,6 @@ using System.Linq;
 using DisplayService.Model;
 using DisplayService.Services;
 using WeatherDisplay.Model;
-using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Services;
 
 namespace WeatherDisplay
@@ -111,7 +110,7 @@ namespace WeatherDisplay
                 async () =>
                 {
                     var place = appSettings.Places.First();
-                    var weatherResponse = await openWeatherMapService.GetWeatherInfoAsync(place.Latitude, place.Longitude);
+                    var weatherResponse = await openWeatherMapService.GetCurrentWeatherAsync(place.Latitude, place.Longitude);
 
                     return new List<IRenderAction>
                     {
@@ -131,7 +130,7 @@ namespace WeatherDisplay
                             Y = 200,
                             HorizontalTextAlignment = HorizontalAlignment.Center,
                             VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = $"{place.Name ?? weatherResponse.LocationName}",
+                            Value = $"{place.Name ?? weatherResponse.Name}",
                             ForegroundColor = "#191919",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
@@ -152,21 +151,20 @@ namespace WeatherDisplay
                 TimeSpan.FromHours(1));
         }
 
-
-        private static string FormatTemperature(WeatherResponse weatherResponse)
+        private static string FormatTemperature(WeatherInfo weatherResponse)
         {
-            var temperatureRounded = Math.Round(weatherResponse.Temperature, 0);
-            var temperatureString = $"{temperatureRounded:F0}";
-
-            switch (weatherResponse.UnitSystem)
+            string formattedTemperature;
+            var temperature = weatherResponse.Main.Temperature;
+            if (temperature.Value < 10d && temperature.Value > -10)
             {
-                case "metric":
-                    return $"{temperatureString}°C";
-                case "imperial":
-                    return $"{temperatureString}°F";
-                default:
-                    throw new NotSupportedException($"Unit system {weatherResponse.UnitSystem} not supported");
+                formattedTemperature = temperature.ToString("0.#");
             }
+            else
+            {
+                formattedTemperature = temperature.ToString("0");
+            }
+
+            return formattedTemperature;
         }
 
     }
