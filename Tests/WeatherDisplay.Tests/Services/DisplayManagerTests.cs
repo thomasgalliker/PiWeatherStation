@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using DisplayService.Services;
 using DisplayService.Settings;
@@ -18,6 +19,8 @@ namespace WeatherDisplay.Tests
         private readonly TestHelper testHelper;
         private readonly AutoMocker autoMocker;
         private readonly Mock<IAppSettings> appSettingsMock;
+        private readonly Mock<IDateTime> dateTimeMock;
+        private readonly TestDisplay testDisplay;
 
         public DisplayManagerTests(ITestOutputHelper testOutputHelper)
         {
@@ -38,11 +41,18 @@ namespace WeatherDisplay.Tests
             renderSettingsMock.SetupGet(r => r.BackgroundColor)
                 .Returns(SKColors.White.ToString());
 
+            this.testDisplay = new TestDisplay(800, 480);
+            this.autoMocker.Use<IDisplay>(this.testDisplay);
+
+            this.dateTimeMock = this.autoMocker.GetMock<IDateTime>();
+            this.dateTimeMock.SetupGet(d => d.Now)
+                .Returns(DateTime.Now);
+
             this.autoMocker.Use<IRenderService>(this.autoMocker.CreateInstance<RenderService>());
         }
 
         [Fact]
-        public void ShouldRenderWeatherActions()
+        public void ShouldRenderWeatherActions_TemperatureChanges()
         {
             // Arrange
             var openWeatherMapServiceMock = this.autoMocker.GetMock<IOpenWeatherMapService>();
@@ -51,11 +61,8 @@ namespace WeatherDisplay.Tests
                 .ReturnsAsync(new WeatherResponse { LocationName = "Test Location", Temperature = 12.34f, UnitSystem = "metric" })
                 .ReturnsAsync(new WeatherResponse { LocationName = "Test Location", Temperature = 123.456f, UnitSystem = "metric" })
                 .ReturnsAsync(new WeatherResponse { LocationName = "Test Location", Temperature = 12.34f, UnitSystem = "metric" })
-                .ReturnsAsync(new WeatherResponse { LocationName = "Test Location", Temperature = 1.2f, UnitSystem = "metric" })
+                .ReturnsAsync(new WeatherResponse { LocationName = "Test Location", Temperature = 1.8f, UnitSystem = "metric" })
                 ;
-
-            var testDisplay = new TestDisplay(800, 480);
-            this.autoMocker.Use<IDisplay>(testDisplay);
 
             var timerMocks = new List<Mock<ITimerService>>();
             var timerServiceFactoryMock = this.autoMocker.GetMock<ITimerServiceFactory>();
@@ -63,7 +70,7 @@ namespace WeatherDisplay.Tests
                 .Returns(() => { var mock = new Mock<ITimerService>(); timerMocks.Add(mock); return mock.Object; });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.AddWeatherRenderActions(openWeatherMapServiceMock.Object, this.appSettingsMock.Object);
+            displayManager.AddWeatherRenderActions(openWeatherMapServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
             displayManager.StartAsync();
 
             // Act
@@ -73,10 +80,52 @@ namespace WeatherDisplay.Tests
             timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
 
             // Assert
-            openWeatherMapServiceMock.Verify(w => w.GetWeatherInfoAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(5));
-
-            var bitmapStream = testDisplay.GetDisplayImage();
+            var bitmapStream = this.testDisplay.GetDisplayImage();
             this.testHelper.WriteFile(bitmapStream);
+            
+            openWeatherMapServiceMock.Verify(w => w.GetWeatherInfoAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(5));
+        }
+
+        [Fact]
+        public void ShouldRenderWeatherActions_DateTimeChanges()
+        {
+            // Arrange
+            var openWeatherMapServiceMock = this.autoMocker.GetMock<IOpenWeatherMapService>();
+            openWeatherMapServiceMock.Setup(w => w.GetWeatherInfoAsync(It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(new WeatherResponse { LocationName = "Test Location", Temperature = -99f, UnitSystem = "metric" });
+
+            var beginOfYear = new DateTime(2000, 01, 01, 23, 59, 59, DateTimeKind.Local);
+            var endOfYear = beginOfYear.AddYears(1).AddDays(-1);
+            var numberOfDaysInYear = (int)endOfYear.Subtract(beginOfYear).TotalDays;
+
+            var dateTimeMock = this.autoMocker.GetMock<IDateTime>();
+            var dateTimeSetupSequence = dateTimeMock.SetupSequence(d => d.Now);
+            for (var i = 0; i <= numberOfDaysInYear; i++)
+            {
+                dateTimeSetupSequence.Returns(beginOfYear.AddDays(i));
+                dateTimeSetupSequence.Returns(beginOfYear.AddDays(i));
+            }
+
+            var timerMocks = new List<Mock<ITimerService>>();
+            var timerServiceFactoryMock = this.autoMocker.GetMock<ITimerServiceFactory>();
+            timerServiceFactoryMock.Setup(f => f.Create())
+                .Returns(() => { var mock = new Mock<ITimerService>(); timerMocks.Add(mock); return mock.Object; });
+
+            IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
+            displayManager.AddWeatherRenderActions(openWeatherMapServiceMock.Object, dateTimeMock.Object, this.appSettingsMock.Object);
+            displayManager.StartAsync();
+
+            // Act
+            for (var i = 0; i < numberOfDaysInYear; i++)
+            {
+                timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
+            }
+
+            // Assert
+            var bitmapStream = this.testDisplay.GetDisplayImage();
+            this.testHelper.WriteFile(bitmapStream);
+
+            //dateTimeMock.Verify(d => d.Now, Times.Exactly(numberOfDaysInYear * 2));
         }
     }
 }

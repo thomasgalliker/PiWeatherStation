@@ -11,7 +11,7 @@ namespace WeatherDisplay
 {
     public static class WeatherDisplayRendering
     {
-        public static void AddWeatherRenderActions(this IDisplayManager displayManager, IOpenWeatherMapService openWeatherMapService, IAppSettings appSettings)
+        public static void AddWeatherRenderActions(this IDisplayManager displayManager, IOpenWeatherMapService openWeatherMapService, IDateTime dateTime, IAppSettings appSettings)
         {
             displayManager.AddRenderActions(
                 () => new List<IRenderAction>
@@ -48,15 +48,15 @@ namespace WeatherDisplay
             displayManager.AddRenderActions(
                 () =>
                 {
-                    var dateTimeNow = DateTime.Now; // TODO: Replace with IDateTime
+                    var dateTimeNow = dateTime.Now;
                     return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle // Masking layer for Date
                         {
-                            X = 780,
+                            X = 782,
                             Y = 19,
                             Height = 25,
-                            Width = 200,
+                            Width = 270,
                             VerticalAlignment = VerticalAlignment.Top,
                             HorizontalAlignment = HorizontalAlignment.Right,
                             BackgroundColor = "#999999",
@@ -79,7 +79,7 @@ namespace WeatherDisplay
             displayManager.AddRenderActions(
                 () =>
                 {
-                    var dateTimeNow = DateTime.Now; // TODO: Replace with IDateTime
+                    var dateTimeNow = dateTime.Now;
                     return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle // Masking layer for Time

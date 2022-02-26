@@ -12,11 +12,15 @@ namespace DisplayService.ConsoleApp.Commands
     {
         public const string CommandName = "start";
 
-        public StartCommand(IDisplayManager displayManager, IOpenWeatherMapService openWeatherMapService, IAppSettings appSettings) : base(CommandName, "Starts the scheduled rendering process")
+        public StartCommand(
+            IDisplayManager displayManager,
+            IOpenWeatherMapService openWeatherMapService,
+            IDateTime dateTime,
+            IAppSettings appSettings) : base(CommandName, "Starts the scheduled rendering process")
         {
             this.Handler = new StartCommandHandler(displayManager);
 
-            displayManager.AddWeatherRenderActions(openWeatherMapService, appSettings);
+            displayManager.AddWeatherRenderActions(openWeatherMapService, dateTime, appSettings);
         }
 
         private class StartCommandHandler : ICommandHandler

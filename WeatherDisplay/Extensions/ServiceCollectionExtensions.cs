@@ -2,6 +2,7 @@
 using System.Linq;
 using DisplayService.Services;
 using DisplayService.Settings;
+using InvoiceScanner.Api.Services.System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WeatherDisplay.Model;
@@ -57,6 +58,7 @@ namespace WeatherDisplay
 
             // Register services
             services.AddSingleton<IAppSettings>(appSettings);
+            services.AddSingleton<IDateTime, SystemDateTime>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton<ITimerServiceFactory, TimerServiceFactory>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton<IRenderService, RenderService>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton<IRenderSettings>(renderSettings);
