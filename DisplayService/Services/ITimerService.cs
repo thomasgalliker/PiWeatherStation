@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Timers;
 
 namespace DisplayService.Services
 {
@@ -11,6 +10,20 @@ namespace DisplayService.Services
 
         void Stop();
 
-        event ElapsedEventHandler Elapsed;
+        event EventHandler<TimerElapsedEventArgs> Elapsed;
+    }
+
+    public class TimerElapsedEventArgs : EventArgs
+    {
+        public TimerElapsedEventArgs() : this(DateTime.Now)
+        {
+        }
+
+        public TimerElapsedEventArgs(DateTime signalTime)
+        {
+            this.SignalTime = signalTime;
+        }
+
+        public DateTime SignalTime { get; private set; }
     }
 }

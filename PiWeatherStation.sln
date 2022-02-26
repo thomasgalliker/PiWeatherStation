@@ -15,11 +15,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDisplay", "WeatherDisplay\WeatherDisplay.csproj", "{E7D02641-5994-44A8-B2D3-40ED55D452FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay", "WeatherDisplay\WeatherDisplay.csproj", "{E7D02641-5994-44A8-B2D3-40ED55D452FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDisplay.ConsoleApp", "WeatherDisplay.ConsoleApp\WeatherDisplay.ConsoleApp.csproj", "{1DBD961E-3F6A-4580-AE43-6C1139957521}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.ConsoleApp", "WeatherDisplay.ConsoleApp\WeatherDisplay.ConsoleApp.csproj", "{1DBD961E-3F6A-4580-AE43-6C1139957521}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDisplay.Api", "WeatherDisplay.Api\WeatherDisplay.Api.csproj", "{8549A3D8-7861-4FA0-9DD2-3082E6ECA0DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Api", "WeatherDisplay.Api\WeatherDisplay.Api.csproj", "{8549A3D8-7861-4FA0-9DD2-3082E6ECA0DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDisplay.Tests", "Tests\WeatherDisplay.Tests\WeatherDisplay.Tests.csproj", "{6C143F7B-29EA-483F-A453-04849AC0BC72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,12 +49,17 @@ Global
 		{8549A3D8-7861-4FA0-9DD2-3082E6ECA0DA}.Debug|anycpu.Build.0 = Debug|Any CPU
 		{8549A3D8-7861-4FA0-9DD2-3082E6ECA0DA}.Release|anycpu.ActiveCfg = Release|Any CPU
 		{8549A3D8-7861-4FA0-9DD2-3082E6ECA0DA}.Release|anycpu.Build.0 = Release|Any CPU
+		{6C143F7B-29EA-483F-A453-04849AC0BC72}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{6C143F7B-29EA-483F-A453-04849AC0BC72}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{6C143F7B-29EA-483F-A453-04849AC0BC72}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{6C143F7B-29EA-483F-A453-04849AC0BC72}.Release|anycpu.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{D529340B-CA55-4627-8AD7-637A562BF6B9} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
+		{6C143F7B-29EA-483F-A453-04849AC0BC72} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1503D0DA-AA89-4AE5-8FE8-8167624E7A30}

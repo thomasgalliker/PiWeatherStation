@@ -11,7 +11,7 @@ namespace DisplayService.Services
         private DateTime dueTime;
         private bool disposed = false;
 
-        public event ElapsedEventHandler Elapsed;
+        public event EventHandler<TimerElapsedEventArgs> Elapsed;
         //{
         //    add { timer.Elapsed += value; }
         //    remove { timer.Elapsed -= value; }
@@ -124,9 +124,9 @@ namespace DisplayService.Services
             this.dueTime = now.AddMilliseconds(next);
         }
 
-        private void ElapsedAction(object sender, ElapsedEventArgs e)
+        private void ElapsedAction(object sender, System.Timers.ElapsedEventArgs e)
         {
-            this.Elapsed?.Invoke(this, e);
+            this.Elapsed?.Invoke(this, new TimerElapsedEventArgs(e.SignalTime));
 
             if (this.timer.AutoReset) // TODO: Always!?
             {

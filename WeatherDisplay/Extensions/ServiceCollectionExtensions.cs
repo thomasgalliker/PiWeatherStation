@@ -57,7 +57,8 @@ namespace WeatherDisplay
 
             // Register services
             services.AddSingleton<IAppSettings>(appSettings);
-            services.AddSingleton<IRenderService, RenderService>();
+            services.AddSingleton<ITimerServiceFactory, TimerServiceFactory>(); // TODO Move to separate ServiceCollectionExtensions
+            services.AddSingleton<IRenderService, RenderService>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton<IRenderSettings>(renderSettings);
             services.AddSingleton<IDisplay>(display);
             services.AddSingleton<IDisplayManager, DisplayManager>();

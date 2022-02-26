@@ -48,15 +48,15 @@ namespace WeatherDisplay
             displayManager.AddRenderActions(
                 () =>
                 {
-                    var dateTimeNow = DateTime.Now;
+                    var dateTimeNow = DateTime.Now; // TODO: Replace with IDateTime
                     return new List<IRenderAction>
                     {
-                        new RenderActions.Rectangle
+                        new RenderActions.Rectangle // Masking layer for Date
                         {
                             X = 780,
                             Y = 19,
                             Height = 25,
-                            Width = 300,
+                            Width = 200,
                             VerticalAlignment = VerticalAlignment.Top,
                             HorizontalAlignment = HorizontalAlignment.Right,
                             BackgroundColor = "#999999",
@@ -79,15 +79,15 @@ namespace WeatherDisplay
             displayManager.AddRenderActions(
                 () =>
                 {
-                    var dateTimeNow = DateTime.Now;
+                    var dateTimeNow = DateTime.Now; // TODO: Replace with IDateTime
                     return new List<IRenderAction>
                     {
-                        new RenderActions.Rectangle
+                        new RenderActions.Rectangle // Masking layer for Time
                         {
                             X = 780,
-                            Y = 19,
+                            Y = 50,
                             Height = 25,
-                            Width = 300,
+                            Width = 200,
                             VerticalAlignment = VerticalAlignment.Top,
                             HorizontalAlignment = HorizontalAlignment.Right,
                             BackgroundColor = "#999999",
@@ -115,6 +115,16 @@ namespace WeatherDisplay
 
                     return new List<IRenderAction>
                     {
+                        new RenderActions.Rectangle // Masking layer for Location+Temperature
+                        {
+                            X = 400,
+                            Y = 250,
+                            Height = 150,
+                            Width = 300,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            HorizontalAlignment = HorizontalAlignment.Center,
+                            BackgroundColor = "#FFFFFF",
+                        },
                         new RenderActions.Text
                         {
                             X = 400,
@@ -123,7 +133,7 @@ namespace WeatherDisplay
                             VerticalTextAlignment = VerticalAlignment.Center,
                             Value = $"{place.Name ?? weatherResponse.LocationName}",
                             ForegroundColor = "#191919",
-                            BackgroundColor = "#00FFFFFF",
+                            BackgroundColor = "#FFFFFF",
                             FontSize = 20,
                         },
                         new RenderActions.Text
@@ -134,7 +144,7 @@ namespace WeatherDisplay
                             VerticalTextAlignment = VerticalAlignment.Center,
                             Value = FormatTemperature(weatherResponse),
                             ForegroundColor = "#000000",
-                            BackgroundColor = "#00FFFFFF",
+                            BackgroundColor = "#FFFFFF",
                             FontSize = 80,
                         }
                     };

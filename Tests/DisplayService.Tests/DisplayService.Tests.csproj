@@ -24,12 +24,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\DisplayService\DisplayService.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <None Remove="Services\" />
-    <None Remove="Moq.AutoMock" />
-    <None Remove="FluentAssertions" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\" />
-  </ItemGroup>
 </Project>

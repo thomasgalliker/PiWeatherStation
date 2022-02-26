@@ -15,12 +15,14 @@ namespace DisplayService.Services
         private readonly ICacheService cacheService;
         private readonly IRenderService renderService;
         private readonly IDisplay display;
+        private readonly ITimerServiceFactory timerServiceFactory;
         private bool disposed;
 
-        public DisplayManager(ILogger<DisplayManager> logger, IRenderService renderService, IDisplay display)
+        public DisplayManager(ILogger<DisplayManager> logger, IRenderService renderService, IDisplay display, ITimerServiceFactory timerServiceFactory)
         {
             this.logger = logger;
             this.display = display;
+            this.timerServiceFactory = timerServiceFactory;
             this.cacheService = new CacheService();
             this.renderService = renderService;
         }
@@ -64,17 +66,15 @@ namespace DisplayService.Services
 
             if (updateInterval is TimeSpan updateIntervalValue && updateIntervalValue > TimeSpan.Zero)
             {
-                updateTimer = new TimerService
-                {
-                    Interval = updateIntervalValue,
-                };
+                updateTimer = this.timerServiceFactory.Create();
+                updateTimer.Interval = updateIntervalValue;
                 updateTimer.Elapsed += this.OnUpdateTimerElapsed;
             }
 
             return updateTimer;
         }
 
-        private async void OnUpdateTimerElapsed(object sender, ElapsedEventArgs e)
+        private async void OnUpdateTimerElapsed(object sender, TimerElapsedEventArgs e)
         {
             try
             {
@@ -120,7 +120,7 @@ namespace DisplayService.Services
                 var bitmapStream = this.renderService.GetScreen(); // TODO: Use using/Dispose
                 this.display.DisplayImage(bitmapStream);
                 this.cacheService.SaveToCache(bitmapStream);
-                bitmapStream.Close(); // TODO Remove?
+                bitmapStream.Close();
                 bitmapStream.Dispose();
             }
             catch (Exception ex)
