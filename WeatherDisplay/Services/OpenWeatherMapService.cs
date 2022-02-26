@@ -71,7 +71,7 @@ namespace WeatherDisplay.Services
 
         public async Task<Stream> GetWeatherIconAsync(WeatherCondition weatherCondition)
         {
-            var iconUrl = $"{ImageApiEndpoint}{weatherCondition.IconId}@2x.png";
+            var iconUrl = $"{ImageApiEndpoint}/{weatherCondition.IconId}@2x.png";
 
             var response = await this.httpClient.GetAsync(iconUrl);
             response.EnsureSuccessStatusCode();

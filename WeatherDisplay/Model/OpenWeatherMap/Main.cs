@@ -31,14 +31,14 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         /// </summary>
         /// <value>the maximum temperature.</value>
         [JsonProperty("temp_max")]
-        public double? MaximumTemperature { get; internal set; }
+        public Temperature MaximumTemperature { get; internal set; }
 
         /// <summary>
         ///     Gets the minimum temperature.
         /// </summary>
         /// <value>the minimum temperature.</value>
         [JsonProperty("temp_min")]
-        public double? MinimumTemperature { get; internal set; }
+        public Temperature MinimumTemperature { get; internal set; }
 
         /// <summary>
         ///     Gets the air pressure.

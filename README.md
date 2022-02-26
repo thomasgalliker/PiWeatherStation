@@ -246,7 +246,6 @@ https://github.com/bezysoftware/crypto-clock
 
 https://www.petecodes.co.uk/install-and-use-microsoft-dot-net-6-with-the-raspberry-pi/
 
-
 #### Linux and ASP.NET Core related sources
 
 https://swimburger.net/blog/dotnet/how-to-run-a-dotnet-core-console-app-as-a-service-using-systemd-on-linux
@@ -262,3 +261,11 @@ https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoi
 https://richstokoe.com/2017/12/10/running-asp-net-core-raspbian-linux-raspberry-pi-https/
 
 https://github.com/alastairgould/dotnet-core-systemd/blob/7eb500a1f1ffe4e27278edb14ef85fb0a11bf8bf/webapplication.service
+
+#### Other sources
+
+https://github.com/angelobreuer/OpenWeatherMap4NET
+
+https://github.com/Violetta-9/Weather/tree/master
+
+https://openweathermap.org/weather-conditions

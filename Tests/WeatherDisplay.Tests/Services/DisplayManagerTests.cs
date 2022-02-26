@@ -52,6 +52,36 @@ namespace WeatherDisplay.Tests
         }
 
         [Fact]
+        public void ShouldRenderWeatherActions()
+        {
+            // Arrange
+            var openWeatherMapServiceMock = this.autoMocker.GetMock<IOpenWeatherMapService>();
+            openWeatherMapServiceMock.Setup(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(new WeatherInfo { Name = "Test Location", Main = new TemperatureInfo { Temperature = Temperature.FromCelsius(-99d) }, });
+
+            var timerMocks = new List<Mock<ITimerService>>();
+            var timerServiceFactoryMock = this.autoMocker.GetMock<ITimerServiceFactory>();
+            timerServiceFactoryMock.Setup(f => f.Create())
+                .Returns(() => { var mock = new Mock<ITimerService>(); timerMocks.Add(mock); return mock.Object; });
+
+            IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
+            displayManager.AddWeatherRenderActions(openWeatherMapServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
+            displayManager.StartAsync();
+
+            // Act
+            timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
+            timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
+            timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
+            timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
+
+            // Assert
+            var bitmapStream = this.testDisplay.GetDisplayImage();
+            this.testHelper.WriteFile(bitmapStream);
+
+            openWeatherMapServiceMock.Verify(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(5));
+        }
+
+        [Fact]
         public void ShouldRenderWeatherActions_TemperatureChanges()
         {
             // Arrange

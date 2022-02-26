@@ -4,13 +4,13 @@ using Newtonsoft.Json.Converters;
 
 namespace WeatherDisplay.Model.OpenWeatherMap.Converters
 {
-    public class CustomDateTimeConverter : DateTimeConverterBase
+    public class EpochDateTimeConverter : DateTimeConverterBase
     {
-        private static readonly DateTime _epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+        private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            writer.WriteRawValue(((DateTime)value - _epoch).TotalMilliseconds + "000");
+            writer.WriteRawValue(((DateTime)value - Epoch).TotalMilliseconds + "000");
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -20,7 +20,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap.Converters
                 return null;
             }
 
-            return _epoch.AddSeconds((long)reader.Value).ToLocalTime();
+            return Epoch.AddSeconds((long)reader.Value).ToLocalTime();
         }
     }
 }

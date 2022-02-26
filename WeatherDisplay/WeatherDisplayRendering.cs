@@ -111,7 +111,9 @@ namespace WeatherDisplay
                 async () =>
                 {
                     var place = appSettings.Places.First();
-                    var weatherResponse = await openWeatherMapService.GetCurrentWeatherAsync(place.Latitude, place.Longitude);
+                    var weatherInfo = await openWeatherMapService.GetCurrentWeatherAsync(place.Latitude, place.Longitude);
+                    var firstWeather = weatherInfo.WeatherConditions.FirstOrDefault();
+                    var weatherIconImage = await openWeatherMapService.GetWeatherIconAsync(firstWeather);
 
                     return new List<IRenderAction>
                     {
@@ -131,7 +133,7 @@ namespace WeatherDisplay
                             Y = 200,
                             HorizontalTextAlignment = HorizontalAlignment.Center,
                             VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = $"{place.Name ?? weatherResponse.Name}",
+                            Value = $"{place.Name ?? weatherInfo.Name}",
                             ForegroundColor = "#191919",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
@@ -142,20 +144,69 @@ namespace WeatherDisplay
                             Y = 240,
                             HorizontalTextAlignment = HorizontalAlignment.Center,
                             VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = FormatTemperature(weatherResponse),
+                            Value = FormatTemperature(weatherInfo.Main.Temperature),
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 80,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 100,
+                            Y = 200,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Center,
+                            Value = $"Sunrise {weatherInfo.AdditionalInformation.Sunrise:t}",
+                            ForegroundColor = "#191919",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 100,
+                            Y = 240,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Center,
+                            Value = $"Sunset {weatherInfo.AdditionalInformation.Sunset:t}",
+                            ForegroundColor = "#191919",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 100,
+                            Y = 280,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Center,
+                            Value = $"Min. Temp. {FormatTemperature(weatherInfo.Main.MinimumTemperature)}",
+                            ForegroundColor = "#191919",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 100,
+                            Y = 320,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Center,
+                            Value = $"Max. Temp. {FormatTemperature(weatherInfo.Main.MaximumTemperature)}",
+                            ForegroundColor = "#191919",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                        },
+                        new RenderActions.StreamImage
+                        {
+                            X = 600,
+                            Y = 200,
+                            Image = weatherIconImage,
                         }
                     };
                 },
                 TimeSpan.FromHours(1));
         }
 
-        private static string FormatTemperature(WeatherInfo weatherResponse)
+        private static string FormatTemperature(Temperature temperature)
         {
             string formattedTemperature;
-            var temperature = weatherResponse.Main.Temperature;
             if (temperature.Value < 10d && temperature.Value > -10)
             {
                 formattedTemperature = temperature.ToString("0.#");
