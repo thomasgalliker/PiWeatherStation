@@ -1,7 +1,7 @@
 # PiWeatherStation
 Weather Station for RasperryPi and Waveshare ePaper Displays.
 
-![Image of display](https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/master/Docs/DisplayPhoto1.png)
+![Image of display](https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/master/Docs/DisplayPhoto1.jpg)
 
 ### Quick Setup
 
