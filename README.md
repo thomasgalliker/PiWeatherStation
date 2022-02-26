@@ -1,5 +1,7 @@
 # PiWeatherStation
-Weather Station for RasperryPi and Waveshare ePaper Displays. This is a demo project 
+Weather Station for RasperryPi and Waveshare ePaper Displays.
+
+![Image of display](https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/master/Docs/DisplayPhoto1.png)
 
 ### Quick Setup
 
