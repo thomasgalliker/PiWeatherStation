@@ -1,5 +1,87 @@
 # PiWeatherStation
-Weather Station for RasperryPi and Waveshare ePaper Displays
+Weather Station for RasperryPi and Waveshare ePaper Displays. This is a demo project 
+
+### Quick Setup
+
+#### Prepare the Raspberry Pi
+- Before we install any additional library, make sure the Raspberry OS as well as the installed libraries are on the latest stable releases.
+`apt update` updates the package sources list to get the latest list of available packages in the repositories.
+`apt upgrade` updates all the packages presently installed in our Linux system to their latest versions.
+```
+sudo apt update
+sudo apt upgrade
+```
+
+- Reboot the system.
+```
+sudo reboot
+```
+
+#### Install .NET on Raspberry Pi
+- Go to Microsoft's [dotnet download page](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and download the appropriate version of .NET (ARM32 or ARM64 depending on your Raspberry OS).
+```
+wget https://download.visualstudio.microsoft.com/download/.../dotnet-sdk-6.0.200-linux-arm.tar.gz
+```
+
+- Extract the binaries and export the paths according to the instructions given on the download page:
+```
+mkdir -p $HOME/dotnet && tar zxf dotnet-sdk-6.0.200-linux-arm.tar.gz -C $HOME/dotnet
+export DOTNET_ROOT=$HOME/dotnet
+export PATH=$PATH:$HOME/dotnet
+```
+- You can edit your shell profile to permanently add the dotnet commands (even after a reboot):
+```
+sudo nano ~/.bashrc
+```
+- Edit the appropriate bash profile and add following lines to the end of the file. If `export PATH` already exists, extend it instead of creating a new export.
+```
+export DOTNET_ROOT=$HOME/dotnet
+export PATH=$PATH:$HOME/dotnet
+```
+
+- Reboot the system.
+```
+sudo reboot
+```
+
+- Run `dotnet --info` to check if your .NET installation works as expected:
+```
+pi@raspberrypi:~ $ dotnet --info
+.NET SDK (reflecting any global.json):
+ Version:   6.0.200
+ Commit:    4c30de7899
+
+Runtime Environment:
+ OS Name:     raspbian
+ OS Version:  11
+ OS Platform: Linux
+ RID:         linux-arm
+ Base Path:   /home/pi/dotnet/sdk/6.0.200/
+ ...
+```
+
+#### Enable GPIO
+- Edit the [config.txt](https://www.raspberrypi.com/documentation/computers/config_txt.html) in order to enable the SPI interface.
+```
+sudo nano /boot/config.txt
+```
+
+- Enable the SPI interface and [twist some SPI pins](https://github.com/eXoCooLd/Waveshare.EPaperDisplay/issues/17).
+```
+dtparam=spi=on
+#Add this line if you get "System.IO.IOException: Device or resource busy : '/sys/class/gpio/export'"
+#dtoverlay=spi0-1cs,cs0_pin=28
+```
+
+- Reboot the system.
+```
+sudo apt install libgdiplus
+```
+
+- Reboot the system.
+```
+sudo reboot
+```
 
 #### Deploy WeatherDisplay.Api
 
@@ -8,9 +90,13 @@ Weather Station for RasperryPi and Waveshare ePaper Displays
 #### Create Auto-Start Service for WeatherDisplay.Api
 - Navigate to /etc/systemd/system and create a new service definition:
 
-`cd /etc/systemd/system`
+```
+cd /etc/systemd/system
+```
 
-`sudo nano weatherdisplay.api.service`
+```
+sudo nano weatherdisplay.api.service
+```
 
 - Create a service definition which automatically starts the web API service when the operating system is started.
 ```
@@ -59,25 +145,34 @@ WantedBy=multi-user.target
 ```
 
 - Enable the service definition:
-
-`sudo systemctl enable weatherdisplay.api`
+```
+sudo systemctl enable weatherdisplay.api
+```
 
 - Start the service:
-
-`sudo systemctl daemon-reload`
-
-`sudo systemctl start weatherdisplay.api`
+```
+sudo systemctl daemon-reload
+```
+```
+sudo systemctl start weatherdisplay.api
+```
 
 #### Update and Restart Service
 -  Stop the service to release any file locks or http listeners.
 
-`sudo systemctl stop weatherdisplay.api`
+```
+sudo systemctl stop weatherdisplay.api
+```
 
 - Rebuild the web API project and copy the output to the raspberry.
 
-`sudo systemctl daemon-reload`
+```
+sudo systemctl daemon-reload
+```
 
-`sudo systemctl start weatherdisplay.api`
+```
+sudo systemctl start weatherdisplay.api
+```
 
 ### Troubleshooting
 #### Service Operations
@@ -105,7 +200,22 @@ content-length: 1460
 ```
 
 
-#### Links
+### Links
+#### Similar projects / Waveshare / IoT
+https://github.com/eXoCooLd/Waveshare.EPaperDisplay
+
+https://github.com/thecaptncode/IoTDisplay
+
+https://www.youtube.com/watch?v=t-rFj54BsDI
+
+https://github.com/Tharnas/EInkDisplayService
+
+https://github.com/bezysoftware/crypto-clock
+
+https://www.petecodes.co.uk/install-and-use-microsoft-dot-net-6-with-the-raspberry-pi/
+
+
+#### Linux and ASP.NET Core related sources
 
 https://swimburger.net/blog/dotnet/how-to-run-a-dotnet-core-console-app-as-a-service-using-systemd-on-linux
 
