@@ -12,19 +12,24 @@ namespace DisplayService.Services
     {
         private readonly IDictionary<Guid, (ITimerService Timer, object RenderActions)> renderingSetup = new Dictionary<Guid, (ITimerService, object)>();
         private readonly ILogger<DisplayManager> logger;
-        private readonly ICacheService cacheService;
         private readonly IRenderService renderService;
         private readonly IDisplay display;
         private readonly ITimerServiceFactory timerServiceFactory;
+        private readonly ICacheService cacheService;
         private bool disposed;
 
-        public DisplayManager(ILogger<DisplayManager> logger, IRenderService renderService, IDisplay display, ITimerServiceFactory timerServiceFactory)
+        public DisplayManager(
+            ILogger<DisplayManager> logger, 
+            IRenderService renderService, 
+            IDisplay display,
+            ITimerServiceFactory timerServiceFactory, 
+            ICacheService cacheService)
         {
             this.logger = logger;
+            this.renderService = renderService;
             this.display = display;
             this.timerServiceFactory = timerServiceFactory;
-            this.cacheService = new CacheService();
-            this.renderService = renderService;
+            this.cacheService = cacheService;
         }
 
         public void AddRenderAction(Func<IRenderAction> renderAction)
