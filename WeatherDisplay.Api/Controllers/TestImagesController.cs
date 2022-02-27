@@ -19,16 +19,16 @@ namespace WeatherDisplay.Api.Controllers
         [HttpGet("1")]
         public async Task TestImage1()
         {
-            await this.DisplayTestImage(TestImages.GetTestImage1());
+            await this.DisplayTestImage(() => TestImages.GetTestImage1());
         }
 
         [HttpGet("2")]
         public async Task TestImage2()
         {
-            await this.DisplayTestImage(TestImages.GetTestImage2());
+            await this.DisplayTestImage(() => TestImages.GetTestImage2());
         }
 
-        private async Task DisplayTestImage(Stream image)
+        private async Task DisplayTestImage(Func<Stream> imageProvider)
         {
             await this.displayManager.ClearAsync();
 
@@ -37,7 +37,7 @@ namespace WeatherDisplay.Api.Controllers
                 {
                     X = 0,
                     Y = 0,
-                    Image = image,
+                    Image = imageProvider(),
                 });
 
             await this.displayManager.StartAsync();
