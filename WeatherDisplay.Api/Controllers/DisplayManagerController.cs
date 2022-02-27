@@ -27,9 +27,9 @@ namespace WeatherDisplay.Api.Controllers
         }
 
         [HttpGet("clear")]
-        public void Clear()
+        public async Task ClearAsync()
         {
-            this.displayManager.Clear();
+            await this.displayManager.ClearAsync();
         }
     }
 }

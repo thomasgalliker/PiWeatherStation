@@ -25,7 +25,7 @@ namespace DisplayService.Services
         Task StartAsync();
         
         void StopTimers();
-        
-        void Clear();
+
+        Task ClearAsync();
     }
 }

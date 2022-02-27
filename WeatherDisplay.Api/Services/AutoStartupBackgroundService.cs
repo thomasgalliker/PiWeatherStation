@@ -9,9 +9,9 @@ namespace WeatherDisplay.Api.Services
         private readonly IDisplayManager displayManager;
 
         public AutoStartupBackgroundService(
-            IDisplayManager displayManager, 
-            IOpenWeatherMapService openWeatherMapService, 
-            IDateTime dateTime, 
+            IDisplayManager displayManager,
+            IOpenWeatherMapService openWeatherMapService,
+            IDateTime dateTime,
             IAppSettings appSettings)
         {
             this.displayManager = displayManager;
@@ -23,10 +23,9 @@ namespace WeatherDisplay.Api.Services
             await this.displayManager.StartAsync();
         }
 
-        public Task StopAsync(CancellationToken cancellationToken)
+        public async Task StopAsync(CancellationToken cancellationToken)
         {
-            this.displayManager.Clear();
-            return Task.CompletedTask;
+            await this.displayManager.ClearAsync();
         }
     }
 }

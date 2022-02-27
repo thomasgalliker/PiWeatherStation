@@ -1,13 +1,12 @@
 ﻿using System.IO;
+using System.Threading.Tasks;
 
 namespace DisplayService.Services
 {
     public interface ICacheService
     {
-        string CacheFile { get; }
-
         Stream LoadFromCache();
 
-        void SaveToCache(Stream bitmapStream);
+        Task SaveToCache(Stream bitmapStream);
     }
 }

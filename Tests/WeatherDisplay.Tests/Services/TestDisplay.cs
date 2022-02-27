@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using DisplayService.Services;
+using DisplayService.Extensions;
 
 namespace WeatherDisplay.Tests
 {
@@ -24,11 +25,7 @@ namespace WeatherDisplay.Tests
 
         public void DisplayImage(Stream bitmapStream)
         {
-            var memoryStream = new MemoryStream();
-            bitmapStream.CopyTo(memoryStream);
-            bitmapStream.Position = 0;
-
-            this.bitmapStream = memoryStream;
+            this.bitmapStream = bitmapStream.CopyToAndRewindAsync().Result;
         }
 
         public void Dispose()
@@ -38,8 +35,7 @@ namespace WeatherDisplay.Tests
 
         public Stream GetDisplayImage()
         {
-            this.bitmapStream.Position = 0;
-            return this.bitmapStream;
+            return this.bitmapStream.Rewind();
         }
     }
 }

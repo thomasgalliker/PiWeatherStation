@@ -21,7 +21,7 @@ namespace WeatherDisplay.Api.Controllers
         {
             await this.DisplayTestImage(TestImages.GetTestImage1());
         }
-        
+
         [HttpGet("2")]
         public async Task TestImage2()
         {
@@ -30,7 +30,7 @@ namespace WeatherDisplay.Api.Controllers
 
         private async Task DisplayTestImage(Stream image)
         {
-            this.displayManager.Clear();
+            await this.displayManager.ClearAsync();
 
             this.displayManager.AddRenderAction(
                 () => new RenderActions.StreamImage
@@ -41,12 +41,6 @@ namespace WeatherDisplay.Api.Controllers
                 });
 
             await this.displayManager.StartAsync();
-        }
-
-        [HttpGet("clear")]
-        public void Clear()
-        {
-            this.displayManager.Clear();
         }
     }
 }

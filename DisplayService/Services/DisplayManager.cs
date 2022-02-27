@@ -87,7 +87,7 @@ namespace DisplayService.Services
                 var setup = this.renderingSetup.Single(r => r.Value.Timer == timer);
                 var renderActionFactory = setup.Value.RenderActions;
                 var renderActions = await GetRenderActionsAsync(renderActionFactory);
-                this.UpdateDisplay(renderActions);
+                await this.UpdateDisplayAsync(renderActions);
             }
             catch (Exception ex)
             {
@@ -95,7 +95,7 @@ namespace DisplayService.Services
             }
         }
 
-        private void UpdateDisplay(IEnumerable<IRenderAction> renderActions)
+        private async Task UpdateDisplayAsync(IEnumerable<IRenderAction> renderActions)
         {
             try
             {
@@ -108,7 +108,7 @@ namespace DisplayService.Services
                     renderAction.Render(this.renderService);
                 }
 
-                this.UpdateDisplay();
+                await this.UpdateDisplayAsync();
             }
             catch (Exception ex)
             {
@@ -116,7 +116,7 @@ namespace DisplayService.Services
             }
         }
 
-        private void UpdateDisplay()
+        private async Task UpdateDisplayAsync()
         {
             try
             {
@@ -124,7 +124,7 @@ namespace DisplayService.Services
                 // and send it to the display
                 var bitmapStream = this.renderService.GetScreen(); // TODO: Use using/Dispose
                 this.display.DisplayImage(bitmapStream);
-                this.cacheService.SaveToCache(bitmapStream);
+                await this.cacheService.SaveToCache(bitmapStream);
                 bitmapStream.Close();
                 bitmapStream.Dispose();
             }
@@ -175,7 +175,7 @@ namespace DisplayService.Services
                 var renderActionFactoryTasks = renderActionFactories.Select(renderActionFactory => GetRenderActionsAsync(renderActionFactory));
                 var renderActions = (await Task.WhenAll(renderActionFactoryTasks)).SelectMany(ra => ra).ToList();
                 this.renderService.Clear();
-                this.UpdateDisplay(renderActions);
+                await this.UpdateDisplayAsync(renderActions);
 
                 if (TryForEach(timers, t => t.Start(), out var exceptions))
                 {
@@ -204,7 +204,7 @@ namespace DisplayService.Services
             }
         }
 
-        public void Clear()
+        public async Task ClearAsync()
         {
             using (this.logger.BeginScope("Clear"))
             {
@@ -218,7 +218,7 @@ namespace DisplayService.Services
 
                 // Clear display
                 this.renderService.Clear();
-                this.UpdateDisplay();
+                await this.UpdateDisplayAsync();
             }
         }
 
