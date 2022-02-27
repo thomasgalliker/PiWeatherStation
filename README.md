@@ -137,11 +137,10 @@ Wants=network-online.target
 
 [Service]
 Type=notify
-# will set the Current Working Directory (CWD)
 WorkingDirectory=/home/pi/WeatherDisplay.Api
-# systemd will run this executable to start the service
 ExecStart=/home/pi/WeatherDisplay.Api/WeatherDisplay.Api
-# to query logs using journalctl, set a logical name here
+ExecStop=/bin/kill ${MAINPID}
+KillSignal=SIGTERM
 SyslogIdentifier=WeatherDisplay.Api
 
 # Use your username to keep things simple, for production scenario's I recommend a dedicated user/group.
@@ -151,14 +150,10 @@ SyslogIdentifier=WeatherDisplay.Api
 User=pi
 Group=pi
 
-# ensure the service restarts after crashing
 Restart=always
-# amount of time to wait before restarting the service
 RestartSec=5
 
-# Copied from dotnet documentation at
-# https://docs.microsoft.com/en-us/aspnet/core/host-and-deploy/linux-nginx?view=aspnetcore-3.1#code-try-7
-KillSignal=SIGINT
+# ASP.NET environment variable
 Environment=ASPNETCORE_ENVIRONMENT=Production
 Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
 
@@ -168,6 +163,36 @@ Environment=DOTNET_ROOT=/home/pi/dotnet
 
 [Install]
 WantedBy=multi-user.target
+```
+
+Explanations for some of the configuration values:
+
+|Test|Description|
+|aaa|aaa|
+```
+WorkingDirectory:
+Will set the current working directory.
+
+ExecStart:
+Systemd will run this executable to start the service.
+
+ExecStop:
+Defines the way the service is stopped when systemctl stop is called on this service. Together with KillSignal, this value is responsible for a graceful shutdown.
+
+KillSignal:
+Is a very important value to determine how the ASP.NET Core web service is stopped.
+If the wrong value is used, the service is killed without gracefully shutting down it's services (e.g. BackgroundService, IHostedService, IDispose, etc).
+
+SyslogIdentifier:
+Primary identifier of this service. This name is used to run systemctl start/stop operations as well as to read the service log (journalctl).
+
+Restart:
+Ensure the service restarts after crashing.
+
+RestartSec:
+Amount of time to wait before restarting the service.
+
+
 ```
 
 - Enable the service definition:
