@@ -25,7 +25,7 @@ namespace WeatherDisplay.Api.Services
 
         public async Task StopAsync(CancellationToken cancellationToken)
         {
-            await this.displayManager.ClearAsync();
+            await this.displayManager.ResetAsync();
         }
     }
 }

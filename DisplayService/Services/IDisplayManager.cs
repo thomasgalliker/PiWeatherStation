@@ -24,8 +24,19 @@ namespace DisplayService.Services
         /// </summary>
         Task StartAsync();
         
+        /// <summary>
+        /// Stops the refresh timers.
+        /// </summary>
         void StopTimers();
 
+        /// <summary>
+        /// Clears the display.
+        /// </summary>
         Task ClearAsync();
+
+        /// <summary>
+        /// Removes all render actions and clears the display.
+        /// </summary>
+        Task ResetAsync();
     }
 }

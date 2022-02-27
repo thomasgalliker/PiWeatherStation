@@ -30,7 +30,7 @@ namespace WeatherDisplay.Api.Controllers
 
         private async Task DisplayTestImage(Func<Stream> imageProvider)
         {
-            await this.displayManager.ClearAsync();
+            await this.displayManager.ResetAsync();
 
             this.displayManager.AddRenderAction(
                 () => new RenderActions.StreamImage

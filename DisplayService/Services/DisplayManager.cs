@@ -19,10 +19,10 @@ namespace DisplayService.Services
         private bool disposed;
 
         public DisplayManager(
-            ILogger<DisplayManager> logger, 
-            IRenderService renderService, 
+            ILogger<DisplayManager> logger,
+            IRenderService renderService,
             IDisplay display,
-            ITimerServiceFactory timerServiceFactory, 
+            ITimerServiceFactory timerServiceFactory,
             ICacheService cacheService)
         {
             this.logger = logger;
@@ -206,20 +206,26 @@ namespace DisplayService.Services
 
         public async Task ClearAsync()
         {
-            using (this.logger.BeginScope("Clear"))
-            {
-                this.logger.LogInformation("Clear");
+            this.logger.LogInformation("ClearAsync");
 
-                // Stop all timers
-                this.StopTimers();
+            // Clear display
+            this.renderService.Clear();
+            await this.UpdateDisplayAsync();
+        }
 
-                // Remove existing rendering setups
-                this.renderingSetup.Clear();
+        public async Task ResetAsync()
+        {
+            this.logger.LogInformation("ResetAsync");
 
-                // Clear display
-                this.renderService.Clear();
-                await this.UpdateDisplayAsync();
-            }
+            // Stop all timers
+            this.StopTimers();
+
+            // Remove existing rendering setups
+            this.renderingSetup.Clear();
+
+            // Clear display
+            this.renderService.Clear();
+            await this.UpdateDisplayAsync();
         }
 
         private static bool TryForEach<T>(IEnumerable<T> items, Action<T> action, out IEnumerable<Exception> exceptions)

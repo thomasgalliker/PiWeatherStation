@@ -29,7 +29,7 @@ namespace WeatherDisplay.Api.Controllers
         [HttpGet("start")]
         public async Task StartAsync()
         {
-            await this.displayManager.ClearAsync();
+            await this.displayManager.ResetAsync();
             this.displayManager.AddWeatherRenderActions(this.openWeatherMapService, this.dateTime, this.appSettings);
             await this.displayManager.StartAsync();
         }
