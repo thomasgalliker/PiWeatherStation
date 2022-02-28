@@ -8,14 +8,14 @@ namespace WeatherDisplay.Model.OpenWeatherMap
     public sealed class AdditionalWeatherInfo
     {
         [JsonProperty("country")]
-        public string CountryCode { get; internal set; }
+        public string CountryCode { get; set; }
 
         [JsonProperty("sunrise")]
         [JsonConverter(typeof(EpochDateTimeConverter))]
-        public DateTime? Sunrise { get; internal set; }
+        public DateTime? Sunrise { get; set; }
 
         [JsonProperty("sunset")]
         [JsonConverter(typeof(EpochDateTimeConverter))]
-        public DateTime? Sunset { get; internal set; }
+        public DateTime? Sunset { get; set; }
     }
 }

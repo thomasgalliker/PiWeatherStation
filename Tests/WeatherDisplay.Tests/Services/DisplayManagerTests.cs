@@ -9,6 +9,7 @@ using SkiaSharp;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Services;
+using WeatherDisplay.Tests.Testdata;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -21,6 +22,7 @@ namespace WeatherDisplay.Tests
         private readonly Mock<IAppSettings> appSettingsMock;
         private readonly Mock<IDateTime> dateTimeMock;
         private readonly TestDisplay testDisplay;
+        private readonly Mock<IOpenWeatherMapService> openWeatherMapServiceMock;
 
         public DisplayManagerTests(ITestOutputHelper testOutputHelper)
         {
@@ -48,6 +50,10 @@ namespace WeatherDisplay.Tests
             this.dateTimeMock.SetupGet(d => d.Now)
                 .Returns(DateTime.Now);
 
+            this.openWeatherMapServiceMock = this.autoMocker.GetMock<IOpenWeatherMapService>();
+            this.openWeatherMapServiceMock.Setup(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(WeatherInfos.GetTestWeatherInfo());
+
             this.autoMocker.Use<IRenderService>(this.autoMocker.CreateInstance<RenderService>());
         }
 
@@ -55,17 +61,13 @@ namespace WeatherDisplay.Tests
         public void ShouldRenderWeatherActions()
         {
             // Arrange
-            var openWeatherMapServiceMock = this.autoMocker.GetMock<IOpenWeatherMapService>();
-            openWeatherMapServiceMock.Setup(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()))
-                .ReturnsAsync(new WeatherInfo { Name = "Test Location", Main = new TemperatureInfo { Temperature = Temperature.FromCelsius(-99d) }, });
-
             var timerMocks = new List<Mock<ITimerService>>();
             var timerServiceFactoryMock = this.autoMocker.GetMock<ITimerServiceFactory>();
             timerServiceFactoryMock.Setup(f => f.Create())
                 .Returns(() => { var mock = new Mock<ITimerService>(); timerMocks.Add(mock); return mock.Object; });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.AddWeatherRenderActions(openWeatherMapServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
+            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
             displayManager.StartAsync();
 
             // Act
@@ -78,20 +80,19 @@ namespace WeatherDisplay.Tests
             var bitmapStream = this.testDisplay.GetDisplayImage();
             this.testHelper.WriteFile(bitmapStream);
 
-            openWeatherMapServiceMock.Verify(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(5));
+            this.openWeatherMapServiceMock.Verify(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(5));
         }
 
         [Fact]
         public void ShouldRenderWeatherActions_TemperatureChanges()
         {
             // Arrange
-            var openWeatherMapServiceMock = this.autoMocker.GetMock<IOpenWeatherMapService>();
-            openWeatherMapServiceMock.SetupSequence(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()))
-                .ReturnsAsync(new WeatherInfo { Name = "Test Location", Main = new TemperatureInfo { Temperature = new Temperature(1.2f, TemperatureUnit.Celsius) }, })
-                .ReturnsAsync(new WeatherInfo { Name = "Test Location", Main = new TemperatureInfo { Temperature = new Temperature(12.34f, TemperatureUnit.Celsius) }, })
-                .ReturnsAsync(new WeatherInfo { Name = "Test Location", Main = new TemperatureInfo { Temperature = new Temperature(123.456f, TemperatureUnit.Celsius) }, })
-                .ReturnsAsync(new WeatherInfo { Name = "Test Location", Main = new TemperatureInfo { Temperature = new Temperature(12.34f, TemperatureUnit.Celsius) }, })
-                .ReturnsAsync(new WeatherInfo { Name = "Test Location", Main = new TemperatureInfo { Temperature = new Temperature(1.8f, TemperatureUnit.Celsius) }, })
+            this.openWeatherMapServiceMock.SetupSequence(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(WeatherInfos.GetTestWeatherInfo(Temperature.FromCelsius(1.2f)))
+                .ReturnsAsync(WeatherInfos.GetTestWeatherInfo(Temperature.FromCelsius(12.34f)))
+                .ReturnsAsync(WeatherInfos.GetTestWeatherInfo(Temperature.FromCelsius(123.456f)))
+                .ReturnsAsync(WeatherInfos.GetTestWeatherInfo(Temperature.FromCelsius(12.34f)))
+                .ReturnsAsync(WeatherInfos.GetTestWeatherInfo(Temperature.FromCelsius(1.8f)))
                 ;
 
             var timerMocks = new List<Mock<ITimerService>>();
@@ -100,7 +101,7 @@ namespace WeatherDisplay.Tests
                 .Returns(() => { var mock = new Mock<ITimerService>(); timerMocks.Add(mock); return mock.Object; });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.AddWeatherRenderActions(openWeatherMapServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
+            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
             displayManager.StartAsync();
 
             // Act
@@ -113,17 +114,13 @@ namespace WeatherDisplay.Tests
             var bitmapStream = this.testDisplay.GetDisplayImage();
             this.testHelper.WriteFile(bitmapStream);
 
-            openWeatherMapServiceMock.Verify(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(5));
+            this.openWeatherMapServiceMock.Verify(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(5));
         }
 
         [Fact]
         public void ShouldRenderWeatherActions_DateTimeChanges()
         {
             // Arrange
-            var openWeatherMapServiceMock = this.autoMocker.GetMock<IOpenWeatherMapService>();
-            openWeatherMapServiceMock.Setup(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()))
-                .ReturnsAsync(new WeatherInfo { Name = "Test Location", Main = new TemperatureInfo { Temperature = Temperature.FromCelsius(-99d) }, });
-
             var beginOfYear = new DateTime(2000, 01, 01, 23, 59, 59, DateTimeKind.Local);
             var endOfYear = beginOfYear.AddYears(1).AddDays(-1);
             var numberOfDaysInYear = (int)endOfYear.Subtract(beginOfYear).TotalDays;
@@ -142,7 +139,7 @@ namespace WeatherDisplay.Tests
                 .Returns(() => { var mock = new Mock<ITimerService>(); timerMocks.Add(mock); return mock.Object; });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.AddWeatherRenderActions(openWeatherMapServiceMock.Object, dateTimeMock.Object, this.appSettingsMock.Object);
+            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, dateTimeMock.Object, this.appSettingsMock.Object);
             displayManager.StartAsync();
 
             // Act

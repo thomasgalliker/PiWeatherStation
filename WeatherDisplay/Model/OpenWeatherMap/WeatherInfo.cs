@@ -28,14 +28,14 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         public Wind Wind { get; set; }
 
         [JsonProperty("clouds")]
-        public CloudsInformation Clouds { get; internal set; }
+        public CloudsInformation Clouds { get; set; }
 
         [JsonProperty("dt")]
         [JsonConverter(typeof(EpochDateTimeConverter))]
         public DateTime Date { get; set; }
 
         [JsonProperty("sys")]
-        public AdditionalWeatherInfo AdditionalInformation { get; internal set; }
+        public AdditionalWeatherInfo AdditionalInformation { get; set; }
 
         [JsonProperty("dt_txt")]
         public string Time { get; set; }

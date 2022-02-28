@@ -138,6 +138,51 @@ namespace WeatherDisplay.Model.OpenWeatherMap
             }
         }
 
+        public static Temperature operator +(double v, Temperature t)
+        {
+            return new Temperature(t.Value + v, t.Unit);
+        }
+
+        public static Temperature operator +(Temperature t, double v)
+        {
+            return v + t;
+        }
+
+        public static Temperature operator +(Temperature t1, Temperature t2)
+        {
+            RequireSameUnit(t1, t2);
+            return t1 + t2.Value;
+        }
+
+        public static Temperature operator -(Temperature t, double v)
+        {
+            return new Temperature(t.Value - v, t.Unit);
+        }
+
+        public static Temperature operator -(Temperature t1, Temperature t2)
+        {
+            RequireSameUnit(t1, t2);
+            return t1 - t2.Value;
+        }
+
+        public static Temperature operator *(Temperature t, double v)
+        {
+            return new Temperature(t.Value * v, t.Unit);
+        }
+
+        public static Temperature operator /(Temperature t1, double v)
+        {
+            return new Temperature(t1.Value / v, t1.Unit);
+        }
+
+        private static void RequireSameUnit(Temperature t1, Temperature t2)
+        {
+            if (!t1.Unit.Equals(t2.Unit))
+            {
+                throw new TemperatureUnitMismatchException(t1.Unit, t2.Unit);
+            }
+        }
+
         public override string ToString()
         {
             return this.ToString("G", CultureInfo.CurrentCulture);

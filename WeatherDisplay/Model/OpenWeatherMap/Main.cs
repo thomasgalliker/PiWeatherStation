@@ -10,49 +10,49 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         /// </summary>
         /// <value>the human perception of weather.</value>
         [JsonRequired, JsonProperty("feels_like")]
-        public double FeelsLike { get; internal set; }
+        public double FeelsLike { get; set; }
 
         /// <summary>
         ///     Gets the atmospheric pressure on the ground level (in hPa).
         /// </summary>
         /// <value>the atmospheric pressure on the ground level (in hPa).</value>
         [JsonProperty("grnd_level")]
-        public double? GroundLevel { get; internal set; }
+        public double? GroundLevel { get; set; }
 
         /// <summary>
         ///     Gets the air humidity.
         /// </summary>
         /// <value>the air humidity.</value>
         [JsonRequired, JsonProperty("humidity")]
-        public double Humidity { get; internal set; }
+        public double Humidity { get; set; }
 
         /// <summary>
         ///     Gets the maximum temperature.
         /// </summary>
         /// <value>the maximum temperature.</value>
         [JsonProperty("temp_max")]
-        public Temperature MaximumTemperature { get; internal set; }
+        public Temperature MaximumTemperature { get; set; }
 
         /// <summary>
         ///     Gets the minimum temperature.
         /// </summary>
         /// <value>the minimum temperature.</value>
         [JsonProperty("temp_min")]
-        public Temperature MinimumTemperature { get; internal set; }
+        public Temperature MinimumTemperature { get; set; }
 
         /// <summary>
         ///     Gets the air pressure.
         /// </summary>
         /// <value>the air pressure.</value>
         [JsonRequired, JsonProperty("pressure")]
-        public double Pressure { get; internal set; }
+        public double Pressure { get; set; }
 
         /// <summary>
         ///     Gets the atmospheric pressure on the sea level (in hPa).
         /// </summary>
         /// <value>the atmospheric pressure on the sea level (in hPa).</value>
         [JsonProperty("sea_level")]
-        public double? SeaLevel { get; internal set; }
+        public double? SeaLevel { get; set; }
 
         [JsonRequired, JsonProperty("temp")]
         public Temperature Temperature { get; set; }
