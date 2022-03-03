@@ -208,6 +208,10 @@ sudo systemctl daemon-reload
 sudo systemctl start weatherdisplay.api
 ```
 
+### Run PiWeatherStation
+- Access the API using http://{ip-address-raspberry}:5000/swagger/index.html in order to start the Swagger UI. 
+- Use the /login method to authenticate with the API.
+- Call any other API method after successful login. 
 ### Troubleshooting & Maintenance
 #### Update and restart the service
 If anything in the service definition (weatherdisplay.api.service file) is changed, the service needs to be stopped and restarted.
