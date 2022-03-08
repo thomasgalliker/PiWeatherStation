@@ -166,34 +166,15 @@ WantedBy=multi-user.target
 ```
 
 Explanations for some of the configuration values:
-
-|Test|Description|
-|aaa|aaa|
-```
-WorkingDirectory:
-Will set the current working directory.
-
-ExecStart:
-Systemd will run this executable to start the service.
-
-ExecStop:
-Defines the way the service is stopped when systemctl stop is called on this service. Together with KillSignal, this value is responsible for a graceful shutdown.
-
-KillSignal:
-Is a very important value to determine how the ASP.NET Core web service is stopped.
-If the wrong value is used, the service is killed without gracefully shutting down it's services (e.g. BackgroundService, IHostedService, IDispose, etc).
-
-SyslogIdentifier:
-Primary identifier of this service. This name is used to run systemctl start/stop operations as well as to read the service log (journalctl).
-
-Restart:
-Ensure the service restarts after crashing.
-
-RestartSec:
-Amount of time to wait before restarting the service.
-
-
-```
+| Attribute | Description |
+|---|---|
+| `WorkingDirectory` | Will set the current working directory. |
+| `ExecStart` | Systemd will run this executable to start the service. |
+| `ExecStop` | Defines the way the service is stopped when systemctl stop is called on this service. Together with KillSignal, this value is responsible for a graceful shutdown. |
+| `KillSignal` | Is a very important value to determine how the ASP.NET Core web service is stopped. If the wrong value is used, the service is killed without gracefully shutting down it's services (e.g. BackgroundService, IHostedService, IDispose, etc). |
+| `SyslogIdentifier` | Primary identifier of this service. This name is used to run systemctl start/stop operations as well as to read the service log (journalctl). |
+| `Restart` | Ensure the service restarts after crashing. |
+| `RestartSec` | Amount of time to wait before restarting the service. |
 
 - Enable the service definition:
 ```
