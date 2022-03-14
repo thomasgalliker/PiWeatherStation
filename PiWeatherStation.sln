@@ -13,6 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		README.md = README.md
+		Scripts\update_weatherdisplay_api.sh = Scripts\update_weatherdisplay_api.sh
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay", "WeatherDisplay\WeatherDisplay.csproj", "{E7D02641-5994-44A8-B2D3-40ED55D452FE}"
@@ -21,7 +22,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.ConsoleApp",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Api", "WeatherDisplay.Api\WeatherDisplay.Api.csproj", "{8549A3D8-7861-4FA0-9DD2-3082E6ECA0DA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDisplay.Tests", "Tests\WeatherDisplay.Tests\WeatherDisplay.Tests.csproj", "{6C143F7B-29EA-483F-A453-04849AC0BC72}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Tests", "Tests\WeatherDisplay.Tests\WeatherDisplay.Tests.csproj", "{6C143F7B-29EA-483F-A453-04849AC0BC72}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

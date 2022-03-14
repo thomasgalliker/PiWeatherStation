@@ -71,11 +71,11 @@ namespace WeatherDisplay.Services
 
             return weatherInfo;
         }
-        
+
         public async Task<WeatherForecast> GetWeatherForecast(double latitude, double longitude)
         {
-            var lat = latitude.ToString("0.0000", CultureInfo.InvariantCulture);
-            var lon = longitude.ToString("0.0000", CultureInfo.InvariantCulture);
+            var lat = FormatCoordinate(latitude);
+            var lon = FormatCoordinate(longitude);
 
             var builder = new UriBuilder(ApiEndpoint)
             {
@@ -93,11 +93,10 @@ namespace WeatherDisplay.Services
             return weatherForecast;
         }
 
-
         public async Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude)
         {
-            var lat = latitude.ToString("0.0000", CultureInfo.InvariantCulture);
-            var lon = longitude.ToString("0.0000", CultureInfo.InvariantCulture);
+            var lat = FormatCoordinate(latitude);
+            var lon = FormatCoordinate(longitude);
 
             var builder = new UriBuilder(ApiEndpoint)
             {
@@ -124,6 +123,10 @@ namespace WeatherDisplay.Services
 
             var imageStream = await weatherIconMapping.GetIconAsync(weatherCondition);
             return imageStream;
+        }
+        private static string FormatCoordinate(double latitude)
+        {
+            return latitude.ToString("0.0000", CultureInfo.InvariantCulture);
         }
     }
 }

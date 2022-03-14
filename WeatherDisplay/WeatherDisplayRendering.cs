@@ -5,6 +5,7 @@ using DisplayService.Model;
 using DisplayService.Services;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.OpenWeatherMap;
+using WeatherDisplay.Resources;
 using WeatherDisplay.Services;
 
 namespace WeatherDisplay
@@ -58,19 +59,17 @@ namespace WeatherDisplay
 
                     var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude);
 
-
                     var renderActions = new List<IRenderAction>
                     {
-                        //new RenderActions.Rectangle // Masking layer for Location+Temperature
-                        //{
-                        //    X = 20,
-                        //    Y = 200,
-                        //    Height = 150,
-                        //    Width = 300,
-                        //    HorizontalAlignment = HorizontalAlignment.Left,
-                        //    VerticalAlignment = VerticalAlignment.Center,
-                        //    BackgroundColor = "#FFFFFF",
-                        //},
+                        // Current location + current temperature
+                        new RenderActions.Rectangle
+                        {
+                            X = 0,
+                            Y = 100,
+                            Width = 800,
+                            Height = 380,
+                            BackgroundColor = "#FFFFFF",
+                        },
                         new RenderActions.StreamImage
                         {
                             X = 20,
@@ -109,6 +108,98 @@ namespace WeatherDisplay
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
+                        },
+
+                        // Sunrise + sunset
+                        new RenderActions.StreamImage
+                        {
+                            X = 360,
+                            Y = 140,
+                            Image = Icons.Sunrise(),
+                            Width = 24,
+                            Height = 24,
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            VerticalAlignment = VerticalAlignment.Top,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 400,
+                            Y = 140,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"{currentWeatherInfo.AdditionalInformation.Sunrise:t}",
+                            ForegroundColor = "#000000",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                            Bold = false,
+                        },
+                        new RenderActions.StreamImage
+                        {
+                            X = 360,
+                            Y = 180,
+                            Image = Icons.Sunset(),
+                            Width = 24,
+                            Height = 24,
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            VerticalAlignment = VerticalAlignment.Top,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 400,
+                            Y = 180,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"{currentWeatherInfo.AdditionalInformation.Sunset:t}",
+                            ForegroundColor = "#000000",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                            Bold = false,
+                        },
+
+                        // Minimum + maximum temperature
+                        new RenderActions.StreamImage
+                        {
+                            X = 360,
+                            Y = 220,
+                            Image = Icons.TemperatureMinus(),
+                            Width = 24,
+                            Height = 24,
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            VerticalAlignment = VerticalAlignment.Top,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 400,
+                            Y = 220,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"{FormatTemperature(currentWeatherInfo.Main.MinimumTemperature)}",
+                            ForegroundColor = "#000000",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                            Bold = false,
+                        },
+                        new RenderActions.StreamImage
+                        {
+                            X = 360,
+                            Y = 260,
+                            Image = Icons.TemperaturePlus(),
+                            Width = 24,
+                            Height = 24,
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            VerticalAlignment = VerticalAlignment.Top,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 400,
+                            Y = 260,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"{FormatTemperature(currentWeatherInfo.Main.MaximumTemperature)}",
+                            ForegroundColor = "#000000",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                            Bold = false,
                         },
 
                         // Divider line to separated current weather and weather forecast
@@ -175,11 +266,11 @@ namespace WeatherDisplay
                                 Y = 450,
                                 HorizontalTextAlignment = HorizontalAlignment.Center,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{dailyWeatherForecast.Temperature.Min.Value:F0} / {dailyWeatherForecast.Temperature.Max:F0}",
+                                Value = $"{dailyWeatherForecast.Temperature.Min.Value:F0}/{dailyWeatherForecast.Temperature.Max:F0}",
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
-                                Bold= true,
+                                Bold= false,
                             },
                         };
 
@@ -197,7 +288,7 @@ namespace WeatherDisplay
         private static string FormatTemperature(Temperature temperature)
         {
             string formattedTemperature;
-            if (temperature.Value < 10d && temperature.Value > -10)
+            if (temperature.Value < 1d && temperature.Value > -1)
             {
                 formattedTemperature = temperature.ToString("0.#");
             }

@@ -5,13 +5,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Remove="Resources\fog.png" />
-	  <None Remove="Resources\sunshine.png" />
+	  <None Remove="Resources\*.png" />
 	</ItemGroup>
-
 	<ItemGroup>
-	  <EmbeddedResource Include="Resources\fog.png" />
-	  <EmbeddedResource Include="Resources\sunshine.png" />
+	  <EmbeddedResource Include="Resources\*.png" />
 	</ItemGroup>
 
 	<ItemGroup>
