@@ -74,26 +74,25 @@ steps:
   inputs:
     versionSpec: 6.x
 
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
   displayName: 'NuGet restore'
   inputs:
-    restoreSolution: '$(solution)'
+    command: restore
+    projects: '$(solution)'
 
-- task: VSBuild@1
+- task: DotNetCoreCLI@2
   displayName: 'Build solution'
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: ''
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
-   
-#- task: DotNetCoreCLI@2
-#  displayName: 'Run UnitTests'
-#  inputs:
-#    command: test
-#    projects: '**/*.Tests.csproj'
-#    arguments: '--no-restore --no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:Exclude="[Microsoft*]*%2C[Mono*]*%2C[xunit*]*%2C[*.Testdata]*" /p:CoverletOutput=UnitTests.coverage.cobertura.xml /p:MergeWith=$(Build.SourcesDirectory)/Tests/CoverletOutput/coverage.json /p:CoverletOutputFormat=cobertura'
-#    
+    projects: '$(solution)'
+    arguments: '--configuration $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run UnitTests'
+  inputs:
+    command: test
+    projects: '**/*.Tests.csproj'
+    arguments: '--no-restore --no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:Exclude="[Microsoft*]*%2C[Mono*]*%2C[xunit*]*%2C[*.Testdata]*" /p:CoverletOutput=UnitTests.coverage.cobertura.xml /p:MergeWith=$(Build.SourcesDirectory)/Tests/CoverletOutput/coverage.json /p:CoverletOutputFormat=cobertura'
+    
 #- task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
 #  displayName: 'Create Code Coverage Report'
 #  inputs:
