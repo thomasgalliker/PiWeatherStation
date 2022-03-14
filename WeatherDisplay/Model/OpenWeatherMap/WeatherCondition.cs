@@ -4,28 +4,28 @@ using Newtonsoft.Json.Converters;
 namespace WeatherDisplay.Model.OpenWeatherMap
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public sealed class WeatherCondition
+    public class WeatherCondition
     {
         /// <summary>
         ///     Gets the description of the weather (localized).
         /// </summary>
         /// <value>the description of the weather (localized).</value>
         [JsonRequired, JsonProperty("description")]
-        public string Description { get; internal set; }
+        public string Description { get; set; }
 
         /// <summary>
         ///     Gets the weather icon id (e.g. 09d).
         /// </summary>
         /// <value>the weather icon id (e.g. 09d).</value>
         [JsonRequired, JsonProperty("icon")]
-        public string IconId { get; internal set; }
+        public string IconId { get; set; }
 
         /// <summary>
         ///     Gets the identifier of the weather condition.
         /// </summary>
         /// <value>the identifier of the weather condition.</value>
         [JsonRequired, JsonProperty("id")]
-        public int Id { get; internal set; }
+        public int Id { get; set; }
 
         /// <summary>
         ///     Gets the type of the weather condition.
@@ -33,6 +33,6 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         /// <value>the type of the weather condition.</value>
         [JsonRequired, JsonProperty("main")]
         [JsonConverter(typeof(StringEnumConverter))]
-        public WeatherConditionType Type { get; internal set; }
+        public WeatherConditionType Type { get; set; }
     }
 }

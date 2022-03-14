@@ -4,7 +4,7 @@ namespace DisplayService.Model
 {
     public partial class RenderActions
     {
-        public class Rectangle : IRenderAction
+        public class Rectangle : IRenderAction, ISurface
         {
             public int X { get; set; }
 

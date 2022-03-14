@@ -13,193 +13,183 @@ namespace WeatherDisplay
     {
         public static void AddWeatherRenderActions(this IDisplayManager displayManager, IOpenWeatherMapService openWeatherMapService, IDateTime dateTime, IAppSettings appSettings)
         {
+            var weatherIconMapping = new HighContrastWeatherIconMapping();
+
+            // Date header
             displayManager.AddRenderActions(
-                () => new List<IRenderAction>
+                () =>
                 {
-                    new RenderActions.Rectangle
+                    var dateTimeNow = dateTime.Now;
+                    return new List<IRenderAction>
                     {
-                        X = 0,
-                        Y = 0,
-                        Height = 90,
-                        Width = 800,
-                        BackgroundColor = "#999999",
-                    },
-                    new RenderActions.Text
-                    {
-                        X = 20,
-                        Y = 20,
-                        HorizontalTextAlignment = HorizontalAlignment.Left,
-                        VerticalTextAlignment = VerticalAlignment.Top,
-                        Value = appSettings.Title,
-                        ForegroundColor = "#191919",
-                        FontSize = 70,
-                        Bold = true,
-                    },
-                    new RenderActions.Rectangle
-                    {
-                        X = 0,
-                        Y = 440,
-                        Height = 40,
-                        Width = 800,
-                        BackgroundColor = "#999999",
-                    }
+                        new RenderActions.Rectangle
+                        {
+                            X = 0,
+                            Y = 0,
+                            Height = 100,
+                            Width = 800,
+                            BackgroundColor = "#000000",
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 20,
+                            Y = 20,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = dateTimeNow.ToString("dddd, dd. MMMM"),
+                            ForegroundColor = "#FFFFFF",
+                            FontSize = 70,
+                            Bold = true,
+                        }
+                    };
                 });
 
-            displayManager.AddRenderActions(
-                () =>
-                {
-                    var dateTimeNow = dateTime.Now;
-                    return new List<IRenderAction>
-                    {
-                        new RenderActions.Rectangle // Masking layer for Date
-                        {
-                            X = 782,
-                            Y = 19,
-                            Height = 25,
-                            Width = 270,
-                            VerticalAlignment = VerticalAlignment.Top,
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            BackgroundColor = "#999999",
-                        },
-                        new RenderActions.Text
-                        {
-                            X = 780,
-                            Y = 20,
-                            HorizontalTextAlignment = HorizontalAlignment.Right,
-                            VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{dateTimeNow:dddd}, {dateTimeNow:M}",
-                            ForegroundColor = "#999999",
-                            BackgroundColor = "#191919",
-                            FontSize = 22,
-                        }
-                    };
-                },
-                TimeSpan.FromDays(1)); // TODO: Use crontab-like scheduling
-
-            displayManager.AddRenderActions(
-                () =>
-                {
-                    var dateTimeNow = dateTime.Now;
-                    return new List<IRenderAction>
-                    {
-                        new RenderActions.Rectangle // Masking layer for Time
-                        {
-                            X = 780,
-                            Y = 50,
-                            Height = 25,
-                            Width = 200,
-                            VerticalAlignment = VerticalAlignment.Top,
-                            HorizontalAlignment = HorizontalAlignment.Right,
-                            BackgroundColor = "#999999",
-                        },
-                        new RenderActions.Text
-                        {
-                            X = 780,
-                            Y = 50,
-                            HorizontalTextAlignment = HorizontalAlignment.Right,
-                            VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{dateTimeNow:t}",
-                            ForegroundColor = "#999999",
-                            BackgroundColor = "#191919",
-                            FontSize = 22,
-                        }
-                    };
-                },
-                TimeSpan.FromMinutes(1));
-
+            // Current weather info
             displayManager.AddRenderActionsAsync(
                 async () =>
                 {
                     var place = appSettings.Places.First();
-                    var weatherInfo = await openWeatherMapService.GetCurrentWeatherAsync(place.Latitude, place.Longitude);
-                    var firstWeather = weatherInfo.WeatherConditions.FirstOrDefault();
-                    var weatherIconImage = await openWeatherMapService.GetWeatherIconAsync(firstWeather);
+                    var currentWeatherInfo = await openWeatherMapService.GetCurrentWeatherAsync(place.Latitude, place.Longitude);
+                    var currentWeatherCondition = currentWeatherInfo.Weather.First();
+                    var currentWeatherImage = await openWeatherMapService.GetWeatherIconAsync(currentWeatherCondition, weatherIconMapping);
 
-                    return new List<IRenderAction>
+                    var weatherForecast = await openWeatherMapService.GetWeatherForecast(place.Latitude, place.Longitude);
+                    var groupedWeatherForecast = weatherForecast.Items.GroupBy(i => i.DateTime.Date).ToList();
+
+                    var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude);
+
+
+                    var renderActions = new List<IRenderAction>
                     {
-                        new RenderActions.Rectangle // Masking layer for Location+Temperature
+                        //new RenderActions.Rectangle // Masking layer for Location+Temperature
+                        //{
+                        //    X = 20,
+                        //    Y = 200,
+                        //    Height = 150,
+                        //    Width = 300,
+                        //    HorizontalAlignment = HorizontalAlignment.Left,
+                        //    VerticalAlignment = VerticalAlignment.Center,
+                        //    BackgroundColor = "#FFFFFF",
+                        //},
+                        new RenderActions.StreamImage
                         {
-                            X = 400,
-                            Y = 250,
-                            Height = 150,
-                            Width = 300,
-                            VerticalAlignment = VerticalAlignment.Center,
-                            HorizontalAlignment = HorizontalAlignment.Center,
-                            BackgroundColor = "#FFFFFF",
+                            X = 20,
+                            Y = 200,
+                            Image = currentWeatherImage,
                         },
                         new RenderActions.Text
                         {
-                            X = 400,
-                            Y = 200,
-                            HorizontalTextAlignment = HorizontalAlignment.Center,
-                            VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = $"{place.Name ?? weatherInfo.Name}",
-                            ForegroundColor = "#191919",
+                            X = 20,
+                            Y = 120,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"{place.Name ?? currentWeatherInfo.Name}, um {currentWeatherInfo.Date:t} Uhr",
+                            ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
                         },
                         new RenderActions.Text
                         {
-                            X = 400,
+                            X = 140,
                             Y = 240,
-                            HorizontalTextAlignment = HorizontalAlignment.Center,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = FormatTemperature(weatherInfo.Main.Temperature),
+                            Value = FormatTemperature(currentWeatherInfo.Main.Temperature),
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 80,
                         },
                         new RenderActions.Text
                         {
-                            X = 100,
-                            Y = 200,
-                            HorizontalTextAlignment = HorizontalAlignment.Left,
-                            VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = $"Sunrise {weatherInfo.AdditionalInformation.Sunrise:t}",
-                            ForegroundColor = "#191919",
-                            BackgroundColor = "#FFFFFF",
-                            FontSize = 20,
-                        },
-                        new RenderActions.Text
-                        {
-                            X = 100,
-                            Y = 240,
-                            HorizontalTextAlignment = HorizontalAlignment.Left,
-                            VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = $"Sunset {weatherInfo.AdditionalInformation.Sunset:t}",
-                            ForegroundColor = "#191919",
-                            BackgroundColor = "#FFFFFF",
-                            FontSize = 20,
-                        },
-                        new RenderActions.Text
-                        {
-                            X = 100,
+                            X = 140,
                             Y = 280,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
-                            VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = $"Min. Temp. {FormatTemperature(weatherInfo.Main.MinimumTemperature)}",
-                            ForegroundColor = "#191919",
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"{currentWeatherCondition.Description}",
+                            ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
                         },
-                        new RenderActions.Text
+
+                        // Divider line to separated current weather and weather forecast
+                        new RenderActions.Rectangle
                         {
-                            X = 100,
-                            Y = 320,
-                            HorizontalTextAlignment = HorizontalAlignment.Left,
-                            VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = $"Max. Temp. {FormatTemperature(weatherInfo.Main.MaximumTemperature)}",
-                            ForegroundColor = "#191919",
-                            BackgroundColor = "#FFFFFF",
-                            FontSize = 20,
-                        },
-                        new RenderActions.StreamImage
+                            X = 0,
+                            Y = 340,
+                            Height = 4,
+                            Width = 800,
+                            BackgroundColor = "#000000",
+                        },   
+                        new RenderActions.Rectangle
                         {
-                            X = 600,
-                            Y = 200,
-                            Image = weatherIconImage,
+                            X = 0,
+                            Y = 480,
+                            Height = 4,
+                            Width = 800,
+                            VerticalAlignment = VerticalAlignment.Bottom,
+                            BackgroundColor = "#000000",
                         }
                     };
+
+                    // Display daily weather forecast
+                    var numberOfForecastItems = 7;
+                    var spacing = 20;
+                    var widthPerDailyForecast = (800 - (numberOfForecastItems + 1) * spacing) / numberOfForecastItems;
+                    var xOffset = spacing;
+                    var dailyForecasts = oneCallWeatherInfo.DailyForecasts.Take(numberOfForecastItems).ToList();
+                    for (var i = 0; i < dailyForecasts.Count; i++)
+                    {
+                        var dailyWeatherForecast = dailyForecasts[i];
+                        var xCenter = xOffset + widthPerDailyForecast / 2;
+
+                        var dailyWeatherCondition = dailyWeatherForecast.Weather.First();
+                        var dailyWeatherImage = await openWeatherMapService.GetWeatherIconAsync(dailyWeatherCondition, weatherIconMapping);
+
+                        var dailyWeatherRenderActions = new List<IRenderAction>
+                        {
+                            new RenderActions.Text
+                            {
+                                X = xCenter,
+                                Y = 360,
+                                HorizontalTextAlignment = HorizontalAlignment.Center,
+                                VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = $"{dailyWeatherForecast.DateTime:ddd}",
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 20,
+                                Bold = true,
+                            },
+                            new RenderActions.StreamImage
+                            {
+                                X = xCenter,
+                                Y = 390,
+                                Image = dailyWeatherImage,
+                                Width = 48,
+                                Height = 48,
+                                HorizontalAlignment = HorizontalAlignment.Center,
+                                VerticalAlignment = VerticalAlignment.Top,
+                            },
+                            new RenderActions.Text
+                            {
+                                X = xCenter,
+                                Y = 450,
+                                HorizontalTextAlignment = HorizontalAlignment.Center,
+                                VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = $"{dailyWeatherForecast.Temperature.Min.Value:F0} / {dailyWeatherForecast.Temperature.Max:F0}",
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 20,
+                                Bold= true,
+                            },
+                        };
+
+
+                        renderActions.AddRange(dailyWeatherRenderActions);
+
+                        xOffset = xOffset + spacing + widthPerDailyForecast;
+
+                    }
+                    return renderActions;
                 },
                 TimeSpan.FromHours(1));
         }

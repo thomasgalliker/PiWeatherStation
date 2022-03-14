@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using WeatherDisplay.Model.OpenWeatherMap;
 
 namespace WeatherDisplay.Tests.Testdata
@@ -15,11 +16,22 @@ namespace WeatherDisplay.Tests.Testdata
             return new WeatherInfo
             {
                 Name = "Test Location",
+                Date = new DateTime(2000, 1, 1, 12, 13, 14, DateTimeKind.Local),
                 Main = new TemperatureInfo
                 {
                     Temperature = mainTemperature,
                     MinimumTemperature = mainTemperature - 10,
                     MaximumTemperature = mainTemperature + 10,
+                },
+                Weather = new List<WeatherCondition>
+                {
+                    new WeatherCondition
+                    {
+                        Id = 1,
+                        Description = "Klarer Himmel",
+                        IconId = "09d",
+                        Type = WeatherConditionType.Clear,
+                    },
                 },
                 AdditionalInformation = new AdditionalWeatherInfo
                 {

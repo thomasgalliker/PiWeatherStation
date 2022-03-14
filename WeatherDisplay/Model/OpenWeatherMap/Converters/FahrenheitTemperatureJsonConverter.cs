@@ -17,6 +17,11 @@ namespace WeatherDisplay.Model.OpenWeatherMap.Converters
                 return Temperature.FromFahrenheit(fahrenheit);
             }
 
+            if (reader.Value is long fahrenheitLong)
+            {
+                return Temperature.FromFahrenheit(fahrenheitLong);
+            }
+
             throw new NotSupportedException($"Cannot convert from {reader.Value} to Fahrenheit");
         }
     }

@@ -44,15 +44,13 @@ namespace DisplayService.Model
             }
 
             /// <summary>
-            /// Text horizontal alignment (-1 = Left, 0 = Center, 1 = Right, optional)
+            /// Text horizontal alignment.
             /// </summary>
-            /// <example>0</example>
             public HorizontalAlignment HorizontalTextAlignment { get; set; }
 
             /// <summary>
-            /// Text vertical alignment (-1 = Top, 0 = Middle, 1 = Bottom, optional)
+            /// Text vertical alignment.
             /// </summary>
-            /// <example>0</example>
             public VerticalAlignment VerticalTextAlignment { get; set; }
 
             /// <summary>

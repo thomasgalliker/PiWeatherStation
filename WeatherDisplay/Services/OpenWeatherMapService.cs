@@ -17,19 +17,22 @@ namespace WeatherDisplay.Services
     public class OpenWeatherMapService : IOpenWeatherMapService
     {
         private const string ApiEndpoint = "https://api.openweathermap.org";
-        private const string ImageApiEndpoint = "https://openweathermap.org/img/wn";
 
         private readonly HttpClient httpClient;
+        private readonly IWeatherIconMapping defaultWeatherIconMapping;
         private readonly JsonSerializerSettings serializerSettings;
         private readonly string openWeatherMapApiKey;
         private readonly string unitSystem;
+        private readonly string language;
 
         public OpenWeatherMapService(IOpenWeatherMapConfiguration openWeatherMapConfiguration)
         {
             this.openWeatherMapApiKey = openWeatherMapConfiguration.ApiKey;
             this.unitSystem = openWeatherMapConfiguration.UnitSystem;
+            this.language = openWeatherMapConfiguration.Language;
 
             this.httpClient = new HttpClient();
+            this.defaultWeatherIconMapping = new DefaultWeatherIconMapping(this.httpClient);
             this.serializerSettings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
@@ -56,7 +59,7 @@ namespace WeatherDisplay.Services
             var builder = new UriBuilder(ApiEndpoint)
             {
                 Path = "data/2.5/weather",
-                Query = $"lat={lat}&lon={lon}&units={this.unitSystem}&appid={this.openWeatherMapApiKey}"
+                Query = $"lat={lat}&lon={lon}&units={this.unitSystem}&lang={this.language}&appid={this.openWeatherMapApiKey}"
             };
             var uri = builder.ToString();
 
@@ -68,16 +71,59 @@ namespace WeatherDisplay.Services
 
             return weatherInfo;
         }
-
-        public async Task<Stream> GetWeatherIconAsync(WeatherCondition weatherCondition)
+        
+        public async Task<WeatherForecast> GetWeatherForecast(double latitude, double longitude)
         {
-            var iconUrl = $"{ImageApiEndpoint}/{weatherCondition.IconId}@2x.png";
+            var lat = latitude.ToString("0.0000", CultureInfo.InvariantCulture);
+            var lon = longitude.ToString("0.0000", CultureInfo.InvariantCulture);
 
-            var response = await this.httpClient.GetAsync(iconUrl);
+            var builder = new UriBuilder(ApiEndpoint)
+            {
+                Path = "data/2.5/forecast",
+                Query = $"lat={lat}&lon={lon}&units={this.unitSystem}&lang={this.language}&appid={this.openWeatherMapApiKey}"
+            };
+            var uri = builder.ToString();
+
+            var response = await this.httpClient.GetAsync(uri);
             response.EnsureSuccessStatusCode();
 
-            var responseStream = await response.Content.ReadAsStreamAsync();
-            return responseStream;
+            var responseJson = await response.Content.ReadAsStringAsync();
+            var weatherForecast = JsonConvert.DeserializeObject<WeatherForecast>(responseJson, this.serializerSettings);
+
+            return weatherForecast;
+        }
+
+
+        public async Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude)
+        {
+            var lat = latitude.ToString("0.0000", CultureInfo.InvariantCulture);
+            var lon = longitude.ToString("0.0000", CultureInfo.InvariantCulture);
+
+            var builder = new UriBuilder(ApiEndpoint)
+            {
+                Path = "data/2.5/onecall",
+                Query = $"lat={lat}&lon={lon}&exclude=current,minutely,hourly&units={this.unitSystem}&lang={this.language}&appid={this.openWeatherMapApiKey}"
+            };
+            var uri = builder.ToString();
+
+            var response = await this.httpClient.GetAsync(uri);
+            response.EnsureSuccessStatusCode();
+
+            var responseJson = await response.Content.ReadAsStringAsync();
+            var weatherForecast = JsonConvert.DeserializeObject<OneCallWeatherInfo>(responseJson, this.serializerSettings);
+
+            return weatherForecast;
+        }
+
+        public async Task<Stream> GetWeatherIconAsync(WeatherCondition weatherCondition, IWeatherIconMapping weatherIconMapping = null)
+        {
+            if (weatherIconMapping == null)
+            {
+                weatherIconMapping = this.defaultWeatherIconMapping;
+            }
+
+            var imageStream = await weatherIconMapping.GetIconAsync(weatherCondition);
+            return imageStream;
         }
     }
 }

@@ -160,12 +160,6 @@ namespace DisplayService.Services
         /// <param name="fontWidth">Font width</param>
         /// <param name="foregroundColor">Font hex color</param>
         /// <param name="bold">Bold setting</param>
-        /// 
-        /// 
-        /// 
-        /// 
-        /// 
-        /// 
         /// <returns>Returns a paint object for the text</returns>
         // TODO: Split this very chaotic method into several single-purpose methods
         public static SKPaint GetPaint(string font, float fontSize, int fontWeight, int fontWidth, string foregroundColor, bool bold)

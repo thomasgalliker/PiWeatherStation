@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using DisplayService.Resources;
 using WeatherDisplay.Model.OpenWeatherMap;
 
 namespace WeatherDisplay.Services
@@ -26,9 +25,19 @@ namespace WeatherDisplay.Services
             });
         }
 
-        public Task<Stream> GetWeatherIconAsync(WeatherCondition weatherCondition)
+        public Task<WeatherForecast> GetWeatherForecast(double latitude, double longitude)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Stream> GetWeatherIconAsync(WeatherCondition weatherCondition, IWeatherIconMapping weatherIconMapping = null)
         {
             //return TestImages.WeatherIcon;
+            throw new NotImplementedException();
+        }
+
+        public Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude)
+        {
             throw new NotImplementedException();
         }
     }

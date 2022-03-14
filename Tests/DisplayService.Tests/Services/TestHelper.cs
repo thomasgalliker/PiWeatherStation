@@ -21,6 +21,12 @@ namespace DisplayService.Tests.Services
 
         internal void WriteFile(Stream bitmapStream, [CallerMemberName] string callerMemberName = null)
         {
+            if (bitmapStream == null)
+            {
+                this.testOutputHelper.WriteLine($"bitmapStream is null; Testfile cannot be written!");
+                return;
+            }
+
             var outputFilePath = Path.Combine(this.outputFolder, $"{callerMemberName}.png");
             using (var fileStream = new FileStream(outputFilePath, FileMode.Create, FileAccess.Write))
             {

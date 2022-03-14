@@ -41,9 +41,14 @@ namespace DisplayService.Services
         {
             this.logger.LogDebug("Clear");
 
-            this.ClearCanvas();
-
-            this.OnScreenChanged(0, 0, this.renderSettings.Width, this.renderSettings.Height, false, "clear", null);
+            try
+            {
+                this.ClearCanvas();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Failed to clear", ex);
+            }
         }
 
         public void Refresh()
@@ -91,36 +96,10 @@ namespace DisplayService.Services
         {
             try
             {
-                float x = rectangle.X;
-                switch (rectangle.HorizontalAlignment)
-                {
-                    case HorizontalAlignment.Left:
-                        x = rectangle.X;
-                        break;
-                    case HorizontalAlignment.Center:
-                        x = rectangle.X - (rectangle.Width / 2);
-                        break;
-                    case HorizontalAlignment.Right:
-                        x = rectangle.X - rectangle.Width;
-                        break;
-                }
-
-                float y = rectangle.Y;
-                switch (rectangle.VerticalAlignment)
-                {
-                    case VerticalAlignment.Top:
-                        y = rectangle.Y;
-                        break;
-                    case VerticalAlignment.Center:
-                        y = rectangle.Y - (rectangle.Height / 2);
-                        break;
-                    case VerticalAlignment.Bottom:
-                        y = rectangle.Y - rectangle.Height;
-                        break;
-                }
+                var x = CalculateX(rectangle);
+                var y = CalculateY(rectangle);
 
                 this.logger.LogDebug($"DrawRect(x: {x}, y: {y}, width: {rectangle.Width}, height: {rectangle.Height})");
-
                 var rect = SKRect.Create(x, y, width: rectangle.Width, height: rectangle.Height);
 
                 // the brush (fill with blue)
@@ -148,6 +127,44 @@ namespace DisplayService.Services
             {
                 throw new Exception($"DrawRect failed with exception: {ex.Message}", ex);
             }
+        }
+
+        private static float CalculateY(ISurface surface)
+        {
+            float y = surface.Y;
+            switch (surface.VerticalAlignment)
+            {
+                case VerticalAlignment.Top:
+                    y = surface.Y;
+                    break;
+                case VerticalAlignment.Center:
+                    y = surface.Y - (surface.Height / 2);
+                    break;
+                case VerticalAlignment.Bottom:
+                    y = surface.Y - surface.Height;
+                    break;
+            }
+
+            return y;
+        }
+
+        private static float CalculateX(ISurface surface)
+        {
+            float x = surface.X;
+            switch (surface.HorizontalAlignment)
+            {
+                case HorizontalAlignment.Left:
+                    x = surface.X;
+                    break;
+                case HorizontalAlignment.Center:
+                    x = surface.X - (surface.Width / 2);
+                    break;
+                case HorizontalAlignment.Right:
+                    x = surface.X - surface.Width;
+                    break;
+            }
+
+            return x;
         }
 
         [Obsolete]
@@ -248,12 +265,37 @@ namespace DisplayService.Services
                 throw new NotSupportedException($"Image of type {image.GetType().Name} is not supported");
             }
 
+            if (image.Width == -1)
+            {
+                image.Width = skBitmap.Width;
+            }
+
+            if (image.Height == -1)
+            {
+                image.Height = skBitmap.Height;
+            }
+
+            var x = CalculateX(image);
+            var y = CalculateY(image);
+
+
             if (skBitmap != null)
             {
                 using (skBitmap)
                 {
-                    this.logger.LogDebug($"DrawBitmap(img.ByteCount=\"{skBitmap.ByteCount}\", image.X={image.X}, image.Y={image.Y})");
-                    this.canvas.DrawBitmap(skBitmap, image.X, image.Y);
+                    if (skBitmap.Width != image.Width || skBitmap.Height != image.Height)
+                    {
+                        using (var skBitmapResized = skBitmap.Resize(new SKImageInfo(image.Width, image.Height), SKFilterQuality.High))
+                        {
+                            this.logger.LogDebug($"DrawBitmap(img.ByteCount=\"{skBitmapResized.ByteCount}\", x={x}, y={y})");
+                            this.canvas.DrawBitmap(skBitmapResized, x, y);
+                        }
+                    }
+                    else
+                    {
+                        this.logger.LogDebug($"DrawBitmap(img.ByteCount=\"{skBitmap.ByteCount}\", x={x}, y={y})");
+                        this.canvas.DrawBitmap(skBitmap, x, y);
+                    }
                 }
             }
 

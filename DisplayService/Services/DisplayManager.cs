@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Timers;
 using DisplayService.Model;
 using Microsoft.Extensions.Logging;
 
@@ -99,20 +98,39 @@ namespace DisplayService.Services
         {
             try
             {
-                // TODO: Lock parallel renderings
-
                 // Send render actions to rendering service
                 // in order to draw on canvas
-                foreach (var renderAction in renderActions)
-                {
-                    renderAction.Render(this.renderService);
-                }
-
-                await this.UpdateDisplayAsync();
+                this.RunRenderActions(renderActions);
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, $"UpdateDisplay failed with exception: {ex.Message}");
+                this.logger.LogError(ex, "UpdateDisplayAsync failed with exception");
+            }
+
+            await this.UpdateDisplayAsync();
+        }
+
+        private void RunRenderActions(IEnumerable<IRenderAction> renderActions)
+        {
+            // TODO: Lock parallel renderings
+
+            var exceptions = new List<(Exception Exception, Type RenderActionType)>();
+
+            foreach (var renderAction in renderActions)
+            {
+                try
+                {
+                    renderAction.Render(this.renderService);
+                }
+                catch (Exception ex)
+                {
+                    exceptions.Add((ex, renderAction.GetType()));
+                }
+            }
+
+            if (exceptions.Any())
+            {
+                this.logger.LogError(new AggregateException(exceptions.Select(e => e.Exception)), $"Rendering failed with exception: {string.Join(", ", exceptions.Select(e => e.RenderActionType.Name))}");
             }
         }
 

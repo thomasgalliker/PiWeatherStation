@@ -35,7 +35,7 @@ namespace WeatherDisplay.Tests
 
         public Stream GetDisplayImage()
         {
-            return this.bitmapStream.Rewind();
+            return this.bitmapStream?.Rewind();
         }
     }
 }

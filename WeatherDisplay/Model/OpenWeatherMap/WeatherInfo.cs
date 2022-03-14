@@ -9,11 +9,11 @@ namespace WeatherDisplay.Model.OpenWeatherMap
     {
         public WeatherInfo()
         {
-            this.WeatherConditions = new List<WeatherCondition>();
+            this.Weather = new List<WeatherCondition>();
         }
 
         [JsonProperty("weather")]
-        public List<WeatherCondition> WeatherConditions { get; set; }
+        public List<WeatherCondition> Weather { get; set; }
 
         [JsonProperty("main")]
         public TemperatureInfo Main { get; set; }

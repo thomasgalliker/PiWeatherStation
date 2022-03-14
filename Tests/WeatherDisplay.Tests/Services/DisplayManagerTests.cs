@@ -8,6 +8,7 @@ using Moq.AutoMock;
 using SkiaSharp;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.OpenWeatherMap;
+using WeatherDisplay.Resources;
 using WeatherDisplay.Services;
 using WeatherDisplay.Tests.Testdata;
 using Xunit;
@@ -53,6 +54,8 @@ namespace WeatherDisplay.Tests
             this.openWeatherMapServiceMock = this.autoMocker.GetMock<IOpenWeatherMapService>();
             this.openWeatherMapServiceMock.Setup(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(WeatherInfos.GetTestWeatherInfo());
+            this.openWeatherMapServiceMock.Setup(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()))
+                .ReturnsAsync(Icons.GetSunshine);
 
             this.autoMocker.Use<IRenderService>(this.autoMocker.CreateInstance<RenderService>());
         }

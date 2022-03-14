@@ -3,14 +3,14 @@
 namespace WeatherDisplay.Model.OpenWeatherMap
 {
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
-    public sealed class TemperatureInfo
+    public class TemperatureInfo
     {
         /// <summary>
         ///     Gets the human perception of weather.
         /// </summary>
         /// <value>the human perception of weather.</value>
         [JsonRequired, JsonProperty("feels_like")]
-        public double FeelsLike { get; set; }
+        public Temperature FeelsLike { get; set; }
 
         /// <summary>
         ///     Gets the atmospheric pressure on the ground level (in hPa).

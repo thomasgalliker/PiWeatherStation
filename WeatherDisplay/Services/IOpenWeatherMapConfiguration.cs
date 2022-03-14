@@ -5,5 +5,7 @@
         string ApiKey { get; }
 
         string UnitSystem { get; }
+        
+        string Language { get; }
     }
 }

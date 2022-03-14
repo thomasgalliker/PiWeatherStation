@@ -16,6 +16,11 @@ namespace WeatherDisplay.Model.OpenWeatherMap.Converters
             {
                 return Temperature.FromCelsius(celsius);
             }
+            
+            if (reader.Value is long celsiusLong)
+            {
+                return Temperature.FromCelsius(celsiusLong);
+            }
 
             throw new NotSupportedException($"Cannot convert from {reader.Value} to °Celsius");
         }

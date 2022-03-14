@@ -4,7 +4,7 @@ namespace DisplayService.Model
 {
     public partial class RenderActions
     {
-        public abstract class Image : IRenderAction
+        public abstract class Image : IRenderAction, ISurface
         {
             /// <summary>
             /// X coordinate to place the image
@@ -17,6 +17,20 @@ namespace DisplayService.Model
             /// </summary>
             /// <example>100</example>
             public int Y { get; set; }
+
+            public int Width { get; set; } = -1;
+
+            public int Height { get; set; } = -1;
+
+            /// <summary>
+            /// Text horizontal alignment.
+            /// </summary>
+            public HorizontalAlignment HorizontalAlignment { get; set; }
+
+            /// <summary>
+            /// Text vertical alignment.
+            /// </summary>
+            public VerticalAlignment VerticalAlignment { get; set; }
 
             public void Render(IRenderService renderService)
             {
