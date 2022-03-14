@@ -166,34 +166,15 @@ WantedBy=multi-user.target
 ```
 
 Explanations for some of the configuration values:
-
-|Test|Description|
-|aaa|aaa|
-```
-WorkingDirectory:
-Will set the current working directory.
-
-ExecStart:
-Systemd will run this executable to start the service.
-
-ExecStop:
-Defines the way the service is stopped when systemctl stop is called on this service. Together with KillSignal, this value is responsible for a graceful shutdown.
-
-KillSignal:
-Is a very important value to determine how the ASP.NET Core web service is stopped.
-If the wrong value is used, the service is killed without gracefully shutting down it's services (e.g. BackgroundService, IHostedService, IDispose, etc).
-
-SyslogIdentifier:
-Primary identifier of this service. This name is used to run systemctl start/stop operations as well as to read the service log (journalctl).
-
-Restart:
-Ensure the service restarts after crashing.
-
-RestartSec:
-Amount of time to wait before restarting the service.
-
-
-```
+| Attribute | Description |
+|---|---|
+| `WorkingDirectory` | Will set the current working directory. |
+| `ExecStart` | Systemd will run this executable to start the service. |
+| `ExecStop` | Defines the way the service is stopped when systemctl stop is called on this service. Together with KillSignal, this value is responsible for a graceful shutdown. |
+| `KillSignal` | Is a very important value to determine how the ASP.NET Core web service is stopped. If the wrong value is used, the service is killed without gracefully shutting down it's services (e.g. BackgroundService, IHostedService, IDispose, etc). |
+| `SyslogIdentifier` | Primary identifier of this service. This name is used to run systemctl start/stop operations as well as to read the service log (journalctl). |
+| `Restart` | Ensure the service restarts after crashing. |
+| `RestartSec` | Amount of time to wait before restarting the service. |
 
 - Enable the service definition:
 ```
@@ -208,6 +189,10 @@ sudo systemctl daemon-reload
 sudo systemctl start weatherdisplay.api
 ```
 
+### Run PiWeatherStation
+- Access the API using http://{ip-address-raspberry}:5000/swagger/index.html in order to start the Swagger UI. 
+- Use the /login method to authenticate with the API.
+- Call any other API method after successful login. 
 ### Troubleshooting & Maintenance
 #### Update and restart the service
 If anything in the service definition (weatherdisplay.api.service file) is changed, the service needs to be stopped and restarted.
@@ -256,41 +241,25 @@ last-modified: Sat, 16 Oct 2021 12:54:30 GMT
 content-length: 1460
 ```
 
-
 ### Links
 #### Similar projects / Waveshare / IoT
-https://github.com/eXoCooLd/Waveshare.EPaperDisplay
-
-https://github.com/thecaptncode/IoTDisplay
-
-https://www.youtube.com/watch?v=t-rFj54BsDI
-
-https://github.com/Tharnas/EInkDisplayService
-
-https://github.com/bezysoftware/crypto-clock
-
-https://www.petecodes.co.uk/install-and-use-microsoft-dot-net-6-with-the-raspberry-pi/
+- https://github.com/eXoCooLd/Waveshare.EPaperDisplay
+- https://github.com/thecaptncode/IoTDisplay
+- https://www.youtube.com/watch?v=t-rFj54BsDI
+- https://github.com/Tharnas/EInkDisplayService
+- https://github.com/bezysoftware/crypto-clock
+- https://www.petecodes.co.uk/install-and-use-microsoft-dot-net-6-with-the-raspberry-pi/
 
 #### Linux and ASP.NET Core related sources
-
-https://swimburger.net/blog/dotnet/how-to-run-a-dotnet-core-console-app-as-a-service-using-systemd-on-linux
-
-https://swimburger.net/blog/dotnet/how-to-run-aspnet-core-as-a-service-on-linux
-
-https://docs.microsoft.com/en-us/troubleshoot/developer/webapps/aspnetcore/practice-troubleshoot-linux/2-6-run-two-aspnetcore-applications-same-time
-
-https://procodeguide.com/programming/how-to-set-start-url-in-aspnet-core/
-
-https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoints?view=aspnetcore-6.0
-
-https://richstokoe.com/2017/12/10/running-asp-net-core-raspbian-linux-raspberry-pi-https/
-
-https://github.com/alastairgould/dotnet-core-systemd/blob/7eb500a1f1ffe4e27278edb14ef85fb0a11bf8bf/webapplication.service
+- https://swimburger.net/blog/dotnet/how-to-run-a-dotnet-core-console-app-as-a-service-using-systemd-on-linux
+- https://swimburger.net/blog/dotnet/how-to-run-aspnet-core-as-a-service-on-linux
+- https://docs.microsoft.com/en-us/troubleshoot/developer/webapps/aspnetcore/practice-troubleshoot-linux/2-6-run-two-aspnetcore-applications-same-time
+- https://procodeguide.com/programming/how-to-set-start-url-in-aspnet-core/
+- https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoints?view=aspnetcore-6.0
+- https://richstokoe.com/2017/12/10/running-asp-net-core-raspbian-linux-raspberry-pi-https/
+- https://github.com/alastairgould/dotnet-core-systemd/blob/7eb500a1f1ffe4e27278edb14ef85fb0a11bf8bf/webapplication.service
 
 #### Other sources
-
-https://github.com/angelobreuer/OpenWeatherMap4NET
-
-https://github.com/Violetta-9/Weather/tree/master
-
-https://openweathermap.org/weather-conditions
+- https://github.com/angelobreuer/OpenWeatherMap4NET
+- https://github.com/Violetta-9/Weather/tree/master
+- https://openweathermap.org/weather-conditions
