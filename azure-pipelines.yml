@@ -74,11 +74,11 @@ steps:
   inputs:
     versionSpec: 6.x
 
-#- task: DotNetCoreCLI@2
-#  displayName: 'NuGet restore'
-#  inputs:
-#    command: restore
-#    projects: '$(solution)'
+- task: DotNetCoreCLI@2
+  displayName: 'NuGet restore'
+  inputs:
+    command: restore
+    projects: '$(solution)'
 
 - task: DotNetCoreCLI@2
   displayName: 'Build solution'
