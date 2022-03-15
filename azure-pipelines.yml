@@ -108,7 +108,7 @@ steps:
     projects: 'WeatherDisplay.Api/WeatherDisplay.Api.csproj'
     publishWebProjects: false
     arguments: '--no-restore --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Development /p:EnvironmentName=Development'
-    zipAfterPublish: true
+    zipAfterPublish: false
     condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
 - task: DotNetCoreCLI@2
@@ -118,7 +118,7 @@ steps:
     projects: 'WeatherDisplay.Api/WeatherDisplay.Api.csproj'
     publishWebProjects: false
     arguments: '--no-restore --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Production /p:EnvironmentName=Production'
-    zipAfterPublish: true
+    zipAfterPublish: false
     condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
 - task: ArchiveFiles@2
