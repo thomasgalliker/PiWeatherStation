@@ -55,7 +55,7 @@ namespace WeatherDisplay.Resources
         
         public static Stream Snow()
         {
-            return GetIcon("snow.png");
+            return GetIcon("clouds_snow.png");
         }
         
         public static Stream SnowRain()
