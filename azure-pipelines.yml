@@ -102,7 +102,7 @@ steps:
     assemblyfilters: '-xunit*'
 
 - task: DotNetCoreCLI@2
-  displayName: 'Publish Web API Development'
+  displayName: 'Publish WeatherDisplay.Api Development'
   inputs:
     command: publish
     projects: 'WeatherDisplay.Api/WeatherDisplay.Api.csproj'
