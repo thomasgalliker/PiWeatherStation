@@ -121,7 +121,7 @@ steps:
     zipAfterPublish: true
     condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
- - task: ArchiveFiles@2
+- task: ArchiveFiles@2
   displayName: 'Zip WeatherDisplay.Api Development'
   inputs:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/Development'
@@ -130,7 +130,7 @@ steps:
     archiveFile: '$(Build.ArtifactStagingDirectory)/Development/WeatherDisplay.Api_$(semVersion).zip'
     replaceExistingArchive: true
     
- - task: ArchiveFiles@2
+- task: ArchiveFiles@2
   displayName: 'Zip WeatherDisplay.Api Production'
   inputs:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/Production'
