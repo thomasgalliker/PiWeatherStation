@@ -146,10 +146,10 @@ steps:
     summaryFileLocation: '$(Build.SourcesDirectory)/CodeCoverage/Cobertura.xml'
     reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
+#- task: PublishBuildArtifacts@1
+#  displayName: 'Publish Artifact: drop'
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)/zips/*.zip'
+    pathToPublish: '$(Build.ArtifactStagingDirectory)/zips/**/*.zip'
     artifactName: zips
