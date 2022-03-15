@@ -127,7 +127,7 @@ steps:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/Development'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/Development/WeatherDisplay.Api_$(semVersion).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/zips/Development/WeatherDisplay.Api_$(semVersion).zip'
     replaceExistingArchive: true
     
 - task: ArchiveFiles@2
@@ -136,7 +136,7 @@ steps:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/Production'
     includeRootFolder: false
     archiveType: 'zip'
-    archiveFile: '$(Build.ArtifactStagingDirectory)/Production/WeatherDisplay.Api_$(semVersion).zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/zips/Production/WeatherDisplay.Api_$(semVersion).zip'
     replaceExistingArchive: true
 
 - task: PublishCodeCoverageResults@1
@@ -148,3 +148,8 @@ steps:
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    pathToPublish: '$(Build.ArtifactStagingDirectory)/zips/*.zip'
+    artifactName: zips
