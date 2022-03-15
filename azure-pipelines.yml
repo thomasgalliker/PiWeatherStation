@@ -93,47 +93,58 @@ steps:
     projects: '**/*.Tests.csproj'
     arguments: '--no-restore --no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:Exclude="[Microsoft*]*%2C[Mono*]*%2C[xunit*]*%2C[*.Testdata]*" /p:CoverletOutput=UnitTests.coverage.cobertura.xml /p:MergeWith=$(Build.SourcesDirectory)/Tests/CoverletOutput/coverage.json /p:CoverletOutputFormat=cobertura'
     
-#- task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
-#  displayName: 'Create Code Coverage Report'
-#  inputs:
-#    reports: '$(Build.SourcesDirectory)/Tests/**/*.coverage.cobertura.xml'
-#    targetdir: '$(Build.SourcesDirectory)/CodeCoverage'
-#    reporttypes: 'Cobertura'
-#    assemblyfilters: '-xunit*'
-#    
-#- task: DotNetCoreCLI@2
-#  displayName: 'Pack WeatherDisplay'
-#  inputs:
-#    command: pack
-#    packagesToPack: WeatherDisplay/WeatherDisplay.csproj
-#    versioningScheme: byEnvVar
-#    versionEnvVar: semVersion
-#    
-#- task: DotNetCoreCLI@2
-#  displayName: 'Pack WeatherDisplay.Api'
-#  inputs:
-#    command: pack
-#    packagesToPack: WeatherDisplay.Api/WeatherDisplay.Api.csproj
-#    versioningScheme: byEnvVar
-#    versionEnvVar: semVersion
-
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+- task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
+  displayName: 'Create Code Coverage Report'
   inputs:
-    SourceFolder: '$(system.defaultworkingdirectory)'
+    reports: '$(Build.SourcesDirectory)/Tests/**/*.coverage.cobertura.xml'
+    targetdir: '$(Build.SourcesDirectory)/CodeCoverage'
+    reporttypes: 'Cobertura'
+    assemblyfilters: '-xunit*'
 
-    Contents: |
-     **\bin\$(buildConfiguration)\**
-     **\bin\*.nupkg
+- task: DotNetCoreCLI@2
+  displayName: 'Publish Web API Development'
+  inputs:
+    command: publish
+    projects: 'WeatherDisplay.Api/WeatherDisplay.Api.csproj'
+    publishWebProjects: false
+    arguments: '--no-restore --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Development /p:EnvironmentName=Development'
+    zipAfterPublish: true
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
-    TargetFolder: '$(Build.ArtifactStagingDirectory)'
-     
-#- task: PublishCodeCoverageResults@1
-#  displayName: 'Publish code coverage'
-#  inputs:
-#    codeCoverageTool: Cobertura
-#    summaryFileLocation: '$(Build.SourcesDirectory)/CodeCoverage/Cobertura.xml'
-#    reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
+- task: DotNetCoreCLI@2
+  displayName: 'Publish WeatherDisplay.Api Production'
+  inputs:
+    command: publish
+    projects: 'WeatherDisplay.Api/WeatherDisplay.Api.csproj'
+    publishWebProjects: false
+    arguments: '--no-restore --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Production /p:EnvironmentName=Production'
+    zipAfterPublish: true
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
+
+ - task: ArchiveFiles@2
+  displayName: 'Zip WeatherDisplay.Api Development'
+  inputs:
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/Development'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/Development/WeatherDisplay.Api_$(semVersion).zip'
+    replaceExistingArchive: true
+    
+ - task: ArchiveFiles@2
+  displayName: 'Zip WeatherDisplay.Api Production'
+  inputs:
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/Production'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/Production/WeatherDisplay.Api_$(semVersion).zip'
+    replaceExistingArchive: true
+
+- task: PublishCodeCoverageResults@1
+  displayName: 'Publish code coverage'
+  inputs:
+    codeCoverageTool: Cobertura
+    summaryFileLocation: '$(Build.SourcesDirectory)/CodeCoverage/Cobertura.xml'
+    reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
