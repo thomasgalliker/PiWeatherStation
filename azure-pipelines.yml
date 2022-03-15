@@ -151,5 +151,5 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    pathToPublish: '$(Build.ArtifactStagingDirectory)/zips/**/*.zip'
+    pathToPublish: '$(Build.ArtifactStagingDirectory)/zips/'
     artifactName: zips
