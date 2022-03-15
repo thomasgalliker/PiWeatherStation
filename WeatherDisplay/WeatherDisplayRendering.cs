@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using DisplayService.Model;
 using DisplayService.Services;
 using WeatherDisplay.Model;
@@ -21,6 +22,11 @@ namespace WeatherDisplay
                 () =>
                 {
                     var dateTimeNow = dateTime.Now;
+
+                    var assembly = Assembly.GetExecutingAssembly();
+                    var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+                    var productVersion = fvi.ProductVersion;
+
                     return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
@@ -41,7 +47,21 @@ namespace WeatherDisplay
                             ForegroundColor = "#FFFFFF",
                             FontSize = 70,
                             Bold = true,
-                        }
+                        },
+                        
+                        // Version
+                        new RenderActions.Text
+                        {
+                            X = 798,
+                            Y = 88,
+                            HorizontalTextAlignment = HorizontalAlignment.Right,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"v{productVersion}",
+                            ForegroundColor = "#FFFFFF",
+                            BackgroundColor = "#000000",
+                            FontSize = 12,
+                            Bold = false,
+                        },
                     };
                 });
 
@@ -210,7 +230,7 @@ namespace WeatherDisplay
                             Height = 4,
                             Width = 800,
                             BackgroundColor = "#000000",
-                        },   
+                        },
                         new RenderActions.Rectangle
                         {
                             X = 0,
