@@ -10,12 +10,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSystemd();
 builder.Host.UseWindowsService();
 
-// ====== Configure logging ======
+// ====== Setup logging ======
 builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 
-// ====== Register services ======
+// ====== Setup configuration ======
+builder.Configuration
+    .SetBasePath(builder.Environment.ContentRootPath)
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+
+// ====== Setup services ======
 var services = builder.Services;
 services.AddEndpointsApiExplorer();
 services.AddControllers();
