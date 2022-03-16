@@ -35,7 +35,7 @@ namespace WeatherDisplay.Resources
         
         public static Stream Mist()
         {
-            return GetIcon("mist.png");
+            return GetIcon("clouds_mist.png");
         }
 
         public static Stream Placeholder()

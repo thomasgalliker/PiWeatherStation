@@ -66,15 +66,7 @@ namespace WeatherDisplay.Extensions
             services.AddSingleton(display);
             services.AddSingleton<IDisplayManager, DisplayManager>();
             services.AddSingleton<IOpenWeatherMapConfiguration>(openWeatherMapConfiguration);
-
-            if (appSettings.IsDebug)
-            {
-                services.AddSingleton<IOpenWeatherMapService, NullOpenWeatherMapService>();
-            }
-            else
-            {
-                services.AddSingleton<IOpenWeatherMapService, OpenWeatherMapService>();
-            }
+            services.AddSingleton<IOpenWeatherMapService, OpenWeatherMapService>();
         }
     }
 }
