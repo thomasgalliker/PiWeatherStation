@@ -259,6 +259,10 @@ content-length: 1460
 - https://richstokoe.com/2017/12/10/running-asp-net-core-raspbian-linux-raspberry-pi-https/
 - https://github.com/alastairgould/dotnet-core-systemd/blob/7eb500a1f1ffe4e27278edb14ef85fb0a11bf8bf/webapplication.service
 
+#### OpenWeatherMap API
+- https://openweathermap.org/weather-conditions
+- https://openweathermap.org/api
+
 #### Linux Shell Scripts
 - https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
 - 
