@@ -4,8 +4,6 @@ echo "PiWeatherStation [Version 1.0.0]"
 echo "(c) superdev gmbh. All rights reserved."
 echo ""
 
-# TODO: Parse arguments:
-# https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
 preRelease=$1
 
 downloadFile="WeatherDisplay.Api.zip"

@@ -47,7 +47,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'env | sort'
-   
+      
 - task: Assembly-Info-NetCore@2
   displayName: 'Update Assembly Info'
   inputs:
@@ -68,6 +68,13 @@ steps:
     LogLevel: 'verbose'
     FailOnWarning: false
     DisableTelemetry: false'
+    
+- task: Bash@3
+  displayName: 'Update bash scripts'
+  inputs:
+    targetType: 'inline'
+    script: |
+      sed -i 's|1.0.0|$(Build.BuildNumber)|g' Scripts/update_weatherdisplay_api.sh
 
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet 6.x'
