@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using DisplayService.Model;
 using DisplayService.Services;
 using WeatherDisplay.Model;
@@ -21,6 +22,11 @@ namespace WeatherDisplay
                 () =>
                 {
                     var dateTimeNow = dateTime.Now;
+
+                    var assembly = Assembly.GetExecutingAssembly();
+                    var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
+                    var productVersion = fvi.ProductVersion;
+
                     return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
@@ -41,7 +47,21 @@ namespace WeatherDisplay
                             ForegroundColor = "#FFFFFF",
                             FontSize = 70,
                             Bold = true,
-                        }
+                        },
+                        
+                        // Version
+                        new RenderActions.Text
+                        {
+                            X = 798,
+                            Y = 88,
+                            HorizontalTextAlignment = HorizontalAlignment.Right,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"v{productVersion}",
+                            ForegroundColor = "#FFFFFF",
+                            BackgroundColor = "#000000",
+                            FontSize = 12,
+                            Bold = false,
+                        },
                     };
                 });
 
@@ -50,16 +70,13 @@ namespace WeatherDisplay
                 async () =>
                 {
                     var place = appSettings.Places.First();
+
+                    // Get current weather
                     var currentWeatherInfo = await openWeatherMapService.GetCurrentWeatherAsync(place.Latitude, place.Longitude);
                     var currentWeatherCondition = currentWeatherInfo.Weather.First();
                     var currentWeatherImage = await openWeatherMapService.GetWeatherIconAsync(currentWeatherCondition, weatherIconMapping);
 
-                    var weatherForecast = await openWeatherMapService.GetWeatherForecast(place.Latitude, place.Longitude);
-                    var groupedWeatherForecast = weatherForecast.Items.GroupBy(i => i.DateTime.Date).ToList();
-
-                    var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude);
-
-                    var renderActions = new List<IRenderAction>
+                    var currentWeatherRenderActions = new List<IRenderAction>
                     {
                         // Current location + current temperature
                         new RenderActions.Rectangle
@@ -115,7 +132,7 @@ namespace WeatherDisplay
                         {
                             X = 360,
                             Y = 140,
-                            Image = Icons.Sunrise(),
+                            Image = Icons.Sunrise72(),
                             Width = 24,
                             Height = 24,
                             HorizontalAlignment = HorizontalAlignment.Left,
@@ -137,7 +154,7 @@ namespace WeatherDisplay
                         {
                             X = 360,
                             Y = 180,
-                            Image = Icons.Sunset(),
+                            Image = Icons.Sunset72(),
                             Width = 24,
                             Height = 24,
                             HorizontalAlignment = HorizontalAlignment.Left,
@@ -210,7 +227,7 @@ namespace WeatherDisplay
                             Height = 4,
                             Width = 800,
                             BackgroundColor = "#000000",
-                        },   
+                        },
                         new RenderActions.Rectangle
                         {
                             X = 0,
@@ -222,12 +239,34 @@ namespace WeatherDisplay
                         }
                     };
 
+                    if (appSettings.IsDebug)
+                    {
+                        currentWeatherRenderActions.AddRange(new[]
+                        {
+                                new RenderActions.Text
+                                {
+                                    X = 20,
+                                    Y = 240,
+                                    HorizontalTextAlignment = HorizontalAlignment.Left,
+                                    VerticalTextAlignment = VerticalAlignment.Top,
+                                    Value = $"{currentWeatherCondition.Id} / {currentWeatherCondition.IconId}",
+                                    ForegroundColor = "#000000",
+                                    BackgroundColor = "#FFFFFF",
+                                    FontSize = 12,
+                                    Bold= true,
+                                },
+                            });
+                    }
+
                     // Display daily weather forecast
+                    var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude);
+
                     var numberOfForecastItems = 7;
                     var spacing = 20;
                     var widthPerDailyForecast = (800 - (numberOfForecastItems + 1) * spacing) / numberOfForecastItems;
                     var xOffset = spacing;
                     var dailyForecasts = oneCallWeatherInfo.DailyForecasts.Take(numberOfForecastItems).ToList();
+
                     for (var i = 0; i < dailyForecasts.Count; i++)
                     {
                         var dailyWeatherForecast = dailyForecasts[i];
@@ -274,13 +313,31 @@ namespace WeatherDisplay
                             },
                         };
 
+                        if (appSettings.IsDebug)
+                        {
+                            dailyWeatherRenderActions.AddRange(new[]
+                            {
+                                new RenderActions.Text
+                                {
+                                    X = xCenter,
+                                    Y = 390,
+                                    HorizontalTextAlignment = HorizontalAlignment.Center,
+                                    VerticalTextAlignment = VerticalAlignment.Top,
+                                    Value = $"{dailyWeatherCondition.Id} / {dailyWeatherCondition.IconId}",
+                                    ForegroundColor = "#000000",
+                                    BackgroundColor = "#FFFFFF",
+                                    FontSize = 12,
+                                    Bold= true,
+                                },
+                            });
+                        }
 
-                        renderActions.AddRange(dailyWeatherRenderActions);
+                        currentWeatherRenderActions.AddRange(dailyWeatherRenderActions);
 
                         xOffset = xOffset + spacing + widthPerDailyForecast;
 
                     }
-                    return renderActions;
+                    return currentWeatherRenderActions;
                 },
                 TimeSpan.FromHours(1));
         }

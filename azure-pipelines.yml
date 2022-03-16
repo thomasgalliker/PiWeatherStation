@@ -21,7 +21,7 @@ trigger:
     exclude:
     - README.md
     - Images/*
-    - Samples/*
+    - Scripts/*
 
 variables:
   solution: 'PiWeatherStation.sln'
@@ -47,7 +47,7 @@ steps:
   inputs:
     targetType: 'inline'
     script: 'env | sort'
-   
+      
 - task: Assembly-Info-NetCore@2
   displayName: 'Update Assembly Info'
   inputs:
@@ -68,6 +68,13 @@ steps:
     LogLevel: 'verbose'
     FailOnWarning: false
     DisableTelemetry: false'
+    
+- task: Bash@3
+  displayName: 'Update bash scripts'
+  inputs:
+    targetType: 'inline'
+    script: |
+      sed -i 's|1.0.0|$(Build.BuildNumber)|g' WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh
 
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet 6.x'
@@ -108,7 +115,7 @@ steps:
     projects: 'WeatherDisplay.Api/WeatherDisplay.Api.csproj'
     publishWebProjects: false
     arguments: '--no-restore --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Development /p:EnvironmentName=Development'
-    zipAfterPublish: true
+    zipAfterPublish: false
     condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
 - task: DotNetCoreCLI@2
@@ -118,13 +125,13 @@ steps:
     projects: 'WeatherDisplay.Api/WeatherDisplay.Api.csproj'
     publishWebProjects: false
     arguments: '--no-restore --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Production /p:EnvironmentName=Production'
-    zipAfterPublish: true
+    zipAfterPublish: false
     condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
 - task: ArchiveFiles@2
   displayName: 'Zip WeatherDisplay.Api Development'
   inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/Development'
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/Development/WeatherDisplay.Api/'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/zips/Development/WeatherDisplay.Api_$(semVersion).zip'
@@ -133,7 +140,7 @@ steps:
 - task: ArchiveFiles@2
   displayName: 'Zip WeatherDisplay.Api Production'
   inputs:
-    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/Production'
+    rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/Production/WeatherDisplay.Api/'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/zips/Production/WeatherDisplay.Api_$(semVersion).zip'

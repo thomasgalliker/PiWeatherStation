@@ -77,13 +77,13 @@ namespace WeatherDisplay.Services
                 { 781, /* Tornado tornado*/ () => Icons.Tornado() },
 
                 // Group 800: Clear
-                { 800, /* Clear clear sky */ () => Icons.ClearDay() },
+                { 800, /* Clear clear sky */ () => Icons.Sun() },
 
                 // Group 80x: Clouds
-                { 801, /* Clouds few clouds: 11-25% */ () => Icons.Clouds() },
-                { 802, /* Clouds scattered clouds: 25-50% */ () => Icons.Clouds() },
-                { 803, /* Clouds broken clouds: 51-84% */ () => Icons.CloudsHeavy() },
-                { 804, /* Clouds overcast clouds: 85-100% */ () => Icons.CloudsHeavy() },
+                { 801, /* Clouds few clouds: 11-25% */ () => Icons.Clouds1() },
+                { 802, /* Clouds scattered clouds: 25-50% */ () => Icons.Clouds2() },
+                { 803, /* Clouds broken clouds: 51-84% */ () => Icons.Clouds3() },
+                { 804, /* Clouds overcast clouds: 85-100% */ () => Icons.Clouds4() },
             };
         }
 

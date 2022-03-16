@@ -24,4 +24,10 @@
     <ProjectReference Include="..\WeatherDisplay\WeatherDisplay.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="Scripts\update_weatherdisplay_api.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

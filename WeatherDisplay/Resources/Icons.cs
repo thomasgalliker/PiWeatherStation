@@ -8,24 +8,29 @@ namespace WeatherDisplay.Resources
     {
         private static readonly Assembly Assembly = typeof(HighContrastWeatherIconMapping).Assembly;
 
-        public static Stream ClearDay()
+        public static Stream Sun()
         {
-            return GetIcon("clear_day.png");
+            return GetIcon("sun_96.png");
         }
 
-        public static Stream ClearNight()
+        public static Stream Clouds1()
         {
-            return GetIcon("clear_night.png");
+            return GetIcon("clouds_1.png");
+        }
+        
+        public static Stream Clouds2()
+        {
+            return GetIcon("clouds_2.png");
+        }
+        
+        public static Stream Clouds3()
+        {
+            return GetIcon("clouds_3.png");
         }
 
-        public static Stream Clouds()
+        public static Stream Clouds4()
         {
-            return GetIcon("clouds.png");
-        }
-
-        public static Stream CloudsHeavy()
-        {
-            return GetIcon("clouds_heavy.png");
+            return GetIcon("clouds_4.png");
         }
 
         public static Stream Fog()
@@ -35,7 +40,7 @@ namespace WeatherDisplay.Resources
         
         public static Stream Mist()
         {
-            return GetIcon("mist.png");
+            return GetIcon("clouds_mist.png");
         }
 
         public static Stream Placeholder()
@@ -55,7 +60,7 @@ namespace WeatherDisplay.Resources
         
         public static Stream Snow()
         {
-            return GetIcon("snow.png");
+            return GetIcon("clouds_snow.png");
         }
         
         public static Stream SnowRain()
@@ -63,14 +68,14 @@ namespace WeatherDisplay.Resources
             return GetIcon("snow_rain.png");
         }
         
-        public static Stream Sunrise()
+        public static Stream Sunrise72()
         {
-            return GetIcon("sunrise.png");
+            return GetIcon("sunrise_72.png");
         }
         
-        public static Stream Sunset()
+        public static Stream Sunset72()
         {
-            return GetIcon("sunset.png");
+            return GetIcon("sunset_72.png");
         }
         
         public static Stream TemperatureMinus()
