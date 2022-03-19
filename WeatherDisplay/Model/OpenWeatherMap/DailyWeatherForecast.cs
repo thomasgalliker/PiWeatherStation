@@ -41,6 +41,9 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonProperty("feels_like")]
         public FeelsLikeForecast FeelsLike { get; set; }
 
+        /// <summary>
+        ///  Atmospheric pressure on the sea level, hPa.
+        /// </summary>
         [JsonProperty("pressure")]
         public int Pressure { get; set; }
 
@@ -65,9 +68,24 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonProperty("clouds")]
         public int Clouds { get; set; }
 
+        /// <summary>
+        /// Probability of precipitation.
+        /// The values of the parameter vary between 0 and 1, where 0 is equal to 0%, 1 is equal to 100%.
         [JsonProperty("pop")]
         public double Pop { get; set; }
 
+        /// <summary>
+        /// Daily amount of rain, precipitation volume, mm.
+        /// </summary>
+        [JsonProperty("rain")]
+        public double Rain { get; set; }
+        
+        /// <summary>
+        /// Daily amount of snow, precipitation volume, mm.
+        /// </summary>
+        [JsonProperty("snow")]
+        public double Snow { get; set; }
+        
         [JsonProperty("uvi")]
         public double Uvi { get; set; }
 

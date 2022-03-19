@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using DisplayService.Model;
 using DisplayService.Services;
+using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Resources;
@@ -98,7 +99,7 @@ namespace WeatherDisplay
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{place.Name ?? currentWeatherInfo.Name}, um {currentWeatherInfo.Date:t} Uhr",
+                            Value = $"{place.Name ?? currentWeatherInfo.Name}, um {currentWeatherInfo.Date.ToUniversalTime().WithOffset(oneCallWeatherInfo.TimezoneOffset):t} Uhr",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
@@ -151,9 +152,9 @@ namespace WeatherDisplay
                             Y = 140 + 5,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{dailyForecastToday.Sunrise:t}",
+                            Value = $"{dailyForecastToday.Sunrise.ToUniversalTime().WithOffset(oneCallWeatherInfo.TimezoneOffset):t}",
                             ForegroundColor = "#000000",
-                            BackgroundColor = "#00ff00",
+                            BackgroundColor = "#FFFFFF",
                             FontSize = 20,
                             Bold = false,
                         },
@@ -175,9 +176,9 @@ namespace WeatherDisplay
                             Y = 180 + 5,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{dailyForecastToday.Sunset:t}",
+                            Value = $"{dailyForecastToday.Sunset.ToUniversalTime().WithOffset(oneCallWeatherInfo.TimezoneOffset):t}",
                             ForegroundColor = "#000000",
-                            BackgroundColor = "#00ff00",
+                            BackgroundColor = "#FFFFFF",
                             FontSize = 20,
                             Bold = false,
                         },
@@ -201,7 +202,7 @@ namespace WeatherDisplay
                             VerticalTextAlignment = VerticalAlignment.Top,
                             Value = $"{FormatTemperature(dailyForecastToday.Temperature.Min)}",
                             ForegroundColor = "#000000",
-                            BackgroundColor = "#00ff00",
+                            BackgroundColor = "#FFFFFF",
                             FontSize = 20,
                             Bold = false,
                         },
@@ -225,7 +226,55 @@ namespace WeatherDisplay
                             VerticalTextAlignment = VerticalAlignment.Top,
                             Value = $"{FormatTemperature(dailyForecastToday.Temperature.Max)}",
                             ForegroundColor = "#000000",
-                            BackgroundColor = "#00ff00",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                            Bold = false,
+                        },
+
+                        // Daily amount of rain
+                        new RenderActions.StreamImage
+                        {
+                            X = 500,
+                            Y = 140,
+                            Image = Icons.Placeholder(),
+                            Width = 24,
+                            Height = 24,
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            VerticalAlignment = VerticalAlignment.Top,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 540,
+                            Y = 140 + 5,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"{dailyForecastToday.Rain}mm ({dailyForecastToday.Pop * 100}%)",
+                            ForegroundColor = "#000000",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                            Bold = false,
+                        },
+
+                        // Atmospheric pressure
+                        new RenderActions.StreamImage
+                        {
+                            X = 500,
+                            Y = 180,
+                            Image = Icons.Placeholder(),
+                            Width = 24,
+                            Height = 24,
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            VerticalAlignment = VerticalAlignment.Top,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 540,
+                            Y = 180 + 5,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"{dailyForecastToday.Pressure}hPa",
+                            ForegroundColor = "#000000",
+                            BackgroundColor = "#FFFFFF",
                             FontSize = 20,
                             Bold = false,
                         },
