@@ -1,4 +1,5 @@
-﻿using DisplayService.Model;
+﻿using System.Linq;
+using DisplayService.Model;
 using DisplayService.Resources;
 using DisplayService.Services;
 using DisplayService.Settings;
@@ -158,6 +159,73 @@ namespace DisplayService.Tests.Services
                 FontSize = fontSize,
             };
             renderService.Text(textBottomRight);
+
+            // Act
+            var bitmapStream = renderService.GetScreen();
+
+            // Assert
+            bitmapStream.Should().NotBeNull();
+            this.testHelper.WriteFile(bitmapStream);
+        }
+
+        [Fact]
+        public void ShouldGetScreen_Text2()
+        {
+            // Arrange
+            IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
+
+            var text = new RenderActions.Text
+            {
+                X = 0,
+                Y = 0,
+                Value = "Test",
+                ForegroundColor = "FFFFFF",
+                BackgroundColor = "000000",
+                FontSize = 20,
+            };
+            renderService.Text(text);
+
+            // Act
+            var bitmapStream = renderService.GetScreen();
+
+            // Assert
+            bitmapStream.Should().NotBeNull();
+            this.testHelper.WriteFile(bitmapStream);
+        }
+
+        [Fact]
+        public void ShouldGetScreen_Text_AdjustsFontSizeToFitWidth()
+        {
+            // Arrange
+            IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
+
+            var fontSize = 100;
+
+            var textTopLeft1 = new RenderActions.Text
+            {
+                X = 0,
+                Y = 0,
+                VerticalTextAlignment = VerticalAlignment.Top,
+                HorizontalTextAlignment = HorizontalAlignment.Left,
+                Value = string.Join("_", Enumerable.Range(1, 20)),
+                ForegroundColor = SKColors.Black.ToString(),
+                FontSize = fontSize,
+                AdjustsFontSizeToFitWidth = true,
+            };
+            renderService.Text(textTopLeft1);
+            
+            var textTopLeft2 = new RenderActions.Text
+            {
+                X = 0,
+                Y = 100,
+                VerticalTextAlignment = VerticalAlignment.Top,
+                HorizontalTextAlignment = HorizontalAlignment.Left,
+                Value = string.Join("_", Enumerable.Range(1, 100)),
+                ForegroundColor = SKColors.Black.ToString(),
+                FontSize = fontSize,
+                AdjustsFontSizeToFitWidth = true,
+            };
+            renderService.Text(textTopLeft2);
 
             // Act
             var bitmapStream = renderService.GetScreen();

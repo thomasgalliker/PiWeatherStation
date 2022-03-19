@@ -74,6 +74,24 @@ namespace DisplayService.Services
             {
                 var paint = RenderTools.GetPaint(text.Font, text.FontSize, text.FontWeight, text.FontWidth, text.ForegroundColor, text.Bold);
                 var (width, height, horizontalOffset, verticalOffset, left, top) = RenderTools.GetBounds(text.X, text.Y, text.Value, text.HorizontalTextAlignment, text.VerticalTextAlignment, paint);
+
+                if (text.AdjustsFontSizeToFitWidth)
+                {
+                    var maxWidth = this.renderSettings.Width;
+                    if (left + width > maxWidth)
+                    {
+                        var maxFontSize = GetMaxFontSize(maxWidth - left, paint.Typeface, text.Value);
+                        if (text.FontSize != maxFontSize)
+                        {
+                            // In case we got a change in font size,
+                            // we retry to draw the text
+                            text.FontSize = maxFontSize;
+                            this.Text(text);
+                            return;
+                        }
+                    }
+                }
+
                 var textXPosition = text.X + horizontalOffset;
                 var textYPosition = text.Y + verticalOffset;
 
@@ -92,6 +110,43 @@ namespace DisplayService.Services
             }
         }
 
+        private static float GetMaxFontSize(double sectorSize, SKTypeface typeface, string text, float degreeOfCertainty = 1f, float minFontSize = 1f, float maxFontSize = 100f)
+        {
+            var max = maxFontSize; // The upper bound. We know the font size is below this value
+            var min = minFontSize; // The lower bound, We know the font size is equal to or above this value
+            var last = -1f; // The last calculated value.
+            float value;
+            while (true)
+            {
+                value = min + ((max - min) / 2); // Find the half way point between Max and Min
+                using (var ft = new SKFont(typeface, value))
+                using (var paint = new SKPaint(ft))
+                {
+                    if (paint.MeasureText(text) > sectorSize) // Measure the string size at this font size
+                    {
+                        // The text size is too large
+                        // therefore the max possible size is below value
+                        last = value;
+                        max = value;
+                    }
+                    else
+                    {
+                        // The text fits within the area
+                        // therefore the min size is above or equal to value
+                        min = value;
+
+                        // Check if this value is within our degree of certainty
+                        if (Math.Abs(last - value) <= degreeOfCertainty)
+                        {
+                            return last; // Value is within certainty range, we found the best font size!
+                        }
+
+                        //This font difference is not within our degree of certainty
+                        last = value;
+                    }
+                }
+            }
+        }
         public void Rectangle(RenderActions.Rectangle rectangle)
         {
             try

@@ -7,6 +7,11 @@ namespace WeatherDisplay.Model.OpenWeatherMap
 {
     public class DailyWeatherForecast
     {
+        public DailyWeatherForecast()
+        {
+            this.Weather = new List<WeatherCondition>();
+        }
+
         [JsonProperty("dt")]
         [JsonConverter(typeof(EpochDateTimeConverter))]
         public DateTime DateTime { get; set; }
@@ -55,7 +60,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         public double WindGust { get; set; }
 
         [JsonProperty("weather")]
-        public List<WeatherCondition> Weather { get; } = new List<WeatherCondition>();
+        public List<WeatherCondition> Weather { get; set; }
 
         [JsonProperty("clouds")]
         public int Clouds { get; set; }

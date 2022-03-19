@@ -54,6 +54,8 @@ namespace WeatherDisplay.Tests
             this.openWeatherMapServiceMock = this.autoMocker.GetMock<IOpenWeatherMapService>();
             this.openWeatherMapServiceMock.Setup(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(WeatherInfos.GetTestWeatherInfo());
+            this.openWeatherMapServiceMock.Setup(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(OneCallWeatherInfos.GetTestWeatherInfo());
             this.openWeatherMapServiceMock.Setup(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()))
                 .ReturnsAsync(Icons.Sun);
 

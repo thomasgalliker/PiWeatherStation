@@ -40,12 +40,13 @@ namespace WeatherDisplay
                         new RenderActions.Text
                         {
                             X = 20,
-                            Y = 20,
+                            Y = 50,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
-                            VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = dateTimeNow.ToString("dddd, dd. MMMM"),
+                            VerticalTextAlignment = VerticalAlignment.Center,
+                            Value = dateTimeNow.ToString("dddd, dd. MMMM") + "BLAAAA1234567890",
                             ForegroundColor = "#FFFFFF",
                             FontSize = 70,
+                            AdjustsFontSizeToFitWidth = true,
                             Bold = true,
                         },
                         
@@ -76,6 +77,10 @@ namespace WeatherDisplay
                     var currentWeatherCondition = currentWeatherInfo.Weather.First();
                     var currentWeatherImage = await openWeatherMapService.GetWeatherIconAsync(currentWeatherCondition, weatherIconMapping);
 
+                    var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude);
+                    var dailyForecasts = oneCallWeatherInfo.DailyForecasts.ToList();
+                    var dailyForecastToday = dailyForecasts.OrderBy(f => f.DateTime).First();
+
                     var currentWeatherRenderActions = new List<IRenderAction>
                     {
                         // Current location + current temperature
@@ -86,12 +91,6 @@ namespace WeatherDisplay
                             Width = 800,
                             Height = 380,
                             BackgroundColor = "#FFFFFF",
-                        },
-                        new RenderActions.StreamImage
-                        {
-                            X = 20,
-                            Y = 200,
-                            Image = currentWeatherImage,
                         },
                         new RenderActions.Text
                         {
@@ -104,10 +103,18 @@ namespace WeatherDisplay
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
                         },
+                        new RenderActions.StreamImage
+                        {
+                            X = 20,
+                            Y = 160 + 48,
+                            Image = currentWeatherImage,
+                            VerticalAlignment = VerticalAlignment.Center,
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                        },
                         new RenderActions.Text
                         {
                             X = 140,
-                            Y = 240,
+                            Y = 200,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Center,
                             Value = FormatTemperature(currentWeatherInfo.Main.Temperature),
@@ -118,7 +125,7 @@ namespace WeatherDisplay
                         new RenderActions.Text
                         {
                             X = 140,
-                            Y = 280,
+                            Y = 240,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
                             Value = $"{currentWeatherCondition.Description}",
@@ -127,7 +134,7 @@ namespace WeatherDisplay
                             FontSize = 20,
                         },
 
-                        // Sunrise + sunset
+                        // Sunrise
                         new RenderActions.StreamImage
                         {
                             X = 360,
@@ -141,15 +148,17 @@ namespace WeatherDisplay
                         new RenderActions.Text
                         {
                             X = 400,
-                            Y = 140,
+                            Y = 140 + 5,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{currentWeatherInfo.AdditionalInformation.Sunrise:t}",
+                            Value = $"{dailyForecastToday.Sunrise:t}",
                             ForegroundColor = "#000000",
-                            BackgroundColor = "#FFFFFF",
+                            BackgroundColor = "#00ff00",
                             FontSize = 20,
                             Bold = false,
                         },
+
+                        // Sunset
                         new RenderActions.StreamImage
                         {
                             X = 360,
@@ -163,17 +172,17 @@ namespace WeatherDisplay
                         new RenderActions.Text
                         {
                             X = 400,
-                            Y = 180,
+                            Y = 180 + 5,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{currentWeatherInfo.AdditionalInformation.Sunset:t}",
+                            Value = $"{dailyForecastToday.Sunset:t}",
                             ForegroundColor = "#000000",
-                            BackgroundColor = "#FFFFFF",
+                            BackgroundColor = "#00ff00",
                             FontSize = 20,
                             Bold = false,
                         },
 
-                        // Minimum + maximum temperature
+                        // Minimum temperature
                         new RenderActions.StreamImage
                         {
                             X = 360,
@@ -187,15 +196,17 @@ namespace WeatherDisplay
                         new RenderActions.Text
                         {
                             X = 400,
-                            Y = 220,
+                            Y = 220 + 5,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{FormatTemperature(currentWeatherInfo.Main.MinimumTemperature)}",
+                            Value = $"{FormatTemperature(dailyForecastToday.Temperature.Min)}",
                             ForegroundColor = "#000000",
-                            BackgroundColor = "#FFFFFF",
+                            BackgroundColor = "#00ff00",
                             FontSize = 20,
                             Bold = false,
                         },
+
+                        // Maximum temperature
                         new RenderActions.StreamImage
                         {
                             X = 360,
@@ -209,12 +220,12 @@ namespace WeatherDisplay
                         new RenderActions.Text
                         {
                             X = 400,
-                            Y = 260,
+                            Y = 260 + 5,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{FormatTemperature(currentWeatherInfo.Main.MaximumTemperature)}",
+                            Value = $"{FormatTemperature(dailyForecastToday.Temperature.Max)}",
                             ForegroundColor = "#000000",
-                            BackgroundColor = "#FFFFFF",
+                            BackgroundColor = "#00ff00",
                             FontSize = 20,
                             Bold = false,
                         },
@@ -259,13 +270,11 @@ namespace WeatherDisplay
                     }
 
                     // Display daily weather forecast
-                    var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude);
-
                     var numberOfForecastItems = 7;
+                    dailyForecasts = oneCallWeatherInfo.DailyForecasts.Take(numberOfForecastItems).ToList();
                     var spacing = 20;
                     var widthPerDailyForecast = (800 - (numberOfForecastItems + 1) * spacing) / numberOfForecastItems;
                     var xOffset = spacing;
-                    var dailyForecasts = oneCallWeatherInfo.DailyForecasts.Take(numberOfForecastItems).ToList();
 
                     for (var i = 0; i < dailyForecasts.Count; i++)
                     {
