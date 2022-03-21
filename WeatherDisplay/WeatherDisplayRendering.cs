@@ -236,7 +236,7 @@ namespace WeatherDisplay
                         {
                             X = 500,
                             Y = 140,
-                            Image = Icons.Placeholder(),
+                            Image = Icons.RainLight(),
                             Width = 24,
                             Height = 24,
                             HorizontalAlignment = HorizontalAlignment.Left,
@@ -248,19 +248,19 @@ namespace WeatherDisplay
                             Y = 140 + 5,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{dailyForecastToday.Rain}mm ({dailyForecastToday.Pop * 100}%)",
+                            Value = $"{FormatRain(dailyForecastToday.Rain)} ({(dailyForecastToday.Pop * 100):0}%)",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
                             Bold = false,
                         },
-
-                        // Atmospheric pressure
+                        
+                        // Wind
                         new RenderActions.StreamImage
                         {
                             X = 500,
                             Y = 180,
-                            Image = Icons.Placeholder(),
+                            Image = Icons.Wind(),
                             Width = 24,
                             Height = 24,
                             HorizontalAlignment = HorizontalAlignment.Left,
@@ -270,6 +270,54 @@ namespace WeatherDisplay
                         {
                             X = 540,
                             Y = 180 + 5,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"{dailyForecastToday.WindSpeed:0}m/s ({dailyForecastToday.WindDirection})",
+                            ForegroundColor = "#000000",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                            Bold = false,
+                        },
+
+                        // Humidity
+                        new RenderActions.StreamImage
+                        {
+                            X = 500,
+                            Y = 220,
+                            Image = Icons.Humidity(),
+                            Width = 24,
+                            Height = 24,
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            VerticalAlignment = VerticalAlignment.Top,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 540,
+                            Y = 220 + 5,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"{dailyForecastToday.Humidity}% r.F.",
+                            ForegroundColor = "#000000",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                            Bold = false,
+                        },
+                        
+                        // Atmospheric pressure
+                        new RenderActions.StreamImage
+                        {
+                            X = 500,
+                            Y = 260,
+                            Image = Icons.AtmosphericPressure(),
+                            Width = 24,
+                            Height = 24,
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            VerticalAlignment = VerticalAlignment.Top,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 540,
+                            Y = 260 + 5,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
                             Value = $"{dailyForecastToday.Pressure}hPa",
@@ -306,9 +354,9 @@ namespace WeatherDisplay
                                 new RenderActions.Text
                                 {
                                     X = 20,
-                                    Y = 240,
+                                    Y = 160 + 48,
                                     HorizontalTextAlignment = HorizontalAlignment.Left,
-                                    VerticalTextAlignment = VerticalAlignment.Top,
+                                    VerticalTextAlignment = VerticalAlignment.Center,
                                     Value = $"{currentWeatherCondition.Id} / {currentWeatherCondition.IconId}",
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
@@ -398,6 +446,16 @@ namespace WeatherDisplay
                     return currentWeatherRenderActions;
                 },
                 TimeSpan.FromHours(1));
+        }
+
+        private static string FormatRain(double rain)
+        {
+            if (rain > 0d && rain < 1d)
+            {
+                return $"{rain:F1}mm";
+            }
+
+            return $"{rain:0}mm";
         }
 
         private static string FormatTemperature(Temperature temperature)

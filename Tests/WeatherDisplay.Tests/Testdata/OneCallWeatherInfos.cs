@@ -45,7 +45,7 @@ namespace WeatherDisplay.Tests.Testdata
                     Humidity = 63,
                     DewPoint = 7.7d,
                     WindSpeed = 3.85d,
-                    WindDeg = 42,
+                    WindDirectionDegrees = 42,
                     WindGust = 7.82d,
                     Weather = new List<WeatherCondition>
                     {
@@ -58,8 +58,9 @@ namespace WeatherDisplay.Tests.Testdata
                         }
                     },
                     Clouds = 68,
-                    Pop = 0d,
-                    Uvi = 2.51d
+                    Pop = 1d / 3d,
+                    Rain = 11.923423d,
+                    Uvi = 2.51d,
                 },
                 new DailyWeatherForecast
                 {
@@ -89,7 +90,7 @@ namespace WeatherDisplay.Tests.Testdata
                     Humidity = 77,
                     DewPoint = 3.45d,
                     WindSpeed = 5.02d,
-                    WindDeg = 60,
+                    WindDirectionDegrees = 60,
                     WindGust = 9.32d,
                     Weather = new List<WeatherCondition>
                     {
@@ -133,7 +134,7 @@ namespace WeatherDisplay.Tests.Testdata
                     Humidity = 59,
                     DewPoint = 1.55d,
                     WindSpeed = 3.58d,
-                    WindDeg = 61,
+                    WindDirectionDegrees = 61,
                     WindGust = 7.48d,
                     Weather = new List<WeatherCondition>
                     {
@@ -177,7 +178,7 @@ namespace WeatherDisplay.Tests.Testdata
                     Humidity = 34,
                     DewPoint = -2.23d,
                     WindSpeed = 2.38d,
-                    WindDeg = 155,
+                    WindDirectionDegrees = 155,
                     WindGust = 3.04d,
                     Weather = new List<WeatherCondition>
                     {
@@ -221,7 +222,7 @@ namespace WeatherDisplay.Tests.Testdata
                     Humidity = 35,
                     DewPoint = -1.93d,
                     WindSpeed = 2.11d,
-                    WindDeg = 158,
+                    WindDirectionDegrees = 158,
                     WindGust = 2.51d,
                     Weather = new List<WeatherCondition>
                     {
@@ -265,7 +266,7 @@ namespace WeatherDisplay.Tests.Testdata
                     Humidity = 41,
                     DewPoint = -0.3d,
                     WindSpeed = 2d,
-                    WindDeg = 163,
+                    WindDirectionDegrees = 163,
                     WindGust = 1.92d,
                     Weather = new List<WeatherCondition>
                     {
@@ -309,7 +310,7 @@ namespace WeatherDisplay.Tests.Testdata
                     Humidity = 30,
                     DewPoint = -3.29d,
                     WindSpeed = 1.9d,
-                    WindDeg = 163,
+                    WindDirectionDegrees = 163,
                     WindGust = 1.85d,
                     Weather = new List<WeatherCondition>
                     {
@@ -353,7 +354,7 @@ namespace WeatherDisplay.Tests.Testdata
                     Humidity = 37,
                     DewPoint = 0.06d,
                     WindSpeed = 1.81d,
-                    WindDeg = 173,
+                    WindDirectionDegrees = 173,
                     WindGust = 1.62d,
                     Weather = new List<WeatherCondition>
                     {

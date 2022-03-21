@@ -262,6 +262,7 @@ content-length: 1460
 #### OpenWeatherMap API
 - https://openweathermap.org/weather-conditions
 - https://openweathermap.org/api
+- http://snowfence.umn.edu/Components/winddirectionanddegrees.htm
 
 #### Linux Shell Scripts
 - https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash

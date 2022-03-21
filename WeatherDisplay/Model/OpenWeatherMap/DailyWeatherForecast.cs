@@ -57,7 +57,10 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         public double WindSpeed { get; set; }
 
         [JsonProperty("wind_deg")]
-        public int WindDeg { get; set; }
+        public int WindDirectionDegrees { get; set; }
+
+        [JsonIgnore]
+        public CardinalWindDirection WindDirection => WindHelper.GetCardinalWindDirection(this.WindDirectionDegrees);
 
         [JsonProperty("wind_gust")]
         public double WindGust { get; set; }
@@ -79,13 +82,13 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         /// </summary>
         [JsonProperty("rain")]
         public double Rain { get; set; }
-        
+
         /// <summary>
         /// Daily amount of snow, precipitation volume, mm.
         /// </summary>
         [JsonProperty("snow")]
         public double Snow { get; set; }
-        
+
         [JsonProperty("uvi")]
         public double Uvi { get; set; }
 
