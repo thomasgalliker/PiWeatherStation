@@ -44,7 +44,7 @@ namespace WeatherDisplay
                             Y = 50,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = dateTimeNow.ToString("dddd, dd. MMMM") + "BLAAAA1234567890",
+                            Value = dateTimeNow.ToString("dddd, dd. MMMM"),
                             ForegroundColor = "#FFFFFF",
                             FontSize = 70,
                             AdjustsFontSizeToFitWidth = true,
@@ -200,7 +200,7 @@ namespace WeatherDisplay
                             Y = 220 + 5,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{FormatTemperature(dailyForecastToday.Temperature.Min)}",
+                            Value = FormatTemperature(dailyForecastToday.Temperature.Min),
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
@@ -224,7 +224,7 @@ namespace WeatherDisplay
                             Y = 260 + 5,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{FormatTemperature(dailyForecastToday.Temperature.Max)}",
+                            Value = FormatTemperature(dailyForecastToday.Temperature.Max),
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
@@ -403,11 +403,11 @@ namespace WeatherDisplay
         private static string FormatTemperature(Temperature temperature)
         {
             string formattedTemperature;
-            if (temperature.Value < 1d && temperature.Value > -1)
-            {
-                formattedTemperature = temperature.ToString("0.#");
-            }
-            else
+            //if (temperature.Value < 1d && temperature.Value > -1)
+            //{
+            //    formattedTemperature = temperature.ToString("0.#");
+            //}
+            //else
             {
                 formattedTemperature = temperature.ToString("0");
             }
