@@ -222,45 +222,14 @@ namespace DisplayService.Services
             return x;
         }
 
-        [Obsolete]
-        protected virtual void OnScreenChanged(int x, int y, int width, int height, bool delay, string command, string values)
-        {
-            //if (persist)
-            {
-                //Export(command + (values == null ? string.Empty : "\t" + values));
-            }
-
-            // Clip to ensure dimensions are within screen
-            var hoffset = x < 0 ? 0 - x : 0;
-            x += hoffset;
-            width -= hoffset;
-
-            var voffset = y < 0 ? 0 - y : 0;
-            y += voffset;
-            height -= voffset;
-
-            if (x < this.renderSettings.Width && y < this.renderSettings.Height)
-            {
-                //ScreenChangedEventArgs evt = new()
-                //{
-                //    X = x,
-                //    Y = y,
-                //    Width = Math.Min(width, _renderSettings.Width - x),
-                //    Height = Math.Min(height, _renderSettings.Height - y),
-                //    Delay = delay,
-                //};
-                //ScreenChanged?.Invoke(this, evt);
-            }
-        }
-
         public Stream GetScreen()
         {
             var memoryStream = new MemoryStream();
-            using (var wstream = new SKManagedWStream(memoryStream))
+            using (var wStream = new SKManagedWStream(memoryStream))
             {
                 if (this.renderSettings.Rotation == 0)
                 {
-                    this.screen.Encode(wstream, SKEncodedImageFormat.Png, 100);
+                    this.screen.Encode(wStream, SKEncodedImageFormat.Png, 100);
                 }
                 else
                 {
@@ -280,7 +249,7 @@ namespace DisplayService.Services
                             surface.Translate(newWidth, 0);
                             surface.RotateDegrees(this.renderSettings.Rotation);
                             surface.DrawBitmap(this.screen, 0, 0);
-                            image.Encode(wstream, SKEncodedImageFormat.Png, 100);
+                            image.Encode(wStream, SKEncodedImageFormat.Png, 100);
                         }
                     }
                 }
@@ -293,9 +262,6 @@ namespace DisplayService.Services
         private void RefreshScreen()
         {
             this.ClearCanvas();
-            //Import();
-
-            this.OnScreenChanged(0, 0, this.renderSettings.Width, this.renderSettings.Height, false, "refresh", null);
         }
 
         private void AddImage(RenderActions.Image image)
@@ -353,8 +319,6 @@ namespace DisplayService.Services
                     }
                 }
             }
-
-            //this.OnScreenChanged(image.X, image.Y, width, height, image.Delay, "image", null /*JsonSerializer.Serialize<RenderActions.Image>(image)*/);
         }
 
         private void AddGraphic(RenderActions.Graphic graphic)
@@ -389,8 +353,6 @@ namespace DisplayService.Services
                 throw new ArgumentException("An exception occurred trying to add graphical image to the canvas: " + ex.Message, nameof(graphic.Data), ex);
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
             }
-
-            this.OnScreenChanged(graphic.X, graphic.Y, width, height, graphic.Delay, "graphic", null);
         }
 
         protected virtual void Dispose(bool disposing)
