@@ -47,7 +47,7 @@ namespace WeatherDisplay.Services
                     this.serializerSettings.Converters.Add(new FahrenheitTemperatureJsonConverter());
                     break;
                 default:
-                    break;
+                    throw new NotSupportedException($"UnitSystem '{openWeatherMapConfiguration.UnitSystem}' is not supported");
             }
         }
 

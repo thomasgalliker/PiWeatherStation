@@ -14,7 +14,7 @@ using WeatherDisplay.Tests.Testdata;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace WeatherDisplay.Tests
+namespace WeatherDisplay.Tests.Services
 {
     public class DisplayManagerTests
     {
