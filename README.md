@@ -95,9 +95,9 @@ sudo reboot
 cd ~
 mkdir WeatherDisplay.Api
 ```
-
-- Build the project with `RELEASE` build configuration and copy the binaries to the Raspberry Pi using WinSCP (or any other file transfer tool).
-There are other ways (like `dotnet publish`) to get a set of release-ready binaries.
+- Download the latest stable release from https://github.com/thomasgalliker/PiWeatherStation/releases. Extract the zip to the target directory /home/pi/WeatherDisplay.Api.
+- Alternatively, you can build the WeatherDisplay.Api project with `RELEASE` build configuration and copy the binaries to the Raspberry Pi using WinSCP (or any other file transfer tool).
+There are also other ways (like `dotnet publish`) to get a set of release-ready binaries.
 - Take ownership of the folder and file.
 ```
 sudo chown pi -R /home/pi/WeatherDisplay.Api
