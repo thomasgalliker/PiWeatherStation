@@ -25,29 +25,38 @@ namespace WeatherDisplay.Services
         private readonly string unitSystem;
         private readonly string language;
 
-        public OpenWeatherMapService(IOpenWeatherMapConfiguration openWeatherMapConfiguration)
+        public OpenWeatherMapService(IOpenWeatherMapConfiguration openWeatherMapConfiguration) 
+            : this(new HttpClient(), openWeatherMapConfiguration)
+        {
+        }
+        
+        public OpenWeatherMapService(HttpClient httpClient, IOpenWeatherMapConfiguration openWeatherMapConfiguration)
         {
             this.openWeatherMapApiKey = openWeatherMapConfiguration.ApiKey;
             this.unitSystem = openWeatherMapConfiguration.UnitSystem;
             this.language = openWeatherMapConfiguration.Language;
 
-            this.httpClient = new HttpClient();
+            this.httpClient = httpClient;
             this.defaultWeatherIconMapping = new DefaultWeatherIconMapping(this.httpClient);
             this.serializerSettings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore,
             };
 
-            switch (openWeatherMapConfiguration.UnitSystem)
+            var temperatureConverter = GetTemperatureConverter(openWeatherMapConfiguration.UnitSystem);
+            this.serializerSettings.Converters.Add(temperatureConverter);
+        }
+        
+        private static JsonConverter GetTemperatureConverter(string unitSystem)
+        {
+            switch (unitSystem)
             {
                 case "metric":
-                    this.serializerSettings.Converters.Add(new CelsiusTemperatureJsonConverter());
-                    break;
+                    return new CelsiusTemperatureJsonConverter();
                 case "imperial":
-                    this.serializerSettings.Converters.Add(new FahrenheitTemperatureJsonConverter());
-                    break;
+                    return new FahrenheitTemperatureJsonConverter();
                 default:
-                    throw new NotSupportedException($"UnitSystem '{openWeatherMapConfiguration.UnitSystem}' is not supported");
+                    throw new NotSupportedException($"UnitSystem '{unitSystem}' is not supported");
             }
         }
 
