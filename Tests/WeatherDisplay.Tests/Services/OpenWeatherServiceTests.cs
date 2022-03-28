@@ -18,7 +18,6 @@ public class OpenWeatherServiceTests
 {
     private readonly AutoMocker autoMocker;
     private readonly Mock<HttpMessageHandler> httpMessageHandlerMock;
-    private readonly JsonSerializerSettings settings;
     private readonly TestHelper testHelper;
 
     public OpenWeatherServiceTests(ITestOutputHelper testOutputHelper)
