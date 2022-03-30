@@ -296,7 +296,7 @@ namespace WeatherDisplay
                             Y = 220 + 5,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{dailyForecastToday.Humidity}% r.F.",
+                            Value = $"{dailyForecastToday.Humidity} r.F. ({dailyForecastToday.Humidity.Range:N})",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
