@@ -30,18 +30,18 @@ namespace WeatherDisplay.Services
 
                 // Group 3xx: Drizzle
                 { 300, /* light intensity drizzle*/ () => Icons.RainLight() },
-                { 301, /* drizzle*/ () => Icons.RainLight() },
+                { 301, /* drizzle*/ () => Icons.Rain() },
                 { 302, /* heavy intensity drizzle*/ () => Icons.RainHeavy() },
                 { 310, /* light intensity drizzle rain*/ () => Icons.RainLight() },
-                { 311, /* drizzle rain*/ () => Icons.RainLight() },
+                { 311, /* drizzle rain*/ () => Icons.Rain() },
                 { 312, /* heavy intensity drizzle rain*/ () => Icons.RainHeavy() },
-                { 313, /* shower rain and drizzle*/ () => Icons.RainLight() },
+                { 313, /* shower rain and drizzle*/ () => Icons.Rain() },
                 { 314, /* heavy shower rain and drizzle*/ () => Icons.RainHeavy() },
                 { 321, /* shower drizzle*/ () => Icons.RainLight() },
                     
                 // Group 5xx: Rain
                 { 500, /* light rain*/ () => Icons.RainLight() },
-                { 501, /* moderate rain */ () => Icons.RainLight() },
+                { 501, /* moderate rain */ () => Icons.Rain() },
                 { 502, /* heavy intensity rain  */ () => Icons.RainHeavy() },
                 { 503, /* very heavy rain   */ () => Icons.RainHeavy() },
                 { 504, /* extreme rain  */ () => Icons.RainHeavy() },
@@ -52,17 +52,17 @@ namespace WeatherDisplay.Services
                 { 531, /* ragged shower rain*/ () => Icons.RainHeavy() },
                     
                 // Group 6xx: Snow
-                { 600, /* light snow*/ () => Icons.Snow() },
+                { 600, /* light snow*/ () => Icons.SnowLight() },
                 { 601, /* Snow  */ () => Icons.Snow() },
-                { 602, /* Heavy snow*/ () => Icons.Snow() },
+                { 602, /* Heavy snow*/ () => Icons.SnowHeavy() },
                 { 611, /* Sleet */ () => Icons.SnowRain() },
                 { 612, /* Light shower sleet*/ () => Icons.SnowRain() },
                 { 613, /* Shower sleet  */ () => Icons.SnowRain() },
                 { 615, /* Light rain and snow   */ () => Icons.SnowRain() },
                 { 616, /* Rain and snow */ () => Icons.SnowRain() },
-                { 620, /* Light shower snow */ () => Icons.Snow() },
+                { 620, /* Light shower snow */ () => Icons.SnowLight() },
                 { 621, /* Shower snow   */ () => Icons.Snow() },
-                { 622, /* Heavy shower snow */ () => Icons.Snow() },
+                { 622, /* Heavy shower snow */ () => Icons.SnowHeavy() },
                    
                 // Group 7xx: Atmosphere
                 { 701, /* Mist */ () => Icons.Mist() },

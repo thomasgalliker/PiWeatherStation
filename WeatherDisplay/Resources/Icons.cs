@@ -53,19 +53,34 @@ namespace WeatherDisplay.Resources
             return GetIcon("placeholder.png");
         }
 
+        public static Stream Rain()
+        {
+            return GetIcon("clouds_rain.png");
+        }
+        
         public static Stream RainHeavy()
         {
-            return GetIcon("rain_heavy.png");
+            return GetIcon("clouds_rain_heavy.png");
         }
 
         public static Stream RainLight()
         {
-            return GetIcon("rain_light.png");
+            return GetIcon("clouds_rain_light.png");
         }
 
         public static Stream Snow()
         {
             return GetIcon("clouds_snow.png");
+        }
+        
+        public static Stream SnowHeavy()
+        {
+            return GetIcon("clouds_snow_heavy.png");
+        }
+        
+        public static Stream SnowLight()
+        {
+            return GetIcon("clouds_snow_light.png");
         }
 
         public static Stream SnowRain()
