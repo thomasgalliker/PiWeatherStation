@@ -10,11 +10,8 @@ public class EpochDateTimeConverterTests
 {
     [Theory]
     [ClassData(typeof(EpochDateTimeConverterValidTestData))]
-   
     public void ShouldConvert(string json, DateTime? expectedDateTime)
     {
-        // Arrange
-        
         // Act
         var testObject = JsonConvert.DeserializeObject<EpochDateTimeTestObject>(json);
         
