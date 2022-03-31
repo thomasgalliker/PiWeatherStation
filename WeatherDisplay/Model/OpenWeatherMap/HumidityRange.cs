@@ -13,7 +13,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         public static readonly HumidityRange Moist = new HumidityRange(nameof(Moist), min: 70, max: 80, minInclusive: false, maxInclusive: false);
         public static readonly HumidityRange VeryMoist = new HumidityRange(nameof(VeryMoist), min: 80, max: 100, minInclusive: true, maxInclusive: true);
 
-        private static readonly IEnumerable<HumidityRange> All = new List<HumidityRange>
+        public static readonly IEnumerable<HumidityRange> All = new List<HumidityRange>
         {
             VeryDry, Dry, Average, Moist, VeryMoist
         };

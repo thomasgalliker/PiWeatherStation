@@ -47,7 +47,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         /// </summary>
         /// <value>the air pressure.</value>
         [JsonRequired, JsonProperty("pressure")]
-        public double Pressure { get; set; }
+        public Pressure Pressure { get; set; }
 
         /// <summary>
         ///     Gets the atmospheric pressure on the sea level (in hPa).

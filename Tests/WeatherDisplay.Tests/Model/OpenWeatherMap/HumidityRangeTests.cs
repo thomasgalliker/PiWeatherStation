@@ -2,11 +2,19 @@ using System;
 using FluentAssertions;
 using WeatherDisplay.Model.OpenWeatherMap;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace WeatherDisplay.Tests.Model.OpenWeatherMap.Converters;
 
 public class HumidityRangeTests
 {
+    private readonly ITestOutputHelper testOutputHelper;
+
+    public HumidityRangeTests(ITestOutputHelper testOutputHelper)
+    {
+        this.testOutputHelper = testOutputHelper;
+    }
+
     [Theory]
     [ClassData(typeof(HumidityRangeTestData))]
 
@@ -52,24 +60,24 @@ public class HumidityRangeTests
     [Theory]
     [ClassData(typeof(HumidityRangeToStringTestData))]
 
-    public void ShouldGetToString(HumidityRange humidityRange, string expectedStringOutput)
+    public void ShouldGetToString(HumidityRange humidityRange)
     {
         // Act
         var stringOutput = humidityRange.ToString();
 
         // Assert
-        stringOutput.Should().Be(expectedStringOutput);
+        this.testOutputHelper.WriteLine($"stringOutput={stringOutput}");
+        stringOutput.Should().NotBeNullOrEmpty();
     }
 
-    public class HumidityRangeToStringTestData : TheoryData<HumidityRange, string>
+    public class HumidityRangeToStringTestData : TheoryData<HumidityRange>
     {
         public HumidityRangeToStringTestData()
         {
-            this.Add(HumidityRange.VeryDry, "Sehr trocken");
-            this.Add(HumidityRange.Dry, "Trocken");
-            this.Add(HumidityRange.Average, "OK");
-            this.Add(HumidityRange.Moist, "Feucht");
-            this.Add(HumidityRange.VeryMoist, "Sehr feucht");
+            foreach (var humidityRange in HumidityRange.All)
+            {
+                this.Add(humidityRange);
+            }
         }
     }
 }
