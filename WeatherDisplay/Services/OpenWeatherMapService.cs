@@ -118,9 +118,9 @@ namespace WeatherDisplay.Services
             response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
-            var weatherForecast = JsonConvert.DeserializeObject<OneCallWeatherInfo>(responseJson, this.serializerSettings);
+            var oneCallWeatherInfo = JsonConvert.DeserializeObject<OneCallWeatherInfo>(responseJson, this.serializerSettings);
 
-            return weatherForecast;
+            return oneCallWeatherInfo;
         }
 
         public async Task<Stream> GetWeatherIconAsync(WeatherCondition weatherCondition, IWeatherIconMapping weatherIconMapping = null)
