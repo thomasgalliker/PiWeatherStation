@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using WeatherDisplay.Model.OpenWeatherMap.Converters;
 
 namespace WeatherDisplay.Model.OpenWeatherMap
 {
@@ -24,7 +25,8 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         /// </summary>
         /// <value>the air humidity.</value>
         [JsonRequired, JsonProperty("humidity")]
-        public double Humidity { get; set; }
+        [JsonConverter(typeof(HumidityJsonConverter))]
+        public Humidity Humidity { get; set; }
 
         /// <summary>
         ///     Gets the maximum temperature.
@@ -62,6 +64,6 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         /// </summary>
         /// <returns>the <see cref="string"/> representation</returns>
         public override string ToString() => $"temp: {this.Temperature}, realFeel: {this.FeelsLike}, min: {this.MinimumTemperature}, max: {this.MaximumTemperature}," +
-            $" hum: {this.Humidity}%, press: {this.Pressure}, hPsea: {this.SeaLevel}, hPgrnd: {this.GroundLevel}";
+            $" hum: {this.Humidity}, press: {this.Pressure}, hPsea: {this.SeaLevel}, hPgrnd: {this.GroundLevel}";
     }
 }

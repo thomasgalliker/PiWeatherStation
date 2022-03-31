@@ -48,7 +48,8 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         public int Pressure { get; set; }
 
         [JsonProperty("humidity")]
-        public int Humidity { get; set; }
+        [JsonConverter(typeof(HumidityJsonConverter))]
+        public Humidity Humidity { get; set; }
 
         [JsonProperty("dew_point")]
         public double DewPoint { get; set; }
