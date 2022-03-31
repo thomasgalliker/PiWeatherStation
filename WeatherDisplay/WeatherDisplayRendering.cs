@@ -65,7 +65,8 @@ namespace WeatherDisplay
                             Bold = false,
                         },
                     };
-                });
+                },
+                TimeSpan.FromMinutes(5)); // TODO: Update every 24h - starting from 00:00
 
             // Current weather info
             displayManager.AddRenderActionsAsync(

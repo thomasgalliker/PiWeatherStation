@@ -24,8 +24,8 @@ public class EpochDateTimeConverterTests
         public EpochDateTimeConverterValidTestData()
         {
             this.Add("{\"dt\":\"0\"}", new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            this.Add("{\"dt\":\"946684800000\"}", new DateTime(2000, 1, 1, 0, 0, 0, DateTimeKind.Utc));
-            this.Add("{\"dt\":\"1648443641000\"}", new DateTime(2022, 3, 28, 5, 0, 41, DateTimeKind.Utc));
+            this.Add("{\"dt\":\"1406080800\"}", new DateTime(2014, 7, 23, 2, 0, 0, DateTimeKind.Utc));
+            this.Add("{\"dt\":\"1648710982\"}", new DateTime(2022, 3, 31, 7, 16, 22, DateTimeKind.Utc));
         }
     }
 
