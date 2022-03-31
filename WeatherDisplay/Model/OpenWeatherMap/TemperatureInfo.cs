@@ -47,6 +47,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         /// </summary>
         /// <value>the air pressure.</value>
         [JsonRequired, JsonProperty("pressure")]
+        [JsonConverter(typeof(PressureJsonConverter))]
         public Pressure Pressure { get; set; }
 
         /// <summary>

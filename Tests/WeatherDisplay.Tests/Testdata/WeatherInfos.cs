@@ -39,6 +39,7 @@ namespace WeatherDisplay.Tests.Testdata
                 {
                     Temperature = mainTemperature,
                     Humidity = 35,
+                    Pressure = 998,
                     FeelsLike = mainTemperature,
                     MinimumTemperature = mainTemperature - 10,
                     MaximumTemperature = mainTemperature + 10,

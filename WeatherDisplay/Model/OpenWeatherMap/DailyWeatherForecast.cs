@@ -45,6 +45,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         ///  Atmospheric pressure on the sea level, hPa.
         /// </summary>
         [JsonProperty("pressure")]
+        [JsonConverter(typeof(PressureJsonConverter))]
         public Pressure Pressure { get; set; }
 
         [JsonProperty("humidity")]
