@@ -1,12 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using Newtonsoft.Json;
 using WeatherDisplay.Model.OpenWeatherMap;
+using WeatherDisplay.Model.OpenWeatherMap.Converters;
 
 namespace WeatherDisplay.Tests.Testdata
 {
     internal static class OneCallWeatherInfos
     {
+        private static readonly JsonSerializerSettings JsonSerializerSettings = CreateMetricJsonSerializerSettings();
+
+        private static JsonSerializerSettings CreateMetricJsonSerializerSettings()
+        {
+            var settings = new JsonSerializerSettings();
+            settings.Converters.Add(new CelsiusTemperatureJsonConverter());
+            return settings;
+        }
+
+        internal static string GetTestWeatherInfoJson()
+        {
+            var weatherInfo = GetTestWeatherInfo();
+            var weatherInfoJson = JsonConvert.SerializeObject(weatherInfo, JsonSerializerSettings);
+            return weatherInfoJson;
+        }
+
         internal static OneCallWeatherInfo GetTestWeatherInfo()
         {
             return new OneCallWeatherInfo
