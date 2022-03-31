@@ -83,7 +83,7 @@ public class OpenWeatherServiceTests
         oneCallWeatherInfo.Should().BeEquivalentTo(expectedWeatherInfo);
 
         this.httpMessageHandlerMock.VerifyRequest(HttpMethod.Get,
-            "https://api.openweathermap.org:443/data/2.5/weather?lat=1.1111&lon=1.2222&units=metric&lang=en&appid=apikey",
+            "https://api.openweathermap.org:443/data/2.5/onecall?lat=1.1111&lon=1.2222&exclude=current,minutely,hourly&units=metric&lang=en&appid=apikey",
             Times.Once());
     }
 }
