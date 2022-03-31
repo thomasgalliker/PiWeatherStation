@@ -5,8 +5,6 @@ using FluentAssertions;
 using Moq;
 using Moq.AutoMock;
 using Moq.Contrib.HttpClient;
-using Newtonsoft.Json;
-using WeatherDisplay.Model.OpenWeatherMap.Converters;
 using WeatherDisplay.Services;
 using WeatherDisplay.Tests.Testdata;
 using Xunit;
@@ -57,6 +55,32 @@ public class OpenWeatherServiceTests
         
         var expectedWeatherInfo = WeatherInfos.GetTestWeatherInfo();
         weatherInfo.Should().BeEquivalentTo(expectedWeatherInfo);
+
+        this.httpMessageHandlerMock.VerifyRequest(HttpMethod.Get,
+            "https://api.openweathermap.org:443/data/2.5/weather?lat=1.1111&lon=1.2222&units=metric&lang=en&appid=apikey",
+            Times.Once());
+    }
+
+    [Fact]
+    public async Task ShouldGetWeatherOneCallAsync()
+    {
+        // Arrange
+        var latitude = 1.1111111111d;
+        var longitude = 1.2222222222d;
+
+        this.httpMessageHandlerMock.SetupRequest(HttpMethod.Get, r => r.RequestUri.LocalPath == "/data/2.5/onecall")
+            .ReturnsResponse(OneCallWeatherInfos.GetTestWeatherInfoJson(), "application/json");
+
+        IOpenWeatherMapService openWeatherMapService = this.autoMocker.CreateInstance<OpenWeatherMapService>();
+
+        // Act
+        var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(latitude, longitude);
+
+        // Assert
+        oneCallWeatherInfo.Should().NotBeNull();
+        
+        var expectedWeatherInfo = OneCallWeatherInfos.GetTestWeatherInfo();
+        oneCallWeatherInfo.Should().BeEquivalentTo(expectedWeatherInfo);
 
         this.httpMessageHandlerMock.VerifyRequest(HttpMethod.Get,
             "https://api.openweathermap.org:443/data/2.5/weather?lat=1.1111&lon=1.2222&units=metric&lang=en&appid=apikey",
