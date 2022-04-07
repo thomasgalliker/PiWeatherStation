@@ -1,13 +1,12 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 using DisplayService.Services;
 
 namespace DisplayService.Model
 {
     public partial class RenderActions
     {
-        /// <summary>
-        /// Loads a graphical image on the screen
-        /// </summary>
+        [DebuggerDisplay("Graphic: X={X}, Y={Y}")]
         public class Graphic : IRenderAction
         {
             /// <summary>

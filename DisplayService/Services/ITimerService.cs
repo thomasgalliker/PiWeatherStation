@@ -6,6 +6,8 @@ namespace DisplayService.Services
     {
         TimeSpan Interval { get; set; }
 
+        bool AutoReset { get; set; }
+
         void Start();
 
         void Stop();

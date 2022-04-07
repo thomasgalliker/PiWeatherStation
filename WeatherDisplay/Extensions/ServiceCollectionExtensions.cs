@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using DisplayService.Services;
+using DisplayService.Services.Scheduling;
 using DisplayService.Settings;
-using InvoiceScanner.Api.Services.System;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using WeatherDisplay.Model;
@@ -65,6 +65,7 @@ namespace WeatherDisplay.Extensions
             services.AddSingleton(renderSettings);
             services.AddSingleton(display);
             services.AddSingleton<IDisplayManager, DisplayManager>();
+            services.AddSingleton<IScheduler, Scheduler>();
             services.AddSingleton<IOpenWeatherMapConfiguration>(openWeatherMapConfiguration);
             services.AddSingleton<IOpenWeatherMapService, OpenWeatherMapService>();
         }

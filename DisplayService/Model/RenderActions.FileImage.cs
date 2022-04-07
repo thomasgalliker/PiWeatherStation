@@ -1,7 +1,10 @@
-﻿namespace DisplayService.Model
+﻿using System.Diagnostics;
+
+namespace DisplayService.Model
 {
     public partial class RenderActions
     {
+        [DebuggerDisplay("StreamImage: X={X}, Y={Y}")]
         public class FileImage : Image
         {
             /// <summary>
