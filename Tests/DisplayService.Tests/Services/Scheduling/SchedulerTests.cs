@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using DisplayService.Services;
 using DisplayService.Services.Scheduling;
+using DisplayService.Tests.Extensions;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;

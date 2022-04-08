@@ -86,7 +86,7 @@ namespace DisplayService.Services.Scheduling
                 var startTime = this.dateTime.Now;
                 var scheduledTasksToRun = this.scheduledTasks.Where(m => lowestIds.Contains(m.Id)).ToArray();
 
-                this.RaiseNextEvent(scheduledTasksToRun);
+                this.RaiseNextEvent(startTime, scheduledTasksToRun);
 
                 foreach (var scheduledTask in scheduledTasksToRun)
                 {
@@ -183,11 +183,11 @@ namespace DisplayService.Services.Scheduling
 
         public event EventHandler<ScheduledEventArgs> Next;
 
-        private void RaiseNextEvent(params ScheduledTask[] scheduledTasks)
+        private void RaiseNextEvent(DateTime signalTime, params ScheduledTask[] scheduledTasks)
         {
             try
             {
-                Next?.Invoke(this, new ScheduledEventArgs(scheduledTasks.Select(t => t.Id).ToArray()));
+                Next?.Invoke(this, new ScheduledEventArgs(signalTime, scheduledTasks.Select(t => t.Id).ToArray()));
             }
             catch (Exception e)
             {

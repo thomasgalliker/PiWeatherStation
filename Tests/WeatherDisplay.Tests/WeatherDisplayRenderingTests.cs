@@ -79,10 +79,10 @@ namespace WeatherDisplay.Tests
             _ = displayManager.StartAsync();
 
             // Act
-            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(taskIds.ToArray()));
-            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(taskIds.ToArray()));
-            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(taskIds.ToArray()));
-            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(taskIds.ToArray()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
 
             // Assert
             var bitmapStream = this.testDisplay.GetDisplayImage();
@@ -113,10 +113,10 @@ namespace WeatherDisplay.Tests
             _ = displayManager.StartAsync();
 
             // Act
-            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(taskIds.ToArray()));
-            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(taskIds.ToArray()));
-            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(taskIds.ToArray()));
-            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(taskIds.ToArray()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
 
             // Assert
             var bitmapStream = this.testDisplay.GetDisplayImage();
@@ -148,7 +148,7 @@ namespace WeatherDisplay.Tests
             // Act
             for (var i = 0; i < numberOfHours; i++)
             {
-                schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(taskIds.ToArray()));
+                schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
             }
 
             // Assert
@@ -183,7 +183,7 @@ namespace WeatherDisplay.Tests
             // Act
             for (var i = 0; i < numberOfDaysInYear; i++)
             {
-                schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(taskIds.ToArray()));
+                schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
             }
 
             // Assert
