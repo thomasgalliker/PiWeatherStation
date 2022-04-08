@@ -179,9 +179,9 @@ namespace DisplayService.Services
 
             try
             {
-                var renderActions = await this.GetRenderActionsAsync();
-
                 this.renderService.Clear();
+
+                var renderActions = await this.GetRenderActionsAsync();
                 await this.UpdateDisplayAsync(renderActions);
 
                 if (awaitScheduler)
@@ -213,6 +213,8 @@ namespace DisplayService.Services
         {
             this.logger.LogInformation("ResetAsync");
 
+            this.scheduler.Stop();
+
             // Remove existing rendering setups
             this.renderingSetup.Clear();
 
@@ -230,8 +232,8 @@ namespace DisplayService.Services
 
             if (disposing)
             {
-                this.scheduler.Stop();
                 this.scheduler.Next -= this.OnNextSchedule;
+                this.scheduler.Stop();
 
                 this.renderingSetup.Clear();
             }
