@@ -100,6 +100,44 @@ namespace DisplayService.Tests.Services.Scheduling
         }
 
         [Fact]
+        public void ShouldGetNextTimeToRun_EveryHour()
+        {
+            var now = new DateTime(2000, 01, 02, 00, 59, 58);
+
+            var cronExpression = CronExpression.Parse("0 * * * *");
+
+            var nextTimeToRun = cronExpression.GetNextTimeToRun(now);
+
+            Assert.Equal(new DateTime(2000, 01, 02, 01, 00, 00), nextTimeToRun);
+        }
+        
+        [Fact]
+        public void ShouldGetNextTimeToRun_EveryDayAtMidnight()
+        {
+            var now = new DateTime(2000, 01, 02, 00, 59, 58);
+
+            var cronExpression = CronExpression.Parse("0 0 * * *");
+
+            var nextTimeToRun = cronExpression.GetNextTimeToRun(now);
+
+            Assert.Equal(new DateTime(2000, 01, 03, 00, 00, 00), nextTimeToRun);
+        }
+        
+        
+        [Fact]
+        public void ShouldGetNextTimeToRun_EveryMinuteAt0()
+        {
+            var now = new DateTime(2000, 01, 02, 00, 59, 58);
+
+            var cronExpression = CronExpression.Parse("0 0 0 * *");
+
+            var nextTimeToRun = cronExpression.GetNextTimeToRun(now);
+
+            Assert.Equal(new DateTime(2000, 01, 03, 00, 00, 00), nextTimeToRun);
+        }
+        
+
+        [Fact]
         public void GivenOnlyMinute_WhenMinuteIsNow_ThenGetNextHourMatch()
         {
             var now = new DateTime(2018, 09, 29, 20, 30, 15);

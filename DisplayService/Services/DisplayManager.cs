@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Services.Scheduling;
 using Microsoft.Extensions.Logging;
+using NCrontab;
 
 namespace DisplayService.Services
 {
@@ -46,7 +47,7 @@ namespace DisplayService.Services
             this.AddRenderActions(renderActions, null);
         }
 
-        public void AddRenderActions(Func<IEnumerable<IRenderAction>> renderActions, CronExpression cronExpression)
+        public void AddRenderActions(Func<IEnumerable<IRenderAction>> renderActions, CrontabSchedule cronExpression)
         {
             var id = this.ScheduleTaskIfNotNull(cronExpression);
             this.renderingSetup.Add(id, new SyncListRenderActionFactory(renderActions));
@@ -57,13 +58,13 @@ namespace DisplayService.Services
             this.AddRenderActionsAsync(renderActions, null);
         }
 
-        public void AddRenderActionsAsync(Func<Task<IEnumerable<IRenderAction>>> renderActions, CronExpression cronExpression)
+        public void AddRenderActionsAsync(Func<Task<IEnumerable<IRenderAction>>> renderActions, CrontabSchedule cronExpression)
         {
             var id = this.ScheduleTaskIfNotNull(cronExpression);
             this.renderingSetup.Add(id, new AsyncRenderActionFactory(renderActions));
         }
 
-        private Guid ScheduleTaskIfNotNull(CronExpression cronExpression)
+        private Guid ScheduleTaskIfNotNull(CrontabSchedule cronExpression)
         {
             Guid id;
             if (cronExpression != null)

@@ -9,7 +9,9 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
+using NCrontab;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace DisplayService.Tests.Services.Scheduling
 {
@@ -17,9 +19,10 @@ namespace DisplayService.Tests.Services.Scheduling
     {
         private readonly AutoMocker autoMocker;
 
-        public SchedulerTests()
+        public SchedulerTests(ITestOutputHelper testOutputHelper)
         {
             this.autoMocker = new AutoMocker();
+            this.autoMocker.Use<ILogger<Scheduler>>(new TestOutputHelperLogger<Scheduler>(testOutputHelper));
         }
 
         [Fact]
@@ -128,6 +131,51 @@ namespace DisplayService.Tests.Services.Scheduling
             actionObject.Modified.Should().BeTrue();
             actionObject2.Modified.Should().BeTrue();
             actionObject3.Modified.Should().BeTrue();
+        }
+
+        [Fact]
+        public async Task ScheduleMultipleJobs_2()
+        {
+            // Arrange
+            var referenceDate = new DateTime(2000, 1, 1, 22, 59, 58);
+
+            var clockQueue = new DateTimeGenerator(
+                referenceDate,
+                new[]
+                {
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromMinutes(59) + TimeSpan.FromSeconds(58),
+                });
+
+            var dateTimeMock = this.autoMocker.GetMock<IDateTime>();
+            dateTimeMock.SetupSequence(d => d.Now, referenceDate, (n) => clockQueue.GetNext());
+
+            var tcs = new TaskCompletionSource();
+            var recordedNextEvents = new List<ScheduledEventArgs>();
+
+            var scheduler = this.autoMocker.CreateInstance<Scheduler>();
+            scheduler.Next += (s, e) => { recordedNextEvents.Add(e); if (recordedNextEvents.Count == 2) { tcs.SetResult(); } };
+
+            var testObjectDaily = new TestObject();
+            scheduler.ScheduleTask("0 0 * * *", _ => testObjectDaily.DoWork());
+
+            var testObjectHourly = new TestObject();
+            scheduler.ScheduleTask("0 * * * *", _ => testObjectHourly.DoWork());
+
+
+            // Act
+            scheduler.Start();
+            await tcs.Task;
+
+            // Arrange
+            recordedNextEvents.Should().HaveCount(2);
+            recordedNextEvents[0].SignalTime.Should().Be(new DateTime(2000, 1, 1, 23, 00, 00));
+            recordedNextEvents[1].SignalTime.Should().Be(new DateTime(2000, 1, 2, 00, 00, 00));
+            testObjectHourly.ModifiedCount.Should().Be(2);
+            testObjectDaily.ModifiedCount.Should().Be(1);
         }
 
         [Fact]
@@ -266,7 +314,7 @@ namespace DisplayService.Tests.Services.Scheduling
                     await scheduler.StartAsync(cancellationTokenSource.Token);
                 });
 
-                scheduler.ChangeScheduleAndResetScheduler(id, "50 14 * * * 2019");
+                scheduler.ChangeScheduleAndResetScheduler(id, CrontabSchedule.Parse("50 14 * * * 2019"));
 
                 await task;
             }
@@ -300,7 +348,7 @@ namespace DisplayService.Tests.Services.Scheduling
                     await scheduler.StartAsync(cancellationTokenSource.Token);
                 });
 
-                scheduler.ChangeScheduleAndResetScheduler(id, "50 14 * * * 2019");
+                scheduler.ChangeScheduleAndResetScheduler(id, CrontabSchedule.Parse("50 14 * * * 2019"));
 
                 await task;
             }
@@ -372,12 +420,12 @@ namespace DisplayService.Tests.Services.Scheduling
             var scheduler = new Scheduler(logger.Object, dateTimeMock.Object);
 
             var actionObject = new TestObject();
-            scheduler.ScheduleTask("* * * * * *", async (cancellationToken) =>
+            scheduler.ScheduleTask(CrontabSchedule.Parse("* * * * * *"), async (cancellationToken) =>
             {
                 await actionObject.DoWorkAsync();
             });
 
-            scheduler.ScheduleTask("* * * * * *", (cancellationToken) =>
+            scheduler.ScheduleTask(CrontabSchedule.Parse("* * * * * *"), (cancellationToken) =>
             {
                 throw new Exception("Fail!!");
             });

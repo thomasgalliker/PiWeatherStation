@@ -9,6 +9,7 @@ using DisplayService.Services.Scheduling;
 using DisplayService.Tests.Extensions;
 using Moq;
 using Moq.AutoMock;
+using NCrontab;
 using Xunit;
 
 namespace DisplayService.Tests.Services
@@ -136,7 +137,7 @@ namespace DisplayService.Tests.Services
             var displayMock = this.autoMocker.GetMock<IDisplay>();
             var renderServiceMock = this.autoMocker.GetMock<IRenderService>();
 
-            var cronSchedule = "5,10 * * * * *";
+            var cronSchedule = CrontabSchedule.Parse("5,10 * * * * *");
 
             var displayManager = this.autoMocker.CreateInstance<DisplayManager>();
 

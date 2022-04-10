@@ -154,7 +154,7 @@ namespace DisplayService.Services.Scheduling
 
             if (this.hours.Any())
             {
-                var hours = this.hours.Where(m => m >= now.Hour).ToArray();
+                var hours = this.hours.Where(m => m > now.Hour).ToArray();
 
                 int fullHoursToNext;
                 if (!hours.Any())

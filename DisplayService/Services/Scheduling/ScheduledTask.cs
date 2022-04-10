@@ -1,33 +1,34 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
+using NCrontab;
 
 namespace DisplayService.Services.Scheduling
 {
     public class ScheduledTask
     {
-        public ScheduledTask(Guid id, CronExpression cronExpression, Action<CancellationToken> action)
+        public ScheduledTask(Guid id, CrontabSchedule cronExpression, Action<CancellationToken> action)
         {
             this.Id = id;
             this.CronExpression = cronExpression;
             this.Action = action;
         }
 
-        public ScheduledTask(Guid id, CronExpression cronExpression, Func<CancellationToken, Task> action)
+        public ScheduledTask(Guid id, CrontabSchedule cronExpression, Func<CancellationToken, Task> action)
         {
             this.Id = id;
             this.CronExpression = cronExpression;
             this.ActionTask = action;
         }
 
-        internal void SetCronExpression(CronExpression cronExpression)
+        internal void SetCronExpression(CrontabSchedule cronExpression)
         {
             this.CronExpression = cronExpression;
         }
 
         public Guid Id { get; }
 
-        public CronExpression CronExpression { get; private set; }
+        public CrontabSchedule CronExpression { get; private set; }
 
         internal Action<CancellationToken> Action { get; }
 

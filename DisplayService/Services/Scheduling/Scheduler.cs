@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using NCrontab;
 
 namespace DisplayService.Services.Scheduling
 {
@@ -24,14 +25,24 @@ namespace DisplayService.Services.Scheduling
             this.logger = logger;
         }
 
-        public void ScheduleTask(Guid id, CronExpression cronExpression, Func<CancellationToken, Task> func)
+        public void ScheduleTask(Guid id, string cronExpression, Func<CancellationToken, Task> func)
+        {
+            this.ScheduleTask(id, CrontabSchedule.Parse(cronExpression), func);
+        }
+
+        public void ScheduleTask(Guid id, CrontabSchedule cronExpression, Func<CancellationToken, Task> func)
         {
             var scheduledTask = new ScheduledTask(id, cronExpression, func);
 
             this.scheduledTasks.Add(scheduledTask);
         }
 
-        public Guid ScheduleTask(CronExpression cronExpression, Func<CancellationToken, Task> func)
+        public Guid ScheduleTask(string cronExpression, Func<CancellationToken, Task> func)
+        {
+            return this.ScheduleTask(CrontabSchedule.Parse(cronExpression), func);
+        }
+
+        public Guid ScheduleTask(CrontabSchedule cronExpression, Func<CancellationToken, Task> func)
         {
             var id = Guid.NewGuid();
 
@@ -40,14 +51,24 @@ namespace DisplayService.Services.Scheduling
             return id;
         }
 
-        public void ScheduleTask(Guid id, CronExpression cronExpression, Action<CancellationToken> action)
+        public void ScheduleTask(Guid id, string cronExpression, Action<CancellationToken> action)
+        {
+            this.ScheduleTask(id, CrontabSchedule.Parse(cronExpression), action);
+        }
+
+        public void ScheduleTask(Guid id, CrontabSchedule cronExpression, Action<CancellationToken> action)
         {
             var scheduledTask = new ScheduledTask(id, cronExpression, action);
 
             this.scheduledTasks.Add(scheduledTask);
         }
 
-        public Guid ScheduleTask(CronExpression cronExpression, Action<CancellationToken> action)
+        public Guid ScheduleTask(string cronExpression, Action<CancellationToken> action)
+        {
+            return this.ScheduleTask(CrontabSchedule.Parse(cronExpression), action);
+        }
+
+        public Guid ScheduleTask(CrontabSchedule cronExpression, Action<CancellationToken> action)
         {
             var id = Guid.NewGuid();
 
@@ -68,11 +89,14 @@ namespace DisplayService.Services.Scheduling
 
             while (!cancellationToken.IsCancellationRequested)
             {
-                var (lowestNextTimeToRun, lowestIds) = this.GetScheduledTasksToRunAndHowLongToWait();
+                var now = this.dateTime.Now;
+                var (lowestNextTimeToRun, lowestIds) = this.GetScheduledTasksToRunAndHowLongToWait(now);
 
-                var timeToWait = lowestNextTimeToRun.Subtract(this.dateTime.Now);
+                var timeToWait = lowestNextTimeToRun.Subtract(now);
 
                 var millisecondsDelay = (int)Math.Min(int.MaxValue, timeToWait.TotalMilliseconds);
+                this.logger.LogInformation($"Next tasks {{{string.Join(",", lowestIds)}}} run @ {lowestNextTimeToRun:O} [{millisecondsDelay}ms]");
+
                 var isCancellationRequested = await Task.Delay(millisecondsDelay, this.localCancellationTokenSource.Token).ContinueWith(task =>
                 {
                     return cancellationToken.IsCancellationRequested;
@@ -113,23 +137,22 @@ namespace DisplayService.Services.Scheduling
                     }
                 }
 
-                if (this.dateTime.Now - startTime > this.oneMinute)
+                var endTime = this.dateTime.Now;
+                if (endTime - startTime > this.oneMinute)
                 {
                     this.logger.LogWarning("Execution took more than one minute");
                 }
             }
         }
 
-        private (DateTime, IReadOnlyCollection<Guid>) GetScheduledTasksToRunAndHowLongToWait()
+        private (DateTime, IReadOnlyCollection<Guid>) GetScheduledTasksToRunAndHowLongToWait(DateTime now)
         {
             var lowestNextTimeToRun = DateTime.MaxValue;
             var lowestIds = new List<Guid>();
 
-            var now = this.dateTime.Now;
-
             foreach (var scheduledTask in this.scheduledTasks)
             {
-                var nextTimeToRun = scheduledTask.CronExpression.GetNextTimeToRun(now);
+                var nextTimeToRun = scheduledTask.CronExpression.GetNextOccurrence(now);
 
                 if (nextTimeToRun == default)
                 {
@@ -140,7 +163,7 @@ namespace DisplayService.Services.Scheduling
                 {
                     lowestIds.Clear();
                     lowestIds.Add(scheduledTask.Id);
-                    lowestNextTimeToRun = (DateTime)nextTimeToRun;
+                    lowestNextTimeToRun = nextTimeToRun;
                 }
                 else if (nextTimeToRun == lowestNextTimeToRun)
                 {
@@ -157,18 +180,18 @@ namespace DisplayService.Services.Scheduling
             this.externalCancellationToken.Register(() => this.localCancellationTokenSource.Cancel());
         }
 
-        public void ChangeScheduleAndResetScheduler(Guid id, CronExpression cronExpression)
+        public void ChangeScheduleAndResetScheduler(Guid id, CrontabSchedule cronExpression)
         {
             this.scheduledTasks.Single(t => t.Id == id).SetCronExpression(cronExpression);
 
             this.ResetScheduler();
         }
 
-        public void ChangeSchedulesAndResetScheduler(IEnumerable<(Guid Id, CronExpression CronExpression)> scheduleChanges)
+        public void ChangeSchedulesAndResetScheduler(IEnumerable<(Guid Id, CrontabSchedule CrontabSchedule)> scheduleChanges)
         {
             foreach (var scheduleItem in scheduleChanges)
             {
-                this.scheduledTasks.Single(t => t.Id == scheduleItem.Id).SetCronExpression(scheduleItem.CronExpression);
+                this.scheduledTasks.Single(t => t.Id == scheduleItem.Id).SetCronExpression(scheduleItem.CrontabSchedule);
             }
 
             this.ResetScheduler();

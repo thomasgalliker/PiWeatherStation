@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Services.Scheduling;
+using NCrontab;
 
 namespace DisplayService.Services
 {
@@ -13,11 +14,11 @@ namespace DisplayService.Services
 
         void AddRenderActions(Func<IEnumerable<IRenderAction>> renderActions);
 
-        void AddRenderActions(Func<IEnumerable<IRenderAction>> renderActions, CronExpression cronExpression);
+        void AddRenderActions(Func<IEnumerable<IRenderAction>> renderActions, CrontabSchedule cronExpression);
 
         void AddRenderActionsAsync(Func<Task<IEnumerable<IRenderAction>>> renderActions);
 
-        void AddRenderActionsAsync(Func<Task<IEnumerable<IRenderAction>>> renderActions, CronExpression cronExpression);
+        void AddRenderActionsAsync(Func<Task<IEnumerable<IRenderAction>>> renderActions, CrontabSchedule cronExpression);
 
         /// <summary>
         /// Starts rendering the defined render actions and schedules the update timers (if defined).
