@@ -1,5 +1,6 @@
 ﻿using System;
 using DisplayService.Services.Scheduling;
+using FluentAssertions;
 using Xunit;
 
 namespace DisplayService.Tests.Services.Scheduling
@@ -16,19 +17,23 @@ namespace DisplayService.Tests.Services.Scheduling
             "dd/MM/yyyy HH:mm:ss"
         };
 
-        [Fact]
-        public void CannotParseNullString()
-        {
-            var test = CronExpression.Parse("0 0 * * *");
-            var next = test.GetNextTimeToRun(DateTime.Now);
-        }
-
         //[Fact]
         //public void CannotParseNullString()
         //{
-        //    var e = Assert.Throws<ArgumentNullException>(() => CrontabSchedule.Parse(null));
-        //    Assert.That(e.ParamName, Is.EqualTo("expression"));
+        //    var test = CronExpression.Parse("0 0 * * *");
+        //    var next = test.GetNextTimeToRun(DateTime.Now);
         //}
+
+        [Fact]
+        public void CannotParseNullString()
+        {
+            // Act
+            var e = Assert.Throws<ArgumentNullException>(() => CronExpression.Parse(null));
+
+            // Assert
+            e.Should().NotBeNull();
+            e.ParamName.Should().Be("expression");
+        }
 
         //        [Fact]
         //        public void CannotParseEmptyString()

@@ -9,7 +9,7 @@ namespace DisplayService.Services.Scheduling
     {
         void ChangeScheduleAndResetScheduler(Guid id, CronExpression cronExpression);
 
-        void ChangeSchedulesAndResetScheduler(IEnumerable<ScheduleItem> scheduleChanges);
+        void ChangeSchedulesAndResetScheduler(IEnumerable<(Guid Id, CronExpression CronExpression)> scheduleChanges);
 
         void Start(CancellationToken cancellationToken = default);
 

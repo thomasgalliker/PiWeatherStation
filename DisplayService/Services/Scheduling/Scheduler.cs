@@ -164,7 +164,7 @@ namespace DisplayService.Services.Scheduling
             this.ResetScheduler();
         }
 
-        public void ChangeSchedulesAndResetScheduler(IEnumerable<ScheduleItem> scheduleChanges)
+        public void ChangeSchedulesAndResetScheduler(IEnumerable<(Guid Id, CronExpression CronExpression)> scheduleChanges)
         {
             foreach (var scheduleItem in scheduleChanges)
             {

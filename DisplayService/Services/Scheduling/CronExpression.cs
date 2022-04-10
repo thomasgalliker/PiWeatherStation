@@ -254,6 +254,11 @@ namespace DisplayService.Services.Scheduling
         /// <returns></returns>
         public static CronExpression Parse(string expression)
         {
+            if(expression == null)
+            {
+                throw new ArgumentNullException(nameof(expression));
+            }
+
             if (string.IsNullOrEmpty(expression))
             {
                 throw new ArgumentException("Empty expression is not valid", nameof(expression));
