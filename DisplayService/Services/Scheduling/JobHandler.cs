@@ -2,6 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
+using NCrontab;
 
 namespace DisplayService.Services.Scheduling
 {
@@ -16,9 +17,9 @@ namespace DisplayService.Services.Scheduling
 
         private CancellationTokenSource cancellationTokenSource;
 
-        private CronExpression cronExpression;
+        private CrontabSchedule cronExpression;
 
-        public JobHandler(Guid jobId, ICronJob cronJob, string cronExpression, IServiceScopeFactory serviceScopeFactory)
+        public JobHandler(Guid jobId, ICronJob cronJob, CrontabSchedule cronExpression, IServiceScopeFactory serviceScopeFactory)
         {
             this.JobId = jobId;
             this.cronJob = cronJob;
@@ -47,21 +48,17 @@ namespace DisplayService.Services.Scheduling
                 while (!this.cancellationTokenSource.Token.IsCancellationRequested)
                 {
                     var now = this.dateTime.Now;
-                    var timeToNext = this.cronExpression.GetTimeToNext(now);
+                    var next = this.cronExpression.GetNextOccurrence(now);
+                    var timeToNext = next - now;
 
-                    if (!timeToNext.HasValue)
-                    {
-                        return;
-                    }
-
-                    await Task.Delay((int)timeToNext.Value.TotalMilliseconds, this.cancellationTokenSource.Token);
+                    await Task.Delay((int)timeToNext.TotalMilliseconds, this.cancellationTokenSource.Token);
 
                     await this.cronJob.RunJob(this.cancellationTokenSource.Token);
                 }
             }
         }
 
-        public void ChangeSchedule<T>(string cronExpression) where T : ICronJob
+        public void ChangeSchedule<T>(CrontabSchedule cronExpression) where T : ICronJob
         {
             this.Stop();
 

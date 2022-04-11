@@ -2,12 +2,13 @@
 using System.Threading;
 using System.Threading.Tasks;
 using DisplayService.Services.Scheduling;
+using NCrontab;
 
 namespace DisplayService.Services
 {
     public interface IScheduledTask
     {
-        public CronExpression Schedule { get; }
+        public CrontabSchedule Schedule { get; }
 
         Task ExecuteAsync(CancellationToken cancellationToken);
     }
@@ -16,19 +17,19 @@ namespace DisplayService.Services
     {
         private readonly Func<Task> taskFactory;
 
-        public ScheduledTask(CronExpression schedule, Func<object> taskFactory)
+        public ScheduledTask(CrontabSchedule schedule, Func<object> taskFactory)
         {
             this.Schedule = schedule;
             //this.taskFactory = taskFactory;
         }
 
-        public ScheduledTask(CronExpression schedule, Func<Task<object>> taskFactory)
+        public ScheduledTask(CrontabSchedule schedule, Func<Task<object>> taskFactory)
         {
             this.Schedule = schedule;
             this.taskFactory = taskFactory;
         }
 
-        public CronExpression Schedule { get; }
+        public CrontabSchedule Schedule { get; }
 
         public async Task ExecuteAsync(CancellationToken cancellationToken)
         {

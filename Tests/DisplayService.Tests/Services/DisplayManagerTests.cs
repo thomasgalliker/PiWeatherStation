@@ -7,10 +7,13 @@ using DisplayService.Model;
 using DisplayService.Services;
 using DisplayService.Services.Scheduling;
 using DisplayService.Tests.Extensions;
+using DisplayService.Tests.Services.Scheduling;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
 using NCrontab;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace DisplayService.Tests.Services
 {
@@ -18,7 +21,7 @@ namespace DisplayService.Tests.Services
     {
         private readonly AutoMocker autoMocker;
 
-        public DisplayManagerTests()
+        public DisplayManagerTests(ITestOutputHelper testOutputHelper)
         {
             this.autoMocker = new AutoMocker();
 
@@ -26,8 +29,10 @@ namespace DisplayService.Tests.Services
             renderServiceMock.Setup(r => r.GetScreen())
                 .Returns(new MemoryStream());
 
-            IScheduler scheduler = this.autoMocker.CreateInstance<Scheduler>();
-            this.autoMocker.Use(scheduler);
+            this.autoMocker.Use<IScheduler>(this.autoMocker.CreateInstance<Scheduler>());
+
+            this.autoMocker.Use<ILogger<Scheduler>>(new TestOutputHelperLogger<Scheduler>(testOutputHelper));
+            this.autoMocker.Use<ILogger<DisplayManager>>(new TestOutputHelperLogger<DisplayManager>(testOutputHelper));
         }
 
         [Fact]
@@ -130,14 +135,32 @@ namespace DisplayService.Tests.Services
         public async Task ShouldAddRenderActions_WithSchedule()
         {
             // Arrange
-            var referenceDate = new DateTime(2000, 1, 1, 0, 4, 55);
+            var referenceDate = new DateTime(2000, 1, 1, 20, 59, 58);
+
+            var clockQueue = new DateTimeGenerator(
+                referenceDate,
+                new[]
+                {
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(1),
+                    TimeSpan.FromSeconds(58),
+                });
+
             var dateTimeMock = this.autoMocker.GetMock<IDateTime>();
-            dateTimeMock.SetupSequence(d => d.Now, referenceDate, n => n.AddSeconds(1));
+            dateTimeMock.SetupSequence(d => d.Now, referenceDate, (n) => clockQueue.GetNext());
 
             var displayMock = this.autoMocker.GetMock<IDisplay>();
             var renderServiceMock = this.autoMocker.GetMock<IRenderService>();
 
-            var cronSchedule = CrontabSchedule.Parse("5,10 * * * * *");
+            var cronSchedule = CrontabSchedule.Parse("0,1,2 * * * *");
+
+            var tcs = new TaskCompletionSource();
+            var recordedNextEvents = new List<ScheduledEventArgs>();
+
+            var scheduler = this.autoMocker.Get<IScheduler>();
+            scheduler.Next += (s, e) => { recordedNextEvents.Add(e); if (recordedNextEvents.Count == 2) { tcs.SetResult(); } };
 
             var displayManager = this.autoMocker.CreateInstance<DisplayManager>();
 
@@ -145,18 +168,21 @@ namespace DisplayService.Tests.Services
             displayManager.AddRenderActions(() => new List<IRenderAction> { new RenderActions.Text { Value = "Test 1" } }, cronSchedule);
             displayManager.AddRenderActions(() => new List<IRenderAction> { new RenderActions.Text { Value = "Test 2" } }, cronSchedule);
 
-            using (var cancellationTokenSource = new CancellationTokenSource(6000))
+            using (var cancellationTokenSource = new CancellationTokenSource(60000))
             {
-                await displayManager.StartAsync(cancellationTokenSource.Token, awaitScheduler: true);
+                await displayManager.StartAsync(cancellationTokenSource.Token);
+                await tcs.Task;
             }
 
             // Assert
-            dateTimeMock.Verify(d => d.Now, Times.Exactly(6));
+            dateTimeMock.Verify(d => d.Now, Times.Exactly(7));
             renderServiceMock.Verify(r => r.Clear(), Times.Exactly(1));
-            renderServiceMock.Verify(r => r.GetScreen(), Times.Exactly(2));
-            renderServiceMock.Verify(r => r.Text(It.Is<RenderActions.Text>(t => t.Value == "Test 1")), Times.Exactly(2));
-            renderServiceMock.Verify(r => r.Text(It.Is<RenderActions.Text>(t => t.Value == "Test 2")), Times.Exactly(2));
+            renderServiceMock.Verify(r => r.GetScreen(), Times.Exactly(3));
+            renderServiceMock.Verify(r => r.Text(It.Is<RenderActions.Text>(t => t.Value == "Test 1")), Times.Exactly(3));
+            renderServiceMock.Verify(r => r.Text(It.Is<RenderActions.Text>(t => t.Value == "Test 2")), Times.Exactly(3));
             renderServiceMock.VerifyNoOtherCalls();
+            displayMock.Verify(d => d.DisplayImage(It.IsAny<Stream>()), Times.Exactly(3));
+            displayMock.VerifyNoOtherCalls();
 
         }
     }
