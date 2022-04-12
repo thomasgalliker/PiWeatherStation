@@ -90,14 +90,16 @@ namespace DisplayService.Services.Scheduling
             while (!cancellationToken.IsCancellationRequested)
             {
                 var now = this.dateTime.Now;
-                var (lowestNextTimeToRun, lowestIds) = this.GetScheduledTasksToRunAndHowLongToWait(now);
+                var (nextOccurrence, taskIds) = this.GetScheduledTasksToRunAndHowLongToWait(now);
 
-                var timeToWait = lowestNextTimeToRun.Subtract(now);
+                var timeToWait = nextOccurrence.Subtract(now);
 
-                var millisecondsDelay = (int)Math.Min(int.MaxValue, timeToWait.TotalMilliseconds);
-                this.logger.LogInformation($"Next tasks {{{string.Join(",", lowestIds)}}} run @ {lowestNextTimeToRun:O} [{millisecondsDelay}ms]");
+                this.logger.LogInformation(
+                    $"Next occurrence @ {nextOccurrence:O}{Environment.NewLine}" +
+                    $" --> timeToWait={timeToWait}{Environment.NewLine}" +
+                    $" --> taskIds={string.Join(", ", taskIds.Select(id => $"{id:B}"))}");
 
-                var isCancellationRequested = await Task.Delay(millisecondsDelay, this.localCancellationTokenSource.Token).ContinueWith(task =>
+                var isCancellationRequested = await Task.Delay(timeToWait, this.localCancellationTokenSource.Token).ContinueWith(task =>
                 {
                     return cancellationToken.IsCancellationRequested;
                 });
@@ -108,12 +110,14 @@ namespace DisplayService.Services.Scheduling
                 }
 
                 var startTime = this.dateTime.Now;
-                var scheduledTasksToRun = this.scheduledTasks.Where(m => lowestIds.Contains(m.Id)).ToArray();
+                this.logger.LogDebug($"Scheduled task starting... (startTime={startTime:O})");
+                var scheduledTasksToRun = this.scheduledTasks.Where(m => taskIds.Contains(m.Id)).ToArray();
 
                 this.RaiseNextEvent(startTime, scheduledTasksToRun);
 
                 foreach (var scheduledTask in scheduledTasksToRun)
                 {
+                    this.logger.LogDebug($"Starting task with Id={scheduledTask.Id:B}...");
                     if (this.localCancellationTokenSource.IsCancellationRequested)
                     {
                         break;
@@ -133,15 +137,15 @@ namespace DisplayService.Services.Scheduling
                     }
                     catch (Exception e)
                     {
-                        this.logger.LogError(e, "Failed to execute action");
+                        this.logger.LogError(e, $"Task with Id={scheduledTask.Id:B} failed with exception");
                     }
                 }
 
                 var endTime = this.dateTime.Now;
-                if (endTime - startTime > this.oneMinute)
-                {
-                    this.logger.LogWarning("Execution took more than one minute");
-                }
+                var duration = endTime - startTime;
+                this.logger.Log(
+                    duration > this.oneMinute ? LogLevel.Warning : LogLevel.Debug, 
+                    $"Execution finished after {duration}");
             }
         }
 
