@@ -169,12 +169,7 @@ namespace DisplayService.Services
             return renderActions;
         }
 
-        public Task StartAsync(CancellationToken cancellationToken = default)
-        {
-            return this.StartAsync(cancellationToken, awaitScheduler: false);
-        }
-
-        internal async Task StartAsync(CancellationToken cancellationToken = default, bool awaitScheduler = false)
+        public async Task StartAsync(CancellationToken cancellationToken = default)
         {
             this.logger.LogInformation($"Start rendering...");
 
@@ -185,15 +180,7 @@ namespace DisplayService.Services
                 var renderActions = await this.GetRenderActionsAsync();
                 await this.UpdateDisplayAsync(renderActions);
 
-                if (awaitScheduler)
-                {
-                    await this.scheduler.StartAsync(cancellationToken);
-                }
-                else
-                {
-                    this.scheduler.Start(cancellationToken);
-                }
-
+                this.scheduler.Start(cancellationToken);
             }
             catch (Exception ex)
             {
