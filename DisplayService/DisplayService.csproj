@@ -27,7 +27,4 @@
     <PackageReference Include="eXoCooLd.Waveshare.EPaperDisplay" Version="1.0.4" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.80.3" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\Scheduling\Internals\" />
-  </ItemGroup>
 </Project>
