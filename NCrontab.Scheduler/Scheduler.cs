@@ -3,19 +3,27 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DisplayService.Services;
+using DisplayService.Services.Scheduling;
 using Microsoft.Extensions.Logging;
-using NCrontab;
+using Microsoft.Extensions.Logging.Abstractions;
+using NCrontab.Scheduler.Internals;
 
-namespace DisplayService.Services.Scheduling
+namespace NCrontab.Scheduler
 {
     public class Scheduler : IScheduler
     {
-        private readonly List<ScheduledTask> scheduledTasks = new List<ScheduledTask>();
+        private readonly List<ScheduledTaskInternal> scheduledTasks = new List<ScheduledTaskInternal>();
         private readonly IDateTime dateTime;
         private readonly ILogger<Scheduler> logger;
         private readonly TimeSpan oneMinute = new TimeSpan(0, 1, 0);
         private CancellationTokenSource localCancellationTokenSource = new CancellationTokenSource();
         private CancellationToken externalCancellationToken;
+
+        public Scheduler()
+            : this(new NullLogger<Scheduler>(), new SystemDateTime())
+        {
+        }
 
         public Scheduler(
             ILogger<Scheduler> logger,
@@ -27,52 +35,52 @@ namespace DisplayService.Services.Scheduling
 
         public void ScheduleTask(Guid id, string cronExpression, Func<CancellationToken, Task> func)
         {
-            this.ScheduleTask(id, CrontabSchedule.Parse(cronExpression), func);
+            this.AddTask(id, CrontabSchedule.Parse(cronExpression), func);
         }
 
-        public void ScheduleTask(Guid id, CrontabSchedule cronExpression, Func<CancellationToken, Task> func)
+        public void AddTask(Guid id, CrontabSchedule cronExpression, Func<CancellationToken, Task> func)
         {
-            var scheduledTask = new ScheduledTask(id, cronExpression, func);
+            var scheduledTask = new ScheduledTaskInternal(id, cronExpression, func);
 
             this.scheduledTasks.Add(scheduledTask);
         }
 
         public Guid ScheduleTask(string cronExpression, Func<CancellationToken, Task> func)
         {
-            return this.ScheduleTask(CrontabSchedule.Parse(cronExpression), func);
+            return this.AddTask(CrontabSchedule.Parse(cronExpression), func);
         }
 
-        public Guid ScheduleTask(CrontabSchedule cronExpression, Func<CancellationToken, Task> func)
+        public Guid AddTask(CrontabSchedule cronExpression, Func<CancellationToken, Task> func)
         {
             var id = Guid.NewGuid();
 
-            this.ScheduleTask(id, cronExpression, func);
+            this.AddTask(id, cronExpression, func);
 
             return id;
         }
 
         public void ScheduleTask(Guid id, string cronExpression, Action<CancellationToken> action)
         {
-            this.ScheduleTask(id, CrontabSchedule.Parse(cronExpression), action);
+            this.AddTask(id, CrontabSchedule.Parse(cronExpression), action);
         }
 
-        public void ScheduleTask(Guid id, CrontabSchedule cronExpression, Action<CancellationToken> action)
+        public void AddTask(Guid id, CrontabSchedule cronExpression, Action<CancellationToken> action)
         {
-            var scheduledTask = new ScheduledTask(id, cronExpression, action);
+            var scheduledTask = new ScheduledTaskInternal(id, cronExpression, action);
 
             this.scheduledTasks.Add(scheduledTask);
         }
 
         public Guid ScheduleTask(string cronExpression, Action<CancellationToken> action)
         {
-            return this.ScheduleTask(CrontabSchedule.Parse(cronExpression), action);
+            return this.AddTask(CrontabSchedule.Parse(cronExpression), action);
         }
 
-        public Guid ScheduleTask(CrontabSchedule cronExpression, Action<CancellationToken> action)
+        public Guid AddTask(CrontabSchedule cronExpression, Action<CancellationToken> action)
         {
             var id = Guid.NewGuid();
 
-            this.ScheduleTask(id, cronExpression, action);
+            this.AddTask(id, cronExpression, action);
 
             return id;
         }
@@ -91,6 +99,13 @@ namespace DisplayService.Services.Scheduling
             {
                 var now = this.dateTime.Now;
                 var (nextOccurrence, taskIds) = this.GetScheduledTasksToRunAndHowLongToWait(now);
+
+                if (taskIds.Count == 0)
+                {
+                    throw new InvalidOperationException(
+                        $"Scheduler must have at leaste one future task." +
+                        $"Use {nameof(this.AddTask)} methods to add tasks.");
+                }
 
                 var timeToWait = nextOccurrence.Subtract(now);
 
@@ -145,7 +160,7 @@ namespace DisplayService.Services.Scheduling
                 var endTime = this.dateTime.Now;
                 var duration = endTime - startTime;
                 this.logger.Log(
-                    duration > this.oneMinute ? LogLevel.Warning : LogLevel.Debug, 
+                    duration > this.oneMinute ? LogLevel.Warning : LogLevel.Debug,
                     $"Execution finished after {duration}");
             }
         }
@@ -211,7 +226,7 @@ namespace DisplayService.Services.Scheduling
 
         public event EventHandler<ScheduledEventArgs> Next;
 
-        private void RaiseNextEvent(DateTime signalTime, params ScheduledTask[] scheduledTasks)
+        private void RaiseNextEvent(DateTime signalTime, params ScheduledTaskInternal[] scheduledTasks)
         {
             try
             {

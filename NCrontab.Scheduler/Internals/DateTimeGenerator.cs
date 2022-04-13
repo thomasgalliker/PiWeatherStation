@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace DisplayService.Tests.Services.Scheduling
+namespace NCrontab.Scheduler.Internals
 {
-    internal class DateTimeGenerator
+    public class DateTimeGenerator
     {
         private int index = 0;
         private readonly TimeSpan[] intervals;

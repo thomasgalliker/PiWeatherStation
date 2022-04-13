@@ -25,4 +25,8 @@
   <ItemGroup>
     <ProjectReference Include="..\..\DisplayService\DisplayService.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\Scheduling\" />
+  </ItemGroup>
 </Project>

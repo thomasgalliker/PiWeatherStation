@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Linq;
 using DisplayService.Services;
-using DisplayService.Services.Scheduling;
 using DisplayService.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NCrontab.Scheduler.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Services;
+using IDateTime = DisplayService.Services.IDateTime;
+using SystemDateTime = DisplayService.Services.SystemDateTime;
 
 namespace WeatherDisplay.Extensions
 {
@@ -65,9 +67,10 @@ namespace WeatherDisplay.Extensions
             services.AddSingleton(renderSettings);
             services.AddSingleton(display);
             services.AddSingleton<IDisplayManager, DisplayManager>();
-            services.AddSingleton<IScheduler, Scheduler>();
             services.AddSingleton<IOpenWeatherMapConfiguration>(openWeatherMapConfiguration);
             services.AddSingleton<IOpenWeatherMapService, OpenWeatherMapService>();
+
+            services.AddScheduler();
         }
     }
 }

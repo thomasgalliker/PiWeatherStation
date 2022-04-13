@@ -7,7 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <Compile Include="..\DisplayService.Tests\Extensions\MockExtensions.cs" Link="Extensions\MockExtensions.cs" />
 	  <Compile Include="..\DisplayService.Tests\Services\TestHelper.cs" Link="Services\TestHelper.cs" />
 	</ItemGroup>
 
@@ -30,9 +29,5 @@
 	<ItemGroup>
 		<ProjectReference Include="..\..\DisplayService\DisplayService.csproj" />
 		<ProjectReference Include="..\..\WeatherDisplay\WeatherDisplay.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Extensions\" />
 	</ItemGroup>
 </Project>

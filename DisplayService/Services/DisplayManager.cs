@@ -69,7 +69,7 @@ namespace DisplayService.Services
             Guid id;
             if (cronExpression != null)
             {
-                id = this.scheduler.ScheduleTask(cronExpression, (c) => { });
+                id = this.scheduler.AddTask(cronExpression, (c) => { });
             }
             else
             {
@@ -83,7 +83,7 @@ namespace DisplayService.Services
         {
             try
             {
-                var scheduledTaskIds = e.Ids.ToList();
+                var scheduledTaskIds = e.TaskIds.ToList();
                 var renderActions = await this.GetRenderActionsAsync(scheduledTaskIds);
                 await this.UpdateDisplayAsync(renderActions);
             }

@@ -4,7 +4,6 @@ using System.Threading;
 using DisplayService.Services;
 using DisplayService.Services.Scheduling;
 using DisplayService.Settings;
-using DisplayService.Tests.Extensions;
 using DisplayService.Tests.Services;
 using Moq;
 using Moq.AutoMock;
@@ -17,6 +16,8 @@ using WeatherDisplay.Services;
 using WeatherDisplay.Tests.Testdata;
 using Xunit;
 using Xunit.Abstractions;
+using WeatherDisplay.Tests.Extensions;
+using IDateTime = DisplayService.Services.IDateTime;
 
 namespace WeatherDisplay.Tests
 {
@@ -72,7 +73,7 @@ namespace WeatherDisplay.Tests
             // Arrange
             var taskIds = new List<Guid>();
             var schedulerMock = this.autoMocker.GetMock<IScheduler>();
-            schedulerMock.Setup(s => s.ScheduleTask(It.IsAny<CrontabSchedule>(), It.IsAny<Action<CancellationToken>>())).
+            schedulerMock.Setup(s => s.AddTask(It.IsAny<CrontabSchedule>(), It.IsAny<Action<CancellationToken>>())).
                 Returns(() => { var id = Guid.NewGuid(); taskIds.Add(id); return id; });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
@@ -106,7 +107,7 @@ namespace WeatherDisplay.Tests
 
             var taskIds = new List<Guid>();
             var schedulerMock = this.autoMocker.GetMock<IScheduler>();
-            schedulerMock.Setup(s => s.ScheduleTask(It.IsAny<CrontabSchedule>(), It.IsAny<Action<CancellationToken>>())).
+            schedulerMock.Setup(s => s.AddTask(It.IsAny<CrontabSchedule>(), It.IsAny<Action<CancellationToken>>())).
                 Returns(() => { var id = Guid.NewGuid(); taskIds.Add(id); return id; });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
@@ -139,7 +140,7 @@ namespace WeatherDisplay.Tests
 
             var taskIds = new List<Guid>();
             var schedulerMock = this.autoMocker.GetMock<IScheduler>();
-            schedulerMock.Setup(s => s.ScheduleTask(It.IsAny<CrontabSchedule>(), It.IsAny<Action<CancellationToken>>())).
+            schedulerMock.Setup(s => s.AddTask(It.IsAny<CrontabSchedule>(), It.IsAny<Action<CancellationToken>>())).
                 Returns(() => { var id = Guid.NewGuid(); taskIds.Add(id); return id; });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
@@ -174,7 +175,7 @@ namespace WeatherDisplay.Tests
 
             var taskIds = new List<Guid>();
             var schedulerMock = this.autoMocker.GetMock<IScheduler>();
-            schedulerMock.Setup(s => s.ScheduleTask(It.IsAny<CrontabSchedule>(), It.IsAny<Action<CancellationToken>>())).
+            schedulerMock.Setup(s => s.AddTask(It.IsAny<CrontabSchedule>(), It.IsAny<Action<CancellationToken>>())).
                 Returns(() => { var id = Guid.NewGuid(); taskIds.Add(id); return id; });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();

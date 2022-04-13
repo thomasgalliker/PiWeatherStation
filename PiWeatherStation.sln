@@ -24,6 +24,12 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Api", "Weath
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Tests", "Tests\WeatherDisplay.Tests\WeatherDisplay.Tests.csproj", "{6C143F7B-29EA-483F-A453-04849AC0BC72}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrontab.Scheduler", "NCrontab.Scheduler\NCrontab.Scheduler.csproj", "{A5CC9682-239B-41B1-8FFE-61384E54C7F9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NCrontab.Scheduler.Tests", "Tests\NCrontab.Scheduler.Tests\NCrontab.Scheduler.Tests.csproj", "{61C1425E-5078-4AF6-87E7-0FB1CDDE7C67}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NCrontab.Scheduler.ConsoleApp", "NCrontab.Scheduler.ConsoleApp\NCrontab.Scheduler.ConsoleApp.csproj", "{D5CB858D-56DF-4952-BA32-B27D9E4DC398}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|anycpu = Debug|anycpu
@@ -54,6 +60,18 @@ Global
 		{6C143F7B-29EA-483F-A453-04849AC0BC72}.Debug|anycpu.Build.0 = Debug|Any CPU
 		{6C143F7B-29EA-483F-A453-04849AC0BC72}.Release|anycpu.ActiveCfg = Release|Any CPU
 		{6C143F7B-29EA-483F-A453-04849AC0BC72}.Release|anycpu.Build.0 = Release|Any CPU
+		{A5CC9682-239B-41B1-8FFE-61384E54C7F9}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{A5CC9682-239B-41B1-8FFE-61384E54C7F9}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{A5CC9682-239B-41B1-8FFE-61384E54C7F9}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{A5CC9682-239B-41B1-8FFE-61384E54C7F9}.Release|anycpu.Build.0 = Release|Any CPU
+		{61C1425E-5078-4AF6-87E7-0FB1CDDE7C67}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{61C1425E-5078-4AF6-87E7-0FB1CDDE7C67}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{61C1425E-5078-4AF6-87E7-0FB1CDDE7C67}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{61C1425E-5078-4AF6-87E7-0FB1CDDE7C67}.Release|anycpu.Build.0 = Release|Any CPU
+		{D5CB858D-56DF-4952-BA32-B27D9E4DC398}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{D5CB858D-56DF-4952-BA32-B27D9E4DC398}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{D5CB858D-56DF-4952-BA32-B27D9E4DC398}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{D5CB858D-56DF-4952-BA32-B27D9E4DC398}.Release|anycpu.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +79,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D529340B-CA55-4627-8AD7-637A562BF6B9} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
 		{6C143F7B-29EA-483F-A453-04849AC0BC72} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
+		{61C1425E-5078-4AF6-87E7-0FB1CDDE7C67} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1503D0DA-AA89-4AE5-8FE8-8167624E7A30}

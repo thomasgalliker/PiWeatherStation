@@ -3,17 +3,18 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using DisplayService.Services;
-using DisplayService.Services.Scheduling;
-using DisplayService.Tests.Extensions;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
-using NCrontab;
+using NCrontab.Scheduler.Internals;
+using NCrontab.Scheduler.Tests.Extensions;
+using NCrontab.Scheduler.Tests.Logging;
+using NCrontab.Scheduler.Tests.TestData;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace DisplayService.Tests.Services.Scheduling
+namespace NCrontab.Scheduler.Tests
 {
     public class SchedulerTests
     {
@@ -345,12 +346,12 @@ namespace DisplayService.Tests.Services.Scheduling
             var scheduler = new Scheduler(logger.Object, dateTimeMock.Object);
 
             var actionObject = new TestObject();
-            scheduler.ScheduleTask(CrontabSchedule.Parse("* * * * *"), async (cancellationToken) =>
+            scheduler.AddTask(CrontabSchedule.Parse("* * * * *"), async (cancellationToken) =>
             {
                 await actionObject.DoWorkAsync();
             });
 
-            scheduler.ScheduleTask(CrontabSchedule.Parse("* * * * *"), (cancellationToken) =>
+            scheduler.AddTask(CrontabSchedule.Parse("* * * * *"), (cancellationToken) =>
             {
                 throw new Exception("Fail!!");
             });

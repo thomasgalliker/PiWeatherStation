@@ -2,7 +2,7 @@
 using System.Linq.Expressions;
 using Moq;
 
-namespace DisplayService.Tests.Extensions
+namespace WeatherDisplay.Tests.Extensions
 {
     public static class MockExtensions
     {

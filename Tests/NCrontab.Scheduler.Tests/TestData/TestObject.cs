@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace DisplayService.Tests.Services.Scheduling
+namespace NCrontab.Scheduler.Tests.TestData
 {
     public class TestObject
     {

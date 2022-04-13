@@ -7,11 +7,11 @@ namespace DisplayService.Services
         public ScheduledEventArgs(DateTime signalTime, params Guid[] scheduledTaskIds)
         {
             this.SignalTime = signalTime;
-            this.Ids = scheduledTaskIds;
+            this.TaskIds = scheduledTaskIds;
         }
 
         public DateTime SignalTime { get; }
 
-        public Guid[] Ids { get; }
+        public Guid[] TaskIds { get; }
     }
 }
