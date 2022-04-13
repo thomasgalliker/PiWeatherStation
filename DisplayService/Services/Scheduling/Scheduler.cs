@@ -95,9 +95,10 @@ namespace DisplayService.Services.Scheduling
                 var timeToWait = nextOccurrence.Subtract(now);
 
                 this.logger.LogInformation(
-                    $"Next occurrence @ {nextOccurrence:O}{Environment.NewLine}" +
+                    $"Scheduling next event:{Environment.NewLine}" +
+                    $" --> nextOccurrence={nextOccurrence:O}{Environment.NewLine}" +
                     $" --> timeToWait={timeToWait}{Environment.NewLine}" +
-                    $" --> taskIds={string.Join(", ", taskIds.Select(id => $"{id:B}"))}");
+                    $" --> tasks: count=[{taskIds.Count}], ids={string.Join(", ", taskIds.Select(id => $"{id:B}"))}");
 
                 var isCancellationRequested = await Task.Delay(timeToWait, this.localCancellationTokenSource.Token).ContinueWith(task =>
                 {
@@ -110,7 +111,7 @@ namespace DisplayService.Services.Scheduling
                 }
 
                 var startTime = this.dateTime.Now;
-                this.logger.LogDebug($"Scheduled task starting... (startTime={startTime:O})");
+                this.logger.LogDebug($"Starting scheduled event... @ {startTime:O})");
                 var scheduledTasksToRun = this.scheduledTasks.Where(m => taskIds.Contains(m.Id)).ToArray();
 
                 this.RaiseNextEvent(startTime, scheduledTasksToRun);
