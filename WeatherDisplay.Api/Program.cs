@@ -13,7 +13,6 @@ builder.Host.UseWindowsService();
 
 // ====== Setup logging ======
 builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
 builder.Logging.AddDebug();
 builder.Logging.AddNLog();
 
