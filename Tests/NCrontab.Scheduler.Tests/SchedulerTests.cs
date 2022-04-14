@@ -151,7 +151,7 @@ namespace NCrontab.Scheduler.Tests
             var numberOfTasks = 20;
 
             // Act
-            using (var cancellationTokenSource = new CancellationTokenSource(3000))
+            using (var cancellationTokenSource = new CancellationTokenSource(2000))
             {
                 var startTask = Task.Run(async () =>
                 {
@@ -162,8 +162,6 @@ namespace NCrontab.Scheduler.Tests
                 var taskIds = Enumerable.Range(0, numberOfTasks).Select(i => Guid.NewGuid()).ToList();
                 Parallel.ForEach(taskIds, id => scheduler.AddTask(id, "* * * * *", ct => { }));
 
-                await Task.Delay(2000);
-
                 // Removing tasks concurrently
                 Parallel.ForEach(taskIds, id => scheduler.RemoveTask(id));
 
@@ -171,9 +169,7 @@ namespace NCrontab.Scheduler.Tests
             }
 
             // Assert
-            recordedNextEvents.Should().HaveCount(2);
-            recordedNextEvents[0].TaskIds.Length.Should().BeLessThanOrEqualTo(numberOfTasks);
-            recordedNextEvents[1].TaskIds.Length.Should().BeLessThanOrEqualTo(numberOfTasks);
+            recordedNextEvents.Should().HaveCount(0);
         }
 
         [Fact]
