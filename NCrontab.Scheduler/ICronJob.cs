@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-namespace DisplayService.Services.Scheduling
+namespace NCrontab.Scheduler
 {
     public interface ICronJob
     {

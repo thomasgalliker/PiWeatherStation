@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DisplayService.Model;
-using DisplayService.Services.Scheduling;
 using Microsoft.Extensions.Logging;
 using NCrontab;
+using NCrontab.Scheduler;
 
 namespace DisplayService.Services
 {

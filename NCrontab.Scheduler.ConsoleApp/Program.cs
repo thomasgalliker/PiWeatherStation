@@ -13,7 +13,7 @@
 
             // Create instance of Scheduler
             // or inject IScheduler using dependency injection.
-            var scheduler = new Scheduler();
+            IScheduler scheduler = new Scheduler();
 
             // Subscribe Next event to get notified
             // for all tasks that are executed.
@@ -39,7 +39,7 @@
             Console.ReadLine();
         }
 
-        private static void OnSchedulerNext(object? sender, DisplayService.Services.ScheduledEventArgs e)
+        private static void OnSchedulerNext(object? sender, ScheduledEventArgs e)
         {
             Console.WriteLine($"{DateTime.Now:O} -> OnSchedulerNext with TaskIds={string.Join(", ", e.TaskIds.Select(i => $"{i:B}"))}");
         }

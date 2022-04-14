@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using DisplayService.Model;
-using DisplayService.Services.Scheduling;
 using NCrontab;
 
 namespace DisplayService.Services

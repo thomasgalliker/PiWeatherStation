@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using DisplayService.Services;
-using DisplayService.Services.Scheduling;
 using DisplayService.Settings;
 using DisplayService.Tests.Services;
 using Moq;
@@ -18,6 +17,7 @@ using Xunit;
 using Xunit.Abstractions;
 using WeatherDisplay.Tests.Extensions;
 using IDateTime = DisplayService.Services.IDateTime;
+using NCrontab.Scheduler;
 
 namespace WeatherDisplay.Tests
 {

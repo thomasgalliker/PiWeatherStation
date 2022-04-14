@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NCrontab.Scheduler
+namespace NCrontab.Scheduler.Internals
 {
     public interface IDateTime
     {

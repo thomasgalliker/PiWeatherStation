@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DisplayService.Services
+namespace NCrontab.Scheduler
 {
     public class ScheduledEventArgs : EventArgs
     {

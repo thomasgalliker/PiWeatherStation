@@ -4,20 +4,18 @@ namespace NCrontab.Scheduler.Tests.TestData
 {
     public class TestObject
     {
-        public bool Modified => this.ModifiedCount > 0;
-
-        public int ModifiedCount { get; private set; }
+        public int RunCount { get; private set; }
 
         public string CronExpression { get; set; }
 
-        public void DoWork()
+        public void Run()
         {
-            this.ModifiedCount++;
+            this.RunCount++;
         }
 
-        public Task DoWorkAsync()
+        public Task RunAsync()
         {
-            this.ModifiedCount++;
+            this.Run();
 
             return Task.CompletedTask;
         }

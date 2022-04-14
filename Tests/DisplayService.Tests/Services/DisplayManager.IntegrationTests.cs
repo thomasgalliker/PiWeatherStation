@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Services;
 using DisplayService.Tests.Extensions;
-using DisplayService.Services.Scheduling;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
@@ -30,7 +29,7 @@ namespace DisplayService.Tests.Services
             renderServiceMock.Setup(r => r.GetScreen())
                 .Returns(new MemoryStream());
 
-            this.autoMocker.Use<IScheduler>(this.autoMocker.CreateInstance<Scheduler>());
+            this.autoMocker.Use<IScheduler>(this.autoMocker.CreateInstance<Scheduler>(enablePrivate: true));
 
             this.autoMocker.Use<ILogger<Scheduler>>(new TestOutputHelperLogger<Scheduler>(testOutputHelper));
             this.autoMocker.Use<ILogger<DisplayManager>>(new TestOutputHelperLogger<DisplayManager>(testOutputHelper));
@@ -53,13 +52,11 @@ namespace DisplayService.Tests.Services
                     TimeSpan.FromSeconds(58),
                 });
 
-            var dateTimeMock = this.autoMocker.GetMock<DisplayService.Services.IDateTime>();
+            var dateTimeMock = this.autoMocker.GetMock<NCrontab.Scheduler.Internals.IDateTime>();
             dateTimeMock.SetupSequence(d => d.Now, referenceDate, (n) => clockQueue.GetNext());
 
             var displayMock = this.autoMocker.GetMock<IDisplay>();
             var renderServiceMock = this.autoMocker.GetMock<IRenderService>();
-
-            var cronSchedule = CrontabSchedule.Parse("0,1,2 * * * *");
 
             var tcs = new TaskCompletionSource();
             var recordedNextEvents = new List<ScheduledEventArgs>();
@@ -67,11 +64,18 @@ namespace DisplayService.Tests.Services
             var scheduler = this.autoMocker.Get<IScheduler>();
             scheduler.Next += (s, e) => { recordedNextEvents.Add(e); if (recordedNextEvents.Count == 2) { tcs.SetResult(); } };
 
+            var cronSchedule = CrontabSchedule.Parse("0,1,2 * * * *");
+
             var displayManager = this.autoMocker.CreateInstance<DisplayManager>();
 
             // Act
-            displayManager.AddRenderActions(() => new List<IRenderAction> { new RenderActions.Text { Value = "Test 1" } }, cronSchedule);
-            displayManager.AddRenderActions(() => new List<IRenderAction> { new RenderActions.Text { Value = "Test 2" } }, cronSchedule);
+            displayManager.AddRenderActions(
+                () => new List<IRenderAction> { new RenderActions.Text { Value = "Test 1" } },
+                cronSchedule);
+
+            displayManager.AddRenderActions(
+                () => new List<IRenderAction> { new RenderActions.Text { Value = "Test 2" } },
+                cronSchedule);
 
             using (var cancellationTokenSource = new CancellationTokenSource(60000))
             {

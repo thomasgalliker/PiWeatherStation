@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using NCrontab;
 
-namespace DisplayService.Services.Scheduling
+namespace NCrontab.Scheduler
 {
     public interface IScheduler
     {
@@ -27,11 +26,21 @@ namespace DisplayService.Services.Scheduling
         /// <returns></returns>
         Task StartAsync(CancellationToken cancellationToken = default);
 
+        bool IsRunning { get; }
+
+        Guid AddTask(string cronExpression, Action<CancellationToken> action);
+
         Guid AddTask(CrontabSchedule cronExpression, Action<CancellationToken> action);
+
+        void AddTask(Guid id, string cronExpression, Action<CancellationToken> action);
 
         void AddTask(Guid id, CrontabSchedule cronExpression, Action<CancellationToken> action);
 
+        Guid AddTask(string cronExpression, Func<CancellationToken, Task> func);
+
         Guid AddTask(CrontabSchedule cronExpression, Func<CancellationToken, Task> func);
+
+        void AddTask(Guid id, string cronExpression, Func<CancellationToken, Task> func);
 
         void AddTask(Guid id, CrontabSchedule cronExpression, Func<CancellationToken, Task> func);
 
@@ -40,6 +49,8 @@ namespace DisplayService.Services.Scheduling
         /// of the next task in the pipeline.
         /// </summary>
         event EventHandler<ScheduledEventArgs> Next;
+
+        void RemoveTask(Guid taskId);
 
         /// <summary>
         /// All scheduling operations are aborted immediately.

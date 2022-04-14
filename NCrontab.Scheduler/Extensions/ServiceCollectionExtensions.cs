@@ -1,5 +1,5 @@
-﻿using DisplayService.Services.Scheduling;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using NCrontab.Scheduler.Internals;
 
 namespace NCrontab.Scheduler.Extensions
@@ -9,8 +9,7 @@ namespace NCrontab.Scheduler.Extensions
         public static void AddScheduler(this IServiceCollection services)
         {
             // Register services
-            services.AddSingleton<IDateTime, SystemDateTime>();
-            services.AddSingleton<IScheduler, Scheduler>();
+            services.AddSingleton<IScheduler>(x => new Scheduler(x.GetRequiredService<ILogger<Scheduler>>()));
         }
     }
 }
