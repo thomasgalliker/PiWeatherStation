@@ -151,7 +151,7 @@ namespace NCrontab.Scheduler.Tests
             var numberOfTasks = 20;
 
             // Act
-            using (var cancellationTokenSource = new CancellationTokenSource(2000))
+            using (var cancellationTokenSource = new CancellationTokenSource(1000))
             {
                 var startTask = Task.Run(async () =>
                 {
@@ -169,7 +169,7 @@ namespace NCrontab.Scheduler.Tests
             }
 
             // Assert
-            recordedNextEvents.Should().HaveCount(0);
+            recordedNextEvents.Count.Should().BeInRange(0, 2);
         }
 
         [Fact]
