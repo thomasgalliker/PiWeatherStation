@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace NCrontab.Scheduler
 {
-    public interface IScheduler
+    public interface IScheduler : IDisposable
     {
         void ChangeScheduleAndResetScheduler(Guid id, CrontabSchedule cronExpression);
 

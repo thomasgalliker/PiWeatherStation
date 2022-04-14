@@ -221,7 +221,7 @@ namespace DisplayService.Services
             if (disposing)
             {
                 this.scheduler.Next -= this.OnNextSchedule;
-                this.scheduler.Stop();
+                this.scheduler.Dispose();
 
                 this.renderingSetup.Clear();
             }
@@ -234,7 +234,5 @@ namespace DisplayService.Services
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        ~DisplayManager() => this.Dispose(false);
     }
 }

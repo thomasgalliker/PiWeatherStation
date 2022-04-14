@@ -21,6 +21,7 @@ namespace NCrontab.Scheduler
         private CancellationTokenSource localCancellationTokenSource;
         private CancellationToken externalCancellationToken;
         private bool isRunning;
+        private bool disposed;
 
         public Scheduler()
             : this(new NullLogger<Scheduler>(), new SystemDateTime())
@@ -199,8 +200,14 @@ namespace NCrontab.Scheduler
                         .ContinueWith(ct =>
                         {
                             var userCanceled = cancellationToken.IsCancellationRequested;
-                            return userCanceled;
+                            var tokenCanceled = ct.Status == TaskStatus.Canceled;
+                            return userCanceled /*|| tokenCanceled*/;
                         });
+
+                    if (!this.IsRunning)
+                    {
+                        return;
+                    }
 
                     if (isCancellationRequested)
                     {
@@ -269,14 +276,18 @@ namespace NCrontab.Scheduler
             get => this.isRunning;
             private set
             {
-                this.isRunning = value;
-                if (value)
+                if (this.isRunning != value)
                 {
-                    this.logger.LogDebug("Started");
-                }
-                else
-                {
-                    this.logger.LogDebug("Stopped");
+                    this.isRunning = value;
+
+                    if (value)
+                    {
+                        this.logger.LogDebug("Started");
+                    }
+                    else
+                    {
+                        this.logger.LogDebug("Stopped");
+                    }
                 }
             }
         }
@@ -378,6 +389,29 @@ namespace NCrontab.Scheduler
                 this.localCancellationTokenSource.Cancel();
                 this.IsRunning = false;
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    if (this.IsRunning)
+                    {
+                        this.Stop();
+                    }
+                }
+
+                this.disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            this.Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
     }
 }
