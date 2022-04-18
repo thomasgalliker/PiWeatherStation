@@ -2,6 +2,7 @@
 using System.CommandLine;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using DisplayService.ConsoleApp.Commands;
@@ -63,15 +64,15 @@ namespace DisplayService.ConsoleApp
         {
             var services = new ServiceCollection();
 
+            var dateTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat;
             services.AddLogging(o =>
             {
                 o.ClearProviders();
                 o.SetMinimumLevel(LogLevel.Debug);
                 o.AddDebug();
-                o.AddSimpleConsole(o =>
+                o.AddSimpleConsole(c =>
                 {
-                    o.SingleLine = true;
-                    o.TimestampFormat = "hh:mm:ss ";
+                    c.TimestampFormat = $"{dateTimeFormat.ShortDatePattern} {dateTimeFormat.LongTimePattern} ";
                 });
             });
 

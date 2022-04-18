@@ -16,6 +16,7 @@
 	<PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="6.0.0" />
 	<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
 	<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.16.0" />
+	<PackageReference Include="NCrontab.Scheduler.AspNetCore" Version="1.0.20" />
 	<PackageReference Include="NLog.Web.AspNetCore" Version="4.14.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.16.0" />
