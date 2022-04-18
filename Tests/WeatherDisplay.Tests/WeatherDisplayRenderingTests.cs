@@ -73,8 +73,8 @@ namespace WeatherDisplay.Tests
             // Arrange
             var taskIds = new List<Guid>();
             var schedulerMock = this.autoMocker.GetMock<IScheduler>();
-            schedulerMock.Setup(s => s.AddTask(It.IsAny<CrontabSchedule>(), It.IsAny<Action<CancellationToken>>())).
-                Returns(() => { var id = Guid.NewGuid(); taskIds.Add(id); return id; });
+            schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
+                Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
             displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
@@ -107,8 +107,8 @@ namespace WeatherDisplay.Tests
 
             var taskIds = new List<Guid>();
             var schedulerMock = this.autoMocker.GetMock<IScheduler>();
-            schedulerMock.Setup(s => s.AddTask(It.IsAny<CrontabSchedule>(), It.IsAny<Action<CancellationToken>>())).
-                Returns(() => { var id = Guid.NewGuid(); taskIds.Add(id); return id; });
+            schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
+                Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
             displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
@@ -140,8 +140,8 @@ namespace WeatherDisplay.Tests
 
             var taskIds = new List<Guid>();
             var schedulerMock = this.autoMocker.GetMock<IScheduler>();
-            schedulerMock.Setup(s => s.AddTask(It.IsAny<CrontabSchedule>(), It.IsAny<Action<CancellationToken>>())).
-                Returns(() => { var id = Guid.NewGuid(); taskIds.Add(id); return id; });
+            schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
+                 Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
             displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, dateTimeMock.Object, this.appSettingsMock.Object);
@@ -175,8 +175,8 @@ namespace WeatherDisplay.Tests
 
             var taskIds = new List<Guid>();
             var schedulerMock = this.autoMocker.GetMock<IScheduler>();
-            schedulerMock.Setup(s => s.AddTask(It.IsAny<CrontabSchedule>(), It.IsAny<Action<CancellationToken>>())).
-                Returns(() => { var id = Guid.NewGuid(); taskIds.Add(id); return id; });
+            schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
+                  Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
             displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, dateTimeMock.Object, this.appSettingsMock.Object);
