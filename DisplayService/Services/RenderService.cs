@@ -74,6 +74,24 @@ namespace DisplayService.Services
             {
                 var paint = RenderTools.GetPaint(text.Font, text.FontSize, text.FontWeight, text.FontWidth, text.ForegroundColor, text.Bold);
                 var (width, height, horizontalOffset, verticalOffset, left, top) = RenderTools.GetBounds(text.X, text.Y, text.Value, text.HorizontalTextAlignment, text.VerticalTextAlignment, paint);
+
+                if (text.AdjustsFontSizeToFitWidth)
+                {
+                    var maxWidth = this.renderSettings.Width;
+                    if (left + width > maxWidth)
+                    {
+                        var maxFontSize = GetMaxFontSize(maxWidth - left, paint.Typeface, text.Value);
+                        if (text.FontSize != maxFontSize)
+                        {
+                            // In case we got a change in font size,
+                            // we retry to draw the text
+                            text.FontSize = maxFontSize;
+                            this.Text(text);
+                            return;
+                        }
+                    }
+                }
+
                 var textXPosition = text.X + horizontalOffset;
                 var textYPosition = text.Y + verticalOffset;
 
@@ -92,6 +110,43 @@ namespace DisplayService.Services
             }
         }
 
+        private static float GetMaxFontSize(double sectorSize, SKTypeface typeface, string text, float degreeOfCertainty = 1f, float minFontSize = 1f, float maxFontSize = 100f)
+        {
+            var max = maxFontSize; // The upper bound. We know the font size is below this value
+            var min = minFontSize; // The lower bound, We know the font size is equal to or above this value
+            var last = -1f; // The last calculated value.
+            float value;
+            while (true)
+            {
+                value = min + ((max - min) / 2); // Find the half way point between Max and Min
+                using (var ft = new SKFont(typeface, value))
+                using (var paint = new SKPaint(ft))
+                {
+                    if (paint.MeasureText(text) > sectorSize) // Measure the string size at this font size
+                    {
+                        // The text size is too large
+                        // therefore the max possible size is below value
+                        last = value;
+                        max = value;
+                    }
+                    else
+                    {
+                        // The text fits within the area
+                        // therefore the min size is above or equal to value
+                        min = value;
+
+                        // Check if this value is within our degree of certainty
+                        if (Math.Abs(last - value) <= degreeOfCertainty)
+                        {
+                            return last; // Value is within certainty range, we found the best font size!
+                        }
+
+                        //This font difference is not within our degree of certainty
+                        last = value;
+                    }
+                }
+            }
+        }
         public void Rectangle(RenderActions.Rectangle rectangle)
         {
             try
@@ -167,45 +222,14 @@ namespace DisplayService.Services
             return x;
         }
 
-        [Obsolete]
-        protected virtual void OnScreenChanged(int x, int y, int width, int height, bool delay, string command, string values)
-        {
-            //if (persist)
-            {
-                //Export(command + (values == null ? string.Empty : "\t" + values));
-            }
-
-            // Clip to ensure dimensions are within screen
-            var hoffset = x < 0 ? 0 - x : 0;
-            x += hoffset;
-            width -= hoffset;
-
-            var voffset = y < 0 ? 0 - y : 0;
-            y += voffset;
-            height -= voffset;
-
-            if (x < this.renderSettings.Width && y < this.renderSettings.Height)
-            {
-                //ScreenChangedEventArgs evt = new()
-                //{
-                //    X = x,
-                //    Y = y,
-                //    Width = Math.Min(width, _renderSettings.Width - x),
-                //    Height = Math.Min(height, _renderSettings.Height - y),
-                //    Delay = delay,
-                //};
-                //ScreenChanged?.Invoke(this, evt);
-            }
-        }
-
         public Stream GetScreen()
         {
             var memoryStream = new MemoryStream();
-            using (var wstream = new SKManagedWStream(memoryStream))
+            using (var wStream = new SKManagedWStream(memoryStream))
             {
                 if (this.renderSettings.Rotation == 0)
                 {
-                    this.screen.Encode(wstream, SKEncodedImageFormat.Png, 100);
+                    this.screen.Encode(wStream, SKEncodedImageFormat.Png, 100);
                 }
                 else
                 {
@@ -225,7 +249,7 @@ namespace DisplayService.Services
                             surface.Translate(newWidth, 0);
                             surface.RotateDegrees(this.renderSettings.Rotation);
                             surface.DrawBitmap(this.screen, 0, 0);
-                            image.Encode(wstream, SKEncodedImageFormat.Png, 100);
+                            image.Encode(wStream, SKEncodedImageFormat.Png, 100);
                         }
                     }
                 }
@@ -238,9 +262,6 @@ namespace DisplayService.Services
         private void RefreshScreen()
         {
             this.ClearCanvas();
-            //Import();
-
-            this.OnScreenChanged(0, 0, this.renderSettings.Width, this.renderSettings.Height, false, "refresh", null);
         }
 
         private void AddImage(RenderActions.Image image)
@@ -298,8 +319,6 @@ namespace DisplayService.Services
                     }
                 }
             }
-
-            //this.OnScreenChanged(image.X, image.Y, width, height, image.Delay, "image", null /*JsonSerializer.Serialize<RenderActions.Image>(image)*/);
         }
 
         private void AddGraphic(RenderActions.Graphic graphic)
@@ -334,8 +353,6 @@ namespace DisplayService.Services
                 throw new ArgumentException("An exception occurred trying to add graphical image to the canvas: " + ex.Message, nameof(graphic.Data), ex);
 #pragma warning restore CA2208 // Instantiate argument exceptions correctly
             }
-
-            this.OnScreenChanged(graphic.X, graphic.Y, width, height, graphic.Delay, "graphic", null);
         }
 
         protected virtual void Dispose(bool disposing)

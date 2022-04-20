@@ -1,14 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 using WeatherDisplay.Model.OpenWeatherMap;
+using WeatherDisplay.Model.OpenWeatherMap.Converters;
 
 namespace WeatherDisplay.Tests.Testdata
 {
     internal static class WeatherInfos
     {
+        private static readonly JsonSerializerSettings JsonSerializerSettings = CreateMetricJsonSerializerSettings();
+
+        private static JsonSerializerSettings CreateMetricJsonSerializerSettings()
+        {
+            var settings = new JsonSerializerSettings();
+            settings.Converters.Add(new CelsiusTemperatureJsonConverter());
+            return settings;
+        }
+
         internal static WeatherInfo GetTestWeatherInfo()
         {
             return GetTestWeatherInfo(Temperature.FromCelsius(5.5d));
+        }
+
+        internal static string GetTestWeatherInfoJson()
+        {
+            var weatherInfo = GetTestWeatherInfo();
+            var weatherInfoJson = JsonConvert.SerializeObject(weatherInfo, JsonSerializerSettings);
+            return weatherInfoJson;
         }
 
         internal static WeatherInfo GetTestWeatherInfo(Temperature mainTemperature)
@@ -20,6 +38,9 @@ namespace WeatherDisplay.Tests.Testdata
                 Main = new TemperatureInfo
                 {
                     Temperature = mainTemperature,
+                    Humidity = 35,
+                    Pressure = 998,
+                    FeelsLike = mainTemperature,
                     MinimumTemperature = mainTemperature - 10,
                     MaximumTemperature = mainTemperature + 10,
                 },

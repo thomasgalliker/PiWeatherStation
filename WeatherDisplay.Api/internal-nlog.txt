@@ -1,0 +1,14 @@
+2022-04-13 23:49:23.8019 Info Message Template Auto Format enabled
+2022-04-13 23:49:23.8191 Info Loading assembly: NLog.Web.AspNetCore
+2022-04-13 23:49:23.8409 Info Adding target FileTarget(Name=allfile)
+2022-04-13 23:49:23.8409 Info Adding target ConsoleTarget(Name=console)
+2022-04-13 23:49:23.8697 Info Validating config: TargetNames=allfile, console, ConfigItems=40, FilePath=C:\src\github\thomasgalliker\PiWeatherStation\WeatherDisplay.Api\bin\Debug\net6.0\NLog.config
+2022-04-13 23:49:23.8815 Info Configuration initialized.
+2022-04-13 23:49:23.8815 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.7.11.13229. Product version: 4.7.11+33ed3a9f86277651e93ddf39cda64a046a06778b. GlobalAssemblyCache: False
+2022-04-13 23:50:32.9901 Info Message Template Auto Format enabled
+2022-04-13 23:50:33.0030 Info Loading assembly: NLog.Web.AspNetCore
+2022-04-13 23:50:33.0382 Info Adding target FileTarget(Name=allfile)
+2022-04-13 23:50:33.0382 Info Adding target ConsoleTarget(Name=console)
+2022-04-13 23:50:33.0557 Info Validating config: TargetNames=allfile, console, ConfigItems=40, FilePath=C:\src\github\thomasgalliker\PiWeatherStation\WeatherDisplay.Api\bin\Debug\net6.0\NLog.config
+2022-04-13 23:50:33.0671 Info Configuration initialized.
+2022-04-13 23:50:33.0671 Info NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c. File version: 4.7.11.13229. Product version: 4.7.11+33ed3a9f86277651e93ddf39cda64a046a06778b. GlobalAssemblyCache: False

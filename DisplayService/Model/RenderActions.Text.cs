@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using DisplayService.Services;
 
 namespace DisplayService.Model
 {
+    [DebuggerDisplay("Text: Value={Value}, X={X}, Y={Y}")]
     public partial class RenderActions
     {
         /// <summary>
@@ -78,6 +80,9 @@ namespace DisplayService.Model
                     this.fontSize = value;
                 }
             }
+
+            public bool AdjustsFontSizeToFitWidth { get; set; }
+
             /// <summary>
             /// Font weight of the text (100 - 900, optional)
             /// </summary>
@@ -97,12 +102,6 @@ namespace DisplayService.Model
             public string ForegroundColor { get; set; } = "#FF000000";
 
             public string BackgroundColor { get; set; } = "#00000000";
-
-            /// <summary>
-            /// Delay screen update (optional)
-            /// </summary>
-            /// <example>false</example>
-            public bool Delay { get; set; } = false;
 
             public void Render(IRenderService renderService)
             {

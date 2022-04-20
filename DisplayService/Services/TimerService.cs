@@ -19,12 +19,10 @@ namespace DisplayService.Services
 
         public TimerService()
         {
-            this.timer = new Timer
-            {
-                AutoReset = true,
-            };
-            this.timer.Elapsed += this.ElapsedAction;
+            this.timer = new Timer();
+            this.timer.Elapsed += this.ElapsedInternal;
 
+            this.AutoReset = true;
             this.TargetTime = default;
             this.TargetMillisecond = 0;
             this.ToleranceMillisecond = 0;
@@ -35,6 +33,12 @@ namespace DisplayService.Services
         public int TargetMillisecond { get; set; }
 
         public int ToleranceMillisecond { get; set; }
+
+        public bool AutoReset
+        {
+            get => this.timer.AutoReset;
+            set => this.timer.AutoReset = value;
+        }
 
         public bool Enabled
         {
@@ -124,14 +128,9 @@ namespace DisplayService.Services
             this.dueTime = now.AddMilliseconds(next);
         }
 
-        private void ElapsedAction(object sender, System.Timers.ElapsedEventArgs e)
+        private void ElapsedInternal(object sender, System.Timers.ElapsedEventArgs e)
         {
             this.Elapsed?.Invoke(this, new TimerElapsedEventArgs(e.SignalTime));
-
-            if (this.timer.AutoReset) // TODO: Always!?
-            {
-                //SetInterval();
-            }
         }
 
         protected void Dispose(bool disposing)
@@ -143,7 +142,7 @@ namespace DisplayService.Services
 
             if (disposing)
             {
-                this.timer.Elapsed -= this.ElapsedAction;
+                this.timer.Elapsed -= this.ElapsedInternal;
                 this.timer.Dispose();
             }
 

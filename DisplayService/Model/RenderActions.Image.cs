@@ -1,9 +1,11 @@
-﻿using DisplayService.Services;
+﻿using System.Diagnostics;
+using DisplayService.Services;
 
 namespace DisplayService.Model
 {
     public partial class RenderActions
     {
+        [DebuggerDisplay("StreamImage: X={X}, Y={Y}")]
         public abstract class Image : IRenderAction, ISurface
         {
             /// <summary>

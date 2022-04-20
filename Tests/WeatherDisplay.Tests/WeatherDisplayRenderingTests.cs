@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using DisplayService.Services;
 using DisplayService.Settings;
 using DisplayService.Tests.Services;
 using Moq;
 using Moq.AutoMock;
+using NCrontab;
 using SkiaSharp;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.OpenWeatherMap;
@@ -13,10 +15,13 @@ using WeatherDisplay.Services;
 using WeatherDisplay.Tests.Testdata;
 using Xunit;
 using Xunit.Abstractions;
+using WeatherDisplay.Tests.Extensions;
+using IDateTime = DisplayService.Services.IDateTime;
+using NCrontab.Scheduler;
 
 namespace WeatherDisplay.Tests
 {
-    public class DisplayManagerTests
+    public class WeatherDisplayRenderingTests
     {
         private readonly TestHelper testHelper;
         private readonly AutoMocker autoMocker;
@@ -25,7 +30,7 @@ namespace WeatherDisplay.Tests
         private readonly TestDisplay testDisplay;
         private readonly Mock<IOpenWeatherMapService> openWeatherMapServiceMock;
 
-        public DisplayManagerTests(ITestOutputHelper testOutputHelper)
+        public WeatherDisplayRenderingTests(ITestOutputHelper testOutputHelper)
         {
             this.testHelper = new TestHelper(testOutputHelper);
             this.autoMocker = new AutoMocker();
@@ -54,6 +59,8 @@ namespace WeatherDisplay.Tests
             this.openWeatherMapServiceMock = this.autoMocker.GetMock<IOpenWeatherMapService>();
             this.openWeatherMapServiceMock.Setup(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()))
                 .ReturnsAsync(WeatherInfos.GetTestWeatherInfo());
+            this.openWeatherMapServiceMock.Setup(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(OneCallWeatherInfos.GetTestWeatherInfo());
             this.openWeatherMapServiceMock.Setup(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()))
                 .ReturnsAsync(Icons.Sun);
 
@@ -64,20 +71,20 @@ namespace WeatherDisplay.Tests
         public void ShouldRenderWeatherActions()
         {
             // Arrange
-            var timerMocks = new List<Mock<ITimerService>>();
-            var timerServiceFactoryMock = this.autoMocker.GetMock<ITimerServiceFactory>();
-            timerServiceFactoryMock.Setup(f => f.Create())
-                .Returns(() => { var mock = new Mock<ITimerService>(); timerMocks.Add(mock); return mock.Object; });
+            var taskIds = new List<Guid>();
+            var schedulerMock = this.autoMocker.GetMock<IScheduler>();
+            schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
+                Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
             displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
-            displayManager.StartAsync();
+            _ = displayManager.StartAsync();
 
             // Act
-            timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
-            timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
-            timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
-            timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
 
             // Assert
             var bitmapStream = this.testDisplay.GetDisplayImage();
@@ -98,20 +105,20 @@ namespace WeatherDisplay.Tests
                 .ReturnsAsync(WeatherInfos.GetTestWeatherInfo(Temperature.FromCelsius(1.8f)))
                 ;
 
-            var timerMocks = new List<Mock<ITimerService>>();
-            var timerServiceFactoryMock = this.autoMocker.GetMock<ITimerServiceFactory>();
-            timerServiceFactoryMock.Setup(f => f.Create())
-                .Returns(() => { var mock = new Mock<ITimerService>(); timerMocks.Add(mock); return mock.Object; });
+            var taskIds = new List<Guid>();
+            var schedulerMock = this.autoMocker.GetMock<IScheduler>();
+            schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
+                Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
             displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
-            displayManager.StartAsync();
+            _ = displayManager.StartAsync();
 
             // Act
-            timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
-            timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
-            timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
-            timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
 
             // Assert
             var bitmapStream = this.testDisplay.GetDisplayImage();
@@ -121,7 +128,38 @@ namespace WeatherDisplay.Tests
         }
 
         [Fact]
-        public void ShouldRenderWeatherActions_DateTimeChanges()
+        public void ShouldRenderWeatherActions_DateTimeChanges_Hours()
+        {
+            // Arrange
+            var startDateTime = new DateTime(2000, 01, 01, 0, 0, 0, DateTimeKind.Local);
+            var endDateTime = startDateTime.AddDays(3);
+            var numberOfHours = (int)endDateTime.Subtract(startDateTime).TotalHours;
+
+            var dateTimeMock = this.autoMocker.GetMock<IDateTime>();
+            dateTimeMock.SetupSequence(d => d.Now, startDateTime, n => n.AddHours(1));
+
+            var taskIds = new List<Guid>();
+            var schedulerMock = this.autoMocker.GetMock<IScheduler>();
+            schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
+                 Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
+
+            IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
+            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, dateTimeMock.Object, this.appSettingsMock.Object);
+            _ = displayManager.StartAsync();
+
+            // Act
+            for (var i = 0; i < numberOfHours; i++)
+            {
+                schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+            }
+
+            // Assert
+            var bitmapStream = this.testDisplay.GetDisplayImage();
+            this.testHelper.WriteFile(bitmapStream);
+        }
+
+        [Fact]
+        public void ShouldRenderWeatherActions_DateTimeChanges_Days()
         {
             // Arrange
             var beginOfYear = new DateTime(2000, 01, 01, 23, 59, 59, DateTimeKind.Local);
@@ -133,29 +171,26 @@ namespace WeatherDisplay.Tests
             for (var i = 0; i <= numberOfDaysInYear; i++)
             {
                 dateTimeSetupSequence.Returns(beginOfYear.AddDays(i));
-                dateTimeSetupSequence.Returns(beginOfYear.AddDays(i));
             }
 
-            var timerMocks = new List<Mock<ITimerService>>();
-            var timerServiceFactoryMock = this.autoMocker.GetMock<ITimerServiceFactory>();
-            timerServiceFactoryMock.Setup(f => f.Create())
-                .Returns(() => { var mock = new Mock<ITimerService>(); timerMocks.Add(mock); return mock.Object; });
+            var taskIds = new List<Guid>();
+            var schedulerMock = this.autoMocker.GetMock<IScheduler>();
+            schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
+                  Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
             displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, dateTimeMock.Object, this.appSettingsMock.Object);
-            displayManager.StartAsync();
+            _ = displayManager.StartAsync();
 
             // Act
             for (var i = 0; i < numberOfDaysInYear; i++)
             {
-                timerMocks.ForEach((t) => t.Raise(t => t.Elapsed += null, new TimerElapsedEventArgs()));
+                schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
             }
 
             // Assert
             var bitmapStream = this.testDisplay.GetDisplayImage();
             this.testHelper.WriteFile(bitmapStream);
-
-            //dateTimeMock.Verify(d => d.Now, Times.Exactly(numberOfDaysInYear * 2));
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
-using DisplayService.Services;
 
-namespace InvoiceScanner.Api.Services.System
+namespace DisplayService.Services
 {
     public class SystemDateTime : IDateTime
     {
