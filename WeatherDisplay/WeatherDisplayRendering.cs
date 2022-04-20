@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using DisplayService.Model;
 using DisplayService.Services;
+using NCrontab;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.OpenWeatherMap;
@@ -44,7 +44,7 @@ namespace WeatherDisplay
                             Y = 50,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = dateTimeNow.ToString("dddd, dd. MMMM"),
+                            Value = dateTimeNow.ToString("dddd, d. MMMM"),
                             ForegroundColor = "#FFFFFF",
                             FontSize = 70,
                             AdjustsFontSizeToFitWidth = true,
@@ -66,7 +66,7 @@ namespace WeatherDisplay
                         },
                     };
                 },
-                TimeSpan.FromMinutes(5)); // TODO: Update every 24h - starting from 00:00
+                CrontabSchedule.Parse("0 0 * * *")); // TODO: Update every 24h - starting from 00:00
 
             // Current weather info
             displayManager.AddRenderActionsAsync(
@@ -446,7 +446,7 @@ namespace WeatherDisplay
                     }
                     return currentWeatherRenderActions;
                 },
-                TimeSpan.FromHours(1));
+                CrontabSchedule.Parse("0 * * * *")); // TODO: Update every 1h - starting from 00:00
         }
 
         private static string FormatRain(double rain)

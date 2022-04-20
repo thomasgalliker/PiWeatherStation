@@ -1,9 +1,11 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
 
 namespace DisplayService.Model
 {
     public partial class RenderActions
     {
+        [DebuggerDisplay("StreamImage: X={X}, Y={Y}")]
         public class StreamImage : Image
         {
             /// <summary>

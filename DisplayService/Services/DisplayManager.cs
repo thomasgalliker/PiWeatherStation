@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using DisplayService.Model;
 using Microsoft.Extensions.Logging;
+using NCrontab;
+using NCrontab.Scheduler;
 
 namespace DisplayService.Services
 {
     public class DisplayManager : IDisplayManager
     {
-        private readonly IDictionary<Guid, (ITimerService Timer, object RenderActions)> renderingSetup = new Dictionary<Guid, (ITimerService, object)>();
+        private readonly IDictionary<Guid, IRenderActionFactory> renderingSetup = new Dictionary<Guid, IRenderActionFactory>();
         private readonly ILogger<DisplayManager> logger;
         private readonly IRenderService renderService;
         private readonly IDisplay display;
-        private readonly ITimerServiceFactory timerServiceFactory;
+        private readonly IScheduler scheduler;
         private readonly ICacheService cacheService;
         private bool disposed;
 
@@ -21,80 +24,76 @@ namespace DisplayService.Services
             ILogger<DisplayManager> logger,
             IRenderService renderService,
             IDisplay display,
-            ITimerServiceFactory timerServiceFactory,
+            IScheduler scheduler,
             ICacheService cacheService)
         {
             this.logger = logger;
             this.renderService = renderService;
             this.display = display;
-            this.timerServiceFactory = timerServiceFactory;
+            this.scheduler = scheduler;
             this.cacheService = cacheService;
+
+            this.scheduler.Next += this.OnNextSchedule;
         }
 
         public void AddRenderAction(Func<IRenderAction> renderAction)
         {
-            this.AddRenderAction(renderAction, TimeSpan.Zero);
-        }
-
-        public void AddRenderAction(Func<IRenderAction> renderAction, TimeSpan updateInterval)
-        {
-            var updateTimer = this.CreateUpdateTimer(updateInterval);
-            this.renderingSetup.Add(Guid.NewGuid(), new(updateTimer, renderAction));
+            var id = Guid.NewGuid();
+            this.renderingSetup.Add(id, new SyncSingleRenderActionFactory(renderAction));
         }
 
         public void AddRenderActions(Func<IEnumerable<IRenderAction>> renderActions)
         {
-            this.AddRenderActions(renderActions, TimeSpan.Zero);
+            this.AddRenderActions(renderActions, null);
         }
 
-        public void AddRenderActions(Func<IEnumerable<IRenderAction>> renderActions, TimeSpan updateInterval)
+        public void AddRenderActions(Func<IEnumerable<IRenderAction>> renderActions, CrontabSchedule cronExpression)
         {
-            var updateTimer = this.CreateUpdateTimer(updateInterval);
-            this.renderingSetup.Add(Guid.NewGuid(), new(updateTimer, renderActions));
+            var id = this.ScheduleTaskIfNotNull(cronExpression);
+            this.renderingSetup.Add(id, new SyncListRenderActionFactory(renderActions));
         }
 
         public void AddRenderActionsAsync(Func<Task<IEnumerable<IRenderAction>>> renderActions)
         {
-            this.AddRenderActionsAsync(renderActions, TimeSpan.Zero);
+            this.AddRenderActionsAsync(renderActions, null);
         }
 
-        public void AddRenderActionsAsync(Func<Task<IEnumerable<IRenderAction>>> renderActions, TimeSpan updateInterval)
+        public void AddRenderActionsAsync(Func<Task<IEnumerable<IRenderAction>>> renderActions, CrontabSchedule cronExpression)
         {
-            var updateTimer = this.CreateUpdateTimer(updateInterval);
-            this.renderingSetup.Add(Guid.NewGuid(), new(updateTimer, renderActions));
+            var id = this.ScheduleTaskIfNotNull(cronExpression);
+            this.renderingSetup.Add(id, new AsyncRenderActionFactory(renderActions));
         }
 
-        private ITimerService CreateUpdateTimer(TimeSpan? updateInterval)
+        private Guid ScheduleTaskIfNotNull(CrontabSchedule cronExpression)
         {
-            ITimerService updateTimer = null;
-
-            if (updateInterval is TimeSpan updateIntervalValue && updateIntervalValue > TimeSpan.Zero)
+            Guid id;
+            if (cronExpression != null)
             {
-                updateTimer = this.timerServiceFactory.Create();
-                updateTimer.Interval = updateIntervalValue;
-                updateTimer.Elapsed += this.OnUpdateTimerElapsed;
+                id = this.scheduler.AddTask(cronExpression, (c) => { });
+            }
+            else
+            {
+                id = Guid.NewGuid();
             }
 
-            return updateTimer;
+            return id;
         }
 
-        private async void OnUpdateTimerElapsed(object sender, TimerElapsedEventArgs e)
+        private async void OnNextSchedule(object sender, ScheduledEventArgs e)
         {
             try
             {
-                var timer = (ITimerService)sender;
-                var setup = this.renderingSetup.Single(r => r.Value.Timer == timer);
-                var renderActionFactory = setup.Value.RenderActions;
-                var renderActions = await GetRenderActionsAsync(renderActionFactory);
+                var scheduledTaskIds = e.TaskIds.ToList();
+                var renderActions = await this.GetRenderActionsAsync(scheduledTaskIds);
                 await this.UpdateDisplayAsync(renderActions);
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, $"OnUpdateTimerElapsed failed with exception: {ex.Message}");
+                this.logger.LogError(ex, $"OnNextSchedule failed with exception: {ex.Message}");
             }
         }
 
-        private async Task UpdateDisplayAsync(IEnumerable<IRenderAction> renderActions)
+        private async Task UpdateDisplayAsync(IReadOnlyCollection<IRenderAction> renderActions)
         {
             try
             {
@@ -152,73 +151,40 @@ namespace DisplayService.Services
             }
         }
 
-        private static async Task<IEnumerable<IRenderAction>> GetRenderActionsAsync(object renderActionFactory)
+        private async Task<IReadOnlyCollection<IRenderAction>> GetRenderActionsAsync(IReadOnlyCollection<Guid> scheduledTaskIds = null)
         {
-            IEnumerable<IRenderAction> renderActions;
+            IEnumerable<KeyValuePair<Guid, IRenderActionFactory>> renderActionFactories;
 
-            if (renderActionFactory is Func<Task<IEnumerable<IRenderAction>>> asyncRenderActionsFactory)
+            if (scheduledTaskIds == null)
             {
-                renderActions = await asyncRenderActionsFactory();
+                renderActionFactories = this.renderingSetup;
             }
-            else if (renderActionFactory is Func<IEnumerable<IRenderAction>> syncRenderActionsFactory)
-            {
-                renderActions = syncRenderActionsFactory();
-            }
-            else if (renderActionFactory is Func<IRenderAction> syncRenderActionFactory)
-            {
-                renderActions = new List<IRenderAction> { syncRenderActionFactory() };
-            }
-            //else if (renderActionFactory is IEnumerable<Func<IRenderAction>> syncEnumerableFuncRenderActions)
-            //{
-            //    renderActions = syncEnumerableFuncRenderActions.Select(func => func());
-            //}
             else
             {
-                throw new NotSupportedException($"Render action factory of type {renderActionFactory?.GetType().Name ?? "<null>"} is not supported");
+                renderActionFactories = this.renderingSetup.Where(s => scheduledTaskIds.Contains(s.Key));
             }
 
+            var results = await Task.WhenAll(renderActionFactories.Select(x => x.Value.GetRenderActionsAsync()));
+            var renderActions = results.SelectMany(x => x).ToList();
             return renderActions;
         }
 
-        public async Task StartAsync()
+        public async Task StartAsync(CancellationToken cancellationToken = default)
         {
             this.logger.LogInformation($"Start rendering...");
 
             try
             {
-                var timers = this.GetAllTimers();
-                StopTimers(timers);
-
-                var renderActionFactories = this.renderingSetup.Select(r => r.Value.RenderActions).ToList();
-                var renderActionFactoryTasks = renderActionFactories.Select(renderActionFactory => GetRenderActionsAsync(renderActionFactory));
-                var renderActions = (await Task.WhenAll(renderActionFactoryTasks)).SelectMany(ra => ra).ToList();
                 this.renderService.Clear();
+
+                var renderActions = await this.GetRenderActionsAsync();
                 await this.UpdateDisplayAsync(renderActions);
 
-                if (TryForEach(timers, t => t.Start(), out var exceptions))
-                {
-                    throw new AggregateException("Start failed with exception", exceptions);
-                }
+                this.scheduler.Start(cancellationToken);
             }
             catch (Exception ex)
             {
                 this.logger.LogError(ex, $"StartAsync failed with exception: {ex.Message}");
-            }
-        }
-
-        public void StopTimers()
-        {
-            this.logger.LogDebug("StopTimers");
-
-            var timers = this.GetAllTimers();
-            StopTimers(timers);
-        }
-
-        private static void StopTimers(IEnumerable<ITimerService> timers)
-        {
-            if (TryForEach(timers, t => t.Stop(), out var exceptions))
-            {
-                throw new AggregateException("Stop failed with exception", exceptions);
             }
         }
 
@@ -235,8 +201,7 @@ namespace DisplayService.Services
         {
             this.logger.LogInformation("ResetAsync");
 
-            // Stop all timers
-            this.StopTimers();
+            this.scheduler.Stop();
 
             // Remove existing rendering setups
             this.renderingSetup.Clear();
@@ -244,30 +209,6 @@ namespace DisplayService.Services
             // Clear display
             this.renderService.Clear();
             await this.UpdateDisplayAsync();
-        }
-
-        private static bool TryForEach<T>(IEnumerable<T> items, Action<T> action, out IEnumerable<Exception> exceptions)
-        {
-            exceptions = new List<Exception>();
-
-            foreach (var item in items)
-            {
-                try
-                {
-                    action(item);
-                }
-                catch (Exception ex)
-                {
-                    ((List<Exception>)exceptions).Add(ex);
-                }
-            }
-
-            return exceptions.Any();
-        }
-
-        private IEnumerable<ITimerService> GetAllTimers()
-        {
-            return this.renderingSetup.Select(r => r.Value.Timer).Where(t => t != null);
         }
 
         protected void Dispose(bool disposing)
@@ -279,9 +220,10 @@ namespace DisplayService.Services
 
             if (disposing)
             {
-                var timers = this.GetAllTimers();
-                TryForEach(timers, t => t.Elapsed -= this.OnUpdateTimerElapsed, out _);
-                TryForEach(timers, t => t.Dispose(), out _);
+                this.scheduler.Next -= this.OnNextSchedule;
+                this.scheduler.Dispose();
+
+                this.renderingSetup.Clear();
             }
 
             this.disposed = true;
@@ -292,7 +234,5 @@ namespace DisplayService.Services
             this.Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        ~DisplayManager() => this.Dispose(false);
     }
 }

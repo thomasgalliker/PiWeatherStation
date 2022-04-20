@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Diagnostics;
 using DisplayService.Services;
 
 namespace DisplayService.Model
 {
+    [DebuggerDisplay("Text: Value={Value}, X={X}, Y={Y}")]
     public partial class RenderActions
     {
         /// <summary>

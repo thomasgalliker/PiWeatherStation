@@ -1,7 +1,9 @@
-﻿using DisplayService.Services;
+﻿using System.Diagnostics;
+using DisplayService.Services;
 
 namespace DisplayService.Model
 {
+    [DebuggerDisplay("Rectangle: X={X}, Y={Y}, Width={Width}, Height={Height}")]
     public partial class RenderActions
     {
         public class Rectangle : IRenderAction, ISurface
