@@ -8,6 +8,11 @@ namespace WeatherDisplay.Resources
     {
         private static readonly Assembly Assembly = typeof(HighContrastWeatherIconMapping).Assembly;
 
+        internal static Stream Alert()
+        {
+            return GetIcon("alert_72.png");
+        }
+        
         internal static Stream AtmosphericPressure()
         {
             return GetIcon("atmospheric_pressure.png");
