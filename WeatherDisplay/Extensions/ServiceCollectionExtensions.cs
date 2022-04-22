@@ -25,6 +25,10 @@ namespace WeatherDisplay.Extensions
             var openWeatherMapConfiguration = new OpenWeatherMapConfiguration();
             var openWeatherMapSection = configuration.GetSection("OpenWeatherMap");
             openWeatherMapSection.Bind(openWeatherMapConfiguration);
+            
+            var deepLTranslationConfiguration = new DeepLTranslationConfiguration();
+            var deepLTranslationSection = configuration.GetSection("DeepL");
+            deepLTranslationSection.Bind(deepLTranslationConfiguration);
 
             // Initialize display
             IDisplay display;
@@ -70,6 +74,11 @@ namespace WeatherDisplay.Extensions
             services.AddSingleton<IDisplayManager, DisplayManager>();
             services.AddSingleton<IOpenWeatherMapConfiguration>(openWeatherMapConfiguration);
             services.AddSingleton<IOpenWeatherMapService, OpenWeatherMapService>();
+
+            services.AddSingleton<IDeepLTranslationConfiguration>(deepLTranslationConfiguration);
+            services.AddSingleton<ITranslationService, DeepLTranslationService>();
+
+
             services.AddSingleton<IScheduler>(x => new Scheduler(x.GetRequiredService<ILogger<Scheduler>>()));
         }
     }

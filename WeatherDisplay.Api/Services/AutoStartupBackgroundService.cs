@@ -11,11 +11,12 @@ namespace WeatherDisplay.Api.Services
         public AutoStartupBackgroundService(
             IDisplayManager displayManager,
             IOpenWeatherMapService openWeatherMapService,
+            ITranslationService translationService,
             IDateTime dateTime,
             IAppSettings appSettings)
         {
             this.displayManager = displayManager;
-            this.displayManager.AddWeatherRenderActions(openWeatherMapService, dateTime, appSettings);
+            this.displayManager.AddWeatherRenderActions(openWeatherMapService, translationService, dateTime, appSettings);
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)

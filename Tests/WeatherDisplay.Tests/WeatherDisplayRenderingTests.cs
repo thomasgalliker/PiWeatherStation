@@ -29,6 +29,7 @@ namespace WeatherDisplay.Tests
         private readonly Mock<IDateTime> dateTimeMock;
         private readonly TestDisplay testDisplay;
         private readonly Mock<IOpenWeatherMapService> openWeatherMapServiceMock;
+        private readonly Mock<ITranslationService> translationServiceMock;
 
         public WeatherDisplayRenderingTests(ITestOutputHelper testOutputHelper)
         {
@@ -64,6 +65,8 @@ namespace WeatherDisplay.Tests
             this.openWeatherMapServiceMock.Setup(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()))
                 .ReturnsAsync(Icons.Sun);
 
+            this.translationServiceMock = this.autoMocker.GetMock<ITranslationService>();
+
             this.autoMocker.Use<IRenderService>(this.autoMocker.CreateInstance<RenderService>());
         }
 
@@ -77,7 +80,7 @@ namespace WeatherDisplay.Tests
                 Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
+            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.translationServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
             _ = displayManager.StartAsync();
 
             // Act
@@ -111,7 +114,7 @@ namespace WeatherDisplay.Tests
                 Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
+            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.translationServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
             _ = displayManager.StartAsync();
 
             // Act
@@ -144,7 +147,7 @@ namespace WeatherDisplay.Tests
                  Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, dateTimeMock.Object, this.appSettingsMock.Object);
+            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.translationServiceMock.Object, dateTimeMock.Object, this.appSettingsMock.Object);
             _ = displayManager.StartAsync();
 
             // Act
@@ -179,7 +182,7 @@ namespace WeatherDisplay.Tests
                   Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, dateTimeMock.Object, this.appSettingsMock.Object);
+            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.translationServiceMock.Object, dateTimeMock.Object, this.appSettingsMock.Object);
             _ = displayManager.StartAsync();
 
             // Act
