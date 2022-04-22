@@ -255,4 +255,4 @@ paket-files/
 *.p12
 **/ServiceAccountKeyFile.json
 /WeatherDisplay.Api/Cache
-/WeatherDisplay.Api/internal-nlog.txt
+internal-nlog.txt
