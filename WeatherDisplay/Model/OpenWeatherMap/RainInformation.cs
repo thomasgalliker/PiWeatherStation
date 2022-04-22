@@ -6,16 +6,14 @@ namespace WeatherDisplay.Model.OpenWeatherMap
     public class RainInformation
     {
         /// <summary>
-        ///     Gets the rain volume the last 3 hours in mm.
+        /// Rain volume for last three hour, mm.
         /// </summary>
-        /// <value>the rain volume the last 3 hours in mm.</value>
         [JsonProperty("3h")]
         public double? VolumeLast3Hours { get; set; }
 
         /// <summary>
-        ///     Gets the rain volume the last hour in mm.
+        /// Rain volume for last hour, mm.
         /// </summary>
-        /// <value>the rain volume the last hour in mm.</value>
         [JsonProperty("1h")]
         public double? VolumeLastHour { get; set; }
 
