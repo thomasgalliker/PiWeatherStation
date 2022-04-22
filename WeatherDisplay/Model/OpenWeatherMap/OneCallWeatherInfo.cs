@@ -8,6 +8,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         public OneCallWeatherInfo()
         {
             this.DailyForecasts = new List<DailyWeatherForecast>();
+            this.Alerts = new List<AlertInfo>();
         }
 
         [JsonProperty("lat")]
@@ -25,9 +26,21 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonProperty("daily")]
         public IReadOnlyCollection<DailyWeatherForecast> DailyForecasts { get; set; }
 
+        //[JsonProperty("current")]
+        //public CurrentWeatherInfo CurrentWeather { get; set; }
+
+        //[JsonProperty("minutely")]
+        //public MinutelyWeatherInfo MinutelyWeather { get; set; }
+
+        //[JsonProperty("hourly")]
+        //public CurrentWeatherInfo HourlyWeather { get; set; }
+
+        [JsonProperty("alerts")]
+        public IReadOnlyCollection<AlertInfo> Alerts { get; set; }
+
         public override string ToString()
         {
-            return $"Daily: {this.DailyForecasts.Count}";
+            return $"Daily: {this.DailyForecasts.Count}, Alerts: {this.Alerts.Count}";
         }
     }
 }
