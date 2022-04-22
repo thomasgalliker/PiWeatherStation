@@ -127,7 +127,6 @@ namespace WeatherDisplay
                         }
                     };
 
-                    currentWeatherCondition.Description = "Sonnig und warm";
                     var isLongWeatherDescription = currentWeatherCondition.Description.Length > 16;
                     var descriptionXPostion = isLongWeatherDescription ? 20 : 147;
                     var descriptionYPostion = isLongWeatherDescription ? 260 : 240;
