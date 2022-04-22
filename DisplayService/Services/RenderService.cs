@@ -96,9 +96,12 @@ namespace DisplayService.Services
                 var textYPosition = text.Y + verticalOffset;
 
                 // Draw text background
-                var backgroundPaint = new SKPaint { Color = SKColor.Parse(text.BackgroundColor) };
-                this.canvas.DrawRect(x: left, y: top, w: width, h: height, backgroundPaint);
-                backgroundPaint.Dispose();
+                if (text.BackgroundColor != null)
+                {
+                    var backgroundPaint = new SKPaint { Color = SKColor.Parse(text.BackgroundColor) };
+                    this.canvas.DrawRect(x: left, y: top, w: width, h: height, backgroundPaint);
+                    backgroundPaint.Dispose();
+                }
 
                 // Draw text foreground
                 this.logger.LogDebug($"DrawText(text=\"{ text.Value}\", x={textXPosition}, y={textYPosition})");
@@ -299,9 +302,18 @@ namespace DisplayService.Services
             var x = CalculateX(image);
             var y = CalculateY(image);
 
-
             if (skBitmap != null)
             {
+
+                // Draw image background
+                if (image.BackgroundColor != null)
+                {
+                    var backgroundPaint = new SKPaint { Color = SKColor.Parse(image.BackgroundColor) };
+                    this.canvas.DrawRect(x, y, w: image.Width, h: image.Height, backgroundPaint);
+                    backgroundPaint.Dispose();
+                }
+
+                // Draw image
                 using (skBitmap)
                 {
                     if (skBitmap.Width != image.Width || skBitmap.Height != image.Height)

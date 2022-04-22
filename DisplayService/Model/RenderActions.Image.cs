@@ -34,6 +34,8 @@ namespace DisplayService.Model
             /// </summary>
             public VerticalAlignment VerticalAlignment { get; set; }
 
+            public string BackgroundColor { get; set; }
+
             public void Render(IRenderService renderService)
             {
                 renderService.Image(this);

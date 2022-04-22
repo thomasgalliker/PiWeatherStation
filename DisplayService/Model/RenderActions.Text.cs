@@ -101,7 +101,7 @@ namespace DisplayService.Model
             /// <example>#000000</example>
             public string ForegroundColor { get; set; } = "#FF000000";
 
-            public string BackgroundColor { get; set; } = "#00000000";
+            public string BackgroundColor { get; set; }
 
             public void Render(IRenderService renderService)
             {
