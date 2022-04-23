@@ -25,7 +25,7 @@ namespace WeatherDisplay.Services
             });
         }
 
-        public Task<WeatherForecast> GetWeatherForecast(double latitude, double longitude)
+        public Task<WeatherForecast> GetWeatherForecastAsync(double latitude, double longitude)
         {
             throw new NotImplementedException();
         }

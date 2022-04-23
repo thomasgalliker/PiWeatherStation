@@ -73,6 +73,7 @@ namespace WeatherDisplay
             displayManager.AddRenderActionsAsync(
                 async () =>
                 {
+                    var dateTimeNow = dateTime.Now;
                     var place = appSettings.Places.First();
 
                     // Get current weather
@@ -101,7 +102,7 @@ namespace WeatherDisplay
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{place.Name ?? currentWeatherInfo.Name}, um {currentWeatherInfo.Date.ToUniversalTime().WithOffset(oneCallWeatherInfo.TimezoneOffset):t} Uhr",
+                            Value = $"{place.Name ?? currentWeatherInfo.Name}, um {dateTimeNow:t} Uhr",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
@@ -147,7 +148,6 @@ namespace WeatherDisplay
                     // Weather alerts (if exists)
                     if (oneCallWeatherInfo.Alerts.Any())
                     {
-                        var dateTimeNow = dateTime.Now;
                         var mostImportantAlert = oneCallWeatherInfo.Alerts
                             .OrderBy(a => a.StartTime >= dateTimeNow && a.EndTime <= dateTimeNow)
                             .ThenBy(a => a.StartTime)

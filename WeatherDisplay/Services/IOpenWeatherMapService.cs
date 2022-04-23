@@ -8,7 +8,7 @@ namespace WeatherDisplay.Services
     {
         Task<WeatherInfo> GetCurrentWeatherAsync(double latitude, double longitude);
 
-        Task<WeatherForecast> GetWeatherForecast(double latitude, double longitude);
+        Task<WeatherForecast> GetWeatherForecastAsync(double latitude, double longitude);
 
         Task<Stream> GetWeatherIconAsync(WeatherCondition weatherCondition, IWeatherIconMapping weatherIconMapping = null);
         

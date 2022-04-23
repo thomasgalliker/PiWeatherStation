@@ -7,5 +7,7 @@
         string UnitSystem { get; }
         
         string Language { get; }
+       
+        bool VerboseLogging{ get; }
     }
 }
