@@ -81,7 +81,14 @@ namespace WeatherDisplay
                     var currentWeatherCondition = currentWeatherInfo.Weather.First();
                     var currentWeatherImage = await openWeatherMapService.GetWeatherIconAsync(currentWeatherCondition, weatherIconMapping);
 
-                    var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude);
+                    var oneCallOptions = new OneCallOptions
+                    {
+                        IncludeCurrentWeather = false,
+                        IncludeDailyForecasts = true,
+                        IncludeMinutelyForecasts = false,
+                        IncludeHourlyForecasts = false,
+                    };
+                    var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude, oneCallOptions);
                     var dailyForecasts = oneCallWeatherInfo.DailyForecasts.ToList();
                     var dailyForecastToday = dailyForecasts.OrderBy(f => f.DateTime).First();
 

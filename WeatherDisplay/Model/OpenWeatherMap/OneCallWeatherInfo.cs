@@ -23,17 +23,17 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonProperty("timezone_offset")]
         public int TimezoneOffset { get; set; }
 
-        [JsonProperty("daily")]
-        public IReadOnlyCollection<DailyWeatherForecast> DailyForecasts { get; set; }
-
         //[JsonProperty("current")]
         //public CurrentWeatherInfo CurrentWeather { get; set; }
 
         //[JsonProperty("minutely")]
-        //public MinutelyWeatherInfo MinutelyWeather { get; set; }
+        //public MinutelyWeatherInfo MinutelyForecasts { get; set; }
 
         //[JsonProperty("hourly")]
-        //public CurrentWeatherInfo HourlyWeather { get; set; }
+        //public CurrentWeatherInfo HourlyForecasts { get; set; }
+
+        [JsonProperty("daily")]
+        public IReadOnlyCollection<DailyWeatherForecast> DailyForecasts { get; set; }
 
         [JsonProperty("alerts")]
         public IReadOnlyCollection<AlertInfo> Alerts { get; set; }

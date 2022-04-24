@@ -36,7 +36,7 @@ namespace WeatherDisplay.Services
             throw new NotImplementedException();
         }
 
-        public Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude)
+        public Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude, OneCallOptions oneCallOptions = null)
         {
             throw new NotImplementedException();
         }
