@@ -76,21 +76,23 @@ namespace WeatherDisplay
                     var dateTimeNow = dateTime.Now;
                     var place = appSettings.Places.First();
 
-                    // Get current weather
-                    var currentWeatherInfo = await openWeatherMapService.GetCurrentWeatherAsync(place.Latitude, place.Longitude);
-                    var currentWeatherCondition = currentWeatherInfo.Weather.First();
-                    var currentWeatherImage = await openWeatherMapService.GetWeatherIconAsync(currentWeatherCondition, weatherIconMapping);
-
+                    // Get current weather & daily forecasts
                     var oneCallOptions = new OneCallOptions
                     {
-                        IncludeCurrentWeather = false,
+                        IncludeCurrentWeather = true,
                         IncludeDailyForecasts = true,
-                        IncludeMinutelyForecasts = false,
-                        IncludeHourlyForecasts = false,
+                        IncludeMinutelyForecasts = true,
+                        IncludeHourlyForecasts = true,
                     };
+
                     var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude, oneCallOptions);
+                 
                     var dailyForecasts = oneCallWeatherInfo.DailyForecasts.ToList();
                     var dailyForecastToday = dailyForecasts.OrderBy(f => f.DateTime).First();
+
+                    var currentWeatherInfo = oneCallWeatherInfo.CurrentWeather;
+                    var currentWeatherCondition = currentWeatherInfo.Weather.First();
+                    var currentWeatherImage = await openWeatherMapService.GetWeatherIconAsync(currentWeatherCondition, weatherIconMapping);
 
                     var currentWeatherRenderActions = new List<IRenderAction>
                     {
@@ -109,7 +111,7 @@ namespace WeatherDisplay
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{place.Name ?? currentWeatherInfo.CityName}, um {dateTimeNow:t} Uhr",
+                            Value = $"{place.Name}, um {dateTimeNow:t} Uhr",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
@@ -128,14 +130,15 @@ namespace WeatherDisplay
                             Y = 198,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = FormatTemperature(currentWeatherInfo.Main.Temperature),
+                            Value = FormatTemperature(currentWeatherInfo.Temperature),
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 80,
                         }
                     };
 
-                    var isLongWeatherDescription = currentWeatherCondition.Description.Length > 16;
+                    var weatherDescription = currentWeatherCondition.Description.Replace("ß", "ss");
+                    var isLongWeatherDescription = weatherDescription.Length > 16;
                     var descriptionXPostion = isLongWeatherDescription ? 20 : 147;
                     var descriptionYPostion = isLongWeatherDescription ? 260 : 240;
 
@@ -146,7 +149,7 @@ namespace WeatherDisplay
                             Y = descriptionYPostion,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{currentWeatherCondition.Description}",
+                            Value = weatherDescription,
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,

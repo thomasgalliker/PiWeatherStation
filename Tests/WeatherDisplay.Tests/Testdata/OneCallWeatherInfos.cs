@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Newtonsoft.Json;
 using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Model.OpenWeatherMap.Converters;
@@ -33,6 +34,15 @@ namespace WeatherDisplay.Tests.Testdata
                 Longitude = 8.4611d,
                 Timezone = "Europe/Zurich",
                 TimezoneOffset = 3600,
+                CurrentWeather = new CurrentWeatherForecast
+                {
+                    Temperature = new Temperature(25, TemperatureUnit.Celsius),
+                    FeelsLike = new Temperature(26, TemperatureUnit.Celsius),
+                    Pressure = new Pressure(1000),
+                    Humidity = new Humidity(50),
+                    DewPoint = new Temperature(3.4, TemperatureUnit.Celsius),
+                    Weather = WeatherConditions.GetTestWeatherConditions().Take(1).ToList(),
+                },
                 DailyForecasts = new List<DailyWeatherForecast>
                 {
                     new DailyWeatherForecast

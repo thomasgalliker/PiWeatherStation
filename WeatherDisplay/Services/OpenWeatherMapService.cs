@@ -167,6 +167,8 @@ namespace WeatherDisplay.Services
             }
 
             var oneCallWeatherInfo = JsonConvert.DeserializeObject<OneCallWeatherInfo>(responseJson, this.serializerSettings);
+
+            var formatters = new DumpOptions { DumpStyle = DumpStyle.CSharp };
             return oneCallWeatherInfo;
         }
 
