@@ -18,6 +18,7 @@ using Xunit.Abstractions;
 using WeatherDisplay.Tests.Extensions;
 using IDateTime = DisplayService.Services.IDateTime;
 using NCrontab.Scheduler;
+using FluentAssertions;
 
 namespace WeatherDisplay.Tests
 {
@@ -58,9 +59,7 @@ namespace WeatherDisplay.Tests
                 .Returns(DateTime.Now);
 
             this.openWeatherMapServiceMock = this.autoMocker.GetMock<IOpenWeatherMapService>();
-            this.openWeatherMapServiceMock.Setup(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()))
-                .ReturnsAsync(WeatherInfos.GetTestWeatherInfo());
-            this.openWeatherMapServiceMock.Setup(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>()))
+            this.openWeatherMapServiceMock.Setup(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()))
                 .ReturnsAsync(OneCallWeatherInfos.GetTestWeatherInfo());
             this.openWeatherMapServiceMock.Setup(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()))
                 .ReturnsAsync(Icons.Sun);
@@ -91,21 +90,24 @@ namespace WeatherDisplay.Tests
 
             // Assert
             var bitmapStream = this.testDisplay.GetDisplayImage();
+            bitmapStream.Should().NotBeNull();
             this.testHelper.WriteFile(bitmapStream);
 
-            this.openWeatherMapServiceMock.Verify(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(5));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(5));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(40));
+            this.openWeatherMapServiceMock.VerifyNoOtherCalls();
         }
 
         [Fact]
         public void ShouldRenderWeatherActions_TemperatureChanges()
         {
             // Arrange
-            this.openWeatherMapServiceMock.SetupSequence(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()))
-                .ReturnsAsync(WeatherInfos.GetTestWeatherInfo(Temperature.FromCelsius(1.2f)))
-                .ReturnsAsync(WeatherInfos.GetTestWeatherInfo(Temperature.FromCelsius(12.34f)))
-                .ReturnsAsync(WeatherInfos.GetTestWeatherInfo(Temperature.FromCelsius(123.456f)))
-                .ReturnsAsync(WeatherInfos.GetTestWeatherInfo(Temperature.FromCelsius(12.34f)))
-                .ReturnsAsync(WeatherInfos.GetTestWeatherInfo(Temperature.FromCelsius(1.8f)))
+            this.openWeatherMapServiceMock.SetupSequence(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()))
+                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromCelsius(1.2f); return i; })
+                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromCelsius(12.34f); return i; })
+                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromCelsius(123.456f); return i; })
+                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromCelsius(12.34f); return i; })
+                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromCelsius(1.8f); return i; })
                 ;
 
             var taskIds = new List<Guid>();
@@ -125,9 +127,12 @@ namespace WeatherDisplay.Tests
 
             // Assert
             var bitmapStream = this.testDisplay.GetDisplayImage();
+            bitmapStream.Should().NotBeNull();
             this.testHelper.WriteFile(bitmapStream);
 
-            this.openWeatherMapServiceMock.Verify(w => w.GetCurrentWeatherAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(5));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(5));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(40));
+            this.openWeatherMapServiceMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -158,7 +163,12 @@ namespace WeatherDisplay.Tests
 
             // Assert
             var bitmapStream = this.testDisplay.GetDisplayImage();
+            bitmapStream.Should().NotBeNull();
             this.testHelper.WriteFile(bitmapStream);
+
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(73));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(584));
+            this.openWeatherMapServiceMock.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -193,7 +203,12 @@ namespace WeatherDisplay.Tests
 
             // Assert
             var bitmapStream = this.testDisplay.GetDisplayImage();
+            bitmapStream.Should().NotBeNull();
             this.testHelper.WriteFile(bitmapStream);
+
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(366));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(2928));
+            this.openWeatherMapServiceMock.VerifyNoOtherCalls();
         }
     }
 }

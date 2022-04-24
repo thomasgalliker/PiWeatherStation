@@ -2,7 +2,7 @@
 
 namespace WeatherDisplay.Model.OpenWeatherMap
 {
-    public class Coordinate
+    public class Coordinates
     {
         [JsonProperty("lat")]
         public double Latitude { get; set; }

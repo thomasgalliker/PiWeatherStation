@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -17,6 +19,11 @@ namespace WeatherDisplay.Services
     /// </summary>
     public class OpenWeatherMapService : IOpenWeatherMapService
     {
+        public const double MinLatitude = -90d;
+        public const double MaxLatitude = 90d;
+        public const double MinLongitude = -180d;
+        public const double MaxLongitude = 180d;
+
         private const string ApiEndpoint = "https://api.openweathermap.org";
         private readonly ILogger<OpenWeatherMapService> logger;
         private readonly HttpClient httpClient;
@@ -75,7 +82,9 @@ namespace WeatherDisplay.Services
                 Path = "data/2.5/weather",
                 Query = $"lat={lat}&lon={lon}&units={this.unitSystem}&lang={this.language}&appid={this.openWeatherMapApiKey}"
             };
+
             var uri = builder.ToString();
+            this.logger.LogDebug($"GetCurrentWeatherAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri);
             response.EnsureSuccessStatusCode();
@@ -103,7 +112,9 @@ namespace WeatherDisplay.Services
                 Path = "data/2.5/forecast",
                 Query = $"lat={lat}&lon={lon}&units={this.unitSystem}&lang={this.language}&appid={this.openWeatherMapApiKey}"
             };
+
             var uri = builder.ToString();
+            this.logger.LogDebug($"GetWeatherForecastAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri);
             response.EnsureSuccessStatusCode();
@@ -119,19 +130,31 @@ namespace WeatherDisplay.Services
             return weatherForecast;
         }
 
-        public async Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude)
+        public async Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude, OneCallOptions oneCallOptions = null)
         {
+            EnsureLatitude(latitude);
+            EnsureLongitude(longitude);
+
             this.logger.LogDebug($"GetWeatherOneCallAsync: latitude={latitude}, longitude={longitude}");
+
+            if (oneCallOptions == null)
+            {
+                oneCallOptions = OneCallOptions.Default;
+            }
 
             var lat = FormatCoordinate(latitude);
             var lon = FormatCoordinate(longitude);
 
+            var excludeQueryParameter = GetExcludeQueryParameter(oneCallOptions);
+
             var builder = new UriBuilder(ApiEndpoint)
             {
                 Path = "data/2.5/onecall",
-                Query = $"lat={lat}&lon={lon}&exclude=current,minutely,hourly&units={this.unitSystem}&lang={this.language}&appid={this.openWeatherMapApiKey}"
+                Query = $"lat={lat}&lon={lon}{excludeQueryParameter}&units={this.unitSystem}&lang={this.language}&appid={this.openWeatherMapApiKey}"
             };
+
             var uri = builder.ToString();
+            this.logger.LogDebug($"GetWeatherOneCallAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri);
             response.EnsureSuccessStatusCode();
@@ -145,6 +168,52 @@ namespace WeatherDisplay.Services
 
             var oneCallWeatherInfo = JsonConvert.DeserializeObject<OneCallWeatherInfo>(responseJson, this.serializerSettings);
             return oneCallWeatherInfo;
+        }
+
+        private static string GetExcludeQueryParameter(OneCallOptions oneCallOptions)
+        {
+            var excludes = new HashSet<string>();
+
+            if (!oneCallOptions.IncludeCurrentWeather)
+            {
+                excludes.Add("current");
+            }
+            if (!oneCallOptions.IncludeMinutelyForecasts)
+            {
+                excludes.Add("minutely");
+            }
+            if (!oneCallOptions.IncludeHourlyForecasts)
+            {
+                excludes.Add("hourly");
+            }
+            if (!oneCallOptions.IncludeDailyForecasts)
+            {
+                excludes.Add("daily");
+            }
+
+            string excludeQueryParameter = null;
+            if (excludes.Any())
+            {
+                excludeQueryParameter = $"&exclude={string.Join(",", excludes)}";
+            }
+
+            return excludeQueryParameter;
+        }
+
+        private static void EnsureLongitude(double longitude)
+        {
+            if (longitude < MinLongitude || longitude > MaxLongitude)
+            {
+                throw new ArgumentOutOfRangeException(nameof(longitude));
+            }
+        }
+
+        private static void EnsureLatitude(double latitude)
+        {
+            if (latitude < MinLatitude || latitude > MaxLatitude)
+            {
+                throw new ArgumentOutOfRangeException(nameof(latitude));
+            }
         }
 
         public async Task<Stream> GetWeatherIconAsync(WeatherCondition weatherCondition, IWeatherIconMapping weatherIconMapping = null)

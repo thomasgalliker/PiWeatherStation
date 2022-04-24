@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Services;
 using DisplayService.Tests.Extensions;
+using DisplayService.Tests.Logging;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;

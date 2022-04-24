@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Newtonsoft.Json;
 using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Model.OpenWeatherMap.Converters;
@@ -33,6 +34,15 @@ namespace WeatherDisplay.Tests.Testdata
                 Longitude = 8.4611d,
                 Timezone = "Europe/Zurich",
                 TimezoneOffset = 3600,
+                CurrentWeather = new CurrentWeatherForecast
+                {
+                    Temperature = new Temperature(25, TemperatureUnit.Celsius),
+                    FeelsLike = new Temperature(26, TemperatureUnit.Celsius),
+                    Pressure = new Pressure(1000),
+                    Humidity = new Humidity(50),
+                    DewPoint = new Temperature(3.4, TemperatureUnit.Celsius),
+                    Weather = WeatherConditions.GetTestWeatherConditions().Take(1).ToList(),
+                },
                 DailyForecasts = new List<DailyWeatherForecast>
                 {
                     new DailyWeatherForecast
@@ -52,7 +62,7 @@ namespace WeatherDisplay.Tests.Testdata
                             Eve = new Temperature(13.64d, TemperatureUnit.Celsius),
                             Morn = new Temperature(6.39d, TemperatureUnit.Celsius),
                         },
-                        FeelsLike = new FeelsLikeForecast
+                        FeelsLike = new DailyFeelsLikeForecast
                         {
                             Day = new Temperature(14.66d, TemperatureUnit.Celsius),
                             Night = new Temperature(8.95d, TemperatureUnit.Celsius),
@@ -61,7 +71,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Pressure = 1025,
                         Humidity = 63,
-                        DewPoint = 7.7d,
+                        DewPoint = new Temperature(7.7d, TemperatureUnit.Celsius),
                         WindSpeed = 3.85d,
                         WindDirectionDegrees = 42,
                         WindGust = 7.82d,
@@ -97,7 +107,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Eve = new Temperature(13.64d, TemperatureUnit.Celsius),
                         Morn = new Temperature(6.39d, TemperatureUnit.Celsius),
                         },
-                        FeelsLike = new FeelsLikeForecast
+                        FeelsLike = new DailyFeelsLikeForecast
                         {
                         Day = new Temperature(14.66d, TemperatureUnit.Celsius),
                         Night = new Temperature(8.95d, TemperatureUnit.Celsius),
@@ -106,7 +116,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Pressure = 1034,
                         Humidity = 77,
-                        DewPoint = 3.45d,
+                        DewPoint = new Temperature(3.45d, TemperatureUnit.Celsius),
                         WindSpeed = 5.02d,
                         WindDirectionDegrees = 60,
                         WindGust = 9.32d,
@@ -141,7 +151,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Eve = new Temperature(13.64d, TemperatureUnit.Celsius),
                         Morn = new Temperature(6.39d, TemperatureUnit.Celsius),
                         },
-                        FeelsLike = new FeelsLikeForecast
+                        FeelsLike = new DailyFeelsLikeForecast
                         {
                         Day = new Temperature(14.66d, TemperatureUnit.Celsius),
                         Night = new Temperature(8.95d, TemperatureUnit.Celsius),
@@ -150,7 +160,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Pressure = 1029,
                         Humidity = 59,
-                        DewPoint = 1.55d,
+                        DewPoint = new Temperature(1.55d, TemperatureUnit.Celsius),
                         WindSpeed = 3.58d,
                         WindDirectionDegrees = 61,
                         WindGust = 7.48d,
@@ -185,7 +195,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Eve = new Temperature(13.64d, TemperatureUnit.Celsius),
                         Morn = new Temperature(6.39d, TemperatureUnit.Celsius),
                         },
-                        FeelsLike = new FeelsLikeForecast
+                        FeelsLike = new DailyFeelsLikeForecast
                         {
                         Day = new Temperature(14.66d, TemperatureUnit.Celsius),
                         Night = new Temperature(8.95d, TemperatureUnit.Celsius),
@@ -194,7 +204,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Pressure = 1026,
                         Humidity = 34,
-                        DewPoint = -2.23d,
+                        DewPoint = new Temperature(-2.23d, TemperatureUnit.Celsius),
                         WindSpeed = 2.38d,
                         WindDirectionDegrees = 155,
                         WindGust = 3.04d,
@@ -229,7 +239,7 @@ namespace WeatherDisplay.Tests.Testdata
                             Eve = new Temperature(13.64d, TemperatureUnit.Celsius),
                             Morn = new Temperature(6.39d, TemperatureUnit.Celsius),
                         },
-                        FeelsLike = new FeelsLikeForecast
+                        FeelsLike = new DailyFeelsLikeForecast
                         {
                             Day = new Temperature(14.66d, TemperatureUnit.Celsius),
                             Night = new Temperature(8.95d, TemperatureUnit.Celsius),
@@ -238,7 +248,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Pressure = 1030,
                         Humidity = 35,
-                        DewPoint = -1.93d,
+                        DewPoint = new Temperature(-1.93d, TemperatureUnit.Celsius),
                         WindSpeed = 2.11d,
                         WindDirectionDegrees = 158,
                         WindGust = 2.51d,
@@ -273,7 +283,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Eve = new Temperature(13.64d, TemperatureUnit.Celsius),
                         Morn = new Temperature(6.39d, TemperatureUnit.Celsius),
                         },
-                        FeelsLike = new FeelsLikeForecast
+                        FeelsLike = new DailyFeelsLikeForecast
                         {
                         Day = new Temperature(14.66d, TemperatureUnit.Celsius),
                         Night = new Temperature(8.95d, TemperatureUnit.Celsius),
@@ -282,7 +292,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Pressure = 1027,
                         Humidity = 41,
-                        DewPoint = -0.3d,
+                        DewPoint = new Temperature(-0.3d, TemperatureUnit.Celsius),
                         WindSpeed = 2d,
                         WindDirectionDegrees = 163,
                         WindGust = 1.92d,
@@ -317,7 +327,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Eve = new Temperature(13.64d, TemperatureUnit.Celsius),
                         Morn = new Temperature(6.39d, TemperatureUnit.Celsius),
                         },
-                        FeelsLike = new FeelsLikeForecast
+                        FeelsLike = new DailyFeelsLikeForecast
                         {
                         Day = new Temperature(14.66d, TemperatureUnit.Celsius),
                         Night = new Temperature(8.95d, TemperatureUnit.Celsius),
@@ -326,7 +336,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Pressure = 1025,
                         Humidity = 30,
-                        DewPoint = -3.29d,
+                        DewPoint = new Temperature(-3.29d, TemperatureUnit.Celsius),
                         WindSpeed = 1.9d,
                         WindDirectionDegrees = 163,
                         WindGust = 1.85d,
@@ -361,7 +371,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Eve = new Temperature(13.64d, TemperatureUnit.Celsius),
                         Morn = new Temperature(6.39d, TemperatureUnit.Celsius),
                         },
-                        FeelsLike = new FeelsLikeForecast
+                        FeelsLike = new DailyFeelsLikeForecast
                         {
                         Day = new Temperature(14.66d, TemperatureUnit.Celsius),
                         Night = new Temperature(8.95d, TemperatureUnit.Celsius),
@@ -370,7 +380,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Pressure = 1025,
                         Humidity = 37,
-                        DewPoint = 0.06d,
+                        DewPoint = new Temperature(0.06d, TemperatureUnit.Celsius),
                         WindSpeed = 1.81d,
                         WindDirectionDegrees = 173,
                         WindGust = 1.62d,

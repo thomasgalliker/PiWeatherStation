@@ -5,9 +5,9 @@ using WeatherDisplay.Model.OpenWeatherMap.Converters;
 
 namespace WeatherDisplay.Model.OpenWeatherMap
 {
-    public class DailyWeatherForecast
+    public class CurrentWeatherForecast
     {
-        public DailyWeatherForecast()
+        public CurrentWeatherForecast()
         {
             this.Weather = new List<WeatherCondition>();
         }
@@ -24,22 +24,11 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonConverter(typeof(EpochDateTimeConverter))]
         public DateTime Sunset { get; set; }
 
-        [JsonProperty("moonrise")]
-        [JsonConverter(typeof(EpochDateTimeConverter))]
-        public DateTime Moonrise { get; set; }
-
-        [JsonProperty("moonset")]
-        [JsonConverter(typeof(EpochDateTimeConverter))]
-        public DateTime Moonset { get; set; }
-
-        [JsonProperty("moon_phase")]
-        public double MoonPhase { get; set; }
-
         [JsonProperty("temp")]
-        public DailyTemperatureForecast Temperature { get; set; }
+        public Temperature Temperature { get; set; }
 
         [JsonProperty("feels_like")]
-        public DailyFeelsLikeForecast FeelsLike { get; set; }
+        public Temperature FeelsLike { get; set; }
 
         /// <summary>
         ///  Atmospheric pressure on the sea level, hPa.
@@ -82,28 +71,9 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonProperty("weather")]
         public List<WeatherCondition> Weather { get; set; }
 
-        /// <summary>
-        /// Probability of precipitation.
-        /// The values of the parameter vary between 0 and 1, where 0 is equal to 0%, 1 is equal to 100%.
-        /// </summary>
-        [JsonProperty("pop")]
-        public double Pop { get; set; }
-
-        /// <summary>
-        /// Daily amount of rain, precipitation volume, mm.
-        /// </summary>
-        [JsonProperty("rain")]
-        public double Rain { get; set; }
-
-        /// <summary>
-        /// Daily amount of snow, precipitation volume, mm.
-        /// </summary>
-        [JsonProperty("snow")]
-        public double Snow { get; set; }
-
         public override string ToString()
         {
-            return $"DateTime: {this.DateTime}, Temperature: {this.Temperature.Min}/{this.Temperature.Max}";
+            return $"DateTime: {this.DateTime}, Temperature: {this.Temperature}";
         }
     }
 }

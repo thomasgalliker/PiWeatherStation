@@ -2,6 +2,7 @@
 using System.IO;
 using DisplayService.Model;
 using DisplayService.Services;
+using DisplayService.Tests.Logging;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
