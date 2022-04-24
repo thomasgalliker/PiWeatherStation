@@ -86,7 +86,7 @@ namespace WeatherDisplay
                         IncludeCurrentWeather = false,
                         IncludeDailyForecasts = true,
                         IncludeMinutelyForecasts = false,
-                        IncludeHourlyForecasts = true,
+                        IncludeHourlyForecasts = false,
                     };
                     var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude, oneCallOptions);
                     var dailyForecasts = oneCallWeatherInfo.DailyForecasts.ToList();
@@ -109,7 +109,7 @@ namespace WeatherDisplay
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{place.Name ?? currentWeatherInfo.Name}, um {dateTimeNow:t} Uhr",
+                            Value = $"{place.Name ?? currentWeatherInfo.CityName}, um {dateTimeNow:t} Uhr",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,

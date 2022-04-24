@@ -12,14 +12,15 @@ namespace WeatherDisplay.Model.OpenWeatherMap
             this.Weather = new List<WeatherCondition>();
         }
 
+        [JsonProperty("dt")]
+        [JsonConverter(typeof(EpochDateTimeConverter))]
+        public DateTime Date { get; set; }
+
         [JsonProperty("weather")]
         public List<WeatherCondition> Weather { get; set; }
 
         [JsonProperty("main")]
         public TemperatureInfo Main { get; set; }
-
-        [JsonProperty("name")]
-        public string Name { get; set; }
 
         [JsonProperty("visibility")]
         public int Visibility { get; set; }
@@ -30,14 +31,31 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonProperty("clouds")]
         public CloudsInformation Clouds { get; set; }
 
-        [JsonProperty("dt")]
-        [JsonConverter(typeof(EpochDateTimeConverter))]
-        public DateTime Date { get; set; }
-
         [JsonProperty("sys")]
         public AdditionalWeatherInfo AdditionalInformation { get; set; }
 
-        [JsonProperty("dt_txt")]
-        public string Time { get; set; }
+        /// <summary>
+        /// Shift in seconds from UTC.
+        /// </summary>
+        [JsonProperty("timezone")]
+        public int Timezone { get; set; }
+
+        /// <summary>
+        /// City ID.
+        /// </summary>
+        [JsonProperty("id")]
+        public string CityId { get; set; }
+
+        /// <summary>
+        /// City name.
+        /// </summary>
+        [JsonProperty("name")]
+        public string CityName { get; set; }
+
+        /// <summary>
+        /// City geo location.
+        /// </summary>
+        [JsonProperty("coord")]
+        public Coordinates Coordinates { get; set; }
     }
 }

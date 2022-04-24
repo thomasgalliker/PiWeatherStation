@@ -33,7 +33,7 @@ namespace WeatherDisplay.Tests.Testdata
         {
             return new WeatherInfo
             {
-                Name = "Test Location",
+                CityName = "Test Location",
                 Date = new DateTime(2000, 1, 1, 12, 13, 14, DateTimeKind.Local),
                 Main = new TemperatureInfo
                 {

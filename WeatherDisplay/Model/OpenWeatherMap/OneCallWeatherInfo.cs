@@ -10,6 +10,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         public OneCallWeatherInfo()
         {
             this.HourlyForecasts = new List<HourlyWeatherForecast>();
+            this.MinutelyForecasts = new List<MinutelyWeatherForecast>();
             this.DailyForecasts = new List<DailyWeatherForecast>();
             this.Alerts = new List<AlertInfo>();
         }
@@ -26,14 +27,21 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonProperty("timezone_offset")]
         public int TimezoneOffset { get; set; }
 
-        //[JsonProperty("current")]
-        //public CurrentWeatherInfo CurrentWeather { get; set; }
+        /// <summary>
+        /// Gets the weather forecast for today.
+        /// </summary>
+        /// <remarks>
+        /// Is only included if <seealso cref="OneCallOptions.IncludeCurrentWeather"/> is true.
+        /// </remarks>
+        [JsonProperty("current")]
+        public CurrentWeatherForecast CurrentWeather { get; set; }
 
         /// <summary>
         /// 60-minutes weather forecast.
         /// </summary>
         /// <remarks>
         /// Is only included if <seealso cref="OneCallOptions.IncludeMinutelyForecasts"/> is true.
+        /// </remarks>
         [JsonProperty("minutely")]
         public IReadOnlyCollection<MinutelyWeatherForecast> MinutelyForecasts { get; set; }
 
@@ -60,17 +68,23 @@ namespace WeatherDisplay.Model.OpenWeatherMap
 
         public override string ToString()
         {
-            var data = new [] 
+            var displayItems = new[]
             {
                 (Name: "Minutely", Count: this.MinutelyForecasts.Count),
                 (Name: "Hourly", Count: this.HourlyForecasts.Count),
                 (Name: "Daily", Count: this.DailyForecasts.Count),
                 (Name: "Alerts", Count: this.Alerts.Count) }
             .Where(x => x.Count > 0)
-            .Select(x => $"{x.Name}: {x.Count}");
+            .Select(x => $"{x.Name}: {x.Count}")
+            .ToList();
 
-            var toStringValue = string.Join(", ", data);
-            return toStringValue;
+            if (this.CurrentWeather is CurrentWeatherForecast c)
+            {
+                displayItems.Insert(0, $"CurrentWeather: {c.Temperature}");
+            }
+
+            var toStringVaue = string.Join(", ", displayItems);
+            return toStringVaue;
         }
     }
 }
