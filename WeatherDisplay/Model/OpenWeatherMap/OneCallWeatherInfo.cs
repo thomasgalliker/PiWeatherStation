@@ -29,8 +29,13 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         //[JsonProperty("current")]
         //public CurrentWeatherInfo CurrentWeather { get; set; }
 
-        //[JsonProperty("minutely")]
-        //public MinutelyWeatherInfo MinutelyForecasts { get; set; }
+        /// <summary>
+        /// 60-minutes weather forecast.
+        /// </summary>
+        /// <remarks>
+        /// Is only included if <seealso cref="OneCallOptions.IncludeMinutelyForecasts"/> is true.
+        [JsonProperty("minutely")]
+        public IReadOnlyCollection<MinutelyWeatherForecast> MinutelyForecasts { get; set; }
 
         /// <summary>
         /// 48-hours weather forecast.
@@ -57,6 +62,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         {
             var data = new [] 
             {
+                (Name: "Minutely", Count: this.MinutelyForecasts.Count),
                 (Name: "Hourly", Count: this.HourlyForecasts.Count),
                 (Name: "Daily", Count: this.DailyForecasts.Count),
                 (Name: "Alerts", Count: this.Alerts.Count) }
