@@ -86,7 +86,7 @@ namespace WeatherDisplay
                         IncludeCurrentWeather = false,
                         IncludeDailyForecasts = true,
                         IncludeMinutelyForecasts = false,
-                        IncludeHourlyForecasts = false,
+                        IncludeHourlyForecasts = true,
                     };
                     var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude, oneCallOptions);
                     var dailyForecasts = oneCallWeatherInfo.DailyForecasts.ToList();

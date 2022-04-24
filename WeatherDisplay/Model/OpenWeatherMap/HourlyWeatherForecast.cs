@@ -5,9 +5,9 @@ using WeatherDisplay.Model.OpenWeatherMap.Converters;
 
 namespace WeatherDisplay.Model.OpenWeatherMap
 {
-    public class DailyWeatherForecast
+    public class HourlyWeatherForecast
     {
-        public DailyWeatherForecast()
+        public HourlyWeatherForecast()
         {
             this.Weather = new List<WeatherCondition>();
         }
@@ -16,30 +16,11 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonConverter(typeof(EpochDateTimeConverter))]
         public DateTime DateTime { get; set; }
 
-        [JsonProperty("sunrise")]
-        [JsonConverter(typeof(EpochDateTimeConverter))]
-        public DateTime Sunrise { get; set; }
-
-        [JsonProperty("sunset")]
-        [JsonConverter(typeof(EpochDateTimeConverter))]
-        public DateTime Sunset { get; set; }
-
-        [JsonProperty("moonrise")]
-        [JsonConverter(typeof(EpochDateTimeConverter))]
-        public DateTime Moonrise { get; set; }
-
-        [JsonProperty("moonset")]
-        [JsonConverter(typeof(EpochDateTimeConverter))]
-        public DateTime Moonset { get; set; }
-
-        [JsonProperty("moon_phase")]
-        public double MoonPhase { get; set; }
-
         [JsonProperty("temp")]
-        public DailyTemperatureForecast Temperature { get; set; }
+        public Temperature Temperature { get; set; }
 
         [JsonProperty("feels_like")]
-        public DailyFeelsLikeForecast FeelsLike { get; set; }
+        public Temperature FeelsLike { get; set; }
 
         /// <summary>
         ///  Atmospheric pressure on the sea level, hPa.
@@ -60,7 +41,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
 
         [JsonProperty("clouds")]
         public int Clouds { get; set; }
-
+        
         [JsonProperty("visibility")]
         public int Visibility { get; set; }
 
@@ -88,21 +69,9 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonProperty("pop")]
         public double Pop { get; set; }
 
-        /// <summary>
-        /// Daily amount of rain, precipitation volume, mm.
-        /// </summary>
-        [JsonProperty("rain")]
-        public double Rain { get; set; }
-
-        /// <summary>
-        /// Daily amount of snow, precipitation volume, mm.
-        /// </summary>
-        [JsonProperty("snow")]
-        public double Snow { get; set; }
-
         public override string ToString()
         {
-            return $"DateTime: {this.DateTime}, Temperature: {this.Temperature.Min}/{this.Temperature.Max}";
+            return $"DateTime: {this.DateTime}, Temperature: {this.Temperature}";
         }
     }
 }

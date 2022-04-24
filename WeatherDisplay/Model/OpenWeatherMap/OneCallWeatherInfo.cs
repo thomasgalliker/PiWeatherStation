@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Newtonsoft.Json;
+using WeatherDisplay.Services;
 
 namespace WeatherDisplay.Model.OpenWeatherMap
 {
@@ -7,6 +9,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
     {
         public OneCallWeatherInfo()
         {
+            this.HourlyForecasts = new List<HourlyWeatherForecast>();
             this.DailyForecasts = new List<DailyWeatherForecast>();
             this.Alerts = new List<AlertInfo>();
         }
@@ -29,9 +32,21 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         //[JsonProperty("minutely")]
         //public MinutelyWeatherInfo MinutelyForecasts { get; set; }
 
-        //[JsonProperty("hourly")]
-        //public CurrentWeatherInfo HourlyForecasts { get; set; }
+        /// <summary>
+        /// 48-hours weather forecast.
+        /// </summary>
+        /// <remarks>
+        /// Is only included if <seealso cref="OneCallOptions.IncludeHourlyForecasts"/> is true.
+        /// </remarks>
+        [JsonProperty("hourly")]
+        public IReadOnlyCollection<HourlyWeatherForecast> HourlyForecasts { get; set; }
 
+        /// <summary>
+        /// 8-days weather forecast.
+        /// </summary>
+        /// <remarks>
+        /// Is only included if <seealso cref="OneCallOptions.IncludeDailyForecasts"/> is true.
+        /// </remarks>
         [JsonProperty("daily")]
         public IReadOnlyCollection<DailyWeatherForecast> DailyForecasts { get; set; }
 
@@ -40,7 +55,16 @@ namespace WeatherDisplay.Model.OpenWeatherMap
 
         public override string ToString()
         {
-            return $"Daily: {this.DailyForecasts.Count}, Alerts: {this.Alerts.Count}";
+            var data = new [] 
+            {
+                (Name: "Hourly", Count: this.HourlyForecasts.Count),
+                (Name: "Daily", Count: this.DailyForecasts.Count),
+                (Name: "Alerts", Count: this.Alerts.Count) }
+            .Where(x => x.Count > 0)
+            .Select(x => $"{x.Name}: {x.Count}");
+
+            var toStringValue = string.Join(", ", data);
+            return toStringValue;
         }
     }
 }
