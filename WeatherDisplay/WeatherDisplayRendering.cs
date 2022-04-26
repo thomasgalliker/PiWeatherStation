@@ -67,7 +67,7 @@ namespace WeatherDisplay
                         },
                     };
                 },
-                CrontabSchedule.Parse("0 0 * * *")); // TODO: Update every 24h - starting from 00:00
+                CrontabSchedule.Parse("0 0 * * *")); // Update every 24h
 
             // Current weather info
             displayManager.AddRenderActionsAsync(
@@ -524,7 +524,7 @@ namespace WeatherDisplay
                     }
                     return currentWeatherRenderActions;
                 },
-                CrontabSchedule.Parse("0 * * * *")); // TODO: Update every 1h - starting from 00:00
+                CrontabSchedule.Parse("*/15 * * * *")); // Update every 15mins
         }
 
         private static string FormatRain(double rain)

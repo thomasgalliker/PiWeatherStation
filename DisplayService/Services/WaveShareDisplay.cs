@@ -27,6 +27,7 @@ namespace DisplayService.Services
 
         public void Clear()
         {
+            Console.WriteLine($"WaveShareDisplay: Clear");
             this.ePaperDisplay.PowerOn();
             this.ePaperDisplay.Clear();
             this.ePaperDisplay.PowerOff();
@@ -37,8 +38,9 @@ namespace DisplayService.Services
             this.DisplayImage(new Bitmap(bitmapStream));
         }
 
-        public void DisplayImage(Bitmap bitmap)
+        private void DisplayImage(Bitmap bitmap)
         {
+            Console.WriteLine($"WaveShareDisplay: DisplayImage");
             this.ePaperDisplay.PowerOn();
             this.ePaperDisplay.DisplayImage(bitmap);
             this.ePaperDisplay.PowerOff();

@@ -78,7 +78,6 @@ namespace WeatherDisplay.Extensions
             services.AddSingleton<IDeepLTranslationConfiguration>(deepLTranslationConfiguration);
             services.AddSingleton<ITranslationService, DeepLTranslationService>();
 
-
             services.AddSingleton<IScheduler>(x => new Scheduler(x.GetRequiredService<ILogger<Scheduler>>()));
         }
     }

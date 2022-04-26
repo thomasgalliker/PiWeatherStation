@@ -24,11 +24,6 @@ namespace DisplayService.Services
             this.screen = new SKBitmap(this.renderSettings.Width, this.renderSettings.Height);
             this.canvas = new SKCanvas(this.screen);
             this.ClearCanvas();
-
-            //if (this.cacheService.Exists())
-            //{
-            //    this.AddImage(new RenderActions.Image { X = 0, Y = 0, Filename = this.cacheService.CacheFile });
-            //}
         }
 
         private void ClearCanvas()
