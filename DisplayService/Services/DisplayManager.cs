@@ -81,7 +81,7 @@ namespace DisplayService.Services
 
         private async void OnNextSchedule(object sender, ScheduledEventArgs e)
         {
-            this.logger.LogDebug($"OnNextSchedule with {e.TaskIds.Select(t => $"{t:B}")}");
+            this.logger.LogDebug($"OnNextSchedule with {string.Join(", ", e.TaskIds.Select(t => $"{t:B}"))}");
 
             try
             {
