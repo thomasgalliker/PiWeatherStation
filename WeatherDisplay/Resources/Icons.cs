@@ -38,6 +38,11 @@ namespace WeatherDisplay.Resources
             return GetIcon("clouds_4.png");
         }
 
+        public static Stream Earth()
+        {
+            return GetIcon("earth_72.png");
+        }
+        
         public static Stream Fog()
         {
             return GetIcon("fog.png");
@@ -131,6 +136,11 @@ namespace WeatherDisplay.Resources
         public static Stream Tornado()
         {
             return GetIcon("tornado.png");
+        }
+        
+        public static Stream UVIndex()
+        {
+            return GetIcon("uvindex_72.png");
         }
 
         public static Stream Wind()

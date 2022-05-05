@@ -9,9 +9,9 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <EmbeddedResource Include="Resources\*.png" />
-	  <EmbeddedResource Update="Resources\Strings\AirQualities.resx">
+	  <EmbeddedResource Update="Resources\Strings\AirQualityTranslations.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>AirQualities.Designer.cs</LastGenOutput>
+	    <LastGenOutput>AirQualityTranslations.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
 
@@ -40,10 +40,10 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>PressureRanges.resx</DependentUpon>
 	  </Compile>
-	  <Compile Update="Resources\Strings\AirQualities.Designer.cs">
+	  <Compile Update="Resources\Strings\AirQualityTranslations.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
-	    <DependentUpon>AirQualities.resx</DependentUpon>
+	    <DependentUpon>AirQualityTranslations.resx</DependentUpon>
 	  </Compile>
 	</ItemGroup>
 

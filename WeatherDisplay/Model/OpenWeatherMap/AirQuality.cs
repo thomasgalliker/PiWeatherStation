@@ -68,7 +68,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
                     return base.ToString();
                 case "N":
                 default:
-                    var str = AirQualities.ResourceManager.GetString(this.resourceId, (CultureInfo)provider);
+                    var str = AirQualityTranslations.ResourceManager.GetString(this.resourceId, (CultureInfo)provider);
                     return str;
             }
 

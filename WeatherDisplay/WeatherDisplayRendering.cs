@@ -9,6 +9,7 @@ using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Resources;
+using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services;
 
 namespace WeatherDisplay
@@ -86,7 +87,7 @@ namespace WeatherDisplay
                     };
 
                     var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude, oneCallOptions);
-                 
+
                     var dailyForecasts = oneCallWeatherInfo.DailyForecasts.ToList();
                     var dailyForecastToday = dailyForecasts.OrderBy(f => f.DateTime).First();
 
@@ -172,7 +173,7 @@ namespace WeatherDisplay
                         try
                         {
                             var translatedTexts = await translationService.Translate(
-                                targetLanguage: CultureInfo.CurrentUICulture.TwoLetterISOLanguageName, 
+                                targetLanguage: CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
                                 texts: alertDisplayText);
 
                             alertDisplayText = translatedTexts.FirstOrDefault() ?? alertDisplayText;
@@ -207,6 +208,63 @@ namespace WeatherDisplay
                                 FontSize = 20,
                             }
                         });
+                    }
+                    else
+                    {
+                        var airPollutionInfo = await openWeatherMapService.GetAirPollutionAsync(place.Latitude, place.Longitude);
+                        if (airPollutionInfo.Items.FirstOrDefault() is AirPollutionInfoItem airPollutionInfoItem)
+                        {
+                            var airPollutionInfoText = $"{AirQualityTranslations.AirQuality}: {airPollutionInfoItem.Main.AirQuality.ToString("N")}";
+
+                            currentWeatherRenderActions.AddRange(new IRenderAction[]
+                            {
+                                new RenderActions.StreamImage
+                                {
+                                    X = 360,
+                                    Y = 300,
+                                    Image = Icons.UVIndex(),
+                                    Width = 24,
+                                    Height = 24,
+                                    HorizontalAlignment = HorizontalAlignment.Left,
+                                    VerticalAlignment = VerticalAlignment.Top,
+                                },
+                                new RenderActions.Text
+                                {
+                                    X = 400,
+                                    Y = 300 + 5,
+                                    AdjustsFontSizeToFitWidth = true,
+                                    HorizontalTextAlignment = HorizontalAlignment.Left,
+                                    VerticalTextAlignment = VerticalAlignment.Top,
+                                    Value = $"{dailyForecastToday.Uvi}",
+                                    ForegroundColor = "#000000",
+                                    BackgroundColor = "#FFFFFF",
+                                    FontSize = 20,
+                                },
+                                new RenderActions.StreamImage
+                                {
+                                    X = 500,
+                                    Y = 300,
+                                    Image = Icons.Earth(),
+                                    Width = 24,
+                                    Height = 24,
+                                    HorizontalAlignment = HorizontalAlignment.Left,
+                                    VerticalAlignment = VerticalAlignment.Top,
+                                },
+                                new RenderActions.Text
+                                {
+                                    X = 540,
+                                    Y = 300 + 5,
+                                    AdjustsFontSizeToFitWidth = true,
+                                    HorizontalTextAlignment = HorizontalAlignment.Left,
+                                    VerticalTextAlignment = VerticalAlignment.Top,
+                                    Value = airPollutionInfoText,
+                                    ForegroundColor = "#000000",
+                                    BackgroundColor = "#FFFFFF",
+                                    FontSize = 20,
+                                }
+                            });
+                        }
+
                     }
 
                     currentWeatherRenderActions.AddRange(new IRenderAction[]

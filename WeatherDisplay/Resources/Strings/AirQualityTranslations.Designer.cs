@@ -22,14 +22,14 @@ namespace WeatherDisplay.Resources.Strings {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class AirQualities {
+    internal class AirQualityTranslations {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AirQualities() {
+        internal AirQualityTranslations() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace WeatherDisplay.Resources.Strings {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WeatherDisplay.Resources.Strings.AirQualities", typeof(AirQualities).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WeatherDisplay.Resources.Strings.AirQualityTranslations", typeof(AirQualityTranslations).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -57,6 +57,15 @@ namespace WeatherDisplay.Resources.Strings {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Luftqualität.
+        /// </summary>
+        internal static string AirQuality {
+            get {
+                return ResourceManager.GetString("AirQuality", resourceCulture);
             }
         }
         

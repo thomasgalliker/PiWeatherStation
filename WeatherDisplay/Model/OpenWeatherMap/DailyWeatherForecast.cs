@@ -55,6 +55,9 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonProperty("dew_point")]
         public Temperature DewPoint { get; set; }
 
+        /// <summary>
+        /// The maximum value of UV index for the day.
+        /// </summary>
         [JsonProperty("uvi")]
         public double Uvi { get; set; }
 
