@@ -14,6 +14,6 @@ namespace WeatherDisplay.Services
         
         Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude, OneCallOptions oneCallOptions = null);
         
-        Task<PollutionInfo> GetAirPollutionAsync(double latitude, double longitude);
+        Task<AirPollutionInfo> GetAirPollutionAsync(double latitude, double longitude);
     }
 }

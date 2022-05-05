@@ -41,7 +41,7 @@ namespace WeatherDisplay.Services
             throw new NotImplementedException();
         }
 
-        public Task<PollutionInfo> GetAirPollutionAsync(double latitude, double longitude)
+        public Task<AirPollutionInfo> GetAirPollutionAsync(double latitude, double longitude)
         {
             throw new NotImplementedException();
         }

@@ -228,8 +228,8 @@ namespace WeatherDisplay.Services
             var imageStream = await weatherIconMapping.GetIconAsync(weatherCondition);
             return imageStream;
         }
-        
-        public async Task<PollutionInfo> GetAirPollutionAsync(double latitude, double longitude)
+
+        public async Task<AirPollutionInfo> GetAirPollutionAsync(double latitude, double longitude)
         {
             EnsureLatitude(latitude);
             EnsureLongitude(longitude);
@@ -258,7 +258,7 @@ namespace WeatherDisplay.Services
                 this.logger.LogDebug($"GetAirPollutionAsync returned content:{Environment.NewLine}{responseJson}");
             }
 
-            var pollutionInfo = JsonConvert.DeserializeObject<PollutionInfo>(responseJson, this.serializerSettings);
+            var pollutionInfo = JsonConvert.DeserializeObject<AirPollutionInfo>(responseJson, this.serializerSettings);
             return pollutionInfo;
         }
 
