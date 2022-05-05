@@ -22,14 +22,14 @@ namespace WeatherDisplay.Resources.Strings {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class AirQualityTranslations {
+    internal class UVIndexRanges {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AirQualityTranslations() {
+        internal UVIndexRanges() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace WeatherDisplay.Resources.Strings {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WeatherDisplay.Resources.Strings.AirQualityTranslations", typeof(AirQualityTranslations).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WeatherDisplay.Resources.Strings.UVIndexRanges", typeof(UVIndexRanges).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,29 @@ namespace WeatherDisplay.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Luftqualität.
+        ///   Looks up a localized string similar to Extrem.
         /// </summary>
-        internal static string AirQuality {
+        internal static string Extreme {
             get {
-                return ResourceManager.GetString("AirQuality", resourceCulture);
+                return ResourceManager.GetString("Extreme", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to OK.
+        ///   Looks up a localized string similar to Hoch.
         /// </summary>
-        internal static string Fair {
+        internal static string High {
             get {
-                return ResourceManager.GetString("Fair", resourceCulture);
+                return ResourceManager.GetString("High", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Gut.
+        ///   Looks up a localized string similar to Tief.
         /// </summary>
-        internal static string Good {
+        internal static string Low {
             get {
-                return ResourceManager.GetString("Good", resourceCulture);
+                return ResourceManager.GetString("Low", resourceCulture);
             }
         }
         
@@ -97,20 +97,11 @@ namespace WeatherDisplay.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Schlecht.
+        ///   Looks up a localized string similar to Sehr hoch.
         /// </summary>
-        internal static string Poor {
+        internal static string VeryHigh {
             get {
-                return ResourceManager.GetString("Poor", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Sehr schlecht.
-        /// </summary>
-        internal static string VeryPoor {
-            get {
-                return ResourceManager.GetString("VeryPoor", resourceCulture);
+                return ResourceManager.GetString("VeryHigh", resourceCulture);
             }
         }
     }

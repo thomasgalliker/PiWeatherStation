@@ -59,7 +59,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         /// The maximum value of UV index for the day.
         /// </summary>
         [JsonProperty("uvi")]
-        public double Uvi { get; set; }
+        public UVIndex Uvi { get; set; }
 
         [JsonProperty("clouds")]
         public int Clouds { get; set; }
