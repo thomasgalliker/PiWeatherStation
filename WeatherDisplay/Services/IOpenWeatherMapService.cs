@@ -13,5 +13,7 @@ namespace WeatherDisplay.Services
         Task<Stream> GetWeatherIconAsync(WeatherCondition weatherCondition, IWeatherIconMapping weatherIconMapping = null);
         
         Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude, OneCallOptions oneCallOptions = null);
+        
+        Task<PollutionInfo> GetAirPollutionAsync(double latitude, double longitude);
     }
 }

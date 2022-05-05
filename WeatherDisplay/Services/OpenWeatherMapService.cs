@@ -228,6 +228,39 @@ namespace WeatherDisplay.Services
             var imageStream = await weatherIconMapping.GetIconAsync(weatherCondition);
             return imageStream;
         }
+        
+        public async Task<PollutionInfo> GetAirPollutionAsync(double latitude, double longitude)
+        {
+            EnsureLatitude(latitude);
+            EnsureLongitude(longitude);
+
+            this.logger.LogDebug($"GetAirPollutionAsync: latitude={latitude}, longitude={longitude}");
+
+            var lat = FormatCoordinate(latitude);
+            var lon = FormatCoordinate(longitude);
+
+            var builder = new UriBuilder(ApiEndpoint)
+            {
+                Path = "data/2.5/air_pollution",
+                Query = $"lat={lat}&lon={lon}&appid={this.openWeatherMapApiKey}"
+            };
+
+            var uri = builder.ToString();
+            this.logger.LogDebug($"GetAirPollutionAsync: GET {uri}");
+
+            var response = await this.httpClient.GetAsync(uri);
+            response.EnsureSuccessStatusCode();
+
+            var responseJson = await response.Content.ReadAsStringAsync();
+
+            if (this.verboseLogging)
+            {
+                this.logger.LogDebug($"GetAirPollutionAsync returned content:{Environment.NewLine}{responseJson}");
+            }
+
+            var pollutionInfo = JsonConvert.DeserializeObject<PollutionInfo>(responseJson, this.serializerSettings);
+            return pollutionInfo;
+        }
 
         private static string FormatCoordinate(double latitude)
         {

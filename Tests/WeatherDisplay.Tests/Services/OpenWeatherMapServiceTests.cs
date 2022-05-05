@@ -114,4 +114,32 @@ public class OpenWeatherMapServiceTests
             "https://api.openweathermap.org:443/data/2.5/onecall?lat=1.1111&lon=1.2222&exclude=current,minutely,hourly&units=metric&lang=en&appid=apikey");
         }
     }
+    [Fact]
+    public async Task ShouldGetAirPollutionAsync()
+    {
+        // Arrange
+        var latitude = 47.0907124d;
+        var longitude = 8.0559381d;
+
+        var logger = new NullLogger<OpenWeatherMapService>();
+        var configuration = new OpenWeatherMapConfiguration
+        {
+            ApiKey = "001c4dffbe586e8e2542fb379031bc99",
+            UnitSystem = "metric",
+            Language = "de",
+            VerboseLogging = true
+        };
+
+        IOpenWeatherMapService openWeatherMapService = new OpenWeatherMapService(logger, configuration);
+
+        // Act
+        var pollutionInfo = await openWeatherMapService.GetAirPollutionAsync(latitude, longitude);
+
+        // Assert
+        pollutionInfo.Should().NotBeNull();
+
+        var expectedWeatherInfo = OneCallWeatherInfos.GetTestWeatherInfo();
+        pollutionInfo.Should().BeEquivalentTo(expectedWeatherInfo);
+
+    }
 }
