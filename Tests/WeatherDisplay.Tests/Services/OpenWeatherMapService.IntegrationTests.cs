@@ -13,6 +13,7 @@ public class OpenWeatherMapServiceIntegrationTests
 {
     private readonly ILogger<OpenWeatherMapService> logger;
     private readonly IOpenWeatherMapConfiguration openWeatherMapConfiguration;
+    private readonly ITestOutputHelper testOutputHelper;
 
     public OpenWeatherMapServiceIntegrationTests(ITestOutputHelper testOutputHelper)
     {
@@ -24,6 +25,7 @@ public class OpenWeatherMapServiceIntegrationTests
             Language = "de",
             VerboseLogging = true
         };
+        this.testOutputHelper = testOutputHelper;
     }
 
     [Fact]
@@ -39,9 +41,8 @@ public class OpenWeatherMapServiceIntegrationTests
         var airPollutionInfo = await openWeatherMapService.GetAirPollutionAsync(latitude, longitude);
 
         // Assert
+        this.testOutputHelper.WriteLine(ObjectDumper.Dump(airPollutionInfo, DumpStyle.CSharp));
+        
         airPollutionInfo.Should().NotBeNull();
-
-        var expectedAirPollutionInfo = AirPollutionInfos.GetTestAirPollutionInfo();
-        airPollutionInfo.Should().BeEquivalentTo(expectedAirPollutionInfo);
     }
 }

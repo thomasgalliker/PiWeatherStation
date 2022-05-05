@@ -8,9 +8,9 @@ namespace WeatherDisplay.Model.OpenWeatherMap
     {
         public UVIndex(double value)
         {
-            if (value < 0 || value > 100)
+            if (value < 0 || value > double.MaxValue)
             {
-                throw new ArgumentOutOfRangeException(string.Format($"{0} must be between 0 and 100", value));
+                throw new ArgumentOutOfRangeException(string.Format($"{0} must be between 0 and 11", value));
             }
 
             this.Value = value;

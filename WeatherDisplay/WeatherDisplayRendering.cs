@@ -235,7 +235,7 @@ namespace WeatherDisplay
                                     AdjustsFontSizeToFitWidth = true,
                                     HorizontalTextAlignment = HorizontalAlignment.Left,
                                     VerticalTextAlignment = VerticalAlignment.Top,
-                                    Value = $"{dailyForecastToday.Uvi.Range.ToString("N")}",
+                                    Value = $"{dailyForecastToday.UVIndex.Range.ToString("N")}",
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 20,

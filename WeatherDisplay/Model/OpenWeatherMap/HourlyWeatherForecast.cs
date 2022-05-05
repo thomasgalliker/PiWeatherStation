@@ -36,11 +36,9 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonProperty("dew_point")]
         public Temperature DewPoint { get; set; }
 
-        /// <summary>
-        ///  UV index.
-        /// </summary>
         [JsonProperty("uvi")]
-        public double Uvi { get; set; }
+        [JsonConverter(typeof(UVIndexJsonConverter))]
+        public UVIndex UVIndex { get; set; }
 
         [JsonProperty("clouds")]
         public int Clouds { get; set; }
