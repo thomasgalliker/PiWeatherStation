@@ -220,38 +220,28 @@ namespace WeatherDisplay
 
                             currentWeatherRenderActions.AddRange(new IRenderAction[]
                             {
-                                new RenderActions.StreamImage
-                                {
-                                    X = 360,
-                                    Y = 300,
-                                    Image = Icons.Frame72(),
-                                    Width = 24,
-                                    Height = 24,
-                                    HorizontalAlignment = HorizontalAlignment.Left,
-                                    VerticalAlignment = VerticalAlignment.Top,
-                                },
                                 new RenderActions.Text
                                 {
                                     X = 360 + 12,
-                                    Y = 300 + 2,
+                                    Y = 300,
                                     HorizontalTextAlignment = HorizontalAlignment.Center,
                                     VerticalTextAlignment = VerticalAlignment.Top,
-                                    Value = $"UVI",
+                                    Value = "UV",
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
-                                    FontSize = 9,
+                                    FontSize = 14,
                                     Bold = true,
                                 },
                                 new RenderActions.Text
                                 {
                                     X = 360 + 12,
-                                    Y = 300 + 21,
+                                    Y = 300 + 24,
                                     HorizontalTextAlignment = HorizontalAlignment.Center,
                                     VerticalTextAlignment = VerticalAlignment.Bottom,
-                                    Value = $"{dailyForecastToday.UVIndex.ToString()}",
+                                    Value = dailyForecastToday.UVIndex.ToString("F0"),
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
-                                    FontSize = 12,
+                                    FontSize = 14,
                                     Bold = true,
                                 },
                                 new RenderActions.Text
@@ -261,7 +251,7 @@ namespace WeatherDisplay
                                     AdjustsFontSizeToFitWidth = true,
                                     HorizontalTextAlignment = HorizontalAlignment.Left,
                                     VerticalTextAlignment = VerticalAlignment.Top,
-                                    Value = $"{dailyForecastToday.UVIndex.Range.ToString("N")}",
+                                    Value = dailyForecastToday.UVIndex.Range.ToString("N"),
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 20,
