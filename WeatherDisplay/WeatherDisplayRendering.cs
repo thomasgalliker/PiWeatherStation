@@ -24,11 +24,8 @@ namespace WeatherDisplay
             displayManager.AddRenderActions(
                 () =>
                 {
-                    var dateTimeNow = dateTime.Now;
-
                     var assembly = Assembly.GetExecutingAssembly();
                     var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-                    var productVersion = fvi.ProductVersion;
 
                     return new List<IRenderAction>
                     {
@@ -46,7 +43,7 @@ namespace WeatherDisplay
                             Y = 50,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = dateTimeNow.ToString("dddd, d. MMMM"),
+                            Value = dateTime.Now.ToString("dddd, d. MMMM"),
                             ForegroundColor = "#FFFFFF",
                             FontSize = 70,
                             AdjustsFontSizeToFitWidth = true,
@@ -60,7 +57,7 @@ namespace WeatherDisplay
                             Y = 88,
                             HorizontalTextAlignment = HorizontalAlignment.Right,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"v{productVersion}",
+                            Value = $"v{fvi.ProductVersion}",
                             ForegroundColor = "#FFFFFF",
                             BackgroundColor = "#000000",
                             FontSize = 12,
@@ -74,7 +71,6 @@ namespace WeatherDisplay
             displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var dateTimeNow = dateTime.Now;
                     var place = appSettings.Places.First();
 
                     // Get current weather & daily forecasts
@@ -94,6 +90,8 @@ namespace WeatherDisplay
                     var currentWeatherInfo = oneCallWeatherInfo.CurrentWeather;
                     var currentWeatherCondition = currentWeatherInfo.Weather.First();
                     var currentWeatherImage = await openWeatherMapService.GetWeatherIconAsync(currentWeatherCondition, weatherIconMapping);
+
+                    var dateTimeNow = dateTime.Now;
 
                     var currentWeatherRenderActions = new List<IRenderAction>
                     {
