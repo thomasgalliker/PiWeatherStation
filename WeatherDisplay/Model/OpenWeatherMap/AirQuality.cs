@@ -6,7 +6,7 @@ using WeatherDisplay.Resources.Strings;
 
 namespace WeatherDisplay.Model.OpenWeatherMap
 {
-    public class AirQuality : IFormattable
+    public class AirQuality : IComparable, IComparable<AirQuality>, IComparable<int>, IFormattable
     {
         public static readonly AirQuality Good = new AirQuality(nameof(Good), 1);
         public static readonly AirQuality Fair = new AirQuality(nameof(Fair), 2);
@@ -38,6 +38,36 @@ namespace WeatherDisplay.Model.OpenWeatherMap
             }
 
             return airQuality;
+        }
+
+        public static bool operator >(AirQuality a1, AirQuality a2)
+        {
+            return a1.Value > a2.Value;
+        }
+
+        public static bool operator <(AirQuality a1, AirQuality a2)
+        {
+            return a1.Value < a2.Value;
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj is AirQuality airQuality)
+            {
+                return this.Value.CompareTo(airQuality.Value);
+            }
+
+            return this.Value.CompareTo(obj);
+        }
+
+        public int CompareTo(AirQuality other)
+        {
+            return this.Value.CompareTo(other.Value);
+        }
+
+        public int CompareTo(int other)
+        {
+            return this.Value.CompareTo(other);
         }
 
         public override string ToString()

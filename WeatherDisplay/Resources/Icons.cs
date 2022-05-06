@@ -53,6 +53,11 @@ namespace WeatherDisplay.Resources
             return GetIcon("humidity.png");
         }
 
+        public static Stream Frame72()
+        {
+            return GetIcon("icon_frame_72.png");
+        }
+
         public static Stream Mist()
         {
             return GetIcon("clouds_mist.png");
@@ -138,11 +143,6 @@ namespace WeatherDisplay.Resources
             return GetIcon("tornado.png");
         }
         
-        public static Stream UVIndex()
-        {
-            return GetIcon("uvindex_72.png");
-        }
-
         public static Stream Wind()
         {
             return GetIcon("wind.png");

@@ -211,8 +211,12 @@ namespace WeatherDisplay
                     }
                     else
                     {
+                        // If there are no weather alerst and the air pollution is not good,
+                        // we display some air pollution information.
+
                         var airPollutionInfo = await openWeatherMapService.GetAirPollutionAsync(place.Latitude, place.Longitude);
-                        if (airPollutionInfo.Items.FirstOrDefault() is AirPollutionInfoItem airPollutionInfoItem)
+                        if (airPollutionInfo.Items.FirstOrDefault() is AirPollutionInfoItem airPollutionInfoItem /*&&
+                            airPollutionInfoItem.Main.AirQuality > AirQuality.Good*/)
                         {
                             var airPollutionInfoText = $"{AirQualityTranslations.AirQuality}: {airPollutionInfoItem.Main.AirQuality.ToString("N")}";
 
@@ -222,11 +226,35 @@ namespace WeatherDisplay
                                 {
                                     X = 360,
                                     Y = 300,
-                                    Image = Icons.UVIndex(),
+                                    Image = Icons.Frame72(),
                                     Width = 24,
                                     Height = 24,
                                     HorizontalAlignment = HorizontalAlignment.Left,
                                     VerticalAlignment = VerticalAlignment.Top,
+                                },
+                                new RenderActions.Text
+                                {
+                                    X = 360 + 12,
+                                    Y = 300 + 2,
+                                    HorizontalTextAlignment = HorizontalAlignment.Center,
+                                    VerticalTextAlignment = VerticalAlignment.Top,
+                                    Value = $"UVI",
+                                    ForegroundColor = "#000000",
+                                    BackgroundColor = "#FFFFFF",
+                                    FontSize = 9,
+                                    Bold = true,
+                                },
+                                new RenderActions.Text
+                                {
+                                    X = 360 + 12,
+                                    Y = 300 + 21,
+                                    HorizontalTextAlignment = HorizontalAlignment.Center,
+                                    VerticalTextAlignment = VerticalAlignment.Bottom,
+                                    Value = $"{dailyForecastToday.UVIndex.ToString()}",
+                                    ForegroundColor = "#000000",
+                                    BackgroundColor = "#FFFFFF",
+                                    FontSize = 12,
+                                    Bold = true,
                                 },
                                 new RenderActions.Text
                                 {
