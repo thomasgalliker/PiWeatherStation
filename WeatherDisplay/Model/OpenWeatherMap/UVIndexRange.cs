@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using WeatherDisplay.Resources.Strings;
 
 namespace WeatherDisplay.Model.OpenWeatherMap
@@ -17,6 +18,9 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         {
             Low, Moderate, High, VeryHigh, Extreme
         };
+
+        public static double MinValue = All.Min(x => x.Min);
+        public static double MaxValue = All.Max(x => x.Max);
 
         private readonly string resourceId;
 
@@ -36,7 +40,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
                 }
             }
 
-            throw new ArgumentOutOfRangeException(nameof(value), $"Value must be between 1 and 11");
+            throw new ArgumentOutOfRangeException(nameof(value), $"Value must be between {MinValue} and {MaxValue}");
         }
 
         public override string ToString()

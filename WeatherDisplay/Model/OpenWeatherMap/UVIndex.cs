@@ -8,9 +8,9 @@ namespace WeatherDisplay.Model.OpenWeatherMap
     {
         public UVIndex(double value)
         {
-            if (value < 0 || value > double.MaxValue)
+            if (value < UVIndexRange.MinValue || value > UVIndexRange.MaxValue)
             {
-                throw new ArgumentOutOfRangeException(string.Format($"{0} must be between 0 and 11", value));
+                throw new ArgumentOutOfRangeException(string.Format($"{0} must be between {UVIndexRange.MinValue} and {UVIndexRange.MaxValue}", value));
             }
 
             this.Value = value;
@@ -46,48 +46,48 @@ namespace WeatherDisplay.Model.OpenWeatherMap
             return this.Value.Equals(other.Value);
         }
 
-        public static UVIndex operator +(double v, UVIndex h)
+        public static UVIndex operator +(double v, UVIndex uvi)
         {
-            return new UVIndex(h.Value + v);
+            return new UVIndex(uvi.Value + v);
         }
 
-        public static UVIndex operator +(UVIndex h, double v)
+        public static UVIndex operator +(UVIndex uvi, double v)
         {
-            return v + h;
+            return v + uvi;
         }
 
-        public static UVIndex operator +(UVIndex h1, UVIndex h2)
+        public static UVIndex operator +(UVIndex uvi1, UVIndex uvi2)
         {
-            return h1 + h2.Value;
+            return uvi1 + uvi2.Value;
         }
 
-        public static UVIndex operator -(UVIndex h, double v)
+        public static UVIndex operator -(UVIndex uvi, double v)
         {
-            return new UVIndex(h.Value - v);
+            return new UVIndex(uvi.Value - v);
         }
 
-        public static UVIndex operator -(UVIndex h1, UVIndex h2)
+        public static UVIndex operator -(UVIndex uvi1, UVIndex uvi2)
         {
-            return h1 - h2.Value;
+            return uvi1 - uvi2.Value;
         }
 
-        public static UVIndex operator *(UVIndex h, double v)
+        public static UVIndex operator *(UVIndex uvi, double v)
         {
-            return new UVIndex(h.Value * v);
+            return new UVIndex(uvi.Value * v);
         }
 
-        public static UVIndex operator /(UVIndex h, double v)
+        public static UVIndex operator /(UVIndex uvi, double v)
         {
-            return new UVIndex(h.Value / v);
+            return new UVIndex(uvi.Value / v);
         }
 
         public static implicit operator UVIndex(double v) => new UVIndex(v);
 
-        public static implicit operator double(UVIndex h) => h.Value;
+        public static implicit operator double(UVIndex uvi) => uvi.Value;
 
         public override string ToString()
         {
-            return this.ToString("G", CultureInfo.CurrentCulture);
+            return this.ToString("0.#", CultureInfo.CurrentCulture);
         }
 
         public string ToString(string format)
@@ -99,7 +99,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         {
             if (string.IsNullOrEmpty(format))
             {
-                format = "0";
+                format = "0.0#";
             }
 
             if (provider == null)
