@@ -87,7 +87,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
 
         public override string ToString()
         {
-            return this.ToString("0.#", CultureInfo.CurrentCulture);
+            return this.ToString("F1", CultureInfo.CurrentCulture);
         }
 
         public string ToString(string format)
@@ -99,7 +99,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         {
             if (string.IsNullOrEmpty(format))
             {
-                format = "0.0#";
+                format = "F1";
             }
 
             if (provider == null)
