@@ -43,18 +43,20 @@ namespace DisplayService.Tests.Services
             var referenceDate = new DateTime(2000, 1, 1, 20, 59, 58);
 
             var clockQueue = new DateTimeGenerator(
-                referenceDate,
+                referenceDate, 
                 new[]
                 {
+                    TimeSpan.Zero,
                     TimeSpan.FromSeconds(1),
+                    TimeSpan.Zero,
                     TimeSpan.FromSeconds(1),
-                    TimeSpan.FromSeconds(1),
-                    TimeSpan.FromSeconds(1),
+                    TimeSpan.Zero,
                     TimeSpan.FromSeconds(58),
+                    TimeSpan.Zero,
                 });
 
             var dateTimeMock = this.autoMocker.GetMock<NCrontab.Scheduler.Internals.IDateTime>();
-            dateTimeMock.SetupSequence(d => d.Now, referenceDate, (n) => clockQueue.GetNext());
+            dateTimeMock.SetupSequence(d => d.UtcNow, referenceDate, (n) => clockQueue.GetNext());
 
             var displayMock = this.autoMocker.GetMock<IDisplay>();
             var renderServiceMock = this.autoMocker.GetMock<IRenderService>();
@@ -85,7 +87,7 @@ namespace DisplayService.Tests.Services
             }
 
             // Assert
-            dateTimeMock.Verify(d => d.Now, Times.Exactly(7));
+            dateTimeMock.Verify(d => d.UtcNow, Times.Exactly(14));
             renderServiceMock.Verify(r => r.Clear(), Times.Exactly(1));
             renderServiceMock.Verify(r => r.GetScreen(), Times.Exactly(3));
             renderServiceMock.Verify(r => r.Text(It.Is<RenderActions.Text>(t => t.Value == "Test 1")), Times.Exactly(3));
