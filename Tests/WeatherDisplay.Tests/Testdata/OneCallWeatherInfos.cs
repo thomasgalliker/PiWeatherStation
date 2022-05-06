@@ -41,6 +41,7 @@ namespace WeatherDisplay.Tests.Testdata
                     Pressure = new Pressure(1000),
                     Humidity = new Humidity(50),
                     DewPoint = new Temperature(3.4, TemperatureUnit.Celsius),
+                    UVIndex = new UVIndex(6.5d),
                     Weather = WeatherConditions.GetTestWeatherConditions().Take(1).ToList(),
                 },
                 DailyForecasts = new List<DailyWeatherForecast>
@@ -88,7 +89,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Clouds = 68,
                         Pop = 1d / 3d,
                         Rain = 11.923423d,
-                        Uvi = 2.51d,
+                        UVIndex = 2.51d,
                     },
                     new DailyWeatherForecast
                     {
@@ -132,7 +133,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Clouds = 100,
                         Pop = 0.08d,
-                        Uvi = 2.37d
+                        UVIndex = 2.37d
                     },
                     new DailyWeatherForecast
                     {
@@ -176,7 +177,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Clouds = 32,
                         Pop = 0.32d,
-                        Uvi = 2.99d
+                        UVIndex = 2.99d
                     },
                     new DailyWeatherForecast
                     {
@@ -220,7 +221,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Clouds = 69,
                         Pop = 0.18d,
-                        Uvi = 2.24d
+                        UVIndex = 2.24d
                     },
                     new DailyWeatherForecast
                     {
@@ -264,7 +265,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Clouds = 1,
                         Pop = 0d,
-                        Uvi = 3.58d
+                        UVIndex = 3.58d
                     },
                     new DailyWeatherForecast
                     {
@@ -308,7 +309,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Clouds = 0,
                         Pop = 0d,
-                        Uvi = 4d
+                        UVIndex = 4d
                     },
                     new DailyWeatherForecast
                     {
@@ -352,7 +353,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Clouds = 0,
                         Pop = 0d,
-                        Uvi = 4d
+                        UVIndex = 4d
                     },
                     new DailyWeatherForecast
                     {
@@ -396,7 +397,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Clouds = 0,
                         Pop = 0d,
-                        Uvi = 4d
+                        UVIndex = 4d
                     }
                 },
                 Alerts = new List<AlertInfo>

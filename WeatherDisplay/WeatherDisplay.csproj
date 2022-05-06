@@ -9,6 +9,10 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <EmbeddedResource Include="Resources\*.png" />
+	  <EmbeddedResource Update="Resources\Strings\AirQualityTranslations.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>AirQualityTranslations.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -36,6 +40,16 @@
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>PressureRanges.resx</DependentUpon>
 	  </Compile>
+	  <Compile Update="Resources\Strings\AirQualityTranslations.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>AirQualityTranslations.resx</DependentUpon>
+	  </Compile>
+	  <Compile Update="Resources\Strings\UVIndexRanges.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>UVIndexRanges.resx</DependentUpon>
+	  </Compile>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -46,6 +60,10 @@
 	  <EmbeddedResource Update="Resources\Strings\PressureRanges.resx">
 	    <Generator>ResXFileCodeGenerator</Generator>
 	    <LastGenOutput>PressureRanges.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	  <EmbeddedResource Update="Resources\Strings\UVIndexRanges.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>UVIndexRanges.Designer.cs</LastGenOutput>
 	  </EmbeddedResource>
 	</ItemGroup>
 
