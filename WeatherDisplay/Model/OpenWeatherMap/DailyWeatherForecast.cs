@@ -39,7 +39,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         public DailyTemperatureForecast Temperature { get; set; }
 
         [JsonProperty("feels_like")]
-        public FeelsLikeForecast FeelsLike { get; set; }
+        public DailyFeelsLikeForecast FeelsLike { get; set; }
 
         /// <summary>
         ///  Atmospheric pressure on the sea level, hPa.
@@ -53,7 +53,20 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         public Humidity Humidity { get; set; }
 
         [JsonProperty("dew_point")]
-        public double DewPoint { get; set; }
+        public Temperature DewPoint { get; set; }
+
+        /// <summary>
+        /// The maximum value of UV index for the day.
+        /// </summary>
+        [JsonProperty("uvi")]
+        [JsonConverter(typeof(UVIndexJsonConverter))]
+        public UVIndex UVIndex { get; set; }
+
+        [JsonProperty("clouds")]
+        public int Clouds { get; set; }
+
+        [JsonProperty("visibility")]
+        public int Visibility { get; set; }
 
         [JsonProperty("wind_speed")]
         public double WindSpeed { get; set; }
@@ -64,18 +77,19 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonIgnore]
         public CardinalWindDirection WindDirection => WindHelper.GetCardinalWindDirection(this.WindDirectionDegrees);
 
+        /// <summary>
+        /// Wind gust is a brief increase in the speed of the wind, usually less than 20 seconds. (German: Windböe).
+        /// </summary>
         [JsonProperty("wind_gust")]
         public double WindGust { get; set; }
 
         [JsonProperty("weather")]
         public List<WeatherCondition> Weather { get; set; }
 
-        [JsonProperty("clouds")]
-        public int Clouds { get; set; }
-
         /// <summary>
         /// Probability of precipitation.
         /// The values of the parameter vary between 0 and 1, where 0 is equal to 0%, 1 is equal to 100%.
+        /// </summary>
         [JsonProperty("pop")]
         public double Pop { get; set; }
 
@@ -90,9 +104,6 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         /// </summary>
         [JsonProperty("snow")]
         public double Snow { get; set; }
-
-        [JsonProperty("uvi")]
-        public double Uvi { get; set; }
 
         public override string ToString()
         {

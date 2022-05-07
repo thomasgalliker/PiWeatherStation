@@ -8,6 +8,11 @@ namespace WeatherDisplay.Resources
     {
         private static readonly Assembly Assembly = typeof(HighContrastWeatherIconMapping).Assembly;
 
+        internal static Stream Alert()
+        {
+            return GetIcon("alert_72.png");
+        }
+        
         internal static Stream AtmosphericPressure()
         {
             return GetIcon("atmospheric_pressure.png");
@@ -33,6 +38,11 @@ namespace WeatherDisplay.Resources
             return GetIcon("clouds_4.png");
         }
 
+        public static Stream Earth()
+        {
+            return GetIcon("earth_72.png");
+        }
+        
         public static Stream Fog()
         {
             return GetIcon("fog.png");
@@ -41,6 +51,11 @@ namespace WeatherDisplay.Resources
         public static Stream Humidity()
         {
             return GetIcon("humidity.png");
+        }
+
+        public static Stream Frame72()
+        {
+            return GetIcon("icon_frame_72.png");
         }
 
         public static Stream Mist()
@@ -127,7 +142,7 @@ namespace WeatherDisplay.Resources
         {
             return GetIcon("tornado.png");
         }
-
+        
         public static Stream Wind()
         {
             return GetIcon("wind.png");

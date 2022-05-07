@@ -7,32 +7,28 @@ namespace WeatherDisplay.Model.OpenWeatherMap
     public class WeatherCondition
     {
         /// <summary>
-        ///     Gets the description of the weather (localized).
-        /// </summary>
-        /// <value>the description of the weather (localized).</value>
-        [JsonRequired, JsonProperty("description")]
-        public string Description { get; set; }
-
-        /// <summary>
-        ///     Gets the weather icon id (e.g. 09d).
-        /// </summary>
-        /// <value>the weather icon id (e.g. 09d).</value>
-        [JsonRequired, JsonProperty("icon")]
-        public string IconId { get; set; }
-
-        /// <summary>
         ///     Gets the identifier of the weather condition.
         /// </summary>
-        /// <value>the identifier of the weather condition.</value>
         [JsonRequired, JsonProperty("id")]
         public int Id { get; set; }
 
         /// <summary>
-        ///     Gets the type of the weather condition.
+        ///     Gets the scalar type of the weather condition.
         /// </summary>
-        /// <value>the type of the weather condition.</value>
         [JsonRequired, JsonProperty("main")]
         [JsonConverter(typeof(StringEnumConverter))]
         public WeatherConditionType Type { get; set; }
+        /// <summary>
+        ///     Gets the description of the weather (localized).
+        /// </summary>
+        [JsonRequired, JsonProperty("description")]
+        public string Description { get; set; }
+
+        /// <summary>
+        ///     Gets the openweathermap icon identifier (e.g. 09d).
+        ///     See also: https://openweathermap.org/weather-conditions#How-to-get-icon-URL
+        /// </summary>
+        [JsonRequired, JsonProperty("icon")]
+        public string IconId { get; set; }
     }
 }

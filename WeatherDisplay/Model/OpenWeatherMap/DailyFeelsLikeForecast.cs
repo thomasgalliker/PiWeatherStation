@@ -2,7 +2,7 @@
 
 namespace WeatherDisplay.Model.OpenWeatherMap
 {
-    public class FeelsLikeForecast
+    public class DailyFeelsLikeForecast
     {
         [JsonProperty("day")]
         public Temperature Day { get; set; }

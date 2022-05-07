@@ -81,6 +81,8 @@ namespace DisplayService.Services
 
         private async void OnNextSchedule(object sender, ScheduledEventArgs e)
         {
+            this.logger.LogDebug($"OnNextSchedule with {string.Join(", ", e.TaskIds.Select(t => $"{t:B}"))}");
+
             try
             {
                 var scheduledTaskIds = e.TaskIds.ToList();
@@ -139,11 +141,11 @@ namespace DisplayService.Services
             {
                 // Get rendered image from rendering service
                 // and send it to the display
-                var bitmapStream = this.renderService.GetScreen(); // TODO: Use using/Dispose
-                this.display.DisplayImage(bitmapStream);
-                await this.cacheService.SaveToCache(bitmapStream);
-                bitmapStream.Close();
-                bitmapStream.Dispose();
+                using (var bitmapStream = this.renderService.GetScreen())
+                {
+                    this.display.DisplayImage(bitmapStream);
+                    await this.cacheService.SaveToCache(bitmapStream);
+                }
             }
             catch (Exception ex)
             {
@@ -171,7 +173,7 @@ namespace DisplayService.Services
 
         public async Task StartAsync(CancellationToken cancellationToken = default)
         {
-            this.logger.LogInformation($"Start rendering...");
+            this.logger.LogInformation($"StartAsync");
 
             try
             {
@@ -180,6 +182,8 @@ namespace DisplayService.Services
                 var renderActions = await this.GetRenderActionsAsync();
                 await this.UpdateDisplayAsync(renderActions);
 
+                var tasks = this.scheduler.GetTasks().ToList();
+                this.logger.LogInformation($"Starting scheduler with tasks.Count={tasks.Count}");
                 this.scheduler.Start(cancellationToken);
             }
             catch (Exception ex)
@@ -202,6 +206,7 @@ namespace DisplayService.Services
             this.logger.LogInformation("ResetAsync");
 
             this.scheduler.Stop();
+            //this.scheduler.RemoveAllTasks();
 
             // Remove existing rendering setups
             this.renderingSetup.Clear();
@@ -213,6 +218,8 @@ namespace DisplayService.Services
 
         protected void Dispose(bool disposing)
         {
+            this.logger.LogDebug("Dispose");
+
             if (this.disposed)
             {
                 return;

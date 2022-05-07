@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using Newtonsoft.Json;
 using WeatherDisplay.Model.OpenWeatherMap.Converters;
 
@@ -7,8 +8,12 @@ namespace WeatherDisplay.Model.OpenWeatherMap
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class AdditionalWeatherInfo
     {
+        /// <summary>
+        /// Country code.
+        /// </summary>
         [JsonProperty("country")]
-        public string CountryCode { get; set; }
+        [JsonConverter(typeof(RegionInfoJsonConverter))]
+        public RegionInfo Country { get; set; }
 
         [JsonProperty("sunrise")]
         [JsonConverter(typeof(EpochDateTimeConverter))]
@@ -20,7 +25,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
 
         public override string ToString()
         {
-            return $"Sunrise: {this.Sunrise}, Sunset: {this.Sunset}";
+            return $"Country: {this.Country}, Sunrise: {this.Sunrise}, Sunset: {this.Sunset}";
         }
     }
 }

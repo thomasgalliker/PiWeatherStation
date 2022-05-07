@@ -25,7 +25,7 @@ namespace WeatherDisplay.Services
             });
         }
 
-        public Task<WeatherForecast> GetWeatherForecast(double latitude, double longitude)
+        public Task<WeatherForecast> GetWeatherForecastAsync(double latitude, double longitude)
         {
             throw new NotImplementedException();
         }
@@ -36,7 +36,12 @@ namespace WeatherDisplay.Services
             throw new NotImplementedException();
         }
 
-        public Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude)
+        public Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude, OneCallOptions oneCallOptions = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<AirPollutionInfo> GetAirPollutionAsync(double latitude, double longitude)
         {
             throw new NotImplementedException();
         }

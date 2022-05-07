@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using DisplayService.Model;
@@ -8,13 +9,14 @@ using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Resources;
+using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services;
 
 namespace WeatherDisplay
 {
     public static class WeatherDisplayRendering
     {
-        public static void AddWeatherRenderActions(this IDisplayManager displayManager, IOpenWeatherMapService openWeatherMapService, IDateTime dateTime, IAppSettings appSettings)
+        public static void AddWeatherRenderActions(this IDisplayManager displayManager, IOpenWeatherMapService openWeatherMapService, ITranslationService translationService, IDateTime dateTime, IAppSettings appSettings)
         {
             var weatherIconMapping = new HighContrastWeatherIconMapping();
 
@@ -22,11 +24,8 @@ namespace WeatherDisplay
             displayManager.AddRenderActions(
                 () =>
                 {
-                    var dateTimeNow = dateTime.Now;
-
                     var assembly = Assembly.GetExecutingAssembly();
                     var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-                    var productVersion = fvi.ProductVersion;
 
                     return new List<IRenderAction>
                     {
@@ -44,7 +43,7 @@ namespace WeatherDisplay
                             Y = 50,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = dateTimeNow.ToString("dddd, d. MMMM"),
+                            Value = dateTime.Now.ToString("dddd, d. MMMM"),
                             ForegroundColor = "#FFFFFF",
                             FontSize = 70,
                             AdjustsFontSizeToFitWidth = true,
@@ -58,7 +57,7 @@ namespace WeatherDisplay
                             Y = 88,
                             HorizontalTextAlignment = HorizontalAlignment.Right,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"v{productVersion}",
+                            Value = $"v{fvi.ProductVersion}",
                             ForegroundColor = "#FFFFFF",
                             BackgroundColor = "#000000",
                             FontSize = 12,
@@ -66,7 +65,7 @@ namespace WeatherDisplay
                         },
                     };
                 },
-                CrontabSchedule.Parse("0 0 * * *")); // TODO: Update every 24h - starting from 00:00
+                CrontabSchedule.Parse("0 0 * * *")); // Update every 24h
 
             // Current weather info
             displayManager.AddRenderActionsAsync(
@@ -74,14 +73,25 @@ namespace WeatherDisplay
                 {
                     var place = appSettings.Places.First();
 
-                    // Get current weather
-                    var currentWeatherInfo = await openWeatherMapService.GetCurrentWeatherAsync(place.Latitude, place.Longitude);
+                    // Get current weather & daily forecasts
+                    var oneCallOptions = new OneCallOptions
+                    {
+                        IncludeCurrentWeather = true,
+                        IncludeDailyForecasts = true,
+                        IncludeMinutelyForecasts = true,
+                        IncludeHourlyForecasts = true,
+                    };
+
+                    var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude, oneCallOptions);
+
+                    var dailyForecasts = oneCallWeatherInfo.DailyForecasts.ToList();
+                    var dailyForecastToday = dailyForecasts.OrderBy(f => f.DateTime).First();
+
+                    var currentWeatherInfo = oneCallWeatherInfo.CurrentWeather;
                     var currentWeatherCondition = currentWeatherInfo.Weather.First();
                     var currentWeatherImage = await openWeatherMapService.GetWeatherIconAsync(currentWeatherCondition, weatherIconMapping);
 
-                    var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude);
-                    var dailyForecasts = oneCallWeatherInfo.DailyForecasts.ToList();
-                    var dailyForecastToday = dailyForecasts.OrderBy(f => f.DateTime).First();
+                    var dateTimeNow = dateTime.Now;
 
                     var currentWeatherRenderActions = new List<IRenderAction>
                     {
@@ -100,7 +110,7 @@ namespace WeatherDisplay
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{place.Name ?? currentWeatherInfo.Name}, um {currentWeatherInfo.Date.ToUniversalTime().WithOffset(oneCallWeatherInfo.TimezoneOffset):t} Uhr",
+                            Value = $"{place.Name}, um {dateTimeNow:t} Uhr",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
@@ -108,7 +118,7 @@ namespace WeatherDisplay
                         new RenderActions.StreamImage
                         {
                             X = 20,
-                            Y = 160 + 48,
+                            Y = 198,
                             Image = currentWeatherImage,
                             VerticalAlignment = VerticalAlignment.Center,
                             HorizontalAlignment = HorizontalAlignment.Left,
@@ -116,26 +126,165 @@ namespace WeatherDisplay
                         new RenderActions.Text
                         {
                             X = 140,
-                            Y = 200,
+                            Y = 198,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = FormatTemperature(currentWeatherInfo.Main.Temperature),
+                            Value = FormatTemperature(currentWeatherInfo.Temperature),
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 80,
-                        },
+                        }
+                    };
+
+                    var weatherDescription = currentWeatherCondition.Description.Replace("ß", "ss");
+                    var isLongWeatherDescription = weatherDescription.Length > 16;
+                    var descriptionXPostion = isLongWeatherDescription ? 20 : 147;
+                    var descriptionYPostion = isLongWeatherDescription ? 260 : 240;
+
+                    currentWeatherRenderActions.Add(
                         new RenderActions.Text
                         {
-                            X = 140,
-                            Y = 240,
+                            X = descriptionXPostion,
+                            Y = descriptionYPostion,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{currentWeatherCondition.Description}",
+                            Value = weatherDescription,
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
-                        },
+                        });
 
+                    // Weather alerts (if exists)
+                    if (oneCallWeatherInfo.Alerts.Any())
+                    {
+                        var mostImportantAlert = oneCallWeatherInfo.Alerts
+                            .OrderBy(a => a.StartTime >= dateTimeNow && a.EndTime <= dateTimeNow)
+                            .ThenBy(a => a.StartTime)
+                            .First();
+
+                        var alertDisplayText = $"{mostImportantAlert.Description}";
+                        if (oneCallWeatherInfo.Alerts.Count > 1)
+                        {
+                            alertDisplayText += $" (+{oneCallWeatherInfo.Alerts.Count - 1})";
+                        }
+
+                        try
+                        {
+                            var translatedTexts = await translationService.Translate(
+                                targetLanguage: CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
+                                texts: alertDisplayText);
+
+                            alertDisplayText = translatedTexts.FirstOrDefault() ?? alertDisplayText;
+                        }
+                        catch
+                        {
+                            // Ignored
+                        }
+
+                        currentWeatherRenderActions.AddRange(new IRenderAction[]
+                        {
+                            new RenderActions.StreamImage
+                            {
+                                X = 20,
+                                Y = 300,
+                                Image = Icons.Alert(),
+                                Width = 24,
+                                Height = 24,
+                                HorizontalAlignment = HorizontalAlignment.Left,
+                                VerticalAlignment = VerticalAlignment.Top,
+                            },
+                            new RenderActions.Text
+                            {
+                                X = 56,
+                                Y = 300 + 5,
+                                AdjustsFontSizeToFitWidth = true,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = alertDisplayText,
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 20,
+                            }
+                        });
+                    }
+                    else
+                    {
+                        // If there are no weather alerst and the air pollution is not good,
+                        // we display some air pollution information.
+
+                        var airPollutionInfo = await openWeatherMapService.GetAirPollutionAsync(place.Latitude, place.Longitude);
+                        if (airPollutionInfo.Items.FirstOrDefault() is AirPollutionInfoItem airPollutionInfoItem /*&&
+                            airPollutionInfoItem.Main.AirQuality > AirQuality.Good*/)
+                        {
+                            var airPollutionInfoText = $"{AirQualityTranslations.AirQuality}: {airPollutionInfoItem.Main.AirQuality.ToString("N")}";
+
+                            currentWeatherRenderActions.AddRange(new IRenderAction[]
+                            {
+                                new RenderActions.Text
+                                {
+                                    X = 360 + 12,
+                                    Y = 300,
+                                    HorizontalTextAlignment = HorizontalAlignment.Center,
+                                    VerticalTextAlignment = VerticalAlignment.Top,
+                                    Value = "UV",
+                                    ForegroundColor = "#000000",
+                                    BackgroundColor = "#FFFFFF",
+                                    FontSize = 14,
+                                    Bold = true,
+                                },
+                                new RenderActions.Text
+                                {
+                                    X = 360 + 12,
+                                    Y = 300 + 24,
+                                    HorizontalTextAlignment = HorizontalAlignment.Center,
+                                    VerticalTextAlignment = VerticalAlignment.Bottom,
+                                    Value = dailyForecastToday.UVIndex.ToString("F0"),
+                                    ForegroundColor = "#000000",
+                                    BackgroundColor = "#FFFFFF",
+                                    FontSize = 14,
+                                    Bold = true,
+                                },
+                                new RenderActions.Text
+                                {
+                                    X = 400,
+                                    Y = 300 + 5,
+                                    AdjustsFontSizeToFitWidth = true,
+                                    HorizontalTextAlignment = HorizontalAlignment.Left,
+                                    VerticalTextAlignment = VerticalAlignment.Top,
+                                    Value = dailyForecastToday.UVIndex.Range.ToString("N"),
+                                    ForegroundColor = "#000000",
+                                    BackgroundColor = "#FFFFFF",
+                                    FontSize = 20,
+                                },
+                                new RenderActions.StreamImage
+                                {
+                                    X = 500,
+                                    Y = 300,
+                                    Image = Icons.Earth(),
+                                    Width = 24,
+                                    Height = 24,
+                                    HorizontalAlignment = HorizontalAlignment.Left,
+                                    VerticalAlignment = VerticalAlignment.Top,
+                                },
+                                new RenderActions.Text
+                                {
+                                    X = 540,
+                                    Y = 300 + 5,
+                                    AdjustsFontSizeToFitWidth = true,
+                                    HorizontalTextAlignment = HorizontalAlignment.Left,
+                                    VerticalTextAlignment = VerticalAlignment.Top,
+                                    Value = airPollutionInfoText,
+                                    ForegroundColor = "#000000",
+                                    BackgroundColor = "#FFFFFF",
+                                    FontSize = 20,
+                                }
+                            });
+                        }
+
+                    }
+
+                    currentWeatherRenderActions.AddRange(new IRenderAction[]
+                    {
                         // Sunrise
                         new RenderActions.StreamImage
                         {
@@ -255,7 +404,7 @@ namespace WeatherDisplay
                             FontSize = 20,
                             Bold = false,
                         },
-                        
+
                         // Wind
                         new RenderActions.StreamImage
                         {
@@ -303,7 +452,7 @@ namespace WeatherDisplay
                             FontSize = 20,
                             Bold = false,
                         },
-                        
+
                         // Atmospheric pressure
                         new RenderActions.StreamImage
                         {
@@ -326,8 +475,11 @@ namespace WeatherDisplay
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
                             Bold = false,
-                        },
+                        }
+                    });
 
+                    currentWeatherRenderActions.AddRange(new[]
+                    {
                         // Divider line to separated current weather and weather forecast
                         new RenderActions.Rectangle
                         {
@@ -346,7 +498,7 @@ namespace WeatherDisplay
                             VerticalAlignment = VerticalAlignment.Bottom,
                             BackgroundColor = "#000000",
                         }
-                    };
+                    });
 
                     if (appSettings.IsDebug)
                     {
@@ -446,7 +598,7 @@ namespace WeatherDisplay
                     }
                     return currentWeatherRenderActions;
                 },
-                CrontabSchedule.Parse("0 * * * *")); // TODO: Update every 1h - starting from 00:00
+                CrontabSchedule.Parse("*/15 * * * *")); // Update every 15mins
         }
 
         private static string FormatRain(double rain)

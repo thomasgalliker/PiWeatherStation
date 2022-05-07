@@ -6,6 +6,7 @@ using Microsoft.OpenApi.Models;
 using WeatherDisplay.Api.Services;
 using WeatherDisplay.Extensions;
 using NLog.Extensions.Logging;
+using NLog;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSystemd();
@@ -15,6 +16,8 @@ builder.Host.UseWindowsService();
 builder.Logging.ClearProviders();
 builder.Logging.AddDebug();
 builder.Logging.AddNLog();
+
+LogManager.AutoShutdown = false;
 
 // ====== Setup configuration ======
 builder.Configuration

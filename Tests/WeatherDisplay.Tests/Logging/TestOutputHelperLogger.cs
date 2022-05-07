@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Microsoft.Extensions.Logging;
 using Xunit.Abstractions;
 
-namespace DisplayService.Tests
+namespace WeatherDisplay.Tests.Logging
 {
     public class TestOutputHelperLogger<T> : ILogger<T>
     {

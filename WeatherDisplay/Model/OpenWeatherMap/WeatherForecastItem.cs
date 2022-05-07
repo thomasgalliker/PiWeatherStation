@@ -19,24 +19,12 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonConverter(typeof(EpochDateTimeConverter))]
         public DateTime DateTime { get; set; }
 
-        /// <summary>
-        ///     Gets additional clouds information.
-        /// </summary>
-        /// <value>additional clouds information.</value>
         [JsonProperty("clouds")]
         public CloudsInformation Clouds { get; set; }
 
-        /// <summary>
-        ///     Gets additional rain information.
-        /// </summary>
-        /// <value>additional rain information.</value>
         [JsonProperty("rain")]
         public RainInformation Rain { get; set; }
 
-        /// <summary>
-        ///     Gets the temperature information.
-        /// </summary>
-        /// <value>the temperature information.</value>
         [JsonRequired, JsonProperty("main")]
         public TemperatureInfo Temperature { get; set; }
 
@@ -47,10 +35,6 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonRequired, JsonProperty("weather")]
         public IReadOnlyList<WeatherCondition> WeatherConditions { get; set; }
 
-        /// <summary>
-        ///     Gets additional wind information.
-        /// </summary>
-        /// <value>additional wind information.</value>
         [JsonProperty("wind")]
         public WindInformation Wind { get; set; }
     }

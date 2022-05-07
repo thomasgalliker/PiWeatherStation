@@ -8,10 +8,12 @@ namespace WeatherDisplay.Services
     {
         Task<WeatherInfo> GetCurrentWeatherAsync(double latitude, double longitude);
 
-        Task<WeatherForecast> GetWeatherForecast(double latitude, double longitude);
+        Task<WeatherForecast> GetWeatherForecastAsync(double latitude, double longitude);
 
         Task<Stream> GetWeatherIconAsync(WeatherCondition weatherCondition, IWeatherIconMapping weatherIconMapping = null);
         
-        Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude);
+        Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude, OneCallOptions oneCallOptions = null);
+        
+        Task<AirPollutionInfo> GetAirPollutionAsync(double latitude, double longitude);
     }
 }
