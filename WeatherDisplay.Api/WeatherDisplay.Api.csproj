@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WeatherDisplay.Api.Updater\WeatherDisplay.Api.Updater.csproj" />
     <ProjectReference Include="..\WeatherDisplay\WeatherDisplay.csproj" />
   </ItemGroup>
 
