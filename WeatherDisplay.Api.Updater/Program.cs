@@ -1,12 +1,12 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
-using System.Net.Http;
 using System.Text;
-using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using WeatherDisplay.Api.Updater.Models;
+using WeatherDisplay.Api.Updater.Services;
 
 namespace WeatherDisplay.Api.Updater
 {
@@ -18,30 +18,51 @@ namespace WeatherDisplay.Api.Updater
                 $"WeatherDisplay.Api.Updater version {typeof(Program).Assembly.GetName().Version} {Environment.NewLine}" +
                 $"Copyright(C) superdev GmbH. All rights reserved.{Environment.NewLine}");
 
-            if (args.Length != 1)
+            if (args.Length == 0)
             {
-                Console.WriteLine(
-                    $"Invalid arguments");
-
+                Console.WriteLine($"Invalid arguments");
                 return -1;
             }
 
-            // TODO: Add logging and dependency injection
-
             var updateRequestJson = DecodeBase64(args[0]);
+
+            var serviceProvider = BuildServiceProvider();
+            var updateExecutorService = serviceProvider.GetRequiredService<IUpdateExecutorService>();
+
             Console.WriteLine("CommandLine: {0}", Environment.CommandLine);
             Console.WriteLine("args[0]: {0}", updateRequestJson);
 
-            var updateRequestDto = JsonSerializer.Deserialize<UpdateRequestDto>(updateRequestJson.Replace("'", ""));
+            var updateRequestDto = JsonConvert.DeserializeObject<UpdateRequestDto>(updateRequestJson.Replace("'", ""));
             Console.WriteLine("updateRequestDto.DownloadUrl: {0}", updateRequestDto.DownloadUrl);
 
             var currentDirectory = updateRequestDto.WorkingDirectory;
             Environment.CurrentDirectory = Path.GetFullPath(currentDirectory);
 
-            var downloadUrl = updateRequestDto.DownloadUrl;
-            await UpdateAsync(downloadUrl);
+            await updateExecutorService.RunAsync(updateRequestDto);
 
             return 0;
+        }
+
+        private static IServiceProvider BuildServiceProvider()
+        {
+            var services = new ServiceCollection();
+
+            services.AddLogging(o =>
+            {
+                o.ClearProviders();
+                o.SetMinimumLevel(LogLevel.Debug);
+                o.AddDebug();
+                o.AddSimpleConsole(c =>
+                {
+                    //c.TimestampFormat = $"{dateTimeFormat.ShortDatePattern} {dateTimeFormat.LongTimePattern} ";
+                });
+            });
+
+            services.AddSingleton<IUpdateExecutorService, UpdateExecutorService>();
+            services.AddSingleton<IProcessFactory, SystemProcessFactory>();
+
+            var serviceProvider = services.BuildServiceProvider();
+            return serviceProvider;
         }
 
         public static string DecodeBase64(string base64String)
@@ -53,45 +74,6 @@ namespace WeatherDisplay.Api.Updater
 
             var valueBytes = Convert.FromBase64String(base64String);
             return Encoding.UTF8.GetString(valueBytes);
-        }
-
-        private static async Task UpdateAsync(string downloadUrl)
-        {
-            var updateFile = "update.zip";
-
-            var httpClient = new HttpClient();
-            var fileStream = await httpClient.GetStreamAsync(downloadUrl);
-            var writer = new StreamWriter(updateFile);
-            await fileStream.CopyToAsync(writer.BaseStream);
-            writer.Close();
-
-            if (File.Exists(updateFile))
-            {
-                ZipFile.ExtractToDirectory(sourceArchiveFileName: updateFile, destinationDirectoryName: ".", overwriteFiles: true);
-            }
-
-            File.Delete(updateFile);
-
-            // reboot
-            try
-            {
-                var process = new Process()
-                {
-                    StartInfo = new ProcessStartInfo
-                    {
-                        FileName = "sudo",
-                        Arguments = "reboot",
-                        RedirectStandardOutput = false,
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                    }
-                };
-                process.Start();
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Failed to reboot");
-            }
         }
     }
 }

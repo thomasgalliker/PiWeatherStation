@@ -7,11 +7,11 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Reflection;
 using System.Text;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using NuGet.Versioning;
 using WeatherDisplay.Api.Updater.Models;
 
@@ -20,9 +20,9 @@ namespace WeatherDisplay.Api.Updater.Services
     public class AutoUpdateService : BackgroundService, IAutoUpdateService
     {
         private static readonly SemanticVersion DebugVersion = new SemanticVersion(1, 0, 0);
-        private static readonly JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions
+        private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
         {
-            WriteIndented = true
+            Formatting = Formatting.Indented
         };
 
         private readonly ILogger logger;
@@ -40,8 +40,8 @@ namespace WeatherDisplay.Api.Updater.Services
         }
 
         public AutoUpdateService(
-            ILogger<AutoUpdateService> logger, 
-            AutoUpdateOptions autoUpdateOptions, 
+            ILogger<AutoUpdateService> logger,
+            AutoUpdateOptions autoUpdateOptions,
             IHostApplicationLifetime hostApplicationLifecycle,
             IProcessFactory processFactory,
             HttpClient httpClient)
@@ -100,7 +100,7 @@ namespace WeatherDisplay.Api.Updater.Services
         {
             try
             {
-                var currentDirectory = Environment.CurrentDirectory;
+                var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 var downloadUrl = updateVersion.Assets.First().DownloadUrl;
                 this.logger.LogInformation($"CheckForUpdateAsync: Starting update with currentDirectory={currentDirectory}, downloadUrl={downloadUrl}");
 
@@ -108,15 +108,38 @@ namespace WeatherDisplay.Api.Updater.Services
                 {
                     DownloadUrl = downloadUrl,
                     WorkingDirectory = currentDirectory,
+                    ExecutorSteps = new IExecutorStep[]
+                    {
+                        new DownloadFileStep
+                        {
+                            //Url = "blabla",
+                        },
+                        new ExtractZipStep
+                        {
+                            //Url = "blabla",
+                        },
+                        new ProcessStartExecutorStep
+                        {
+                            FileName = "sudo",
+                            Arguments = "systemctl stop weatherdisplay.api.service",
+                            CreateNoWindow = true,
+                        },
+                        new ProcessStartExecutorStep
+                        {
+                            FileName = "sudo",
+                            Arguments = "systemctl start weatherdisplay.api.service",
+                            CreateNoWindow = true,
+                        }
+                    }
                 };
 
-                var updateRequestJson = JsonSerializer.Serialize(updateRequestDto);
+                var updateRequestJson = JsonConvert.SerializeObject(updateRequestDto);
                 var updateRequestJsonBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(updateRequestJson));
 
                 var processStartInfo = new ProcessStartInfo
                 {
                     FileName = this.autoUpdateOptions.DotnetExecutable,
-                    Arguments = $"{this.autoUpdateOptions.UpdaterExecutable} {updateRequestJsonBase64}",
+                    Arguments = $"{this.autoUpdateOptions.UpdaterExecutable} {updateRequestJsonBase64} --debug",
                     RedirectStandardOutput = false,
                     UseShellExecute = false,
                     CreateNoWindow = true,
@@ -128,8 +151,7 @@ namespace WeatherDisplay.Api.Updater.Services
 
                 await UpdateInstalledVersionAsync(this.autoUpdateOptions.InstalledVersionFile, updateVersion);
 
-                //Environment.Exit(-1);
-                this.hostApplicationLifecycle.StopApplication();
+                //this.hostApplicationLifecycle.StopApplication();
             }
             catch (Exception ex)
             {
@@ -156,13 +178,13 @@ namespace WeatherDisplay.Api.Updater.Services
 
         private static async Task UpdateInstalledVersionAsync(string installedVersionFile, GithubVersionDto githubLatestVersionDto)
         {
-            var jsonContent = JsonSerializer.Serialize(githubLatestVersionDto, JsonSerializerOptions);
+            var jsonContent = JsonConvert.SerializeObject(githubLatestVersionDto, JsonSerializerSettings);
             await File.WriteAllTextAsync(installedVersionFile, jsonContent);
         }
 
         private static async Task<SemanticVersion> GetInstalledVersionAsync(string installedVersionFile)
         {
-            string productVersion;
+            string productVersion = null;
 
             if (!File.Exists(installedVersionFile))
             {
@@ -170,9 +192,22 @@ namespace WeatherDisplay.Api.Updater.Services
             }
             else
             {
-                var jsonContent = await File.ReadAllTextAsync(installedVersionFile);
-                var githubLatestVersionDto = JsonSerializer.Deserialize<GithubVersionDto>(jsonContent, JsonSerializerOptions);
-                productVersion = githubLatestVersionDto.TagName;
+                try
+                {
+                    var jsonContent = await File.ReadAllTextAsync(installedVersionFile);
+                    if (!string.IsNullOrEmpty(jsonContent))
+                    {
+                        var githubLatestVersionDto = JsonConvert.DeserializeObject<GithubVersionDto>(jsonContent, JsonSerializerSettings);
+                        productVersion = githubLatestVersionDto.TagName;
+                    }
+                }
+                finally
+                {
+                    if (productVersion == null)
+                    {
+                        productVersion = GetProductVersion();
+                    }
+                }
             }
 
             return SemanticVersion.Parse(productVersion);
