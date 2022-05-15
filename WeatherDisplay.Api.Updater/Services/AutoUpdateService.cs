@@ -68,6 +68,7 @@ namespace WeatherDisplay.Api.Updater.Services
         {
             this.logger.LogInformation("CheckForUpdateAsync");
 
+            UpdateCheckResult result;
             try
             {
                 var installedVersionFile = this.autoUpdateOptions.InstalledVersionFile;
@@ -82,11 +83,11 @@ namespace WeatherDisplay.Api.Updater.Services
 
                 if (localSemanticVersion < remoteSemanticVersion)
                 {
-                    return new UpdateCheckResult(remoteVersion);
+                    result = new UpdateCheckResult(remoteVersion);
                 }
                 else
                 {
-                    return UpdateCheckResult.NoUpdateAvailable;
+                    result = UpdateCheckResult.NoUpdateAvailable;
                 }
             }
             catch (Exception ex)
@@ -94,10 +95,15 @@ namespace WeatherDisplay.Api.Updater.Services
                 this.logger.LogError(ex, "CheckForUpdateAsync failed with exception");
                 throw;
             }
+
+            this.logger.LogInformation($"CheckForUpdateAsync finished with result.HasUpdate={result.HasUpdate}");
+            return result;
         }
 
         public async Task InstallUpdateAsync(GithubVersionDto updateVersion)
         {
+            this.logger.LogInformation($"InstallUpdateAsync: TagName={updateVersion.TagName}");
+
             try
             {
                 var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
