@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using WeatherDisplay.Api.Updater.Models;
 using WeatherDisplay.Api.Updater.Services;
@@ -14,10 +14,12 @@ namespace WeatherDisplay.Api.Updater
     {
         private static async Task<int> Main(string[] args)
         {
-            Console.WriteLine(
-                $"WeatherDisplay.Api.Updater version {typeof(Program).Assembly.GetName().Version} {Environment.NewLine}" +
-                $"Copyright(C) superdev GmbH. All rights reserved.{Environment.NewLine}");
-
+#if DEBUG
+            while (!Debugger.IsAttached)
+            {
+                Thread.Sleep(250);
+            }
+#endif
             if (args.Length == 0)
             {
                 Console.WriteLine($"Invalid arguments");
@@ -25,44 +27,26 @@ namespace WeatherDisplay.Api.Updater
             }
 
             var updateRequestJson = DecodeBase64(args[0]);
-
-            var serviceProvider = BuildServiceProvider();
-            var updateExecutorService = serviceProvider.GetRequiredService<IUpdateExecutorService>();
-
-            Console.WriteLine("CommandLine: {0}", Environment.CommandLine);
-            Console.WriteLine("args[0]: {0}", updateRequestJson);
-
             var updateRequestDto = JsonConvert.DeserializeObject<UpdateRequestDto>(updateRequestJson.Replace("'", ""));
-            Console.WriteLine("updateRequestDto.DownloadUrl: {0}", updateRequestDto.DownloadUrl);
 
-            var currentDirectory = updateRequestDto.WorkingDirectory;
-            Environment.CurrentDirectory = Path.GetFullPath(currentDirectory);
+            var logFilePath = Path.Combine(updateRequestDto.WorkingDirectory, GetLogFileName());
+            RedirectConsoleOutputToFile(logFilePath);
 
+            Console.WriteLine(
+                $"WeatherDisplay.Api.Updater version {typeof(Program).Assembly.GetName().Version} {Environment.NewLine}" +
+                $"Copyright(C) superdev GmbH. All rights reserved.{Environment.NewLine}");
+
+            Console.WriteLine($"WorkingDirectory={updateRequestDto.WorkingDirectory}");
+            Console.WriteLine($"DownloadUrl={updateRequestDto.DownloadUrl}");
+            Console.WriteLine($"CallingProcessId={updateRequestDto.CallingProcessId}");
+            Console.WriteLine();
+
+            Environment.CurrentDirectory = Path.GetFullPath(updateRequestDto.WorkingDirectory);
+
+            var updateExecutorService = new UpdateExecutorService(new SystemProcessFactory());
             await updateExecutorService.RunAsync(updateRequestDto);
 
             return 0;
-        }
-
-        private static IServiceProvider BuildServiceProvider()
-        {
-            var services = new ServiceCollection();
-
-            services.AddLogging(o =>
-            {
-                o.ClearProviders();
-                o.SetMinimumLevel(LogLevel.Debug);
-                o.AddDebug();
-                o.AddSimpleConsole(c =>
-                {
-                    //c.TimestampFormat = $"{dateTimeFormat.ShortDatePattern} {dateTimeFormat.LongTimePattern} ";
-                });
-            });
-
-            services.AddSingleton<IUpdateExecutorService, UpdateExecutorService>();
-            services.AddSingleton<IProcessFactory, SystemProcessFactory>();
-
-            var serviceProvider = services.BuildServiceProvider();
-            return serviceProvider;
         }
 
         public static string DecodeBase64(string base64String)
@@ -74,6 +58,20 @@ namespace WeatherDisplay.Api.Updater
 
             var valueBytes = Convert.FromBase64String(base64String);
             return Encoding.UTF8.GetString(valueBytes);
+        }
+
+        private static string GetLogFileName()
+        {
+            return $"update-log-{DateTime.Now:yyyyddMM-HHmmss-fff}.log";
+        }
+
+        private static void RedirectConsoleOutputToFile(string logFilename)
+        {
+            var filestream = new FileStream(logFilename, FileMode.Create);
+            var streamwriter = new StreamWriter(filestream);
+            streamwriter.AutoFlush = true;
+            Console.SetOut(streamwriter);
+            Console.SetError(streamwriter);
         }
     }
 }

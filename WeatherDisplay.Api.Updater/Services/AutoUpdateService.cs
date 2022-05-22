@@ -7,9 +7,7 @@ using System.Net.Http;
 using System.Net.Http.Json;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using NuGet.Versioning;
@@ -17,7 +15,7 @@ using WeatherDisplay.Api.Updater.Models;
 
 namespace WeatherDisplay.Api.Updater.Services
 {
-    public class AutoUpdateService : BackgroundService, IAutoUpdateService
+    public class AutoUpdateService : IAutoUpdateService
     {
         private static readonly SemanticVersion DebugVersion = new SemanticVersion(1, 0, 0);
         private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
@@ -27,41 +25,27 @@ namespace WeatherDisplay.Api.Updater.Services
 
         private readonly ILogger logger;
         private readonly AutoUpdateOptions autoUpdateOptions;
-        private readonly IHostApplicationLifetime hostApplicationLifecycle;
         private readonly IProcessFactory processFactory;
         private readonly HttpClient httpClient;
 
         public AutoUpdateService(
             ILogger<AutoUpdateService> logger,
-            AutoUpdateOptions autoUpdateOptions,
-            IHostApplicationLifetime hostApplicationLifecycle)
-            : this(logger, autoUpdateOptions, hostApplicationLifecycle, new SystemProcessFactory(), new HttpClient())
+            AutoUpdateOptions autoUpdateOptions)
+            : this(logger, autoUpdateOptions, new SystemProcessFactory(), new HttpClient())
         {
         }
 
         public AutoUpdateService(
             ILogger<AutoUpdateService> logger,
             AutoUpdateOptions autoUpdateOptions,
-            IHostApplicationLifetime hostApplicationLifecycle,
             IProcessFactory processFactory,
             HttpClient httpClient)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
             this.autoUpdateOptions = autoUpdateOptions;
-            this.hostApplicationLifecycle = hostApplicationLifecycle;
             this.processFactory = processFactory;
             this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             this.httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("request");
-        }
-
-
-        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            var result = await this.CheckForUpdateAsync();
-            if (result.HasUpdate)
-            {
-                await this.InstallUpdateAsync(result.UpdateVersion);
-            }
         }
 
         public async Task<UpdateCheckResult> CheckForUpdateAsync()
@@ -73,10 +57,12 @@ namespace WeatherDisplay.Api.Updater.Services
             {
                 var installedVersionFile = this.autoUpdateOptions.InstalledVersionFile;
                 var localSemanticVersion = await GetInstalledVersionAsync(installedVersionFile);
+#if DEBUG
                 if (localSemanticVersion == DebugVersion)
                 {
-                    //return UpdateCheckResult.NoUpdateAvailable;
+                    return UpdateCheckResult.NoUpdateAvailable;
                 }
+#endif
 
                 var remoteVersion = await this.GetLatestVersionAsync(this.autoUpdateOptions.PreRelease);
                 var remoteSemanticVersion = SemanticVersion.Parse(remoteVersion.TagName);
@@ -106,23 +92,26 @@ namespace WeatherDisplay.Api.Updater.Services
 
             try
             {
+                var updaterDirectoryName = this.autoUpdateOptions.UpdaterDirectoryName;
                 var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                var updateDirectory = new DirectoryInfo(Path.Combine(currentDirectory, updaterDirectoryName)).FullName;
                 var downloadUrl = updateVersion.Assets.First().DownloadUrl;
-                this.logger.LogInformation($"CheckForUpdateAsync: Starting update with currentDirectory={currentDirectory}, downloadUrl={downloadUrl}");
+                var downloadFileName = Path.GetFileName(downloadUrl);
+
+                var currentProcess = this.processFactory.GetCurrentProcess();
+                var currentProcessId = currentProcess.Id;
 
                 var updateRequestDto = new UpdateRequestDto
                 {
                     DownloadUrl = downloadUrl,
-                    WorkingDirectory = currentDirectory,
+                    WorkingDirectory = updateDirectory,
+                    CallingProcessId = currentProcessId,
                     ExecutorSteps = new IExecutorStep[]
                     {
                         new DownloadFileStep
                         {
-                            //Url = "blabla",
-                        },
-                        new ExtractZipStep
-                        {
-                            //Url = "blabla",
+                            Url = downloadUrl,
+                            DestinationFileName = downloadFileName
                         },
                         new ProcessStartExecutorStep
                         {
@@ -130,39 +119,85 @@ namespace WeatherDisplay.Api.Updater.Services
                             Arguments = "systemctl stop weatherdisplay.api.service",
                             CreateNoWindow = true,
                         },
+                        new ExtractZipStep
+                        {
+                            SourceArchiveFileName = downloadFileName,
+                            DestinationDirectoryName = currentDirectory,
+                            OverwriteFiles = true,
+                            DeleteSourceArchive = true,
+                        },
+                        new ProcessStartExecutorStep
+                        {
+                            FileName = "sudo",
+                            Arguments = "systemctl daemon-reload",
+                            CreateNoWindow = true,
+                        },
                         new ProcessStartExecutorStep
                         {
                             FileName = "sudo",
                             Arguments = "systemctl start weatherdisplay.api.service",
                             CreateNoWindow = true,
-                        }
+                        },
+                        //new ProcessStartExecutorStep
+                        //{
+                        //    FileName = "sudo",
+                        //    Arguments = "reboot",
+                        //    CreateNoWindow = true,
+                        //}
                     }
                 };
 
                 var updateRequestJson = JsonConvert.SerializeObject(updateRequestDto);
                 var updateRequestJsonBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(updateRequestJson));
 
+
+                this.logger.LogInformation($"InstallUpdateAsync: Preparing update directory {updateDirectory}");
+                if (!Directory.Exists(updateDirectory))
+                {
+                    Directory.CreateDirectory(updateDirectory);
+                }
+
+                var updateExecutableFile = new FileInfo(Path.Combine(currentDirectory, this.autoUpdateOptions.UpdaterExecutable));
+                var updateExecutableFileCopy = Path.Combine(updateDirectory, this.autoUpdateOptions.UpdaterExecutable);
+                this.logger.LogInformation($"InstallUpdateAsync: Copied {updateExecutableFile} to {updateExecutableFileCopy}");
+
+                var pattern = updateExecutableFile.Name.Remove(updateExecutableFile.Name.Length - updateExecutableFile.Extension.Length);
+                CopyFilesToUpdateDirectory(currentDirectory, updateDirectory, pattern);
+                CopyFilesToUpdateDirectory(currentDirectory, updateDirectory, "Newtonsoft.Json.dll");
+                
+                var command = $"{this.autoUpdateOptions.DotnetExecutable} {updateExecutableFileCopy} {updateRequestJsonBase64}";
+
                 var processStartInfo = new ProcessStartInfo
                 {
-                    FileName = this.autoUpdateOptions.DotnetExecutable,
-                    Arguments = $"{this.autoUpdateOptions.UpdaterExecutable} {updateRequestJsonBase64} --debug",
+                    FileName = "sudo",
+                    Arguments = $"sh -c \"{command}\"",
+                    //Arguments = $"systemd-run --scope {command}",
+                    //FileName = this.autoUpdateOptions.DotnetExecutable,
+                    //Arguments = $"{updateExecutableFileCopy} {updateRequestJsonBase64}",
                     RedirectStandardOutput = false,
+                    RedirectStandardError = false,
                     UseShellExecute = false,
                     CreateNoWindow = true,
                 };
                 var process = this.processFactory.CreateProcess(processStartInfo);
-                var result = process.Start();
-                process.WaitForExit();
-                this.logger.LogInformation($"CheckForUpdateAsync: Update finished with exit code {process.ExitCode}");
 
-                await UpdateInstalledVersionAsync(this.autoUpdateOptions.InstalledVersionFile, updateVersion);
-
-                //this.hostApplicationLifecycle.StopApplication();
+                this.logger.LogInformation($"InstallUpdateAsync: Starting update executor process...");
+                process.Start();
             }
             catch (Exception ex)
             {
                 this.logger.LogError(ex, "InstallUpdateAsync failed with exception");
             }
+        }
+
+        private static void CopyFilesToUpdateDirectory(string currentDirectory, string updateDirectory, string pattern)
+        {
+            Directory.GetFiles(currentDirectory, $"{pattern}*", SearchOption.TopDirectoryOnly).ToList().ForEach(f =>
+            {
+                var sourceFile = new FileInfo(f);
+                var destinationFile = Path.Combine(updateDirectory, sourceFile.Name);
+                File.Copy(sourceFile.FullName, destinationFile, overwrite: true);
+            });
         }
 
         public async Task<GithubVersionDto> GetLatestVersionAsync(bool prerelease)
@@ -224,6 +259,11 @@ namespace WeatherDisplay.Api.Updater.Services
             var assembly = Assembly.GetExecutingAssembly();
             var fileVersionInfo = FileVersionInfo.GetVersionInfo(assembly.Location);
             return fileVersionInfo.ProductVersion;
+        }
+
+        private static void Log(string message)
+        {
+            Console.WriteLine($"UpdateExecutorService: {message}");
         }
     }
 }

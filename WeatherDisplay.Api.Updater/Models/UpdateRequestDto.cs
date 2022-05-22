@@ -11,6 +11,9 @@ namespace WeatherDisplay.Api.Updater.Models
             this.ExecutorSteps = new List<IExecutorStep>();
         }
 
+
+        public int CallingProcessId { get; set; }
+
         public string DownloadUrl { get; set; }
 
         public string WorkingDirectory { get; set; }
@@ -21,10 +24,25 @@ namespace WeatherDisplay.Api.Updater.Models
 
     public class DownloadFileStep : IExecutorStep
     {
+        public string Url { get; set; }
+
+        public string DestinationFileName { get; set; }
     }
 
     public class ExtractZipStep : IExecutorStep
     {
+        public string SourceArchiveFileName { get; set; }
+
+        public string DestinationDirectoryName { get; set; }
+
+        public bool OverwriteFiles { get; set; }
+
+        public bool DeleteSourceArchive { get; set; }
+    }
+
+    public class DeleteFileStep : IExecutorStep
+    {
+        public string Path { get; set; }
     }
 
     public class ProcessStartExecutorStep : IExecutorStep

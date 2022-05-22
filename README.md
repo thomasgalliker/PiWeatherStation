@@ -141,6 +141,7 @@ WorkingDirectory=/home/pi/WeatherDisplay.Api
 ExecStart=/home/pi/WeatherDisplay.Api/WeatherDisplay.Api
 ExecStop=/bin/kill ${MAINPID}
 KillSignal=SIGTERM
+KillMode=process
 SyslogIdentifier=WeatherDisplay.Api
 
 # Use your username to keep things simple, for production scenario's I recommend a dedicated user/group.
@@ -150,8 +151,7 @@ SyslogIdentifier=WeatherDisplay.Api
 User=pi
 Group=pi
 
-Restart=always
-RestartSec=5
+Restart=no
 
 # ASP.NET environment variable
 Environment=ASPNETCORE_ENVIRONMENT=Production
@@ -172,8 +172,9 @@ Explanations for some of the configuration values:
 | `ExecStart` | Systemd will run this executable to start the service. |
 | `ExecStop` | Defines the way the service is stopped when systemctl stop is called on this service. Together with KillSignal, this value is responsible for a graceful shutdown. |
 | `KillSignal` | Is a very important value to determine how the ASP.NET Core web service is stopped. If the wrong value is used, the service is killed without gracefully shutting down it's services (e.g. BackgroundService, IHostedService, IDispose, etc). |
+| `KillMode` | Setting KillMode to process instead of control-group (default) allows to shutdown the main process and spawn new processes (e.g. for automatic update service). |
 | `SyslogIdentifier` | Primary identifier of this service. This name is used to run systemctl start/stop operations as well as to read the service log (journalctl). |
-| `Restart` | Ensure the service restarts after crashing. |
+| `Restart` | Ensure the service restarts after crashing. Takes one of no, on-success, on-failure, on-abnormal, on-watchdog, on-abort, or always. |
 | `RestartSec` | Amount of time to wait before restarting the service. |
 
 - Enable the service definition:

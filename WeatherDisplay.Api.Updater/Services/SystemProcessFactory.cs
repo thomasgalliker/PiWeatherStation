@@ -8,5 +8,11 @@ namespace WeatherDisplay.Api.Updater.Services
         {
             return new SystemProcess(processStartInfo);
         }
+
+        public IProcess GetCurrentProcess()
+        {
+            var process = Process.GetCurrentProcess();
+            return new SystemProcess(process);
+        }
     }
 }

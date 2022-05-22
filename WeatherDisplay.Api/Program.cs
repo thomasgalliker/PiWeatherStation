@@ -69,9 +69,7 @@ namespace WeatherDisplay.Api
             var autoUpdateOptions = new AutoUpdateOptions();
             builder.Configuration.GetSection("AutoUpdateOptions").Bind(autoUpdateOptions);
             services.AddSingleton(autoUpdateOptions);
-
             services.AddSingleton<IAutoUpdateService, AutoUpdateService>();
-            services.AddHostedService(sp => (AutoUpdateService)sp.GetService<IAutoUpdateService>());
 
             // ====== Weather services ======
             services.AddWeatherDisplay(builder.Configuration);
