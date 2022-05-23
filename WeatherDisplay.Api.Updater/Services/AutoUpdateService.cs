@@ -67,7 +67,10 @@ namespace WeatherDisplay.Api.Updater.Services
                 var remoteVersion = await this.GetLatestVersionAsync(this.autoUpdateOptions.PreRelease);
                 var remoteSemanticVersion = SemanticVersion.Parse(remoteVersion.TagName);
 
-                if (localSemanticVersion < remoteSemanticVersion)
+                var remoteVersionIsNewer = localSemanticVersion < remoteSemanticVersion;
+                this.logger.LogDebug($"CheckForUpdateAsync compares local version {localSemanticVersion} < remove version {remoteSemanticVersion} = {remoteVersionIsNewer}");
+                
+                if (remoteVersionIsNewer)
                 {
                     result = new UpdateCheckResult(remoteVersion);
                 }
@@ -86,7 +89,7 @@ namespace WeatherDisplay.Api.Updater.Services
             return result;
         }
 
-        public async Task InstallUpdateAsync(GithubVersionDto updateVersion)
+        public void StartUpdate(GithubVersionDto updateVersion)
         {
             this.logger.LogInformation($"InstallUpdateAsync: TagName={updateVersion.TagName}");
 
@@ -164,7 +167,7 @@ namespace WeatherDisplay.Api.Updater.Services
                 var pattern = updateExecutableFile.Name.Remove(updateExecutableFile.Name.Length - updateExecutableFile.Extension.Length);
                 CopyFilesToUpdateDirectory(currentDirectory, updateDirectory, pattern);
                 CopyFilesToUpdateDirectory(currentDirectory, updateDirectory, "Newtonsoft.Json.dll");
-                
+
                 var command = $"{this.autoUpdateOptions.DotnetExecutable} {updateExecutableFileCopy} {updateRequestJsonBase64}";
 
                 var processStartInfo = new ProcessStartInfo

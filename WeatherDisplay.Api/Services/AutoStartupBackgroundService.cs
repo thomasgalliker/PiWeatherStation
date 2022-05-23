@@ -42,7 +42,7 @@ namespace WeatherDisplay.Api.Services
             var result = await this.autoUpdateService.CheckForUpdateAsync();
             if (result.HasUpdate)
             {
-                await this.autoUpdateService.InstallUpdateAsync(result.UpdateVersion);
+                this.autoUpdateService.StartUpdate(result.UpdateVersion);
             }
             else
             {

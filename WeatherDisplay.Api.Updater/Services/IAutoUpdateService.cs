@@ -9,6 +9,6 @@ namespace WeatherDisplay.Api.Updater.Services
 
         Task<GithubVersionDto> GetLatestVersionAsync(bool prerelease);
 
-        Task InstallUpdateAsync(GithubVersionDto updateVersion);
+        void StartUpdate(GithubVersionDto updateVersion);
     }
 }
