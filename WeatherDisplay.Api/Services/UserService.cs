@@ -1,4 +1,4 @@
-﻿using WeatherDisplay.Api.Model;
+﻿using WeatherDisplay.Api.Models;
 
 namespace WeatherDisplay.Api.Services
 {

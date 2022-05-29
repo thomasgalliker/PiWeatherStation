@@ -1,7 +1,7 @@
 # PiWeatherStation
 This is a demo project which uses a Raspberry Pi 4 to draw some basic weather information to a 7.5" Waveshare ePaper display. The code is based on .NET 6 and there are two runtime projects you can chose from: A console client (WeatherDisplay.ConsoleApp) and an ASP.NET Core Web API (WeatherDisplay.Api).
 
-![Image of display](https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/Docs/36EB74EE-C3E5-4597-B31A-64257AC646FB.jpeg)
+![](Docs/2022-28-05-DisplayPhoto2.jpg)
 
 ### Quick Setup
 
@@ -44,6 +44,10 @@ sudo nano ~/.bashrc
 ```
 export DOTNET_ROOT=$HOME/dotnet
 export PATH=$PATH:$HOME/dotnet
+```
+- Reload the ~/.bashrc file with the command:
+```
+source ~/.bashrc
 ```
 
 - Reboot the system.
@@ -141,6 +145,7 @@ WorkingDirectory=/home/pi/WeatherDisplay.Api
 ExecStart=/home/pi/WeatherDisplay.Api/WeatherDisplay.Api
 ExecStop=/bin/kill ${MAINPID}
 KillSignal=SIGTERM
+KillMode=process
 SyslogIdentifier=WeatherDisplay.Api
 
 # Use your username to keep things simple, for production scenario's I recommend a dedicated user/group.
@@ -150,8 +155,7 @@ SyslogIdentifier=WeatherDisplay.Api
 User=pi
 Group=pi
 
-Restart=always
-RestartSec=5
+Restart=no
 
 # ASP.NET environment variable
 Environment=ASPNETCORE_ENVIRONMENT=Production
@@ -172,8 +176,9 @@ Explanations for some of the configuration values:
 | `ExecStart` | Systemd will run this executable to start the service. |
 | `ExecStop` | Defines the way the service is stopped when systemctl stop is called on this service. Together with KillSignal, this value is responsible for a graceful shutdown. |
 | `KillSignal` | Is a very important value to determine how the ASP.NET Core web service is stopped. If the wrong value is used, the service is killed without gracefully shutting down it's services (e.g. BackgroundService, IHostedService, IDispose, etc). |
+| `KillMode` | Setting KillMode to process instead of control-group (default) allows to shutdown the main process and spawn new processes (e.g. for automatic update service). |
 | `SyslogIdentifier` | Primary identifier of this service. This name is used to run systemctl start/stop operations as well as to read the service log (journalctl). |
-| `Restart` | Ensure the service restarts after crashing. |
+| `Restart` | Ensure the service restarts after crashing. Takes one of no, on-success, on-failure, on-abnormal, on-watchdog, on-abort, or always. |
 | `RestartSec` | Amount of time to wait before restarting the service. |
 
 - Enable the service definition:
@@ -240,6 +245,19 @@ etag: "1d7c28cf574c2b4"
 last-modified: Sat, 16 Oct 2021 12:54:30 GMT
 content-length: 1460
 ```
+
+### Images
+
+<table>
+  <tr>
+    <td>Rendered Bitmap</td>
+    <td>Rendered Bitmap on 7.5" Waveshare ePaper Display</td>
+  </tr>
+  <tr>
+    <td><img src="Docs/2022-28-05-DisplayScreen.png" height=280></td>
+    <td><img src="Docs/2022-28-05-DisplayPhoto1.jpg" height=580></td>
+  </tr>
+ </table>
 
 ### Links
 #### Similar projects / Waveshare / IoT
