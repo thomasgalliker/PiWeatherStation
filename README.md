@@ -45,6 +45,10 @@ sudo nano ~/.bashrc
 export DOTNET_ROOT=$HOME/dotnet
 export PATH=$PATH:$HOME/dotnet
 ```
+- Reload the ~/.bashrc file with the command:
+```
+source ~/.bashrc
+```
 
 - Reboot the system.
 ```
