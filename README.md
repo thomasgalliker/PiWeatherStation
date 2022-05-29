@@ -247,17 +247,11 @@ content-length: 1460
 ```
 
 ### Images
+- Weather Display Rendering Image
+![Rendering Image](Docs/2022-28-05-DisplayScreen.png)
 
-<table>
-  <tr>
-    <td>Rendered Bitmap</td>
-    <td>Rendered Bitmap on 7.5" Waveshare ePaper Display</td>
-  </tr>
-  <tr>
-    <td><img src="Docs/2022-28-05-DisplayScreen.png" height=280></td>
-    <td><img src="Docs/2022-28-05-DisplayPhoto1.jpg" height=580></td>
-  </tr>
- </table>
+- Weather Display Photo
+![Display Photo](Docs/2022-28-05-DisplayPhoto1.jpg)
 
 ### Links
 #### Similar projects / Waveshare / IoT
