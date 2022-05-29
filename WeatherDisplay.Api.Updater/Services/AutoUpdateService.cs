@@ -2,7 +2,6 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -14,7 +13,7 @@ namespace WeatherDisplay.Api.Updater.Services
 {
     public class AutoUpdateService : IAutoUpdateService
     {
-        private static readonly SemanticVersion DebugVersion = new SemanticVersion(1, 0, 0);
+        private static readonly SemanticVersion LocalDebugVersion = new SemanticVersion(1, 0, 0);
         private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
         {
             Formatting = Formatting.Indented
@@ -61,20 +60,19 @@ namespace WeatherDisplay.Api.Updater.Services
                 var remoteSemanticVersion = versionSource.Version;
 
 #if DEBUG
-                if (localSemanticVersion == DebugVersion)
+                if (localSemanticVersion == LocalDebugVersion)
                 {
                     return new UpdateCheckResult(localSemanticVersion);
                 }
 #endif
-                var remoteVersionIsNewer = localSemanticVersion < remoteSemanticVersion;
-                this.logger.LogDebug($"CheckForUpdateAsync compares local version {localSemanticVersion} < remove version {remoteSemanticVersion} = {remoteVersionIsNewer}");
-
-                if (remoteVersionIsNewer)
+                if (localSemanticVersion < remoteSemanticVersion)
                 {
+                    this.logger.LogDebug($"CheckForUpdateAsync found remote version {remoteSemanticVersion} to be newer than local version {localSemanticVersion}");
                     result = new UpdateCheckResult(localSemanticVersion, versionSource);
                 }
                 else
                 {
+                    this.logger.LogDebug($"CheckForUpdateAsync has not found a version newer than local version {remoteSemanticVersion}");
                     return new UpdateCheckResult(localSemanticVersion, remoteSemanticVersion);
                 }
             }
