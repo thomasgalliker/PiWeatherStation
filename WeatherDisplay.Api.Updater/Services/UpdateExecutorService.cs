@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Compression;
 using System.Net.Http;
-using System.Threading;
 using System.Threading.Tasks;
 using WeatherDisplay.Api.Updater.Models;
 
@@ -29,21 +28,26 @@ namespace WeatherDisplay.Api.Updater.Services
                 Log($"Starting executor step '{executorStep.GetType().Name}'");
 
                 // TODO: Implement factory to resolve executor steps
+
                 try
                 {
 
-                    if (executorStep is DownloadFileStep downloadFileStep)
+                    if (executorStep is DownloadHttpFileStep downloadHttpFileStep)
                     {
-                        var downloadUrl = downloadFileStep.Url;
-                        var downloadFilePath = Path.Combine(updateRequestDto.WorkingDirectory, downloadFileStep.DestinationFileName);
+                        var downloadUrl = downloadHttpFileStep.Url;
                         Log($"Starting file download {downloadUrl}");
 
                         var fileStream = await this.httpClient.GetStreamAsync(downloadUrl);
+                        var downloadFilePath = Path.Combine(updateRequestDto.WorkingDirectory, downloadHttpFileStep.DestinationFileName);
                         var writer = new StreamWriter(downloadFilePath);
                         await fileStream.CopyToAsync(writer.BaseStream);
                         writer.Close();
 
-                        Log($"Download completed: {downloadFileStep.DestinationFileName}");
+                        Log($"Download completed: {downloadHttpFileStep.DestinationFileName}");
+                    }
+                    else if (executorStep is DownloadFtpFileStep downloadFtpFileStep)
+                    {
+                        throw new NotImplementedException();
                     }
                     else if (executorStep is ExtractZipStep extractZipStep)
                     {

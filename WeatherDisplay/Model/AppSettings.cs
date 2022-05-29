@@ -45,8 +45,6 @@ namespace WeatherDisplay.Model
 
             public string Driver { get; set; }
 
-            public TimeSpan RefreshTime { get; set; } = default;
-
             public int Width { get; set; } = 800;
 
             public int Height { get; set; } = 480;

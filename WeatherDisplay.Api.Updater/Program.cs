@@ -37,7 +37,6 @@ namespace WeatherDisplay.Api.Updater
                 $"Copyright(C) superdev GmbH. All rights reserved.{Environment.NewLine}");
 
             Console.WriteLine($"WorkingDirectory={updateRequestDto.WorkingDirectory}");
-            Console.WriteLine($"DownloadUrl={updateRequestDto.DownloadUrl}");
             Console.WriteLine($"CallingProcessId={updateRequestDto.CallingProcessId}");
             Console.WriteLine();
 

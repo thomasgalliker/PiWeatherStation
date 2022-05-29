@@ -65,10 +65,17 @@ namespace WeatherDisplay.Api
                 });
             });
 
-            // ====== Auto updater ======
+            // ====== Auto update ======
             var autoUpdateOptions = new AutoUpdateOptions();
             builder.Configuration.GetSection("AutoUpdateOptions").Bind(autoUpdateOptions);
             services.AddSingleton(autoUpdateOptions);
+
+            var githubVersionCheckerOptions = new GithubVersionCheckerOptions();
+            builder.Configuration.GetSection("AutoUpdateOptions").GetSection("RemoteVersionChecker").Bind(githubVersionCheckerOptions);
+            services.AddSingleton(githubVersionCheckerOptions);
+
+            services.AddSingleton<ILocalVersionChecker, ProductVersionChecker>();
+            services.AddSingleton<IRemoteVersionChecker, GithubVersionChecker>();
             services.AddSingleton<IAutoUpdateService, AutoUpdateService>();
 
             // ====== Weather services ======

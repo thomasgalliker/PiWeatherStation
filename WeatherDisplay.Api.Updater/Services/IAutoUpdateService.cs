@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using WeatherDisplay.Api.Updater.Models;
 
 namespace WeatherDisplay.Api.Updater.Services
 {
@@ -7,8 +6,6 @@ namespace WeatherDisplay.Api.Updater.Services
     {
         Task<UpdateCheckResult> CheckForUpdateAsync();
 
-        Task<GithubVersionDto> GetLatestVersionAsync(bool prerelease);
-
-        void StartUpdate(GithubVersionDto updateVersion);
+        void StartUpdate(UpdateRequest updateRequest);
     }
 }
