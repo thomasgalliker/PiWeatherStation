@@ -56,8 +56,8 @@ namespace WeatherDisplay.Api.Updater.Services
             try
             {
                 var localSemanticVersion = await this.localVersionChecker.GetLocalVersionAsync();
-                var versionSource = await this.remoteVersionChecker.GetLatestVersionAsync();
-                var remoteSemanticVersion = versionSource.Version;
+                var updateVersionSource = await this.remoteVersionChecker.GetLatestVersionAsync();
+                var remoteSemanticVersion = updateVersionSource.Version;
 
 #if DEBUG
                 if (localSemanticVersion == LocalDebugVersion)
@@ -68,7 +68,7 @@ namespace WeatherDisplay.Api.Updater.Services
                 if (localSemanticVersion < remoteSemanticVersion)
                 {
                     this.logger.LogDebug($"CheckForUpdateAsync found remote version {remoteSemanticVersion} to be newer than local version {localSemanticVersion}");
-                    result = new UpdateCheckResult(localSemanticVersion, versionSource);
+                    result = new UpdateCheckResult(localSemanticVersion, updateVersionSource);
                 }
                 else
                 {
@@ -131,7 +131,7 @@ namespace WeatherDisplay.Api.Updater.Services
                     FileName = "sudo",
                     Arguments = $"sh -c \"{command}\"",
                     //Arguments = $"systemd-run --scope {command}",
-                    //FileName = this.autoUpdateOptions.DotnetExecutable,
+                    //FileName = this.options.DotnetExecutable,
                     //Arguments = $"{updateExecutableFileCopy} {updateRequestJsonBase64}",
                     RedirectStandardOutput = false,
                     RedirectStandardError = false,

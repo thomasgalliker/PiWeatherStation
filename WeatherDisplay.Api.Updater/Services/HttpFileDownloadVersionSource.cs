@@ -4,7 +4,7 @@ using WeatherDisplay.Api.Updater.Models;
 
 namespace WeatherDisplay.Api.Updater.Services
 {
-    public class HttpFileDownloadVersionSource : IVersionSource
+    public class HttpFileDownloadVersionSource : IUpdateVersionSource
     {
         public SemanticVersion Version { get; set; }
 

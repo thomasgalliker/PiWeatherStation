@@ -29,7 +29,7 @@ namespace WeatherDisplay.Api.Updater.Services
             this.httpClient.DefaultRequestHeaders.UserAgent.TryParseAdd("request");
         }
 
-        public async Task<IVersionSource> GetLatestVersionAsync()
+        public async Task<IUpdateVersionSource> GetLatestVersionAsync()
         {
             var url = this.options.GithubRepositoryUrl;
             var preRelease = this.options.PreRelease;

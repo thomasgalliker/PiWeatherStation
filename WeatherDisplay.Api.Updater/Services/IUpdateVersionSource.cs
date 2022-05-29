@@ -3,7 +3,7 @@ using WeatherDisplay.Api.Updater.Models;
 
 namespace WeatherDisplay.Api.Updater.Services
 {
-    public interface IVersionSource
+    public interface IUpdateVersionSource
     {
         public SemanticVersion Version { get; set; }
 

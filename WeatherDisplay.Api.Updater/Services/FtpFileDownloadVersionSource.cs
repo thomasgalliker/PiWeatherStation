@@ -4,7 +4,7 @@ using WeatherDisplay.Api.Updater.Models;
 
 namespace WeatherDisplay.Api.Updater.Services
 {
-    public class FtpFileDownloadVersionSource : IVersionSource
+    public class FtpFileDownloadVersionSource : IUpdateVersionSource
     {
         public SemanticVersion Version { get; set; }
 

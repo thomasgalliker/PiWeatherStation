@@ -1,25 +1,9 @@
 ﻿using NuGet.Versioning;
-using WeatherDisplay.Api.Updater.Models;
 
 namespace WeatherDisplay.Api.Updater.Services
 {
-    public class UpdateRequest
-    {
-        public string CurrentDirectory { get; set; }
-
-        public SemanticVersion UpdateVersion { get; set; }
-
-        public IExecutorStep[] ExecutorSteps { get; set; }
-    }
-
     public class UpdateCheckResult
     {
-        public static readonly UpdateCheckResult NoUpdateAvailable = new UpdateCheckResult();
-
-        private UpdateCheckResult()
-        {
-        }
-
         public UpdateCheckResult(SemanticVersion localVersion)
         {
             this.LocalVersion = localVersion;
@@ -31,11 +15,11 @@ namespace WeatherDisplay.Api.Updater.Services
             this.UpdateVersion = updateVersion;
         }
         
-        public UpdateCheckResult(SemanticVersion localVersion, IVersionSource versionSource)
+        public UpdateCheckResult(SemanticVersion localVersion, IUpdateVersionSource updateVersionSource)
         {
             this.LocalVersion = localVersion;
-            this.UpdateVersion = versionSource.Version;
-            this.VersionSource = versionSource;
+            this.UpdateVersion = updateVersionSource.Version;
+            this.UpdateVersionSource = updateVersionSource;
         }
 
         public bool HasUpdate => this.UpdateVersionSource != null;
@@ -43,7 +27,7 @@ namespace WeatherDisplay.Api.Updater.Services
         public SemanticVersion LocalVersion { get; }
 
         public SemanticVersion UpdateVersion { get; }
-        public IVersionSource VersionSource { get; }
-        public IVersionSource UpdateVersionSource { get; }
+
+        public IUpdateVersionSource UpdateVersionSource { get; }
     }
 }

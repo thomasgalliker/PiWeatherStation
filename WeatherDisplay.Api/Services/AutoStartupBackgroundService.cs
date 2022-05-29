@@ -60,7 +60,7 @@ namespace WeatherDisplay.Api.Services
             }
         }
 
-        private static IExecutorStep[] GetExecutorSteps(string currentDirectory, IVersionSource versionSource)
+        private static IExecutorStep[] GetExecutorSteps(string currentDirectory, IUpdateVersionSource versionSource)
         {
             var downloadHttpFileStep = versionSource.GetDownloadStep();
 

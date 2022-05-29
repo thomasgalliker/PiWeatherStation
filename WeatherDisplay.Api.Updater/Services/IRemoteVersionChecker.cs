@@ -5,6 +5,6 @@ namespace WeatherDisplay.Api.Updater.Services
 {
     public interface IRemoteVersionChecker
     {
-        Task<IVersionSource> GetLatestVersionAsync();
+        Task<IUpdateVersionSource> GetLatestVersionAsync();
     }
 }
