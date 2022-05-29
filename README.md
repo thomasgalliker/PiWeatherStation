@@ -1,7 +1,7 @@
 # PiWeatherStation
 This is a demo project which uses a Raspberry Pi 4 to draw some basic weather information to a 7.5" Waveshare ePaper display. The code is based on .NET 6 and there are two runtime projects you can chose from: A console client (WeatherDisplay.ConsoleApp) and an ASP.NET Core Web API (WeatherDisplay.Api).
 
-![Image of display](https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/Docs/36EB74EE-C3E5-4597-B31A-64257AC646FB.jpeg)
+![](Docs/2022-28-05-DisplayPhoto2.jpg)
 
 ### Quick Setup
 
@@ -241,6 +241,19 @@ etag: "1d7c28cf574c2b4"
 last-modified: Sat, 16 Oct 2021 12:54:30 GMT
 content-length: 1460
 ```
+
+### Images
+
+<table>
+  <tr>
+    <td>Rendered Bitmap</td>
+    <td>Rendered Bitmap on 7.5" Waveshare ePaper Display</td>
+  </tr>
+  <tr>
+    <td><img src="Docs/2022-28-05-DisplayScreen.png" height=280></td>
+    <td><img src="Docs/2022-28-05-DisplayPhoto1.jpg" height=580></td>
+  </tr>
+ </table>
 
 ### Links
 #### Similar projects / Waveshare / IoT
