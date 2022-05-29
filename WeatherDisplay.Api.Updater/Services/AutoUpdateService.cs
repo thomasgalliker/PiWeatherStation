@@ -20,7 +20,7 @@ namespace WeatherDisplay.Api.Updater.Services
         };
 
         private readonly ILogger logger;
-        private readonly AutoUpdateOptions autoUpdateOptions;
+        private readonly AutoUpdateOptions options;
         private readonly ILocalVersionChecker localVersionChecker;
         private readonly IRemoteVersionChecker remoteVersionChecker;
         private readonly IProcessFactory processFactory;
@@ -42,7 +42,7 @@ namespace WeatherDisplay.Api.Updater.Services
             IProcessFactory processFactory)
         {
             this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            this.autoUpdateOptions = autoUpdateOptions;
+            this.options = autoUpdateOptions;
             this.localVersionChecker = localVersionChecker;
             this.remoteVersionChecker = remoteVersionChecker;
             this.processFactory = processFactory;
@@ -92,7 +92,7 @@ namespace WeatherDisplay.Api.Updater.Services
 
             try
             {
-                var updaterDirectoryName = this.autoUpdateOptions.UpdaterDirectoryName;
+                var updaterDirectoryName = this.options.UpdaterDirectoryName;
                 var currentDirectory = updateRequest.CurrentDirectory;
                 var updateDirectory = new DirectoryInfo(Path.Combine(currentDirectory, updaterDirectoryName)).FullName;
 
@@ -116,15 +116,15 @@ namespace WeatherDisplay.Api.Updater.Services
                     Directory.CreateDirectory(updateDirectory);
                 }
 
-                var updateExecutableFile = new FileInfo(Path.Combine(currentDirectory, this.autoUpdateOptions.UpdaterExecutable));
-                var updateExecutableFileCopy = Path.Combine(updateDirectory, this.autoUpdateOptions.UpdaterExecutable);
+                var updateExecutableFile = new FileInfo(Path.Combine(currentDirectory, this.options.UpdaterExecutable));
+                var updateExecutableFileCopy = Path.Combine(updateDirectory, this.options.UpdaterExecutable);
                 this.logger.LogInformation($"StartUpdate: Copied {updateExecutableFile} to {updateExecutableFileCopy}");
 
                 var pattern = updateExecutableFile.Name.Remove(updateExecutableFile.Name.Length - updateExecutableFile.Extension.Length);
                 CopyFilesToUpdateDirectory(currentDirectory, updateDirectory, pattern);
                 CopyFilesToUpdateDirectory(currentDirectory, updateDirectory, "Newtonsoft.Json.dll");
 
-                var command = $"{this.autoUpdateOptions.DotnetExecutable} {updateExecutableFileCopy} {updateRequestJsonBase64}";
+                var command = $"{this.options.DotnetExecutable} {updateExecutableFileCopy} {updateRequestJsonBase64}";
 
                 var processStartInfo = new ProcessStartInfo
                 {
