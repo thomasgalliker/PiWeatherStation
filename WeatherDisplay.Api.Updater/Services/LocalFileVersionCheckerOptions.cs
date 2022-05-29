@@ -2,6 +2,6 @@
 {
     public class LocalFileVersionCheckerOptions
     {
-        public string InstalledVersionFile { get; set; }
+        public virtual string InstalledVersionFile { get; set; }
     }
 }
