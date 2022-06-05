@@ -62,6 +62,7 @@ namespace WeatherDisplay.Api.Updater.Services
 #if DEBUG
                 if (localSemanticVersion == LocalDebugVersion)
                 {
+                    this.logger.LogDebug($"CheckForUpdateAsync skipping since local version {localSemanticVersion} is a debug version");
                     return new UpdateCheckResult(localSemanticVersion);
                 }
 #endif
