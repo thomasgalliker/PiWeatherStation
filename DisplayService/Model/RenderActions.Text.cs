@@ -10,7 +10,7 @@ namespace DisplayService.Model
         /// <summary>
         /// Places text on the screen
         /// </summary>
-        public class Text : IRenderAction
+        public class Text : IRenderAction, IAlignable
         {
             private float fontSize = 32;
             private string value;
@@ -83,6 +83,8 @@ namespace DisplayService.Model
 
             public bool AdjustsFontSizeToFitWidth { get; set; }
 
+            public bool AdjustsFontSizeToFitHeight { get; set; }
+
             /// <summary>
             /// Font weight of the text (100 - 900, optional)
             /// </summary>
@@ -102,6 +104,10 @@ namespace DisplayService.Model
             public string ForegroundColor { get; set; } = "#FF000000";
 
             public string BackgroundColor { get; set; }
+
+            public HorizontalAlignment HorizontalAlignment { get; set; }
+
+            public VerticalAlignment VerticalAlignment { get; set; }
 
             public void Render(IRenderService renderService)
             {
