@@ -40,7 +40,7 @@ namespace WeatherDisplay.Services
                 { 321, /* shower drizzle*/ () => Icons.RainLight() },
                     
                 // Group 5xx: Rain
-                { 500, /* light rain*/ () => Icons.RainLight() },
+                { 500, /* light rain*/ () => Icons.RainLightDay() },
                 { 501, /* moderate rain */ () => Icons.Rain() },
                 { 502, /* heavy intensity rain  */ () => Icons.RainHeavy() },
                 { 503, /* very heavy rain   */ () => Icons.RainHeavy() },

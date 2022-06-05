@@ -82,6 +82,16 @@ namespace WeatherDisplay.Resources
         {
             return GetIcon("clouds_rain_light.png");
         }
+        
+        public static Stream RainLightDay()
+        {
+            return GetIcon("clouds_rain_light_day.png");
+        }
+        
+        public static Stream RainLightNight()
+        {
+            return GetIcon("clouds_rain_light_night.png");
+        }
 
         public static Stream Snow()
         {

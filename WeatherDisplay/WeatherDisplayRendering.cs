@@ -121,7 +121,7 @@ namespace WeatherDisplay
                             X = 20,
                             Y = 198,
                             Image = currentWeatherImage,
-                            BackgroundColor = Colors.Magenta,
+                            //BackgroundColor = Colors.Magenta,
                             VerticalAlignment = VerticalAlignment.Center,
                             HorizontalAlignment = HorizontalAlignment.Left,
                         },
@@ -135,7 +135,7 @@ namespace WeatherDisplay
                         Y = 198,
                         Orientation = StackOrientation.Horizontal,
                         VerticalAlignment = VerticalAlignment.Center,
-                        BackgroundColor = Colors.Magenta,
+                        //BackgroundColor = Colors.Magenta,
                         Children = new List<IRenderAction>
                         {
                             new RenderActions.Text
