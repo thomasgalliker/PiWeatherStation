@@ -52,7 +52,7 @@ namespace WeatherDisplay.Api.Services
                 // Schedule automatic update check for "Daily, 4:50 at night"
                 //this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });
                 // Schedule automatic update check every hour at minute 50
-                this.scheduler.AddTask(CrontabSchedule.Parse("*50 * * * *"), async c => { await this.CheckAndStartUpdate(); });
+                this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.CheckAndStartUpdate(); });
 
                 // Add rendering actions + start display manager
                 this.displayManager.AddWeatherRenderActions(this.openWeatherMapService, this.translationService, this.dateTime, this.appSettings);
