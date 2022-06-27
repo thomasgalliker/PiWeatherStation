@@ -19,5 +19,7 @@ namespace DisplayService.Services
         void Text(RenderActions.Text text);
 
         void Rectangle(RenderActions.Rectangle rectangle);
+
+        void StackLayout(RenderActions.StackLayout stackLayout);
     }
 }

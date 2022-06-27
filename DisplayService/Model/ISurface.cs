@@ -1,6 +1,6 @@
 ﻿namespace DisplayService.Model
 {
-    public interface ISurface
+    public interface ISurface : IAlignable
     {
         public int X { get; set; }
 
@@ -9,9 +9,5 @@
         public int Width { get; set; }
 
         public int Height { get; set; }
-
-        public HorizontalAlignment HorizontalAlignment { get; set; }
-
-        public VerticalAlignment VerticalAlignment { get; set; }
     }
 }

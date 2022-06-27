@@ -24,6 +24,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Api", "Weath
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Tests", "Tests\WeatherDisplay.Tests\WeatherDisplay.Tests.csproj", "{6C143F7B-29EA-483F-A453-04849AC0BC72}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDisplay.Api.Updater", "WeatherDisplay.Api.Updater\WeatherDisplay.Api.Updater.csproj", "{D6872635-D71F-4A3E-A16A-13CD173FC0F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|anycpu = Debug|anycpu
@@ -54,6 +56,10 @@ Global
 		{6C143F7B-29EA-483F-A453-04849AC0BC72}.Debug|anycpu.Build.0 = Debug|Any CPU
 		{6C143F7B-29EA-483F-A453-04849AC0BC72}.Release|anycpu.ActiveCfg = Release|Any CPU
 		{6C143F7B-29EA-483F-A453-04849AC0BC72}.Release|anycpu.Build.0 = Release|Any CPU
+		{D6872635-D71F-4A3E-A16A-13CD173FC0F5}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{D6872635-D71F-4A3E-A16A-13CD173FC0F5}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{D6872635-D71F-4A3E-A16A-13CD173FC0F5}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{D6872635-D71F-4A3E-A16A-13CD173FC0F5}.Release|anycpu.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -256,3 +256,4 @@ paket-files/
 **/ServiceAccountKeyFile.json
 /WeatherDisplay.Api/Cache
 internal-nlog.txt
+**/_installedVersion.json
