@@ -6,7 +6,7 @@ using WeatherDisplay.Model.OpenWeatherMap.Converters;
 
 namespace WeatherDisplay.Model.OpenWeatherMap
 {
-    [DebuggerDisplay("WeatherForecastItem: {CalculationTime}, {Temperature}")]
+    [DebuggerDisplay("WeatherForecastItem: {DateTime}, {Main.Temperature}")]
     [JsonObject(MemberSerialization = MemberSerialization.OptIn)]
     public class WeatherForecastItem
     {
@@ -25,14 +25,12 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         [JsonProperty("rain")]
         public RainInformation Rain { get; set; }
 
-        [JsonRequired, JsonProperty("main")]
-        public TemperatureInfo Temperature { get; set; }
+        [JsonRequired]
+        [JsonProperty("main")]
+        public TemperatureInfo Main { get; set; }
 
-        /// <summary>
-        ///     Gets a read-only list containing information about the weather conditions.
-        /// </summary>
-        /// <value>a read-only list containing information about the weather conditions.</value>
-        [JsonRequired, JsonProperty("weather")]
+        [JsonRequired]
+        [JsonProperty("weather")]
         public IReadOnlyList<WeatherCondition> WeatherConditions { get; set; }
 
         [JsonProperty("wind")]

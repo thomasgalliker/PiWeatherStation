@@ -24,12 +24,12 @@ namespace WeatherDisplay.Services
         public const double MinLongitude = -180d;
         public const double MaxLongitude = 180d;
 
-        private const string ApiEndpoint = "https://api.openweathermap.org";
         private readonly ILogger<OpenWeatherMapService> logger;
         private readonly HttpClient httpClient;
         private readonly IWeatherIconMapping defaultWeatherIconMapping;
         private readonly JsonSerializerSettings serializerSettings;
-        private readonly string openWeatherMapApiKey;
+        private readonly string apiEndpoint;
+        private readonly string apiKey;
         private readonly string unitSystem;
         private readonly string language;
         private readonly bool verboseLogging;
@@ -42,7 +42,8 @@ namespace WeatherDisplay.Services
         public OpenWeatherMapService(ILogger<OpenWeatherMapService> logger, HttpClient httpClient, IOpenWeatherMapConfiguration openWeatherMapConfiguration)
         {
             this.logger = logger;
-            this.openWeatherMapApiKey = openWeatherMapConfiguration.ApiKey;
+            this.apiEndpoint = openWeatherMapConfiguration.ApiEndpoint;
+            this.apiKey = openWeatherMapConfiguration.ApiKey;
             this.unitSystem = openWeatherMapConfiguration.UnitSystem;
             this.language = openWeatherMapConfiguration.Language;
             this.verboseLogging = openWeatherMapConfiguration.VerboseLogging;
@@ -77,17 +78,17 @@ namespace WeatherDisplay.Services
             var lat = latitude.ToString("0.0000", CultureInfo.InvariantCulture);
             var lon = longitude.ToString("0.0000", CultureInfo.InvariantCulture);
 
-            var builder = new UriBuilder(ApiEndpoint)
+            var builder = new UriBuilder(this.apiKey)
             {
                 Path = "data/2.5/weather",
-                Query = $"lat={lat}&lon={lon}&units={this.unitSystem}&lang={this.language}&appid={this.openWeatherMapApiKey}"
+                Query = $"lat={lat}&lon={lon}&units={this.unitSystem}&lang={this.language}&appid={this.apiKey}"
             };
 
             var uri = builder.ToString();
             this.logger.LogDebug($"GetCurrentWeatherAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri);
-            response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
 
@@ -100,24 +101,32 @@ namespace WeatherDisplay.Services
             return weatherInfo;
         }
 
-        public async Task<WeatherForecast> GetWeatherForecastAsync(double latitude, double longitude)
+        public async Task<WeatherForecast> GetWeatherForecastAsync(double latitude, double longitude, WeatherForecastOptions options = null)
         {
+            EnsureLatitude(latitude);
+            EnsureLongitude(longitude);
+
             this.logger.LogDebug($"GetWeatherForecastAsync: latitude={latitude}, longitude={longitude}");
+
+            if (options == null)
+            {
+                options = WeatherForecastOptions.Default;
+            }
 
             var lat = FormatCoordinate(latitude);
             var lon = FormatCoordinate(longitude);
 
-            var builder = new UriBuilder(ApiEndpoint)
+            var builder = new UriBuilder(this.apiEndpoint)
             {
-                Path = "data/2.5/forecast",
-                Query = $"lat={lat}&lon={lon}&units={this.unitSystem}&lang={this.language}&appid={this.openWeatherMapApiKey}"
+                Path = $"data/2.5/forecast{GetWeatherForecastUri(options.WeatherForecastKind)}",
+                Query = $"lat={lat}&lon={lon}&units={this.unitSystem}&lang={this.language}{(options.Count > 0 ? $"&cnt={options.Count}" : "")}&appid={this.apiKey}"
             };
 
             var uri = builder.ToString();
             this.logger.LogDebug($"GetWeatherForecastAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri);
-            response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
 
@@ -128,6 +137,21 @@ namespace WeatherDisplay.Services
 
             var weatherForecast = JsonConvert.DeserializeObject<WeatherForecast>(responseJson, this.serializerSettings);
             return weatherForecast;
+        }
+
+        private static string GetWeatherForecastUri(WeatherForecastKind weatherForecastKind)
+        {
+            switch (weatherForecastKind)
+            {
+                case WeatherForecastKind.Default:
+                    return "";
+                case WeatherForecastKind.Hourly:
+                    return "/hourly";
+                case WeatherForecastKind.Daily:
+                    return "/daily";
+                default:
+                    throw new NotSupportedException($"WeatherForecastKind '{weatherForecastKind}' is not supported");
+            }
         }
 
         public async Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude, OneCallOptions oneCallOptions = null)
@@ -147,17 +171,52 @@ namespace WeatherDisplay.Services
 
             var excludeQueryParameter = GetExcludeQueryParameter(oneCallOptions);
 
-            var builder = new UriBuilder(ApiEndpoint)
+            var builder = new UriBuilder(this.apiEndpoint)
             {
                 Path = "data/2.5/onecall",
-                Query = $"lat={lat}&lon={lon}{excludeQueryParameter}&units={this.unitSystem}&lang={this.language}&appid={this.openWeatherMapApiKey}"
+                Query = $"lat={lat}&lon={lon}{excludeQueryParameter}&units={this.unitSystem}&lang={this.language}&appid={this.apiKey}"
             };
 
             var uri = builder.ToString();
             this.logger.LogDebug($"GetWeatherOneCallAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri);
-            response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
+
+            var responseJson = await response.Content.ReadAsStringAsync();
+
+            if (this.verboseLogging)
+            {
+                this.logger.LogDebug($"GetWeatherOneCallAsync returned content:{Environment.NewLine}{responseJson}");
+            }
+
+            var oneCallWeatherInfo = JsonConvert.DeserializeObject<OneCallWeatherInfo>(responseJson, this.serializerSettings);
+            return oneCallWeatherInfo;
+        }
+
+        public async Task<OneCallWeatherInfo> GetWeatherOneCallHistoricAsync(double latitude, double longitude, DateTime dateTime, bool onlyCurrent = false)
+        {
+            EnsureLatitude(latitude);
+            EnsureLongitude(longitude);
+
+            this.logger.LogDebug($"GetWeatherOneCallAsync: latitude={latitude}, longitude={longitude}");
+
+            var lat = FormatCoordinate(latitude);
+            var lon = FormatCoordinate(longitude);
+
+            var epochDateTime = EpochDateTimeConverter.Convert(dateTime);
+
+            var builder = new UriBuilder(this.apiEndpoint)
+            {
+                Path = "data/2.5/onecall/timemachine",
+                Query = $"lat={lat}&lon={lon}&dt={epochDateTime}{(onlyCurrent == true ? "&only_current" : "")}&units={this.unitSystem}&lang={this.language}&appid={this.apiKey}"
+            };
+
+            var uri = builder.ToString();
+            this.logger.LogDebug($"GetWeatherOneCallAsync: GET {uri}");
+
+            var response = await this.httpClient.GetAsync(uri);
+            _ = response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
 
@@ -176,19 +235,19 @@ namespace WeatherDisplay.Services
 
             if (!oneCallOptions.IncludeCurrentWeather)
             {
-                excludes.Add("current");
+                _ = excludes.Add("current");
             }
             if (!oneCallOptions.IncludeMinutelyForecasts)
             {
-                excludes.Add("minutely");
+                _ = excludes.Add("minutely");
             }
             if (!oneCallOptions.IncludeHourlyForecasts)
             {
-                excludes.Add("hourly");
+                _ = excludes.Add("hourly");
             }
             if (!oneCallOptions.IncludeDailyForecasts)
             {
-                excludes.Add("daily");
+                _ = excludes.Add("daily");
             }
 
             string excludeQueryParameter = null;
@@ -239,17 +298,17 @@ namespace WeatherDisplay.Services
             var lat = FormatCoordinate(latitude);
             var lon = FormatCoordinate(longitude);
 
-            var builder = new UriBuilder(ApiEndpoint)
+            var builder = new UriBuilder(this.apiEndpoint)
             {
                 Path = "data/2.5/air_pollution",
-                Query = $"lat={lat}&lon={lon}&appid={this.openWeatherMapApiKey}"
+                Query = $"lat={lat}&lon={lon}&appid={this.apiKey}"
             };
 
             var uri = builder.ToString();
             this.logger.LogDebug($"GetAirPollutionAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri);
-            response.EnsureSuccessStatusCode();
+            _ = response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
 

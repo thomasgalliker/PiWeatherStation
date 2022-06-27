@@ -2,6 +2,8 @@
 {
     public interface IOpenWeatherMapConfiguration
     {
+        string ApiEndpoint { get; }
+
         string ApiKey { get; }
 
         string UnitSystem { get; }

@@ -15,7 +15,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         public string Code { get; set; }
 
         [JsonProperty("message")]
-        public int Message { get; set; }
+        public string Message { get; set; }
 
         [JsonProperty("cnt")]
         public int Count { get; set; }

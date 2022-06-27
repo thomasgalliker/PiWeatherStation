@@ -12,9 +12,9 @@ namespace WeatherDisplay.Model.OpenWeatherMap.Converters
     {
         private static readonly DateTime Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-        private static DateTime Convert(long seconds) => Epoch.AddSeconds(seconds);
+        public static DateTime Convert(long seconds) => Epoch.AddSeconds(seconds);
 
-        private static long Convert(DateTime utcDateTime) => (long)(utcDateTime - Epoch).TotalSeconds;
+        public static long Convert(DateTime utcDateTime) => (long)(utcDateTime - Epoch).TotalSeconds;
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
