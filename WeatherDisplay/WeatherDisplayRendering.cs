@@ -47,6 +47,7 @@ namespace WeatherDisplay
                             ForegroundColor = "#FFFFFF",
                             FontSize = 70,
                             AdjustsFontSizeToFitWidth = true,
+                            AdjustsFontSizeToFitHeight = true,
                             Bold = true,
                         },
                         
@@ -65,7 +66,7 @@ namespace WeatherDisplay
                         },
                     };
                 },
-                CrontabSchedule.Parse("0 0 * * *")); // Update every 24h
+                CrontabSchedule.Parse("0 0 * * *")); // Update every day at 00:00
 
             // Current weather info
             displayManager.AddRenderActionsAsync(
@@ -120,21 +121,49 @@ namespace WeatherDisplay
                             X = 20,
                             Y = 198,
                             Image = currentWeatherImage,
+                            //BackgroundColor = Colors.Magenta,
                             VerticalAlignment = VerticalAlignment.Center,
                             HorizontalAlignment = HorizontalAlignment.Left,
                         },
-                        new RenderActions.Text
+                    };
+
+                    var temperatureStackLayout = new RenderActions.StackLayout
+                    {
+                        Width = 200,
+                        Height = 70,
+                        X = 140,
+                        Y = 198,
+                        Orientation = StackOrientation.Horizontal,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        //BackgroundColor = Colors.Magenta,
+                        Children = new List<IRenderAction>
                         {
-                            X = 140,
-                            Y = 198,
-                            HorizontalTextAlignment = HorizontalAlignment.Left,
-                            VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = FormatTemperature(currentWeatherInfo.Temperature),
-                            ForegroundColor = "#000000",
-                            BackgroundColor = "#FFFFFF",
-                            FontSize = 80,
+                            new RenderActions.Text
+                            {
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Center,
+                                VerticalAlignment = VerticalAlignment.Center,
+                                Value = currentWeatherInfo.Temperature.ToString("N0"),
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 70,
+                                AdjustsFontSizeToFitWidth = true,
+                                AdjustsFontSizeToFitHeight = true,
+                            },
+                            new RenderActions.Text
+                            {
+                                Y = 1,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Bottom,
+                                VerticalAlignment = VerticalAlignment.Center,
+                                Value =  currentWeatherInfo.Temperature.ToString("U"),
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 35,
+                            }
                         }
                     };
+                    currentWeatherRenderActions.Add(temperatureStackLayout);
 
                     var weatherDescription = currentWeatherCondition.Description.Replace("ß", "ss");
                     var isLongWeatherDescription = weatherDescription.Length > 16;
@@ -625,6 +654,5 @@ namespace WeatherDisplay
 
             return formattedTemperature;
         }
-
     }
 }

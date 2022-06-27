@@ -1,24 +1,22 @@
 using System;
 using System.Collections.Generic;
-using System.Threading;
 using DisplayService.Services;
 using DisplayService.Settings;
 using DisplayService.Tests.Services;
+using FluentAssertions;
 using Moq;
 using Moq.AutoMock;
-using NCrontab;
+using NCrontab.Scheduler;
 using SkiaSharp;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Services;
+using WeatherDisplay.Tests.Extensions;
 using WeatherDisplay.Tests.Testdata;
 using Xunit;
 using Xunit.Abstractions;
-using WeatherDisplay.Tests.Extensions;
 using IDateTime = DisplayService.Services.IDateTime;
-using NCrontab.Scheduler;
-using FluentAssertions;
 
 namespace WeatherDisplay.Tests
 {

@@ -183,11 +183,25 @@ namespace WeatherDisplay.Model.OpenWeatherMap
             }
         }
 
+        /// <summary>
+        /// Returns the string representation of the temperature.
+        /// Default format is "0.##" and the respective unit.
+        /// </summary>
         public override string ToString()
         {
-            return this.ToString("G", CultureInfo.CurrentCulture);
+            return this.ToString(null, CultureInfo.CurrentCulture);
         }
 
+        /// <summary>
+        /// Returns the string representation of the temperature.
+        /// Default format is "0.##" and the respective unit.
+        /// </summary>
+        /// <param name="format">
+        /// The format.
+        /// This can either be a number format (e.g. "0" or "0.##").
+        /// Following formats are valid too: "U" = Unit string only (e.g. °C). "N" = Nummeric value only
+        /// </param>
+        /// <returns></returns>
         public string ToString(string format)
         {
             return this.ToString(format, CultureInfo.CurrentCulture);
@@ -206,7 +220,20 @@ namespace WeatherDisplay.Model.OpenWeatherMap
             }
 
             var unitString = EnumUtils.GetDescription(this.Unit);
-            return $"{this.Value.ToString(format, provider)}{unitString}";
+
+            if (format == "U")
+            {
+                return unitString;
+            }
+
+            var temperatureString = $"{this.Value.ToString(format, provider)}";
+
+            if (format.StartsWith("N"))
+            {
+                return temperatureString;
+            }
+
+            return $"{temperatureString}{unitString}";
         }
     }
 }
