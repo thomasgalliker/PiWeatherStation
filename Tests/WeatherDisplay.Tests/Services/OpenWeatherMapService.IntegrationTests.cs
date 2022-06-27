@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using WeatherDisplay.Model.OpenWeatherMap;
-using WeatherDisplay.Services;
+using WeatherDisplay.Services.OpenWeatherMap;
 using WeatherDisplay.Tests.Logging;
 using Xunit;
 using Xunit.Abstractions;

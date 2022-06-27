@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using DisplayService.Services;
 using WeatherDisplay;
 using WeatherDisplay.Model;
-using WeatherDisplay.Services;
+using WeatherDisplay.Services.DeepL;
+using WeatherDisplay.Services.OpenWeatherMap;
 
 namespace DisplayService.ConsoleApp.Commands
 {

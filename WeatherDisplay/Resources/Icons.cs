@@ -1,6 +1,6 @@
 ﻿using System.IO;
 using System.Reflection;
-using WeatherDisplay.Services;
+using WeatherDisplay.Services.OpenWeatherMap;
 
 namespace WeatherDisplay.Resources
 {

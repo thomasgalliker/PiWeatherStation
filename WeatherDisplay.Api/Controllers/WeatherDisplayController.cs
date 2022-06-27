@@ -1,7 +1,8 @@
 using DisplayService.Services;
 using Microsoft.AspNetCore.Mvc;
 using WeatherDisplay.Model;
-using WeatherDisplay.Services;
+using WeatherDisplay.Services.DeepL;
+using WeatherDisplay.Services.OpenWeatherMap;
 
 namespace WeatherDisplay.Api.Controllers
 {

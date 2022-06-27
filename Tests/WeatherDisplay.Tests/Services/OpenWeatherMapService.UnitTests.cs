@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
 using Moq.Contrib.HttpClient;
-using WeatherDisplay.Services;
+using WeatherDisplay.Services.OpenWeatherMap;
 using WeatherDisplay.Tests.Logging;
 using WeatherDisplay.Tests.Testdata;
 using Xunit;

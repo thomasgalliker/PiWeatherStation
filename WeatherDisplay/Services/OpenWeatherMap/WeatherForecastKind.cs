@@ -1,4 +1,4 @@
-﻿namespace WeatherDisplay.Services
+﻿namespace WeatherDisplay.Services.OpenWeatherMap
 {
     public enum WeatherForecastKind
     {

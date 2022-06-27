@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using NCrontab.Scheduler;
 using WeatherDisplay.Model;
 using WeatherDisplay.Services;
+using WeatherDisplay.Services.DeepL;
+using WeatherDisplay.Services.OpenWeatherMap;
 using IDateTime = DisplayService.Services.IDateTime;
 using SystemDateTime = DisplayService.Services.SystemDateTime;
 

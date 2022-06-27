@@ -6,6 +6,7 @@ using DisplayService.Tests.Services;
 using SkiaSharp;
 using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Services;
+using WeatherDisplay.Services.OpenWeatherMap;
 using WeatherDisplay.Tests.Extensions;
 using WeatherDisplay.Tests.Logging;
 using Xunit;

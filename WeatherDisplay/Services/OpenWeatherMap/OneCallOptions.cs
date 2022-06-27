@@ -1,14 +1,5 @@
-﻿namespace WeatherDisplay.Services
+﻿namespace WeatherDisplay.Services.OpenWeatherMap
 {
-    public class WeatherForecastOptions
-    {
-        public static readonly WeatherForecastOptions Default = new WeatherForecastOptions();
-
-        public WeatherForecastKind WeatherForecastKind { get; set; } = WeatherForecastKind.Default;
-
-        public int Count { get; set; }
-    }
-
     public class OneCallOptions
     {
         public static readonly OneCallOptions Default = new OneCallOptions();

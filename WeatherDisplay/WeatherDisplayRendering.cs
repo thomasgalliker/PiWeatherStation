@@ -10,7 +10,8 @@ using WeatherDisplay.Model;
 using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Resources.Strings;
-using WeatherDisplay.Services;
+using WeatherDisplay.Services.DeepL;
+using WeatherDisplay.Services.OpenWeatherMap;
 
 namespace WeatherDisplay
 {

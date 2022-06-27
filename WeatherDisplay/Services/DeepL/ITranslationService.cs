@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace WeatherDisplay.Services
+namespace WeatherDisplay.Services.DeepL
 {
     public interface ITranslationService
     {

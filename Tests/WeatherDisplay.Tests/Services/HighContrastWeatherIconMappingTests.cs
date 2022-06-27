@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
 using FluentAssertions;
 using WeatherDisplay.Model.OpenWeatherMap;
-using WeatherDisplay.Services;
+using WeatherDisplay.Services.OpenWeatherMap;
 using WeatherDisplay.Tests.Testdata;
 using Xunit;
 
