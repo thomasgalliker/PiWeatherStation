@@ -64,13 +64,8 @@ namespace WeatherDisplay.Tests
                 IncludeDailyForecasts = true,
             };
 
-            var weatherForecastOptions = new WeatherForecastOptions
-            {
-                WeatherForecastKind = WeatherForecastKind.Hourly,
-            };
-
             var callWeatherInfoHistoric = await this.openWeatherMapService.GetWeatherOneCallHistoricAsync(latitude, longitude, now.Date, onlyCurrent: false);
-            var weatherForecast = await this.openWeatherMapService.GetWeatherForecastAsync(latitude, longitude, weatherForecastOptions);
+            var weatherForecast = await this.openWeatherMapService.GetWeatherForecast4Async(latitude, longitude);
             var callWeatherInfo = await this.openWeatherMapService.GetWeatherOneCallAsync(latitude, longitude, oneCallOptions);
 
             var historicTemperatureSets = callWeatherInfoHistoric.HourlyForecasts

@@ -14,6 +14,7 @@ namespace WeatherDisplay.Tests.Services
         private readonly ILogger<OpenWeatherMapService> logger;
         private readonly IOpenWeatherMapConfiguration openWeatherMapConfiguration;
         private readonly ITestOutputHelper testOutputHelper;
+        private readonly DumpOptions dumpOptions;
 
         public OpenWeatherMapServiceIntegrationTests(ITestOutputHelper testOutputHelper)
         {
@@ -29,11 +30,23 @@ namespace WeatherDisplay.Tests.Services
                 VerboseLogging = true
             };
             this.testOutputHelper = testOutputHelper;
+
+
+            this.dumpOptions = new DumpOptions
+            {
+                DumpStyle = DumpStyle.CSharp,
+                SetPropertiesOnly = true
+            };
+
+            this.dumpOptions.CustomInstanceFormatters.AddFormatter<Temperature>(t => $"new Temperature({t.Value}, {nameof(TemperatureUnit)}.{t.Unit})");
+            this.dumpOptions.CustomInstanceFormatters.AddFormatter<Pressure>(p => $"new Pressure({p.Value})");
+            this.dumpOptions.CustomInstanceFormatters.AddFormatter<Humidity>(h => $"new Humidity({h.Value})");
+            this.dumpOptions.CustomInstanceFormatters.AddFormatter<UVIndex>(uvi => $"new UVIndex({uvi.Value})");
         }
 
         [Theory]
-        [ClassData(typeof(WeatherForecastTestData))]
-        public async Task ShouldGetWeatherForecastAsync(WeatherForecastOptions options)
+        [ClassData(typeof(WeatherForecast4TestData))]
+        public async Task ShouldGetWeatherForecast4Async(int? count, int expectedCount)
         {
             // Arrange
             var latitude = 47.0907124d;
@@ -42,40 +55,22 @@ namespace WeatherDisplay.Tests.Services
             IOpenWeatherMapService openWeatherMapService = new OpenWeatherMapService(this.logger, this.openWeatherMapConfiguration);
 
             // Act
-            var weatherForecast = await openWeatherMapService.GetWeatherForecastAsync(latitude, longitude, options);
+            var weatherForecast = await openWeatherMapService.GetWeatherForecast4Async(latitude, longitude, count);
 
             // Assert
-            var dumpOptions = new DumpOptions
-            {
-                DumpStyle = DumpStyle.CSharp,
-                SetPropertiesOnly = true
-            };
+            this.testOutputHelper.WriteLine(ObjectDumper.Dump(weatherForecast, this.dumpOptions));
 
-            dumpOptions.CustomInstanceFormatters.AddFormatter<Temperature>(t => $"new Temperature({t.Value}, {nameof(TemperatureUnit)}.{t.Unit})");
-            dumpOptions.CustomInstanceFormatters.AddFormatter<Pressure>(p => $"new Pressure({p.Value})");
-            dumpOptions.CustomInstanceFormatters.AddFormatter<Humidity>(h => $"new Humidity({h.Value})");
-            dumpOptions.CustomInstanceFormatters.AddFormatter<UVIndex>(uvi => $"new UVIndex({uvi.Value})");
-            this.testOutputHelper.WriteLine(ObjectDumper.Dump(weatherForecast, dumpOptions));
-
-            _ = weatherForecast.Should().NotBeNull();
+            weatherForecast.Should().NotBeNull();
+            weatherForecast.Count.Should().Be(expectedCount);
+            weatherForecast.Items.Should().HaveCount(expectedCount);
         }
 
-        public class WeatherForecastTestData : TheoryData<WeatherForecastOptions>
+        public class WeatherForecast4TestData : TheoryData<int?, int>
         {
-            public WeatherForecastTestData()
+            public WeatherForecast4TestData()
             {
-                this.Add(new WeatherForecastOptions
-                {
-                    WeatherForecastKind = WeatherForecastKind.Default,
-                });
-                this.Add(new WeatherForecastOptions
-                {
-                    WeatherForecastKind = WeatherForecastKind.Hourly,
-                });
-                this.Add(new WeatherForecastOptions
-                {
-                    WeatherForecastKind = WeatherForecastKind.Daily,
-                });
+                this.Add(null, 96);
+                this.Add(24, 24);
             }
         }
 
@@ -100,19 +95,9 @@ namespace WeatherDisplay.Tests.Services
             var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(latitude, longitude, oneCallOptions);
 
             // Assert
-            var dumpOptions = new DumpOptions
-            {
-                DumpStyle = DumpStyle.CSharp,
-                SetPropertiesOnly = true
-            };
+            this.testOutputHelper.WriteLine(ObjectDumper.Dump(oneCallWeatherInfo, this.dumpOptions));
 
-            dumpOptions.CustomInstanceFormatters.AddFormatter<Temperature>(t => $"new Temperature({t.Value}, {nameof(TemperatureUnit)}.{t.Unit})");
-            dumpOptions.CustomInstanceFormatters.AddFormatter<Pressure>(p => $"new Pressure({p.Value})");
-            dumpOptions.CustomInstanceFormatters.AddFormatter<Humidity>(h => $"new Humidity({h.Value})");
-            dumpOptions.CustomInstanceFormatters.AddFormatter<UVIndex>(uvi => $"new UVIndex({uvi.Value})");
-            this.testOutputHelper.WriteLine(ObjectDumper.Dump(oneCallWeatherInfo, dumpOptions));
-
-            _ = oneCallWeatherInfo.Should().NotBeNull();
+            oneCallWeatherInfo.Should().NotBeNull();
         }
 
         [Fact]
@@ -130,8 +115,7 @@ namespace WeatherDisplay.Tests.Services
             // Assert
             this.testOutputHelper.WriteLine(ObjectDumper.Dump(airPollutionInfo, DumpStyle.CSharp));
 
-            _ = airPollutionInfo.Should().NotBeNull();
+            airPollutionInfo.Should().NotBeNull();
         }
-
     }
 }

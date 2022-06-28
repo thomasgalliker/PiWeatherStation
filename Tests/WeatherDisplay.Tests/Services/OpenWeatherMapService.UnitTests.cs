@@ -28,6 +28,8 @@ public class OpenWeatherMapServiceUnitTests
         this.autoMocker.Use<ILogger<OpenWeatherMapService>>(new TestOutputHelperLogger<OpenWeatherMapService>(testOutputHelper));
 
         var openWeatherMapConfigurationMock = this.autoMocker.GetMock<IOpenWeatherMapConfiguration>();
+        openWeatherMapConfigurationMock.SetupGet(c => c.ApiEndpoint)
+            .Returns("https://api.openweathermap.org"); 
         openWeatherMapConfigurationMock.SetupGet(c => c.Language)
             .Returns("en");
         openWeatherMapConfigurationMock.SetupGet(c => c.ApiKey)
@@ -58,7 +60,7 @@ public class OpenWeatherMapServiceUnitTests
         weatherInfo.Should().BeEquivalentTo(expectedWeatherInfo);
 
         this.httpMessageHandlerMock.VerifyRequest(HttpMethod.Get,
-            "https://api.openweathermap.org:443/data/2.5/weather?lat=1.1111&lon=1.2222&units=metric&lang=en&appid=apikey",
+            "https://api.openweathermap.org/data/2.5/weather?lat=1.1111&lon=1.2222&units=metric&lang=en&appid=apikey",
             Times.Once());
 
         this.httpMessageHandlerMock.VerifyNoOtherCalls();

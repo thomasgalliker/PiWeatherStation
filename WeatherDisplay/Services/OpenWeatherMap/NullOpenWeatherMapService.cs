@@ -14,6 +14,11 @@ namespace WeatherDisplay.Services.OpenWeatherMap
             this.openWeatherMapConfiguration = openWeatherMapConfiguration;
         }
 
+        public Task<AirPollutionInfo> GetAirPollutionAsync(double latitude, double longitude)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<WeatherInfo> GetCurrentWeatherAsync(double latitude, double longitude)
         {
             return Task.FromResult(new WeatherInfo
@@ -25,23 +30,27 @@ namespace WeatherDisplay.Services.OpenWeatherMap
             });
         }
 
-        public Task<WeatherForecast> GetWeatherForecastAsync(double latitude, double longitude, WeatherForecastOptions options = null)
+        public Task<WeatherForecast> GetWeatherForecast16Async(double latitude, double longitude, int? count = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<WeatherForecast> GetWeatherForecast4Async(double latitude, double longitude, int? count = null)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<WeatherForecast> GetWeatherForecast5Async(double latitude, double longitude, int? count = null)
         {
             throw new NotImplementedException();
         }
 
         public Task<Stream> GetWeatherIconAsync(WeatherCondition weatherCondition, IWeatherIconMapping weatherIconMapping = null)
         {
-            //return TestImages.WeatherIcon;
             throw new NotImplementedException();
         }
 
         public Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude, OneCallOptions oneCallOptions = null)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<AirPollutionInfo> GetAirPollutionAsync(double latitude, double longitude)
         {
             throw new NotImplementedException();
         }

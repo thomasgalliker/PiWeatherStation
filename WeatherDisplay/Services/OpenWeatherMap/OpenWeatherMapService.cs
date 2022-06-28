@@ -78,7 +78,7 @@ namespace WeatherDisplay.Services.OpenWeatherMap
             var lat = latitude.ToString("0.0000", CultureInfo.InvariantCulture);
             var lon = longitude.ToString("0.0000", CultureInfo.InvariantCulture);
 
-            var builder = new UriBuilder(this.apiKey)
+            var builder = new UriBuilder(this.apiEndpoint)
             {
                 Path = "data/2.5/weather",
                 Query = $"lat={lat}&lon={lon}&units={this.unitSystem}&lang={this.language}&appid={this.apiKey}"
@@ -101,25 +101,35 @@ namespace WeatherDisplay.Services.OpenWeatherMap
             return weatherInfo;
         }
 
-        public async Task<WeatherForecast> GetWeatherForecastAsync(double latitude, double longitude, WeatherForecastOptions options = null)
+        public Task<WeatherForecast> GetWeatherForecast4Async(double latitude, double longitude, int? count = null)
+        {
+            return this.GetWeatherForecastInternalAsync<WeatherForecast>("/hourly", latitude, longitude, count);
+        }
+
+        public Task<WeatherForecast> GetWeatherForecast5Async(double latitude, double longitude, int? count = null)
+        {
+            return this.GetWeatherForecastInternalAsync<WeatherForecast>("", latitude, longitude, count);
+        }
+
+        public Task<WeatherForecast> GetWeatherForecast16Async(double latitude, double longitude, int? count = null)
+        {
+            return this.GetWeatherForecastInternalAsync<WeatherForecast>("/daily", latitude, longitude, count);
+        }
+
+        private async Task<T> GetWeatherForecastInternalAsync<T>(string url, double latitude, double longitude, int? count = null)
         {
             EnsureLatitude(latitude);
             EnsureLongitude(longitude);
 
             this.logger.LogDebug($"GetWeatherForecastAsync: latitude={latitude}, longitude={longitude}");
 
-            if (options == null)
-            {
-                options = WeatherForecastOptions.Default;
-            }
-
             var lat = FormatCoordinate(latitude);
             var lon = FormatCoordinate(longitude);
 
             var builder = new UriBuilder(this.apiEndpoint)
             {
-                Path = $"data/2.5/forecast{GetWeatherForecastUri(options.WeatherForecastKind)}",
-                Query = $"lat={lat}&lon={lon}&units={this.unitSystem}&lang={this.language}{(options.Count > 0 ? $"&cnt={options.Count}" : "")}&appid={this.apiKey}"
+                Path = $"data/2.5/forecast{url}",
+                Query = $"lat={lat}&lon={lon}&units={this.unitSystem}&lang={this.language}{(count > 0 ? $"&cnt={count}" : "")}&appid={this.apiKey}"
             };
 
             var uri = builder.ToString();
@@ -135,23 +145,8 @@ namespace WeatherDisplay.Services.OpenWeatherMap
                 this.logger.LogDebug($"GetWeatherForecastAsync returned content:{Environment.NewLine}{responseJson}");
             }
 
-            var weatherForecast = JsonConvert.DeserializeObject<WeatherForecast>(responseJson, this.serializerSettings);
+            var weatherForecast = JsonConvert.DeserializeObject<T>(responseJson, this.serializerSettings);
             return weatherForecast;
-        }
-
-        private static string GetWeatherForecastUri(WeatherForecastKind weatherForecastKind)
-        {
-            switch (weatherForecastKind)
-            {
-                case WeatherForecastKind.Default:
-                    return "";
-                case WeatherForecastKind.Hourly:
-                    return "/hourly";
-                case WeatherForecastKind.Daily:
-                    return "/daily";
-                default:
-                    throw new NotSupportedException($"WeatherForecastKind '{weatherForecastKind}' is not supported");
-            }
         }
 
         public async Task<OneCallWeatherInfo> GetWeatherOneCallAsync(double latitude, double longitude, OneCallOptions oneCallOptions = null)
