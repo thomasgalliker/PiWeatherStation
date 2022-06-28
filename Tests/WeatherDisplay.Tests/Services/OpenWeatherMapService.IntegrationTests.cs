@@ -64,6 +64,26 @@ namespace WeatherDisplay.Tests.Services
             weatherForecast.Count.Should().Be(expectedCount);
             weatherForecast.Items.Should().HaveCount(expectedCount);
         }
+        
+        [Fact]
+        public async Task ShouldGetWeatherForecast5Async()
+        {
+            // Arrange
+            var latitude = 47.0907124d;
+            var longitude = 8.0559381d;
+
+            IOpenWeatherMapService openWeatherMapService = new OpenWeatherMapService(this.logger, this.openWeatherMapConfiguration);
+
+            // Act
+            var weatherForecast = await openWeatherMapService.GetWeatherForecast5Async(latitude, longitude);
+
+            // Assert
+            this.testOutputHelper.WriteLine(ObjectDumper.Dump(weatherForecast, this.dumpOptions));
+
+            weatherForecast.Should().NotBeNull();
+            weatherForecast.Count.Should().Be(40);
+            weatherForecast.Items.Should().HaveCount(40);
+        }
 
         public class WeatherForecast4TestData : TheoryData<int?, int>
         {
