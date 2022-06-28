@@ -45,7 +45,8 @@ namespace WeatherDisplay.Tests.Services
         }
 
         [Theory]
-        [ClassData(typeof(WeatherForecast4TestData))]
+        [InlineData(null, 96)]
+        [InlineData(24, 24)]
         public async Task ShouldGetWeatherForecast4Async(int? count, int expectedCount)
         {
             // Arrange
@@ -85,13 +86,24 @@ namespace WeatherDisplay.Tests.Services
             weatherForecast.Items.Should().HaveCount(40);
         }
 
-        public class WeatherForecast4TestData : TheoryData<int?, int>
+        [Fact]
+        public async Task ShouldGetWeatherForecast16Async()
         {
-            public WeatherForecast4TestData()
-            {
-                this.Add(null, 96);
-                this.Add(24, 24);
-            }
+            // Arrange
+            var latitude = 47.0907124d;
+            var longitude = 8.0559381d;
+
+            IOpenWeatherMapService openWeatherMapService = new OpenWeatherMapService(this.logger, this.openWeatherMapConfiguration);
+
+            // Act
+            var weatherForecast = await openWeatherMapService.GetWeatherForecastDailyAsync(latitude, longitude);
+
+            // Assert
+            this.testOutputHelper.WriteLine(ObjectDumper.Dump(weatherForecast, this.dumpOptions));
+
+            weatherForecast.Should().NotBeNull();
+            weatherForecast.Count.Should().Be(7);
+            weatherForecast.Items.Should().HaveCount(7);
         }
 
         [Fact]

@@ -13,19 +13,22 @@ namespace WeatherDisplay.Services.OpenWeatherMap
         /// Hourly forecast for 4 days (max. 96 timestamps).
         /// https://openweathermap.org/api/hourly-forecast
         /// </summary>
+        /// <param name="count">Number of 1-hour forecasts to be returned.</param>
         Task<WeatherForecast> GetWeatherForecast4Async(double latitude, double longitude, int? count = null);
 
         /// <summary>
         /// 5 day / 3 hour forecast (max. 40 timestamps).
         /// https://openweathermap.org/forecast5
         /// </summary>
+        /// <param name="count">Number of 3-hour forecasts to be returned.</param>
         Task<WeatherForecast> GetWeatherForecast5Async(double latitude, double longitude, int? count = null);
 
         /// <summary>
         /// 16 day / daily forecast (max. 17 timestamps).
         /// https://openweathermap.org/forecast16
         /// </summary>
-        Task<WeatherForecast> GetWeatherForecast16Async(double latitude, double longitude, int? count = null);
+        /// <param name="count">Number of days to be returned.</param>
+        Task<WeatherForecastDaily> GetWeatherForecastDailyAsync(double latitude, double longitude, int? count = null);
 
         Task<Stream> GetWeatherIconAsync(WeatherCondition weatherCondition, IWeatherIconMapping weatherIconMapping = null);
 

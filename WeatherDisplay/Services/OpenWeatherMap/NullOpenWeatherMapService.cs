@@ -30,7 +30,7 @@ namespace WeatherDisplay.Services.OpenWeatherMap
             });
         }
 
-        public Task<WeatherForecast> GetWeatherForecast16Async(double latitude, double longitude, int? count = null)
+        public Task<WeatherForecastDaily> GetWeatherForecastDailyAsync(double latitude, double longitude, int? count = null)
         {
             throw new NotImplementedException();
         }

@@ -88,7 +88,7 @@ namespace WeatherDisplay.Services.OpenWeatherMap
             this.logger.LogDebug($"GetCurrentWeatherAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri);
-            _ = response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
 
@@ -111,9 +111,9 @@ namespace WeatherDisplay.Services.OpenWeatherMap
             return this.GetWeatherForecastInternalAsync<WeatherForecast>("", latitude, longitude, count);
         }
 
-        public Task<WeatherForecast> GetWeatherForecast16Async(double latitude, double longitude, int? count = null)
+        public Task<WeatherForecastDaily> GetWeatherForecastDailyAsync(double latitude, double longitude, int? count = null)
         {
-            return this.GetWeatherForecastInternalAsync<WeatherForecast>("/daily", latitude, longitude, count);
+            return this.GetWeatherForecastInternalAsync<WeatherForecastDaily>("/daily", latitude, longitude, count);
         }
 
         private async Task<T> GetWeatherForecastInternalAsync<T>(string url, double latitude, double longitude, int? count = null)
@@ -136,7 +136,7 @@ namespace WeatherDisplay.Services.OpenWeatherMap
             this.logger.LogDebug($"GetWeatherForecastAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri);
-            _ = response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
 
@@ -176,7 +176,7 @@ namespace WeatherDisplay.Services.OpenWeatherMap
             this.logger.LogDebug($"GetWeatherOneCallAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri);
-            _ = response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
 
@@ -211,7 +211,7 @@ namespace WeatherDisplay.Services.OpenWeatherMap
             this.logger.LogDebug($"GetWeatherOneCallAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri);
-            _ = response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
 
@@ -230,19 +230,19 @@ namespace WeatherDisplay.Services.OpenWeatherMap
 
             if (!oneCallOptions.IncludeCurrentWeather)
             {
-                _ = excludes.Add("current");
+                excludes.Add("current");
             }
             if (!oneCallOptions.IncludeMinutelyForecasts)
             {
-                _ = excludes.Add("minutely");
+                excludes.Add("minutely");
             }
             if (!oneCallOptions.IncludeHourlyForecasts)
             {
-                _ = excludes.Add("hourly");
+                excludes.Add("hourly");
             }
             if (!oneCallOptions.IncludeDailyForecasts)
             {
-                _ = excludes.Add("daily");
+                excludes.Add("daily");
             }
 
             string excludeQueryParameter = null;
@@ -303,7 +303,7 @@ namespace WeatherDisplay.Services.OpenWeatherMap
             this.logger.LogDebug($"GetAirPollutionAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri);
-            _ = response.EnsureSuccessStatusCode();
+            response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync();
 
