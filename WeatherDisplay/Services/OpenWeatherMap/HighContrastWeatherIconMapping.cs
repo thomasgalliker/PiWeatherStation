@@ -6,7 +6,7 @@ using DisplayService.Extensions;
 using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Resources;
 
-namespace WeatherDisplay.Services
+namespace WeatherDisplay.Services.OpenWeatherMap
 {
     public class HighContrastWeatherIconMapping : IWeatherIconMapping
     {

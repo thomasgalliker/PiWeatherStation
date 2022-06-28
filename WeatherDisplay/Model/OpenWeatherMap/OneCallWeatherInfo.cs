@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json;
-using WeatherDisplay.Services;
+using WeatherDisplay.Services.OpenWeatherMap;
 
 namespace WeatherDisplay.Model.OpenWeatherMap
 {

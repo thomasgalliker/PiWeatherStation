@@ -11,11 +11,14 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         public Temperature Night { get; set; }
 
         [JsonProperty("eve")]
-        public Temperature Eve { get; set; }
+        public Temperature Evening { get; set; }
 
         [JsonProperty("morn")]
-        public Temperature Morn { get; set; }
+        public Temperature Morning { get; set; }
+
+        public override string ToString()
+        {
+            return $"Morning: {this.Morning}, Day: {this.Day}, Evening: {this.Evening}, Night: {this.Night}";
+        }
     }
-
-
 }

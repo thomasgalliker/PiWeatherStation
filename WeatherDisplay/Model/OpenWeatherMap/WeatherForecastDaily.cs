@@ -4,15 +4,15 @@ using Newtonsoft.Json;
 
 namespace WeatherDisplay.Model.OpenWeatherMap
 {
-    public class WeatherForecast : WeatherForecastBase
+    public class WeatherForecastDaily : WeatherForecastBase
     {
-        public WeatherForecast()
+        public WeatherForecastDaily()
         {
-            this.Items = new List<WeatherForecastItem>();
+            this.Items = new List<DailyWeatherForecastItem>();
         }
 
         [JsonProperty("list")]
-        public IReadOnlyCollection<WeatherForecastItem> Items { get; set; }
+        public IReadOnlyCollection<DailyWeatherForecastItem> Items { get; set; }
 
         public override string ToString()
         {

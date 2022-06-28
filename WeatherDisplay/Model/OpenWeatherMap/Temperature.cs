@@ -17,6 +17,7 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         public static readonly Temperature ZeroKelvin = Temperature.FromKelvin(0.0);
         public static readonly Temperature ZeroCelsius = Temperature.FromCelsius(0.0);
         public static readonly Temperature ZeroFahrenheit = Temperature.FromFahrenheit(0.0);
+        public static readonly Temperature MinValue = ZeroKelvin;
 
         public Temperature(double value, TemperatureUnit unit)
         {
@@ -29,9 +30,9 @@ namespace WeatherDisplay.Model.OpenWeatherMap
             this.Value = value;
         }
 
-        public double Value { get; private set; }
+        public double Value { get; internal set; }
 
-        public TemperatureUnit Unit { get; private set; }
+        public TemperatureUnit Unit { get; internal set; }
 
         public static Temperature FromKelvin(double kelvin)
         {
