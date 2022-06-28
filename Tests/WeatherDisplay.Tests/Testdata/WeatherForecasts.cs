@@ -22,8 +22,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-14T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 59d,
-                        TodayCloudiness = 0d
+                        All = 59d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -58,8 +58,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 49d,
-                        TodayCloudiness = 0d
+                        All = 49d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -94,8 +94,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 25d,
-                        TodayCloudiness = 0d
+                        All = 25d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -130,8 +130,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 6d,
-                        TodayCloudiness = 0d
+                        All = 6d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -166,8 +166,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 29d,
-                        TodayCloudiness = 0d
+                        All = 29d,
+                        Today = 0d
                         },
                         Rain = new RainInformation
                         {
@@ -206,8 +206,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 25d,
-                        TodayCloudiness = 0d
+                        All = 25d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -242,8 +242,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 37d,
-                        TodayCloudiness = 0d
+                        All = 37d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -278,8 +278,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 28d,
-                        TodayCloudiness = 0d
+                        All = 28d,
+                        Today = 0d
                         },
                         Rain = new RainInformation
                         {
@@ -318,8 +318,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 39d,
-                        TodayCloudiness = 0d
+                        All = 39d,
+                        Today = 0d
                         },
                         Rain = new RainInformation
                         {
@@ -358,8 +358,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 23d,
-                        TodayCloudiness = 0d
+                        All = 23d,
+                        Today = 0d
                         },
                         Rain = new RainInformation
                         {
@@ -398,8 +398,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 14d,
-                        TodayCloudiness = 0d
+                        All = 14d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -434,8 +434,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 13d,
-                        TodayCloudiness = 0d
+                        All = 13d,
+                        Today = 0d
                         },
                         Rain = new RainInformation
                         {
@@ -474,8 +474,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 7d,
-                        TodayCloudiness = 0d
+                        All = 7d,
+                        Today = 0d
                         },
                         Rain = new RainInformation
                         {
@@ -514,8 +514,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 37d,
-                        TodayCloudiness = 0d
+                        All = 37d,
+                        Today = 0d
                         },
                         Rain = new RainInformation
                         {
@@ -554,8 +554,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 87d,
-                        TodayCloudiness = 0d
+                        All = 87d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -590,8 +590,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 62d,
-                        TodayCloudiness = 0d
+                        All = 62d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -626,8 +626,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 96d,
-                        TodayCloudiness = 0d
+                        All = 96d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -662,8 +662,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 79d,
-                        TodayCloudiness = 0d
+                        All = 79d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -698,8 +698,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 37d,
-                        TodayCloudiness = 0d
+                        All = 37d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -734,8 +734,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 64d,
-                        TodayCloudiness = 0d
+                        All = 64d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -770,8 +770,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 68d,
-                        TodayCloudiness = 0d
+                        All = 68d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -806,8 +806,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 71d,
-                        TodayCloudiness = 0d
+                        All = 71d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -842,8 +842,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 55d,
-                        TodayCloudiness = 0d
+                        All = 55d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -878,8 +878,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 61d,
-                        TodayCloudiness = 0d
+                        All = 61d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -914,8 +914,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 93d,
-                        TodayCloudiness = 0d
+                        All = 93d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -950,8 +950,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 93d,
-                        TodayCloudiness = 0d
+                        All = 93d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -986,8 +986,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 35d,
-                        TodayCloudiness = 0d
+                        All = 35d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1022,8 +1022,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 23d,
-                        TodayCloudiness = 0d
+                        All = 23d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1058,8 +1058,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 1d,
-                        TodayCloudiness = 0d
+                        All = 1d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1094,8 +1094,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 1d,
-                        TodayCloudiness = 0d
+                        All = 1d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1130,8 +1130,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 0d,
-                        TodayCloudiness = 0d
+                        All = 0d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1166,8 +1166,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 0d,
-                        TodayCloudiness = 0d
+                        All = 0d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1202,8 +1202,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 0d,
-                        TodayCloudiness = 0d
+                        All = 0d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1238,8 +1238,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-19T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 1d,
-                        TodayCloudiness = 0d
+                        All = 1d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1274,8 +1274,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-19T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 0d,
-                        TodayCloudiness = 0d
+                        All = 0d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1310,8 +1310,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-19T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 0d,
-                        TodayCloudiness = 0d
+                        All = 0d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1346,8 +1346,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-19T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 0d,
-                        TodayCloudiness = 0d
+                        All = 0d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1382,8 +1382,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-19T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 0d,
-                        TodayCloudiness = 0d
+                        All = 0d,
+                        Today = 0d
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1418,8 +1418,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-19T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 24d,
-                        TodayCloudiness = 0d
+                        All = 24d,
+                        Today = 0d
                         },
                         Rain = new RainInformation
                         {
@@ -1458,8 +1458,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-19T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        Cloudiness = 49d,
-                        TodayCloudiness = 0d
+                        All = 49d,
+                        Today = 0d
                         },
                         Rain = new RainInformation
                         {
@@ -1529,8 +1529,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-14T22:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 56d,
-                            TodayCloudiness = 0d
+                            All = 56d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1565,8 +1565,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-14T23:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 49d,
-                            TodayCloudiness = 0d
+                            All = 49d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1601,8 +1601,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 41d,
-                            TodayCloudiness = 0d
+                            All = 41d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1637,8 +1637,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T01:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 25d,
-                            TodayCloudiness = 0d
+                            All = 25d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1673,8 +1673,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T02:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 11d,
-                            TodayCloudiness = 0d
+                            All = 11d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1709,8 +1709,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 8d,
-                            TodayCloudiness = 0d
+                            All = 8d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1745,8 +1745,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T04:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 6d,
-                            TodayCloudiness = 0d
+                            All = 6d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1781,8 +1781,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T05:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 6d,
-                            TodayCloudiness = 0d
+                            All = 6d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1817,8 +1817,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 6d,
-                            TodayCloudiness = 0d
+                            All = 6d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1853,8 +1853,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T07:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 19d,
-                            TodayCloudiness = 0d
+                            All = 19d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1889,8 +1889,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T08:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 26d,
-                            TodayCloudiness = 0d
+                            All = 26d,
+                            Today = 0d
                           },
                           Rain = new RainInformation
                           {
@@ -1929,8 +1929,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 29d,
-                            TodayCloudiness = 0d
+                            All = 29d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1965,8 +1965,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T10:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 22d,
-                            TodayCloudiness = 0d
+                            All = 22d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2001,8 +2001,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T11:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 20d,
-                            TodayCloudiness = 0d
+                            All = 20d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2037,8 +2037,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 25d,
-                            TodayCloudiness = 0d
+                            All = 25d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2073,8 +2073,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T13:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 44d,
-                            TodayCloudiness = 0d
+                            All = 44d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2109,8 +2109,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T14:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 51d,
-                            TodayCloudiness = 0d
+                            All = 51d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2145,8 +2145,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 37d,
-                            TodayCloudiness = 0d
+                            All = 37d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2181,8 +2181,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T16:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 30d,
-                            TodayCloudiness = 0d
+                            All = 30d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2217,8 +2217,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T17:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 25d,
-                            TodayCloudiness = 0d
+                            All = 25d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2253,8 +2253,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 28d,
-                            TodayCloudiness = 0d
+                            All = 28d,
+                            Today = 0d
                           },
                           Rain = new RainInformation
                           {
@@ -2293,8 +2293,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T19:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 10d,
-                            TodayCloudiness = 0d
+                            All = 10d,
+                            Today = 0d
                           },
                           Rain = new RainInformation
                           {
@@ -2333,8 +2333,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T20:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 18d,
-                            TodayCloudiness = 0d
+                            All = 18d,
+                            Today = 0d
                           },
                           Rain = new RainInformation
                           {
@@ -2373,8 +2373,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 39d,
-                            TodayCloudiness = 0d
+                            All = 39d,
+                            Today = 0d
                           },
                           Rain = new RainInformation
                           {
@@ -2413,8 +2413,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T22:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 31d,
-                            TodayCloudiness = 0d
+                            All = 31d,
+                            Today = 0d
                           },
                           Rain = new RainInformation
                           {
@@ -2453,8 +2453,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T23:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 26d,
-                            TodayCloudiness = 0d
+                            All = 26d,
+                            Today = 0d
                           },
                           Rain = new RainInformation
                           {
@@ -2493,8 +2493,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 23d,
-                            TodayCloudiness = 0d
+                            All = 23d,
+                            Today = 0d
                           },
                           Rain = new RainInformation
                           {
@@ -2533,8 +2533,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T01:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 9d,
-                            TodayCloudiness = 0d
+                            All = 9d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2569,8 +2569,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T02:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 18d,
-                            TodayCloudiness = 0d
+                            All = 18d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2605,8 +2605,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 14d,
-                            TodayCloudiness = 0d
+                            All = 14d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2641,8 +2641,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T04:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 13d,
-                            TodayCloudiness = 0d
+                            All = 13d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2677,8 +2677,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T05:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 14d,
-                            TodayCloudiness = 0d
+                            All = 14d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2713,8 +2713,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 13d,
-                            TodayCloudiness = 0d
+                            All = 13d,
+                            Today = 0d
                           },
                           Rain = new RainInformation
                           {
@@ -2753,8 +2753,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T07:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 2d,
-                            TodayCloudiness = 0d
+                            All = 2d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2789,8 +2789,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T08:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 7d,
-                            TodayCloudiness = 0d
+                            All = 7d,
+                            Today = 0d
                           },
                           Rain = new RainInformation
                           {
@@ -2829,8 +2829,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 7d,
-                            TodayCloudiness = 0d
+                            All = 7d,
+                            Today = 0d
                           },
                           Rain = new RainInformation
                           {
@@ -2869,8 +2869,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T10:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 8d,
-                            TodayCloudiness = 0d
+                            All = 8d,
+                            Today = 0d
                           },
                           Rain = new RainInformation
                           {
@@ -2909,8 +2909,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T11:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 24d,
-                            TodayCloudiness = 0d
+                            All = 24d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2945,8 +2945,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 37d,
-                            TodayCloudiness = 0d
+                            All = 37d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2981,8 +2981,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T13:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 100d,
-                            TodayCloudiness = 0d
+                            All = 100d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3017,8 +3017,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T14:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 97d,
-                            TodayCloudiness = 0d
+                            All = 97d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3053,8 +3053,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 87d,
-                            TodayCloudiness = 0d
+                            All = 87d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3089,8 +3089,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T16:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 74d,
-                            TodayCloudiness = 0d
+                            All = 74d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3125,8 +3125,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T17:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 65d,
-                            TodayCloudiness = 0d
+                            All = 65d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3161,8 +3161,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 62d,
-                            TodayCloudiness = 0d
+                            All = 62d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3197,8 +3197,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T19:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 97d,
-                            TodayCloudiness = 0d
+                            All = 97d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3233,8 +3233,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T20:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 94d,
-                            TodayCloudiness = 0d
+                            All = 94d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3269,8 +3269,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 96d,
-                            TodayCloudiness = 0d
+                            All = 96d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3305,8 +3305,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T22:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 97d,
-                            TodayCloudiness = 0d
+                            All = 97d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3341,8 +3341,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T23:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 90d,
-                            TodayCloudiness = 0d
+                            All = 90d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3377,8 +3377,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 79d,
-                            TodayCloudiness = 0d
+                            All = 79d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3413,8 +3413,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T01:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 9d,
-                            TodayCloudiness = 0d
+                            All = 9d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3449,8 +3449,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T02:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 9d,
-                            TodayCloudiness = 0d
+                            All = 9d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3485,8 +3485,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 37d,
-                            TodayCloudiness = 0d
+                            All = 37d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3521,8 +3521,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T04:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 53d,
-                            TodayCloudiness = 0d
+                            All = 53d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3557,8 +3557,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T05:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 62d,
-                            TodayCloudiness = 0d
+                            All = 62d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3593,8 +3593,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 64d,
-                            TodayCloudiness = 0d
+                            All = 64d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3629,8 +3629,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T07:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 62d,
-                            TodayCloudiness = 0d
+                            All = 62d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3665,8 +3665,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T08:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 53d,
-                            TodayCloudiness = 0d
+                            All = 53d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3701,8 +3701,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 68d,
-                            TodayCloudiness = 0d
+                            All = 68d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3737,8 +3737,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T10:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 72d,
-                            TodayCloudiness = 0d
+                            All = 72d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3773,8 +3773,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T11:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 74d,
-                            TodayCloudiness = 0d
+                            All = 74d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3809,8 +3809,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 71d,
-                            TodayCloudiness = 0d
+                            All = 71d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3845,8 +3845,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T13:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 42d,
-                            TodayCloudiness = 0d
+                            All = 42d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3881,8 +3881,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T14:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 54d,
-                            TodayCloudiness = 0d
+                            All = 54d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3917,8 +3917,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 55d,
-                            TodayCloudiness = 0d
+                            All = 55d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3953,8 +3953,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T16:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 66d,
-                            TodayCloudiness = 0d
+                            All = 66d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3989,8 +3989,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T17:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 59d,
-                            TodayCloudiness = 0d
+                            All = 59d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4025,8 +4025,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 61d,
-                            TodayCloudiness = 0d
+                            All = 61d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4061,8 +4061,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T19:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 86d,
-                            TodayCloudiness = 0d
+                            All = 86d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4097,8 +4097,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T20:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 89d,
-                            TodayCloudiness = 0d
+                            All = 89d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4133,8 +4133,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 93d,
-                            TodayCloudiness = 0d
+                            All = 93d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4169,8 +4169,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T22:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 95d,
-                            TodayCloudiness = 0d
+                            All = 95d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4205,8 +4205,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T23:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 95d,
-                            TodayCloudiness = 0d
+                            All = 95d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4241,8 +4241,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 93d,
-                            TodayCloudiness = 0d
+                            All = 93d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4277,8 +4277,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T01:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 61d,
-                            TodayCloudiness = 0d
+                            All = 61d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4313,8 +4313,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T02:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 48d,
-                            TodayCloudiness = 0d
+                            All = 48d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4349,8 +4349,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 35d,
-                            TodayCloudiness = 0d
+                            All = 35d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4385,8 +4385,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T04:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 31d,
-                            TodayCloudiness = 0d
+                            All = 31d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4421,8 +4421,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T05:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 27d,
-                            TodayCloudiness = 0d
+                            All = 27d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4457,8 +4457,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 23d,
-                            TodayCloudiness = 0d
+                            All = 23d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4493,8 +4493,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T07:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 1d,
-                            TodayCloudiness = 0d
+                            All = 1d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4529,8 +4529,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T08:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 1d,
-                            TodayCloudiness = 0d
+                            All = 1d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4565,8 +4565,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 1d,
-                            TodayCloudiness = 0d
+                            All = 1d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4601,8 +4601,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T10:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 2d,
-                            TodayCloudiness = 0d
+                            All = 2d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4637,8 +4637,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T11:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 2d,
-                            TodayCloudiness = 0d
+                            All = 2d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4673,8 +4673,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 1d,
-                            TodayCloudiness = 0d
+                            All = 1d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4709,8 +4709,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T13:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 0d,
-                            TodayCloudiness = 0d
+                            All = 0d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4745,8 +4745,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T14:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 0d,
-                            TodayCloudiness = 0d
+                            All = 0d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4781,8 +4781,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 0d,
-                            TodayCloudiness = 0d
+                            All = 0d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4817,8 +4817,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T16:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 0d,
-                            TodayCloudiness = 0d
+                            All = 0d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4853,8 +4853,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T17:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 0d,
-                            TodayCloudiness = 0d
+                            All = 0d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4889,8 +4889,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 0d,
-                            TodayCloudiness = 0d
+                            All = 0d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4925,8 +4925,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T19:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 0d,
-                            TodayCloudiness = 0d
+                            All = 0d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4961,8 +4961,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T20:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 0d,
-                            TodayCloudiness = 0d
+                            All = 0d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4997,8 +4997,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            Cloudiness = 0d,
-                            TodayCloudiness = 0d
+                            All = 0d,
+                            Today = 0d
                           },
                           Rain = null,
                           Main = new TemperatureInfo

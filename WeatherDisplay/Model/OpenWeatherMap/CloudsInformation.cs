@@ -8,12 +8,12 @@ namespace WeatherDisplay.Model.OpenWeatherMap
         ///     Gets the cloudiness in percent (%).
         /// </summary>
         [JsonProperty("all")]
-        public double Cloudiness { get; set; }
+        public double All { get; set; }
 
         /// <summary>
         ///     Gets the cloudiness today in percent (%).
         /// </summary>
         [JsonProperty("today")]
-        public double TodayCloudiness { get; set; }
+        public double Today { get; set; }
     }
 }
