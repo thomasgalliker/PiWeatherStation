@@ -13,7 +13,7 @@ namespace DisplayService.Services
     public class DisplayManager : IDisplayManager
     {
         private readonly IDictionary<Guid, IRenderActionFactory> renderingSetup = new Dictionary<Guid, IRenderActionFactory>();
-        private readonly ILogger<DisplayManager> logger;
+        private readonly ILogger logger;
         private readonly IRenderService renderService;
         private readonly IDisplay display;
         private readonly IScheduler scheduler;
