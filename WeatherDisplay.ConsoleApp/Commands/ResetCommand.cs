@@ -6,9 +6,9 @@ using DisplayService.Services;
 
 namespace DisplayService.ConsoleApp.Commands
 {
-    public class ClearCommand : Command
+    public class ResetCommand : Command
     {
-        public ClearCommand(IDisplayManager displayService) : base(name: "clear", "Clears the display")
+        public ResetCommand(IDisplayManager displayService) : base(name: "reset", "Resets the display")
         {
             this.Handler = new ClearCommandHandler(displayService);
         }
@@ -25,7 +25,7 @@ namespace DisplayService.ConsoleApp.Commands
             public async Task<int> InvokeAsync(InvocationContext context)
             {
                 Console.Clear();
-                await this.displayService.ClearAsync();
+                await this.displayService.ResetAsync();
                 return 0;
             }
         }

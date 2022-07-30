@@ -20,12 +20,6 @@ namespace WeatherDisplay.Api.Controllers
             await this.displayManager.StartAsync();
         }
         
-        [HttpGet("clear")]
-        public async Task ClearAsync()
-        {
-            await this.displayManager.ClearAsync();
-        }
-
         [HttpGet("reset")]
         public async Task ResetAsync()
         {

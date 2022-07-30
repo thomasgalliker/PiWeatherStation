@@ -5,6 +5,7 @@ using NCrontab.Scheduler;
 using NLog;
 using WeatherDisplay.Api.Updater.Models;
 using WeatherDisplay.Api.Updater.Services;
+using WeatherDisplay.Compilations;
 using WeatherDisplay.Model;
 using WeatherDisplay.Services.DeepL;
 using WeatherDisplay.Services.OpenWeatherMap;
@@ -16,39 +17,33 @@ namespace WeatherDisplay.Api.Services
     {
         private readonly ILogger logger;
         private readonly IAutoUpdateService autoUpdateService;
+        private readonly IDisplayCompilationService displayCompilationService;
         private readonly IScheduler scheduler;
         private readonly IDisplayManager displayManager;
-        private readonly IOpenWeatherMapService openWeatherMapService;
-        private readonly ITranslationService translationService;
-        private readonly IDateTime dateTime;
-        private readonly IAppSettings appSettings;
+        private readonly IWeatherDisplayHardwareCoordinator gpioButtonService;
 
         public AutoStartupBackgroundService(
             ILogger<AutoStartupBackgroundService> logger,
             IAutoUpdateService autoUpdateService,
+            IDisplayCompilationService displayCompilationService,
+            IWeatherDisplayHardwareCoordinator gpioButtonService,
             IScheduler scheduler,
-            IDisplayManager displayManager,
-            IOpenWeatherMapService openWeatherMapService,
-            ITranslationService translationService,
-            IDateTime dateTime,
-            IAppSettings appSettings)
+            IDisplayManager displayManager)
         {
             this.logger = logger;
             this.autoUpdateService = autoUpdateService;
+            this.displayCompilationService = displayCompilationService;
+            this.gpioButtonService = gpioButtonService;
             this.scheduler = scheduler;
             this.displayManager = displayManager;
-            this.openWeatherMapService = openWeatherMapService;
-            this.translationService = translationService;
-            this.dateTime = dateTime;
-            this.appSettings = appSettings;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
         {
             this.logger.LogDebug("StartAsync");
 
-            var result = await this.CheckAndStartUpdate();
-            if (!result.HasUpdate)
+            //var result = await this.CheckAndStartUpdate();
+            //if (!result.HasUpdate)
             {
                 // Schedule automatic update check for "Daily, 4:50 at night"
                 //this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });
@@ -56,8 +51,7 @@ namespace WeatherDisplay.Api.Services
                 this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.CheckAndStartUpdate(); });
 
                 // Add rendering actions + start display manager
-                this.displayManager.AddWeatherRenderActions(this.openWeatherMapService, this.translationService, this.dateTime, this.appSettings);
-                await this.displayManager.StartAsync(cancellationToken);
+                await this.displayCompilationService.SelectDisplayCompilationAsync("MainWeatherDisplayCompilation");
             }
         }
 

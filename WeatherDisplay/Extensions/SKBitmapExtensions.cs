@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using SkiaSharp;
 
-namespace WeatherDisplay.Tests.Extensions
+namespace WeatherDisplay.Extensions
 {
     internal static class SKBitmapExtensions
     {

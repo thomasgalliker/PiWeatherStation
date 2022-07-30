@@ -7,6 +7,10 @@ using SkiaSharp;
 
 namespace DisplayService.Services
 {
+    /// <summary>
+    /// This service is responsible for rendering all the existing rendering actions
+    /// into a bitmap image which can later be used to display on the display hardware.
+    /// </summary>
     public class RenderService : IRenderService
     {
         private readonly ILogger<RenderService> logger;
@@ -23,32 +27,13 @@ namespace DisplayService.Services
 
             this.screen = new SKBitmap(this.renderSettings.Width, this.renderSettings.Height);
             this.canvas = new SKCanvas(this.screen);
-            this.ClearCanvas();
-        }
-
-        private void ClearCanvas()
-        {
-            this.logger.LogDebug($"Clear(color={this.renderSettings.BackgroundColor})");
-            this.canvas.Clear(SKColor.Parse(this.renderSettings.BackgroundColor));
+            this.Clear();
         }
 
         public void Clear()
         {
-            this.logger.LogDebug("Clear");
-
-            try
-            {
-                this.ClearCanvas();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to clear", ex);
-            }
-        }
-
-        public void Refresh()
-        {
-            this.RefreshScreen();
+            this.logger.LogDebug($"Clear(color={this.renderSettings.BackgroundColor})");
+            this.canvas.Clear(SKColor.Parse(this.renderSettings.BackgroundColor));
         }
 
         public void Add(IRenderAction renderAction)
@@ -389,11 +374,6 @@ namespace DisplayService.Services
 
             memoryStream.Position = 0;
             return memoryStream;
-        }
-
-        private void RefreshScreen()
-        {
-            this.ClearCanvas();
         }
 
         private void AddImage(RenderActions.Image image)

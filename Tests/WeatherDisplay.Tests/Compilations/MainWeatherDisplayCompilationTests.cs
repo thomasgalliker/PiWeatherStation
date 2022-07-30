@@ -8,6 +8,7 @@ using Moq;
 using Moq.AutoMock;
 using NCrontab.Scheduler;
 using SkiaSharp;
+using WeatherDisplay.Compilations;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Resources;
@@ -19,9 +20,9 @@ using Xunit;
 using Xunit.Abstractions;
 using IDateTime = DisplayService.Services.IDateTime;
 
-namespace WeatherDisplay.Tests
+namespace WeatherDisplay.Tests.Compilations
 {
-    public class WeatherDisplayRenderingTests
+    public class MainWeatherDisplayCompilationTests
     {
         private readonly TestHelper testHelper;
         private readonly AutoMocker autoMocker;
@@ -29,9 +30,8 @@ namespace WeatherDisplay.Tests
         private readonly Mock<IDateTime> dateTimeMock;
         private readonly TestDisplay testDisplay;
         private readonly Mock<IOpenWeatherMapService> openWeatherMapServiceMock;
-        private readonly Mock<ITranslationService> translationServiceMock;
 
-        public WeatherDisplayRenderingTests(ITestOutputHelper testOutputHelper)
+        public MainWeatherDisplayCompilationTests(ITestOutputHelper testOutputHelper)
         {
             this.testHelper = new TestHelper(testOutputHelper);
             this.autoMocker = new AutoMocker();
@@ -63,9 +63,8 @@ namespace WeatherDisplay.Tests
             this.openWeatherMapServiceMock.Setup(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()))
                 .ReturnsAsync(Icons.Sun);
 
-            this.translationServiceMock = this.autoMocker.GetMock<ITranslationService>();
-
             this.autoMocker.Use<IRenderService>(this.autoMocker.CreateInstance<RenderService>());
+            this.autoMocker.Use<IDisplayManager>(this.autoMocker.CreateInstance<DisplayManager>());
         }
 
         [Fact]
@@ -77,8 +76,10 @@ namespace WeatherDisplay.Tests
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                 Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
+            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<MainWeatherDisplayCompilation>();
+            displayCompilation.AddRenderActions();
+
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.translationServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
             _ = displayManager.StartAsync();
 
             // Act
@@ -92,8 +93,8 @@ namespace WeatherDisplay.Tests
             bitmapStream.Should().NotBeNull();
             this.testHelper.WriteFile(bitmapStream);
 
-            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(5));
-            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(40));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(4));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(32));
             this.openWeatherMapServiceMock.VerifyNoOtherCalls();
         }
 
@@ -114,8 +115,10 @@ namespace WeatherDisplay.Tests
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                 Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
+            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<MainWeatherDisplayCompilation>();
+            displayCompilation.AddRenderActions();
+
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.translationServiceMock.Object, this.dateTimeMock.Object, this.appSettingsMock.Object);
             _ = displayManager.StartAsync();
 
             // Act
@@ -129,8 +132,8 @@ namespace WeatherDisplay.Tests
             bitmapStream.Should().NotBeNull();
             this.testHelper.WriteFile(bitmapStream);
 
-            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(5));
-            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(40));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(4));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(32));
             this.openWeatherMapServiceMock.VerifyNoOtherCalls();
         }
 
@@ -150,8 +153,10 @@ namespace WeatherDisplay.Tests
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                  Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
+            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<MainWeatherDisplayCompilation>();
+            displayCompilation.AddRenderActions();
+
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.translationServiceMock.Object, dateTimeMock.Object, this.appSettingsMock.Object);
             _ = displayManager.StartAsync();
 
             // Act
@@ -165,8 +170,8 @@ namespace WeatherDisplay.Tests
             bitmapStream.Should().NotBeNull();
             this.testHelper.WriteFile(bitmapStream);
 
-            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(73));
-            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(584));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(72));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(576));
             this.openWeatherMapServiceMock.VerifyNoOtherCalls();
         }
 
@@ -190,8 +195,10 @@ namespace WeatherDisplay.Tests
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                   Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
+            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<MainWeatherDisplayCompilation>();
+            displayCompilation.AddRenderActions();
+
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.AddWeatherRenderActions(this.openWeatherMapServiceMock.Object, this.translationServiceMock.Object, dateTimeMock.Object, this.appSettingsMock.Object);
             _ = displayManager.StartAsync();
 
             // Act
@@ -205,8 +212,8 @@ namespace WeatherDisplay.Tests
             bitmapStream.Should().NotBeNull();
             this.testHelper.WriteFile(bitmapStream);
 
-            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(366));
-            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(2928));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(365));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(2920));
             this.openWeatherMapServiceMock.VerifyNoOtherCalls();
         }
     }

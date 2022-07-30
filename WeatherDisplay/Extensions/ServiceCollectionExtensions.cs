@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Linq;
+using System.Reflection;
 using DisplayService.Services;
 using DisplayService.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NCrontab.Scheduler;
+using WeatherDisplay.Compilations;
 using WeatherDisplay.Model;
 using WeatherDisplay.Services;
 using WeatherDisplay.Services.DeepL;
@@ -27,7 +29,7 @@ namespace WeatherDisplay.Extensions
             var openWeatherMapConfiguration = new OpenWeatherMapConfiguration();
             var openWeatherMapSection = configuration.GetSection("OpenWeatherMap");
             openWeatherMapSection.Bind(openWeatherMapConfiguration);
-            
+
             var deepLTranslationConfiguration = new DeepLTranslationConfiguration();
             var deepLTranslationSection = configuration.GetSection("DeepL");
             deepLTranslationSection.Bind(deepLTranslationConfiguration);
@@ -79,8 +81,24 @@ namespace WeatherDisplay.Extensions
 
             services.AddSingleton<IDeepLTranslationConfiguration>(deepLTranslationConfiguration);
             services.AddSingleton<ITranslationService, DeepLTranslationService>();
+            services.AddSingleton<IDisplayCompilationService, DisplayCompilationService>();
+            services.RegisterAllTypes<IDisplayCompilation>(lifetime: ServiceLifetime.Singleton);
 
             services.AddSingleton<IScheduler>(x => new Scheduler(x.GetRequiredService<ILogger<Scheduler>>()));
+        }
+
+        public static void RegisterAllTypes<T>(this IServiceCollection services, Assembly[] assemblies = null, ServiceLifetime lifetime = ServiceLifetime.Transient)
+        {
+            if (assemblies == null)
+            {
+                assemblies = new[] { Assembly.GetExecutingAssembly() };
+            }
+
+            var typesFromAssemblies = assemblies.SelectMany(a => a.DefinedTypes.Where(x => x.GetInterfaces().Contains(typeof(T))));
+            foreach (var type in typesFromAssemblies)
+            {
+                services.Add(new ServiceDescriptor(typeof(T), type, lifetime));
+            }
         }
     }
 }

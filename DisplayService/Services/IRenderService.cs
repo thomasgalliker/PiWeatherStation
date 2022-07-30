@@ -10,8 +10,6 @@ namespace DisplayService.Services
 
         void Clear();
 
-        void Refresh();
-
         void Image(RenderActions.Image image);
 
         void Graphic(RenderActions.Graphic graphic);
@@ -19,7 +17,7 @@ namespace DisplayService.Services
         void Text(RenderActions.Text text);
 
         void Rectangle(RenderActions.Rectangle rectangle);
-
+        
         void StackLayout(RenderActions.StackLayout stackLayout);
     }
 }

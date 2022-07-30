@@ -84,7 +84,7 @@ namespace DisplayService.ConsoleApp
 
             services.AddSingleton<Command, StartCommand>();
             services.AddSingleton<Command, SilentCommand>();
-            services.AddSingleton<Command, ClearCommand>();
+            services.AddSingleton<Command, ResetCommand>();
 
             var serviceProvider = services.BuildServiceProvider();
             return serviceProvider;

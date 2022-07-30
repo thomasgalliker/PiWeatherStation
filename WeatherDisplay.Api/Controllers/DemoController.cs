@@ -8,13 +8,13 @@ namespace WeatherDisplay.Api.Controllers
 {
     [ApiController]
     [Route("api/images")]
-    public class ImagesController : ControllerBase
+    public class DemoController : ControllerBase
     {
         private readonly ILogger logger;
         private readonly IDisplayManager displayManager;
 
-        public ImagesController(
-            ILogger<ImagesController> logger,
+        public DemoController(
+            ILogger<DemoController> logger,
             IDisplayManager displayManager)
         {
             this.logger = logger;

@@ -13,16 +13,38 @@ using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.DeepL;
 using WeatherDisplay.Services.OpenWeatherMap;
 
-namespace WeatherDisplay
+namespace WeatherDisplay.Compilations
 {
-    public static class WeatherDisplayRendering
+    public class MainWeatherDisplayCompilation : IDisplayCompilation
     {
-        public static void AddWeatherRenderActions(this IDisplayManager displayManager, IOpenWeatherMapService openWeatherMapService, ITranslationService translationService, IDateTime dateTime, IAppSettings appSettings)
+        private readonly IDisplayManager displayManager;
+        private readonly IOpenWeatherMapService openWeatherMapService;
+        private readonly ITranslationService translationService;
+        private readonly IDateTime dateTime;
+        private readonly IAppSettings appSettings;
+
+        public MainWeatherDisplayCompilation(
+            IDisplayManager displayManager,
+            IOpenWeatherMapService openWeatherMapService,
+            ITranslationService translationService,
+            IDateTime dateTime,
+            IAppSettings appSettings)
+        {
+            this.displayManager = displayManager;
+            this.openWeatherMapService = openWeatherMapService;
+            this.translationService = translationService;
+            this.dateTime = dateTime;
+            this.appSettings = appSettings;
+        }
+
+        public string Name => "MainWeatherDisplayCompilation";
+
+        public void AddRenderActions()
         {
             var weatherIconMapping = new HighContrastWeatherIconMapping();
 
             // Date header
-            displayManager.AddRenderActions(
+            this.displayManager.AddRenderActions(
                 () =>
                 {
                     var assembly = Assembly.GetExecutingAssembly();
@@ -44,7 +66,7 @@ namespace WeatherDisplay
                             Y = 50,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Center,
-                            Value = dateTime.Now.ToString("dddd, d. MMMM"),
+                            Value = this.dateTime.Now.ToString("dddd, d. MMMM"),
                             ForegroundColor = "#FFFFFF",
                             FontSize = 70,
                             AdjustsFontSizeToFitWidth = true,
@@ -70,10 +92,10 @@ namespace WeatherDisplay
                 CrontabSchedule.Parse("0 0 * * *")); // Update every day at 00:00
 
             // Current weather info
-            displayManager.AddRenderActionsAsync(
+            this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var place = appSettings.Places.First();
+                    var place = this.appSettings.Places.First();
 
                     // Get current weather & daily forecasts
                     var oneCallOptions = new OneCallOptions
@@ -84,16 +106,16 @@ namespace WeatherDisplay
                         IncludeHourlyForecasts = true,
                     };
 
-                    var oneCallWeatherInfo = await openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude, oneCallOptions);
+                    var oneCallWeatherInfo = await this.openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude, oneCallOptions);
 
                     var dailyForecasts = oneCallWeatherInfo.DailyForecasts.ToList();
                     var dailyForecastToday = dailyForecasts.OrderBy(f => f.DateTime).First();
 
                     var currentWeatherInfo = oneCallWeatherInfo.CurrentWeather;
                     var currentWeatherCondition = currentWeatherInfo.Weather.First();
-                    var currentWeatherImage = await openWeatherMapService.GetWeatherIconAsync(currentWeatherCondition, weatherIconMapping);
+                    var currentWeatherImage = await this.openWeatherMapService.GetWeatherIconAsync(currentWeatherCondition, weatherIconMapping);
 
-                    var dateTimeNow = dateTime.Now;
+                    var dateTimeNow = this.dateTime.Now;
 
                     var currentWeatherRenderActions = new List<IRenderAction>
                     {
@@ -200,7 +222,7 @@ namespace WeatherDisplay
 
                         try
                         {
-                            var translatedTexts = await translationService.Translate(
+                            var translatedTexts = await this.translationService.Translate(
                                 targetLanguage: CultureInfo.CurrentUICulture.TwoLetterISOLanguageName,
                                 texts: alertDisplayText);
 
@@ -242,11 +264,11 @@ namespace WeatherDisplay
                         // If there are no weather alerst and the air pollution is not good,
                         // we display some air pollution information.
 
-                        var airPollutionInfo = await openWeatherMapService.GetAirPollutionAsync(place.Latitude, place.Longitude);
+                        var airPollutionInfo = await this.openWeatherMapService.GetAirPollutionAsync(place.Latitude, place.Longitude);
                         if (airPollutionInfo.Items.FirstOrDefault() is AirPollutionInfoItem airPollutionInfoItem /*&&
                             airPollutionInfoItem.Main.AirQuality > AirQuality.Good*/)
                         {
-                            var airPollutionInfoText = $"{AirQualityTranslations.AirQuality}: {airPollutionInfoItem.Main.AirQuality.ToString("N")}";
+                            var airPollutionInfoText = $"{AirQualityTranslations.AirQuality}: {airPollutionInfoItem.Main.AirQuality:N}";
 
                             currentWeatherRenderActions.AddRange(new IRenderAction[]
                             {
@@ -428,7 +450,7 @@ namespace WeatherDisplay
                             Y = 140 + 5,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{FormatRain(dailyForecastToday.Rain)} ({(dailyForecastToday.Pop * 100):0}%)",
+                            Value = $"{FormatRain(dailyForecastToday.Rain)} ({dailyForecastToday.Pop * 100:0}%)",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
@@ -530,7 +552,7 @@ namespace WeatherDisplay
                         }
                     });
 
-                    if (appSettings.IsDebug)
+                    if (this.appSettings.IsDebug)
                     {
                         currentWeatherRenderActions.AddRange(new[]
                         {
@@ -553,16 +575,16 @@ namespace WeatherDisplay
                     var numberOfForecastItems = 7;
                     dailyForecasts = oneCallWeatherInfo.DailyForecasts.Take(numberOfForecastItems).ToList();
                     var spacing = 20;
-                    var widthPerDailyForecast = (800 - (numberOfForecastItems + 1) * spacing) / numberOfForecastItems;
+                    var widthPerDailyForecast = (800 - ((numberOfForecastItems + 1) * spacing)) / numberOfForecastItems;
                     var xOffset = spacing;
 
                     for (var i = 0; i < dailyForecasts.Count; i++)
                     {
                         var dailyWeatherForecast = dailyForecasts[i];
-                        var xCenter = xOffset + widthPerDailyForecast / 2;
+                        var xCenter = xOffset + (widthPerDailyForecast / 2);
 
                         var dailyWeatherCondition = dailyWeatherForecast.Weather.First();
-                        var dailyWeatherImage = await openWeatherMapService.GetWeatherIconAsync(dailyWeatherCondition, weatherIconMapping);
+                        var dailyWeatherImage = await this.openWeatherMapService.GetWeatherIconAsync(dailyWeatherCondition, weatherIconMapping);
 
                         var dailyWeatherRenderActions = new List<IRenderAction>
                         {
@@ -602,7 +624,7 @@ namespace WeatherDisplay
                             },
                         };
 
-                        if (appSettings.IsDebug)
+                        if (this.appSettings.IsDebug)
                         {
                             dailyWeatherRenderActions.AddRange(new[]
                             {
@@ -633,12 +655,7 @@ namespace WeatherDisplay
 
         private static string FormatRain(double rain)
         {
-            if (rain > 0d && rain < 1d)
-            {
-                return $"{rain:F1}mm";
-            }
-
-            return $"{rain:0}mm";
+            return rain > 0d && rain < 1d ? $"{rain:F1}mm" : $"{rain:0}mm";
         }
 
         private static string FormatTemperature(Temperature temperature)

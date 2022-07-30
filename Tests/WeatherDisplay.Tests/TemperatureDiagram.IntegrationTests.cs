@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using DisplayService.Tests.Services;
 using SkiaSharp;
+using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Services;
 using WeatherDisplay.Services.OpenWeatherMap;

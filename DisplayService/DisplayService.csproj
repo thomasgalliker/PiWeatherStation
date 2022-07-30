@@ -11,6 +11,11 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Services\Scheduling\**" />
+    <EmbeddedResource Remove="Services\Scheduling\**" />
+    <None Remove="Services\Scheduling\**" />
+  </ItemGroup>
+  <ItemGroup>
     <None Remove="Resources\TestImage1.png" />
     <None Remove="Resources\TestImage2.png" />
   </ItemGroup>
@@ -22,13 +27,10 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.1" />
     <PackageReference Include="ncrontab" Version="3.3.1" />
-    <PackageReference Include="NCrontab.Scheduler" Version="1.0.39" />
+    <PackageReference Include="NCrontab.Scheduler" Version="1.0.41-pre" />
     <PackageReference Include="ResourceLoader" Version="3.2.4" />
     <PackageReference Include="SkiaSharp" Version="2.80.3" />
     <PackageReference Include="eXoCooLd.Waveshare.EPaperDisplay" Version="1.0.4" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.80.3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Services\Scheduling\" />
   </ItemGroup>
 </Project>

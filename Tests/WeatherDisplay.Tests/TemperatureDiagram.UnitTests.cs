@@ -9,6 +9,7 @@ using FluentAssertions;
 using Moq;
 using Moq.AutoMock;
 using SkiaSharp;
+using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Resources;

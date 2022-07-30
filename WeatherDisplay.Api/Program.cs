@@ -1,4 +1,6 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Gpio.Devices;
+using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -78,6 +80,18 @@ namespace WeatherDisplay.Api
             services.AddSingleton<IRemoteVersionChecker, GithubVersionChecker>();
             services.AddSingleton<IAutoUpdateService, AutoUpdateService>();
 
+            // ====== Hardware access ======
+            var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            if (isWindows)
+            {
+                services.AddSingleton<IGpioController, GpioControllerSimulator>();
+            }
+            else
+            {
+                services.AddSingleton<IGpioController, GpioControllerWrapper>();
+            }
+
+            services.AddSingleton<IWeatherDisplayHardwareCoordinator, WeatherDisplayHardwareCoordinator>();
             // ====== Weather services ======
             services.AddWeatherDisplay(builder.Configuration);
             services.AddHostedService<AutoStartupBackgroundService>();
