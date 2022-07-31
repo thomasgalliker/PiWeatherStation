@@ -19,20 +19,17 @@ namespace WeatherDisplay.Compilations
     {
         private readonly IDisplayManager displayManager;
         private readonly IOpenWeatherMapService openWeatherMapService;
-        private readonly ITranslationService translationService;
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
 
         public TemperatureWeatherDisplayCompilation(
             IDisplayManager displayManager,
             IOpenWeatherMapService openWeatherMapService,
-            ITranslationService translationService,
             IDateTime dateTime,
             IAppSettings appSettings)
         {
             this.displayManager = displayManager;
             this.openWeatherMapService = openWeatherMapService;
-            this.translationService = translationService;
             this.dateTime = dateTime;
             this.appSettings = appSettings;
         }
