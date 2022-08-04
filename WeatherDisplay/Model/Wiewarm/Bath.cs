@@ -76,7 +76,7 @@ namespace WeatherDisplay.Model.Wiewarm
         public DateTime UvDate { get; set; }
 
         [JsonProperty("becken")]
-        [JsonConverter(typeof(BeckenJsonConverter))]
+        [JsonConverter(typeof(BasinCollectionJsonConverter))]
         public IReadOnlyCollection<Basin> Basins { get; set; }
 
         [JsonProperty("bilder")]
