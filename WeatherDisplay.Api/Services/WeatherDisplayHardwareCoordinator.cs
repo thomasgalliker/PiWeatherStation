@@ -11,6 +11,7 @@ namespace WeatherDisplay.Api.Services
         {
             { 1, "MainWeatherDisplayCompilation" },
             { 2, "TemperatureWeatherDisplayCompilation" },
+            { 3, "WaterTemperatureDisplayCompilation" },
         };
 
         private readonly ILogger logger;

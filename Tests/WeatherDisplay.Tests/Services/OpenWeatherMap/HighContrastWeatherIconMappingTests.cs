@@ -5,7 +5,7 @@ using WeatherDisplay.Services.OpenWeatherMap;
 using WeatherDisplay.Tests.Testdata;
 using Xunit;
 
-namespace WeatherDisplay.Tests
+namespace WeatherDisplay.Tests.Services.OpenWeatherMap
 {
     public class HighContrastWeatherIconMappingTests
     {

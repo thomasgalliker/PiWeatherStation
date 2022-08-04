@@ -7,7 +7,7 @@ using WeatherDisplay.Tests.Logging;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace WeatherDisplay.Tests.Services
+namespace WeatherDisplay.Tests.Services.OpenWeatherMap
 {
     public class OpenWeatherMapServiceIntegrationTests
     {
@@ -65,7 +65,7 @@ namespace WeatherDisplay.Tests.Services
             weatherForecast.Count.Should().Be(expectedCount);
             weatherForecast.Items.Should().HaveCount(expectedCount);
         }
-        
+
         [Fact]
         public async Task ShouldGetWeatherForecast5Async()
         {

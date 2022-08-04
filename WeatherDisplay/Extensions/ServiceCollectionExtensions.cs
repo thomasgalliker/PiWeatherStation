@@ -9,9 +9,9 @@ using Microsoft.Extensions.Logging;
 using NCrontab.Scheduler;
 using WeatherDisplay.Compilations;
 using WeatherDisplay.Model;
-using WeatherDisplay.Services;
 using WeatherDisplay.Services.DeepL;
 using WeatherDisplay.Services.OpenWeatherMap;
+using WeatherDisplay.Services.Wiewarm;
 using IDateTime = DisplayService.Services.IDateTime;
 using SystemDateTime = DisplayService.Services.SystemDateTime;
 
@@ -83,6 +83,8 @@ namespace WeatherDisplay.Extensions
             services.AddSingleton<ITranslationService, DeepLTranslationService>();
             services.AddSingleton<IDisplayCompilationService, DisplayCompilationService>();
             services.RegisterAllTypes<IDisplayCompilation>(lifetime: ServiceLifetime.Singleton);
+
+            services.AddSingleton<IWiewarmService, WiewarmService>();
 
             services.AddSingleton<IScheduler>(x => new Scheduler(x.GetRequiredService<ILogger<Scheduler>>()));
         }

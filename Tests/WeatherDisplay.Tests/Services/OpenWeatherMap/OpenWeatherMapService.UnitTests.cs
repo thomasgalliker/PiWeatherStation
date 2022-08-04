@@ -11,7 +11,7 @@ using WeatherDisplay.Tests.Testdata;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace WeatherDisplay.Tests.Services;
+namespace WeatherDisplay.Tests.Services.OpenWeatherMap;
 
 public class OpenWeatherMapServiceUnitTests
 {
@@ -29,7 +29,7 @@ public class OpenWeatherMapServiceUnitTests
 
         var openWeatherMapConfigurationMock = this.autoMocker.GetMock<IOpenWeatherMapConfiguration>();
         openWeatherMapConfigurationMock.SetupGet(c => c.ApiEndpoint)
-            .Returns("https://api.openweathermap.org"); 
+            .Returns("https://api.openweathermap.org");
         openWeatherMapConfigurationMock.SetupGet(c => c.Language)
             .Returns("en");
         openWeatherMapConfigurationMock.SetupGet(c => c.ApiKey)
