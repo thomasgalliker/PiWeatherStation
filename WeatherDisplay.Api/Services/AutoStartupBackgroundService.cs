@@ -42,8 +42,8 @@ namespace WeatherDisplay.Api.Services
         {
             this.logger.LogDebug("StartAsync");
 
-            //var result = await this.CheckAndStartUpdate();
-            //if (!result.HasUpdate)
+            var result = await this.CheckAndStartUpdate();
+            if (!result.HasUpdate)
             {
                 // Schedule automatic update check for "Daily, 4:50 at night"
                 //this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });
