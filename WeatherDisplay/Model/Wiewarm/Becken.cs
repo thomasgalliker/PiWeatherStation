@@ -1,8 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace WeatherDisplay.Model.Wiewarm
 {
-    public class Becken
+    /// <summary>
+    /// The representation of a basin or pool within a bath (German: "Becken").
+    /// </summary>
+    public class Basin
     {
         [JsonProperty("beckenid")]
         public int Id { get; set; }
@@ -14,7 +18,8 @@ namespace WeatherDisplay.Model.Wiewarm
         public string Temp { get; set; }
 
         [JsonProperty("date")]
-        public string Date { get; set; }
+        [JsonConverter(typeof(WiewarmDateTimeJsonConverter))]
+        public DateTime Date { get; set; }
 
         [JsonProperty("typ")]
         public string Typ { get; set; }
@@ -29,10 +34,7 @@ namespace WeatherDisplay.Model.Wiewarm
         public string Smsname { get; set; }
 
         [JsonProperty("ismain")]
-        public string Ismain { get; set; }
-
-        [JsonProperty("date_pretty")]
-        public string DatePretty { get; set; }
+        public string IsMain { get; set; }
 
         public override string ToString()
         {

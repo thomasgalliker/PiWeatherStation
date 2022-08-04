@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Services;
 using NCrontab;
@@ -98,36 +99,47 @@ namespace WeatherDisplay.Compilations
                         IncludeHourlyForecasts = true,
                     };
 
-                    var bad = await this.wiewarmService.GetBadByIdAsync(17);
+                    var searchTerms = new[] { "Bern", "Zug", "Luzern" };
+
+                    var searchTasks = searchTerms.Select(s => this.wiewarmService.SearchBathsAsync(s));
+                    var baths = (await Task.WhenAll(searchTasks))
+                        .SelectMany(b => b)
+                        .ToList();
+
+                    //var bath = await this.wiewarmService.GetBathByIdAsync(17);
 
                     var dateTimeNow = this.dateTime.Now;
 
-                    var currentWeatherRenderActions = new List<IRenderAction>
-                    {
-                        // Current location + current temperature
-                        new RenderActions.Rectangle
-                        {
-                            X = 0,
-                            Y = 100,
-                            Width = 800,
-                            Height = 380,
-                            BackgroundColor = "#FFFFFF",
-                        },
-                        new RenderActions.Text
-                        {
-                            X = 20,
-                            Y = 120,
-                            HorizontalTextAlignment = HorizontalAlignment.Left,
-                            VerticalTextAlignment = VerticalAlignment.Top,
-                            //Value = $"{bad.Becken.First().Name}, um {dateTimeNow:t} Uhr --> {bad.Becken.First().Temp}°C",
-                            Value = $"{bad.Becken.First().Name}, um {bad.Becken.First().Date} Uhr --> {bad.Becken.First().Temp}°C",
-                            ForegroundColor = "#000000",
-                            BackgroundColor = "#FFFFFF",
-                            FontSize = 20,
-                        }
-                    };
+                    var basinRenderActions = new List<IRenderAction>();
 
-                    return currentWeatherRenderActions;
+                    var verticalOffset = 0;
+
+                    foreach (var bath in baths)
+                    {
+                        foreach (var basin in bath.Basins.Where(b => b.Date.Date == dateTimeNow.Date))
+                        {
+                            var dateString = basin.Date.Date == dateTimeNow.Date
+                                ? $"{basin.Date:t}"
+                                : $"{basin.Date:d} {basin.Date:t}";
+                            var basinRenderAction = new RenderActions.Text
+                            {
+                                X = 20,
+                                Y = 120 + verticalOffset,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = $"{bath.Name} ({bath.Canton}), {basin.Name}, um {dateString} Uhr --> {basin.Temp}°C",
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 20,
+                            };
+                            basinRenderActions.Add(basinRenderAction);
+
+                            verticalOffset += 40;
+                        }
+                    }
+
+
+                    return basinRenderActions;
                 },
                 CrontabSchedule.Parse("*/15 * * * *")); // Update every 15mins
         }

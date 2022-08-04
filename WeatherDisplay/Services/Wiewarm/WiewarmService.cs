@@ -33,7 +33,7 @@ namespace WeatherDisplay.Services.Wiewarm
             this.serializerSettings.Converters.Add(new CelsiusTemperatureJsonConverter());
         }
 
-        public async Task<Bad> GetBadByIdAsync(int badId)
+        public async Task<Bath> GetBathByIdAsync(int badId)
         {
             var uri = $"https://www.wiewarm.ch:443/api/v1/bad.json/{badId}";
             this.logger.LogDebug($"GetBadByIdAsync: GET {uri}");
@@ -43,11 +43,11 @@ namespace WeatherDisplay.Services.Wiewarm
 
             var responseJson = await response.Content.ReadAsStringAsync();
 
-            var wiewarmBadResponse = JsonConvert.DeserializeObject<Bad>(responseJson, this.serializerSettings);
+            var wiewarmBadResponse = JsonConvert.DeserializeObject<Bath>(responseJson, this.serializerSettings);
             return wiewarmBadResponse;
         }
 
-        public async Task<IEnumerable<Bad>> SearchBadAsync(string search)
+        public async Task<IEnumerable<Bath>> SearchBathsAsync(string search)
         {
             var uri = $"{Endpoint}/bad.json?search={search}";
             this.logger.LogDebug($"GetBadByIdAsync: GET {uri}");
@@ -57,7 +57,7 @@ namespace WeatherDisplay.Services.Wiewarm
 
             var responseJson = await response.Content.ReadAsStringAsync();
 
-            var wiewarmBadResponse = JsonConvert.DeserializeObject<IEnumerable<Bad>>(responseJson, this.serializerSettings);
+            var wiewarmBadResponse = JsonConvert.DeserializeObject<IEnumerable<Bath>>(responseJson, this.serializerSettings);
             return wiewarmBadResponse;
         }
     }

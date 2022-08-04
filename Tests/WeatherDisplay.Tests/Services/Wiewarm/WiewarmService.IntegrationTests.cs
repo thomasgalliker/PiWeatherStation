@@ -42,13 +42,13 @@ namespace WeatherDisplay.Tests.Services.Wiewarm
             IWiewarmService wiewarmService = new WiewarmService(this.logger);
 
             // Act
-            var bäder = await wiewarmService.SearchBadAsync(search);
+            var baths = await wiewarmService.SearchBathsAsync(search);
 
             // Assert
-            this.testOutputHelper.WriteLine(ObjectDumper.Dump(bäder, this.dumpOptions));
+            this.testOutputHelper.WriteLine(ObjectDumper.Dump(baths, this.dumpOptions));
 
-            bäder.Should().NotBeNull();
-            bäder.Count().Should().Be(2);
+            baths.Should().NotBeNull();
+            baths.Count().Should().Be(2);
         }
     }
 }

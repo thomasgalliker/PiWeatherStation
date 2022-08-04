@@ -1,19 +1,18 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace WeatherDisplay.Model.Wiewarm
 {
-    public class Wetter
+    public class Weather
     {
         [JsonProperty("wetter_symbol")]
-        public int WetterSymbol { get; set; }
+        public int Symbol { get; set; }
 
         [JsonProperty("wetter_temp")]
-        public string WetterTemp { get; set; }
+        public string Temp { get; set; }
 
         [JsonProperty("wetter_date")]
-        public string WetterDate { get; set; }
-
-        [JsonProperty("wetter_date_pretty")]
-        public string WetterDatePretty { get; set; }
+        [JsonConverter(typeof(WiewarmDateTimeJsonConverter))]
+        public DateTime Date { get; set; }
     }
 }

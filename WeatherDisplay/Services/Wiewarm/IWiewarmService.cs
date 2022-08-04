@@ -6,8 +6,8 @@ namespace WeatherDisplay.Services.Wiewarm
 {
     public interface IWiewarmService
     {
-        Task<Bad> GetBadByIdAsync(int badId);
+        Task<Bath> GetBathByIdAsync(int badId);
 
-        Task<IEnumerable<Bad>> SearchBadAsync(string search);
+        Task<IEnumerable<Bath>> SearchBathsAsync(string search);
     }
 }
