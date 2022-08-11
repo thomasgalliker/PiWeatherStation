@@ -3,7 +3,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace WeatherDisplay.Model.Wiewarm
+namespace WeatherDisplay.Model.Wiewarm.Converters
 {
     internal class WiewarmDateTimeJsonConverter : DateTimeConverterBase
     {
