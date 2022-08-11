@@ -38,10 +38,10 @@ namespace WeatherDisplay.Services.Wiewarm
             var uri = $"https://www.wiewarm.ch:443/api/v1/bad.json/{badId}";
             this.logger.LogDebug($"GetBadByIdAsync: GET {uri}");
 
-            var response = await this.httpClient.GetAsync(uri);
+            var response = await this.httpClient.GetAsync(uri).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
-            var responseJson = await response.Content.ReadAsStringAsync();
+            var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             var wiewarmBadResponse = JsonConvert.DeserializeObject<Bath>(responseJson, this.serializerSettings);
             return wiewarmBadResponse;
@@ -52,10 +52,10 @@ namespace WeatherDisplay.Services.Wiewarm
             var uri = $"{Endpoint}/bad.json?search={search}";
             this.logger.LogDebug($"GetBadByIdAsync: GET {uri}");
 
-            var response = await this.httpClient.GetAsync(uri);
+            var response = await this.httpClient.GetAsync(uri).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
-            var responseJson = await response.Content.ReadAsStringAsync();
+            var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
             var wiewarmBadResponse = JsonConvert.DeserializeObject<IEnumerable<Bath>>(responseJson, this.serializerSettings);
             return wiewarmBadResponse;

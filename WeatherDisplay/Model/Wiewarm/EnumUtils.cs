@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace WeatherDisplay.Model.OpenWeatherMap
+namespace WeatherDisplay.Model.Wiewarm
 {
     internal static class EnumUtils
     {

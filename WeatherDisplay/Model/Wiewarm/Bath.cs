@@ -84,5 +84,10 @@ namespace WeatherDisplay.Model.Wiewarm
 
         [JsonProperty("wetter")]
         public IReadOnlyCollection<Weather> WeatherInfos { get; set; }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }

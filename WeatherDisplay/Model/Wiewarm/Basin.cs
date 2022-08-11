@@ -16,23 +16,24 @@ namespace WeatherDisplay.Model.Wiewarm
         public string Name { get; set; }
 
         [JsonProperty("temp")]
-        public string Temp { get; set; }
+        [JsonConverter(typeof(TemperatureJsonConverter))]
+        public Temperature Temperature { get; set; }
 
         [JsonProperty("date")]
         [JsonConverter(typeof(WiewarmDateTimeJsonConverter))]
         public DateTime Date { get; set; }
 
         [JsonProperty("typ")]
-        public string Typ { get; set; }
+        public string Type { get; set; }
 
         [JsonProperty("status")]
         public string Status { get; set; }
 
         [JsonProperty("smskeywords")]
-        public string Smskeywords { get; set; }
+        public string SmsKeywords { get; set; }
 
         [JsonProperty("smsname")]
-        public string Smsname { get; set; }
+        public string SmsName { get; set; }
 
         [JsonProperty("ismain")]
         public string IsMain { get; set; }

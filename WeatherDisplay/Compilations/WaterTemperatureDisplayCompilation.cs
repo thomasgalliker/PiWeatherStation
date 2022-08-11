@@ -127,12 +127,26 @@ namespace WeatherDisplay.Compilations
                                 Y = 120 + verticalOffset,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{bath.Name} ({bath.Canton}), {basin.Name}, um {dateString} Uhr --> {basin.Temp}°C",
+                                Value = $"{bath.Name} ({bath.Canton}), {basin.Name}, um {dateString} Uhr",
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
                             };
                             basinRenderActions.Add(basinRenderAction);
+                            
+                            var temperatureRenderAction = new RenderActions.Text
+                            {
+                                X = 780,
+                                Y = 120 + verticalOffset,
+                                HorizontalTextAlignment = HorizontalAlignment.Right,
+                                VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = $"{basin.Temperature}",
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 20,
+                                Bold = true,
+                            };
+                            basinRenderActions.Add(temperatureRenderAction);
 
                             verticalOffset += 40;
                         }

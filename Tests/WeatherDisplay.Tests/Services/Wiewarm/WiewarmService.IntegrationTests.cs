@@ -2,7 +2,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
-using WeatherDisplay.Model.OpenWeatherMap;
+using WeatherDisplay.Model.Wiewarm;
 using WeatherDisplay.Services.Wiewarm;
 using WeatherDisplay.Tests.Logging;
 using Xunit;
@@ -28,13 +28,29 @@ namespace WeatherDisplay.Tests.Services.Wiewarm
             };
 
             this.dumpOptions.CustomInstanceFormatters.AddFormatter<Temperature>(t => $"new Temperature({t.Value}, {nameof(TemperatureUnit)}.{t.Unit})");
-            this.dumpOptions.CustomInstanceFormatters.AddFormatter<Pressure>(p => $"new Pressure({p.Value})");
-            this.dumpOptions.CustomInstanceFormatters.AddFormatter<Humidity>(h => $"new Humidity({h.Value})");
-            this.dumpOptions.CustomInstanceFormatters.AddFormatter<UVIndex>(uvi => $"new UVIndex({uvi.Value})");
         }
 
         [Fact]
-        public async Task ShouldSearchBadAsync()
+        public async Task ShoulGetBathById_Bern()
+        {
+            // Arrange
+            var bathid = 17;
+
+            IWiewarmService wiewarmService = new WiewarmService(this.logger);
+
+            // Act
+            var bath = await wiewarmService.GetBathByIdAsync(bathid);
+
+            // Assert
+            this.testOutputHelper.WriteLine(ObjectDumper.Dump(bath, this.dumpOptions));
+
+            bath.Should().NotBeNull();
+            bath.Id.Should().Be(bathid);
+            bath.Name.Should().Be("Stadt Bern");
+        }
+
+        [Fact]
+        public async Task ShouldSearchBad_Bern()
         {
             // Arrange
             var search = "Bern";

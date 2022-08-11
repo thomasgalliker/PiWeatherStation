@@ -10,7 +10,8 @@ namespace WeatherDisplay.Model.Wiewarm
         public int Symbol { get; set; }
 
         [JsonProperty("wetter_temp")]
-        public string Temp { get; set; }
+        [JsonConverter(typeof(TemperatureJsonConverter))]
+        public Temperature Temperature { get; set; }
 
         [JsonProperty("wetter_date")]
         [JsonConverter(typeof(WiewarmDateTimeJsonConverter))]
