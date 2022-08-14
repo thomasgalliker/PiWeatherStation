@@ -11,11 +11,6 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Remove="Services\Scheduling\**" />
-    <EmbeddedResource Remove="Services\Scheduling\**" />
-    <None Remove="Services\Scheduling\**" />
-  </ItemGroup>
-  <ItemGroup>
     <None Remove="Resources\TestImage1.png" />
     <None Remove="Resources\TestImage2.png" />
   </ItemGroup>
