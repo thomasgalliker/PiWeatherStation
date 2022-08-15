@@ -106,8 +106,6 @@ namespace WeatherDisplay.Compilations
                         .SelectMany(b => b)
                         .ToList();
 
-                    //var bath = await this.wiewarmService.GetBathByIdAsync(17);
-
                     var dateTimeNow = this.dateTime.Now;
 
                     var basinRenderActions = new List<IRenderAction>();
