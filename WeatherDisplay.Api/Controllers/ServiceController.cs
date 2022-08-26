@@ -9,6 +9,11 @@ namespace WeatherDisplay.Api.Controllers
     public class ServiceController : ControllerBase
     {
         private const string ServiceName = "weatherdisplay.api";
+        private static readonly string[] ServiceDependencies = new string[]
+        { 
+            "network-online.target",
+            "firewalld.service" 
+        };
 
         private readonly ILogger logger;
         private readonly ISystemCtlHelper systemCtlHelper;
@@ -36,13 +41,7 @@ namespace WeatherDisplay.Api.Controllers
         [HttpGet("install")]
         public void Install()
         {
-            var serviceConfigurationState = new ServiceConfigurationState
-            {
-                ServiceDependencies = new List<string> { "network-online.target", "firewalld.service" },
-                Install = true,
-            };
-
-            this.serviceConfigurator.ConfigureServiceByInstanceName(ServiceName, "dotnet", "service description", serviceConfigurationState);
+            this.serviceConfigurator.InstallService(ServiceName, "dotnet", "service description", "pi", ServiceDependencies);
         }
     }
 }

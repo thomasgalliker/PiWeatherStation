@@ -25,94 +25,32 @@ namespace RaspberryPi.Services
             this.fileSystem = fileSystem;
             this.systemCtlHelper = systemCtlHelper;
             this.processRunner = processRunner;
-        }
 
-        public void ConfigureServiceByInstanceName(
-            string serviceName,
-            string execStart,
-            string serviceDescription,
-            ServiceConfigurationState serviceConfigurationState)
-        {
-            this.ConfigureService(
-                serviceName,
-                execStart,
-                serviceDescription,
-                serviceConfigurationState);
-        }
-
-        public void ConfigureServiceByConfigPath(
-            string serviceName,
-            string execStart,
-            string serviceDescription,
-            ServiceConfigurationState serviceConfigurationState)
-        {
-            this.ConfigureService(
-                serviceName,
-                execStart,
-                serviceDescription,
-                serviceConfigurationState);
-        }
-
-        private void ConfigureService(string serviceName, string execStart, string serviceDescription, ServiceConfigurationState serviceConfigurationState)
-        {
-            // Check if system has bash and systemd
             this.CheckSystemPrerequisites();
-
-            serviceName = SanitizeString(serviceName);
-
-            if (serviceConfigurationState.Uninstall)
-            {
-                this.UninstallService(serviceName);
-            }
-
-            var serviceDependencies = serviceConfigurationState.ServiceDependencies;
-
-            var userName = serviceConfigurationState.Username ?? "root";
-            if (serviceConfigurationState.Install)
-            {
-                this.InstallService(
-                    serviceName,
-                    execStart,
-                    serviceDescription,
-                    userName,
-                    serviceDependencies);
-            }
-
-            if (serviceConfigurationState.Reconfigure)
-            {
-                this.ReconfigureService(
-                    serviceName,
-                    execStart,
-                    serviceDescription,
-                    userName,
-                    serviceDependencies);
-            }
-        }
-
-        private static string GetServiceFilePath(string cleanedInstanceName)
-        {
-            return $"/etc/systemd/system/{cleanedInstanceName}.service";
         }
 
         public void UninstallService(string serviceName)
         {
-            serviceName = SanitizeString(serviceName);
-            this.logger.LogDebug($"Removing systemd service: {serviceName}");
-
             try
             {
+                serviceName = SanitizeString(serviceName);
+                this.logger.LogDebug($"Uninstalling systemd service \"{serviceName}\"...");
                 var systemdUnitFilePath = GetServiceFilePath(serviceName);
-
-                this.systemCtlHelper.StopService(serviceName);
-                this.systemCtlHelper.DisableService(serviceName);
-                this.fileSystem.Delete(systemdUnitFilePath);
-                this.logger.LogDebug("Service uninstalled");
+                this.UninstallServiceInternal(serviceName, systemdUnitFilePath);
+                this.logger.LogDebug($"Systemd service \"{serviceName}\" successfully uninstalled");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                this.logger.LogError(e, $"Could not remove the systemd service: {serviceName}");
+                this.logger.LogError(ex, $"Failed to uninstall systemd service \"{serviceName}\"");
                 throw;
             }
+        }
+
+        private void UninstallServiceInternal(string serviceName, string systemdUnitFilePath)
+        {
+            this.systemCtlHelper.StopService(serviceName);
+            this.systemCtlHelper.DisableService(serviceName);
+            this.fileSystem.Delete(systemdUnitFilePath);
         }
 
         public void InstallService(
@@ -122,57 +60,54 @@ namespace RaspberryPi.Services
             string userName,
             IEnumerable<string> serviceDependencies)
         {
-            serviceName = SanitizeString(serviceName);
-            this.logger.LogDebug($"Installing systemd service: {serviceName}");
-
             try
             {
+                serviceName = SanitizeString(serviceName);
+                this.logger.LogDebug($"Installing systemd service \"{serviceName}\"...");
                 var systemdUnitFilePath = GetServiceFilePath(serviceName);
-
-                var serviceFileContent = GenerateSystemdUnitFile(serviceDescription, execStart, userName, serviceDependencies);
-                this.WriteUnitFile(systemdUnitFilePath, serviceFileContent);
-                this.systemCtlHelper.EnableService(serviceName);
-                this.logger.LogDebug($"Service installed: {serviceName}");
+                this.InstallServiceInternal(serviceName, execStart, serviceDescription, userName, serviceDependencies, systemdUnitFilePath);
+                this.logger.LogDebug($"Systemd service \"{serviceName}\" successfully installed");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                this.logger.LogError(e, $"Could not install the systemd service: {serviceName}");
+                this.logger.LogError(ex, $"Failed to install systemd service \"{serviceName}\"");
                 throw;
             }
         }
 
-        public void ReconfigureService(
+        private void InstallServiceInternal(string serviceName, string execStart, string serviceDescription, string userName, IEnumerable<string> serviceDependencies, string systemdUnitFilePath)
+        {
+            var serviceFileContent = GenerateSystemdUnitFile(serviceDescription, execStart, userName, serviceDependencies);
+            this.WriteUnitFile(systemdUnitFilePath, serviceFileContent);
+            this.systemCtlHelper.EnableService(serviceName);
+        }
+
+        public void ReinstallService(
             string serviceName,
             string execStart,
             string serviceDescription,
             string userName,
             IEnumerable<string> serviceDependencies)
         {
-            serviceName = SanitizeString(serviceName);
-            this.logger.LogDebug($"Reconfiguring systemd service: {serviceName}");
-
             try
             {
+                serviceName = SanitizeString(serviceName);
+                this.logger.LogDebug($"Reinstalling systemd service \"{serviceName}\"...");
                 var systemdUnitFilePath = GetServiceFilePath(serviceName);
-
-                this.logger.LogDebug($"Attempting to remove old service: {serviceName}");
-
-                //remove service
-                this.systemCtlHelper.StopService(serviceName);
-                this.systemCtlHelper.DisableService(serviceName);
-                this.fileSystem.Delete(systemdUnitFilePath);
-
-                //re-add service
-                var serviceFileContent = GenerateSystemdUnitFile(serviceDescription, execStart, userName, serviceDependencies);
-                this.WriteUnitFile(systemdUnitFilePath, serviceFileContent);
-                this.systemCtlHelper.EnableService(serviceName);
-                this.logger.LogDebug($"Service installed: {serviceName}");
+                this.UninstallServiceInternal(serviceName, systemdUnitFilePath);
+                this.InstallServiceInternal(serviceName, execStart, serviceDescription, userName, serviceDependencies, systemdUnitFilePath);
+                this.logger.LogDebug($"Systemd service \"{serviceName}\" successfully reinstalled");
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                this.logger.LogError(e, $"Could not reconfigure the systemd service: {serviceName}");
+                this.logger.LogError(ex, $"Failed to reinstall systemd service \"{serviceName}\"");
                 throw;
             }
+        }
+
+        private static string GetServiceFilePath(string cleanedInstanceName)
+        {
+            return $"/etc/systemd/system/{cleanedInstanceName}.service";
         }
 
         private void WriteUnitFile(string path, string contents)
