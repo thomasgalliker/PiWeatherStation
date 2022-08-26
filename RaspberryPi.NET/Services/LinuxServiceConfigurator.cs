@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
+using RaspberryPi.Internals;
+using RaspberryPi.Storage;
 
-namespace RaspberryPi
+namespace RaspberryPi.Services
 {
     public class LinuxServiceConfigurator : IServiceConfigurator
     {
@@ -28,57 +29,40 @@ namespace RaspberryPi
 
         public void ConfigureServiceByInstanceName(
             string serviceName,
-            string exePath,
-            string instance,
+            string execStart,
             string serviceDescription,
             ServiceConfigurationState serviceConfigurationState)
         {
             this.ConfigureService(
                 serviceName,
-                exePath,
-                instance,
-                null,
+                execStart,
                 serviceDescription,
                 serviceConfigurationState);
         }
 
         public void ConfigureServiceByConfigPath(
             string serviceName,
-            string exePath,
-            string configPath,
+            string execStart,
             string serviceDescription,
             ServiceConfigurationState serviceConfigurationState)
         {
             this.ConfigureService(
                 serviceName,
-                exePath,
-                null,
-                configPath,
+                execStart,
                 serviceDescription,
                 serviceConfigurationState);
         }
 
-        private void ConfigureService(string thisServiceName, string exePath, string instance, string configPath, string serviceDescription, ServiceConfigurationState serviceConfigurationState)
+        private void ConfigureService(string serviceName, string execStart, string serviceDescription, ServiceConfigurationState serviceConfigurationState)
         {
-            //Check if system has bash and systemd
+            // Check if system has bash and systemd
             this.CheckSystemPrerequisites();
 
-            var cleanedInstanceName = SanitizeString(instance ?? thisServiceName);
-            var systemdUnitFilePath = $"/etc/systemd/system/{cleanedInstanceName}.service";
-
-            if (serviceConfigurationState.Restart)
-            {
-                this.RestartService(cleanedInstanceName);
-            }
-
-            if (serviceConfigurationState.Stop)
-            {
-                this.StopService(cleanedInstanceName);
-            }
+            serviceName = SanitizeString(serviceName);
 
             if (serviceConfigurationState.Uninstall)
             {
-                this.UninstallService(cleanedInstanceName, systemdUnitFilePath);
+                this.UninstallService(serviceName);
             }
 
             var serviceDependencies = serviceConfigurationState.ServiceDependencies;
@@ -86,102 +70,67 @@ namespace RaspberryPi
             var userName = serviceConfigurationState.Username ?? "root";
             if (serviceConfigurationState.Install)
             {
-                this.InstallService(cleanedInstanceName,
-                    instance,
-                    configPath,
-                    exePath,
+                this.InstallService(
+                    serviceName,
+                    execStart,
                     serviceDescription,
-                    systemdUnitFilePath,
                     userName,
                     serviceDependencies);
             }
 
             if (serviceConfigurationState.Reconfigure)
             {
-                this.ReconfigureService(cleanedInstanceName,
-                    instance,
-                    configPath,
-                    exePath,
+                this.ReconfigureService(
+                    serviceName,
+                    execStart,
                     serviceDescription,
-                    systemdUnitFilePath,
                     userName,
                     serviceDependencies);
             }
-
-            if (serviceConfigurationState.Start)
-            {
-                this.StartService(cleanedInstanceName);
-            }
         }
 
-        private void RestartService(string serviceName)
+        private static string GetServiceFilePath(string cleanedInstanceName)
         {
-            this.logger.LogDebug($"Restarting service: {serviceName}");
-            var success = this.systemCtlHelper.RestartService(serviceName);
-            if (success)
-            {
-                this.logger.LogDebug($"Service {serviceName} has been restarted");
-            }
-            else
-            {
-                this.logger.LogError($"The service  {serviceName} could not be restarted");
-            }
+            return $"/etc/systemd/system/{cleanedInstanceName}.service";
         }
 
-        private void StopService(string serviceName)
+        public void UninstallService(string serviceName)
         {
-            this.logger.LogDebug($"Stopping service: {serviceName}");
-            if (this.systemCtlHelper.StopService(serviceName))
-            {
-                this.logger.LogDebug("Service stopped");
-            }
-            else
-            {
-                this.logger.LogError("The service could not be stopped");
-            }
-        }
+            serviceName = SanitizeString(serviceName);
+            this.logger.LogDebug($"Removing systemd service: {serviceName}");
 
-        private void StartService(string serviceName)
-        {
-            if (this.systemCtlHelper.StartService(serviceName))
-            {
-                this.logger.LogDebug($"Service started: {serviceName}");
-            }
-            else
-            {
-                this.logger.LogError($"Could not start the systemd service: {serviceName}");
-            }
-        }
-
-        private void UninstallService(string instance, string systemdUnitFilePath)
-        {
-            this.logger.LogDebug($"Removing systemd service: {instance}");
             try
             {
-                this.systemCtlHelper.StopService(instance);
-                this.systemCtlHelper.DisableService(instance);
+                var systemdUnitFilePath = GetServiceFilePath(serviceName);
+
+                this.systemCtlHelper.StopService(serviceName);
+                this.systemCtlHelper.DisableService(serviceName);
                 this.fileSystem.Delete(systemdUnitFilePath);
                 this.logger.LogDebug("Service uninstalled");
             }
             catch (Exception e)
             {
-                this.logger.LogError(e, $"Could not remove the systemd service: {instance}");
+                this.logger.LogError(e, $"Could not remove the systemd service: {serviceName}");
                 throw;
             }
         }
 
-        private void InstallService(string serviceName,
-            string instance,
-            string configPath,
-            string exePath,
+        public void InstallService(
+            string serviceName,
+            string execStart,
             string serviceDescription,
-            string systemdUnitFilePath,
             string userName,
             IEnumerable<string> serviceDependencies)
         {
+            serviceName = SanitizeString(serviceName);
+            this.logger.LogDebug($"Installing systemd service: {serviceName}");
+
             try
             {
-                this.WriteUnitFile(systemdUnitFilePath, GenerateSystemdUnitFile(instance, configPath, serviceDescription, exePath, userName, serviceDependencies));
+                var systemdUnitFilePath = GetServiceFilePath(serviceName);
+
+                var serviceFileContent = GenerateSystemdUnitFile(serviceDescription, execStart, userName, serviceDependencies);
+                this.WriteUnitFile(systemdUnitFilePath, serviceFileContent);
                 this.systemCtlHelper.EnableService(serviceName);
                 this.logger.LogDebug($"Service installed: {serviceName}");
             }
@@ -192,31 +141,36 @@ namespace RaspberryPi
             }
         }
 
-        private void ReconfigureService(string serviceName,
-            string instance,
-            string configPath,
-            string exePath,
+        public void ReconfigureService(
+            string serviceName,
+            string execStart,
             string serviceDescription,
-            string systemdUnitFilePath,
             string userName,
             IEnumerable<string> serviceDependencies)
         {
+            serviceName = SanitizeString(serviceName);
+            this.logger.LogDebug($"Reconfiguring systemd service: {serviceName}");
+
             try
             {
+                var systemdUnitFilePath = GetServiceFilePath(serviceName);
+
                 this.logger.LogDebug($"Attempting to remove old service: {serviceName}");
+
                 //remove service
                 this.systemCtlHelper.StopService(serviceName);
                 this.systemCtlHelper.DisableService(serviceName);
                 this.fileSystem.Delete(systemdUnitFilePath);
 
                 //re-add service
-                this.WriteUnitFile(systemdUnitFilePath, GenerateSystemdUnitFile(instance, configPath, serviceDescription, exePath, userName, serviceDependencies));
+                var serviceFileContent = GenerateSystemdUnitFile(serviceDescription, execStart, userName, serviceDependencies);
+                this.WriteUnitFile(systemdUnitFilePath, serviceFileContent);
                 this.systemCtlHelper.EnableService(serviceName);
                 this.logger.LogDebug($"Service installed: {serviceName}");
             }
             catch (Exception e)
             {
-                this.logger.LogError(e, $"Could not reconfigure the systemd service: {instance}");
+                this.logger.LogError(e, $"Could not reconfigure the systemd service: {serviceName}");
                 throw;
             }
         }
@@ -269,9 +223,10 @@ namespace RaspberryPi
         }
 
         private static string GenerateSystemdUnitFile(
-            string instance,
-            string configPath,
-            string serviceDescription, string exePath, string userName, IEnumerable<string> serviceDependencies)
+            string serviceDescription,
+            string execStart,
+            string userName,
+            IEnumerable<string> serviceDependencies)
         {
             var stringBuilder = new StringBuilder();
             stringBuilder.AppendLine("[Unit]");
@@ -281,12 +236,7 @@ namespace RaspberryPi
             stringBuilder.AppendLine("[Service]");
             stringBuilder.AppendLine("Type=simple");
             stringBuilder.AppendLine($"User={userName}");
-            stringBuilder.Append($"ExecStart={exePath} run");
-            _ = !string.IsNullOrEmpty(instance)
-                ? stringBuilder.Append($" --instance={instance}")
-                : !string.IsNullOrEmpty(configPath)
-                    ? stringBuilder.Append($" --config={configPath}")
-                    : throw new Exception("Either the instance name of configuration path must be provided to configure a service");
+            stringBuilder.AppendLine($"ExecStart={execStart}");
             stringBuilder.AppendLine(" --noninteractive");
             stringBuilder.AppendLine("Restart=always");
             stringBuilder.AppendLine();

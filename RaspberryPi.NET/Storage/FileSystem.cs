@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace RaspberryPi
+namespace RaspberryPi.Storage
 {
     public class FileSystem : IFileSystem
     {

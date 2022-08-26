@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RaspberryPi
+namespace RaspberryPi.Internals
 {
     public class CmdResult
     {

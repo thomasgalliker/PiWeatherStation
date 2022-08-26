@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Microsoft.Extensions.Logging;
+using RaspberryPi.Internals;
 
-namespace RaspberryPi
+namespace RaspberryPi.Services
 {
     public class SystemCtlHelper : ISystemCtlHelper
     {
@@ -62,7 +63,7 @@ namespace RaspberryPi
                     $"RunServiceCommand: '{systemctlCommand}' failed with exit code {result.ExitCode}{Environment.NewLine}" +
                     $"{string.Join(Environment.NewLine, result.Errors.Select(e => $"> Error: {e}"))}");
             }
-            
+
             return success;
         }
 

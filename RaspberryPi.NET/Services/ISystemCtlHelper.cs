@@ -1,4 +1,4 @@
-﻿namespace RaspberryPi
+﻿namespace RaspberryPi.Services
 {
     public interface ISystemCtlHelper
     {
@@ -11,7 +11,7 @@
         bool StartService(string serviceName);
 
         bool StopService(string serviceName);
-        
+
         bool ReloadDaemon();
     }
 }

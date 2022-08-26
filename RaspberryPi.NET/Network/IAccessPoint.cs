@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace RaspberryPi
+namespace RaspberryPi.Network
 {
     public interface IAccessPoint
     {

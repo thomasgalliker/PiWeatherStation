@@ -8,6 +8,8 @@ using Microsoft.OpenApi.Models;
 using NLog;
 using NLog.Extensions.Logging;
 using RaspberryPi;
+using RaspberryPi.Services;
+using RaspberryPi.Storage;
 using WeatherDisplay.Api.Services;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Extensions;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RaspberryPi
+namespace RaspberryPi.Services
 {
     // TODO: This is the tip of the iceberg of very bad software design; let's refactor it.
     public class ServiceConfigurationState
@@ -9,12 +9,6 @@ namespace RaspberryPi
         {
             this.ServiceDependencies = new List<string>();
         }
-
-        public bool Start { get; set; }
-
-        public bool Stop { get; set; }
-
-        public bool Restart { get; set; }
 
         public bool Reconfigure { get; set; }
 

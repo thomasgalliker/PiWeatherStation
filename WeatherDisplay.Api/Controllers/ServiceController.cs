@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using RaspberryPi;
-using WeatherDisplay.Api.Services;
+using RaspberryPi.Services;
 using WeatherDisplay.Api.Updater.Services;
 
 namespace WeatherDisplay.Api.Controllers
@@ -43,7 +42,7 @@ namespace WeatherDisplay.Api.Controllers
                 Install = true,
             };
 
-            this.serviceConfigurator.ConfigureServiceByInstanceName(ServiceName, "dotnet", "instance", "service description", serviceConfigurationState);
+            this.serviceConfigurator.ConfigureServiceByInstanceName(ServiceName, "dotnet", "service description", serviceConfigurationState);
         }
     }
 }

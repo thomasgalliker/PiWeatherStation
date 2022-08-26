@@ -5,7 +5,9 @@ using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
+using RaspberryPi.Internals;
 using RaspberryPi.NET.Tests.Logging;
+using RaspberryPi.Services;
 using Xunit;
 using Xunit.Abstractions;
 

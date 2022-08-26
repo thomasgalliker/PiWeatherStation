@@ -1,4 +1,4 @@
-﻿namespace RaspberryPi
+﻿namespace RaspberryPi.Internals
 {
     public class CommandLineInvocation
     {

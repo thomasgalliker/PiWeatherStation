@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace RaspberryPi
+namespace RaspberryPi.Internals
 {
     public class CommandLineException : Exception
     {

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using RaspberryPi;
+using RaspberryPi.Network;
+using RaspberryPi.Services;
 using WeatherDisplay.Api.Services;
 using WeatherDisplay.Api.Updater.Services;
 
