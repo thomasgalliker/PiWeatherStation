@@ -35,4 +35,8 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="wwwroot\swagger-ui\SwaggerStyle.css" />
+  </ItemGroup>
+
 </Project>

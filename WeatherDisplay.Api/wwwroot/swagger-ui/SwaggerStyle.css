@@ -1,0 +1,22 @@
+﻿.swagger-ui .topbar {
+    background-color: #000000 !important;
+    padding: 0;
+}
+
+.topbar-wrapper img[alt="Swagger UI"] {
+    visibility: hidden;
+}
+
+.swagger-ui img {
+    border-style: none;
+}
+
+.swagger-ui .scheme-container {
+    background: none !important;
+    box-shadow: none !important;
+    padding: 0;
+}
+
+.swagger-ui .info {
+    margin: 20px 0;
+}
