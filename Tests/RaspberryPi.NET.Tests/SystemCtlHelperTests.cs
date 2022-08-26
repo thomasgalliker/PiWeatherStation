@@ -8,7 +8,6 @@ using Moq.AutoMock;
 using RaspberryPi.NET.Tests.Logging;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace RaspberryPi.NET.Tests
 {

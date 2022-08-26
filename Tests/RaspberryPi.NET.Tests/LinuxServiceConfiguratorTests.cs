@@ -1,14 +1,11 @@
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
 using RaspberryPi.NET.Tests.Logging;
 using Xunit;
 using Xunit.Abstractions;
-using Xunit.Sdk;
 
 namespace RaspberryPi.NET.Tests
 {
