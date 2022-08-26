@@ -22,7 +22,7 @@ using IDateTime = DisplayService.Services.IDateTime;
 
 namespace WeatherDisplay.Tests.Compilations
 {
-    public class MainWeatherDisplayCompilationTests
+    public class OpenWeatherDisplayCompilationTests
     {
         private readonly TestHelper testHelper;
         private readonly AutoMocker autoMocker;
@@ -31,7 +31,7 @@ namespace WeatherDisplay.Tests.Compilations
         private readonly TestDisplay testDisplay;
         private readonly Mock<IOpenWeatherMapService> openWeatherMapServiceMock;
 
-        public MainWeatherDisplayCompilationTests(ITestOutputHelper testOutputHelper)
+        public OpenWeatherDisplayCompilationTests(ITestOutputHelper testOutputHelper)
         {
             this.testHelper = new TestHelper(testOutputHelper);
             this.autoMocker = new AutoMocker();
@@ -76,7 +76,7 @@ namespace WeatherDisplay.Tests.Compilations
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                 Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
-            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<MainWeatherDisplayCompilation>();
+            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<OpenWeatherDisplayCompilation>();
             displayCompilation.AddRenderActions();
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
@@ -115,7 +115,7 @@ namespace WeatherDisplay.Tests.Compilations
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                 Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
-            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<MainWeatherDisplayCompilation>();
+            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<OpenWeatherDisplayCompilation>();
             displayCompilation.AddRenderActions();
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
@@ -153,7 +153,7 @@ namespace WeatherDisplay.Tests.Compilations
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                  Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
-            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<MainWeatherDisplayCompilation>();
+            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<OpenWeatherDisplayCompilation>();
             displayCompilation.AddRenderActions();
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
@@ -195,7 +195,7 @@ namespace WeatherDisplay.Tests.Compilations
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                   Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
-            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<MainWeatherDisplayCompilation>();
+            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<OpenWeatherDisplayCompilation>();
             displayCompilation.AddRenderActions();
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();

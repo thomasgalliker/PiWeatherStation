@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog;
 using NLog.Extensions.Logging;
+using RaspberryPi;
 using WeatherDisplay.Api.Services;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Extensions;
@@ -17,6 +18,10 @@ namespace WeatherDisplay.Api
     {
         private static void Main(string[] args)
         {
+            Console.WriteLine(
+                $"WeatherStation version {typeof(Program).Assembly.GetName().Version} {Environment.NewLine}" +
+                $"Copyright(C) superdev GmbH. All rights reserved.{Environment.NewLine}");
+
             var builder = WebApplication.CreateBuilder(args);
             builder.Host.UseSystemd();
             builder.Host.UseWindowsService();
@@ -66,6 +71,13 @@ namespace WeatherDisplay.Api
                     }
                 });
             });
+
+            services.AddSingleton<IJournalctl, Journalctl>();
+            //services.AddSingleton<IAccessPoint, AccessPoint>();
+            services.AddSingleton<ISystemCtlHelper, SystemCtlHelper>();
+            services.AddSingleton<IFileSystem, FileSystem>();
+            services.AddSingleton<IProcessRunner, SilentProcessRunner>();
+            services.AddSingleton<IServiceConfigurator, LinuxServiceConfigurator>();
 
             // ====== Auto update ======
             var autoUpdateOptions = new AutoUpdateOptions();
@@ -154,7 +166,9 @@ namespace WeatherDisplay.Api
             });
 
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(o => o.InjectStylesheet("/swagger-ui/SwaggerStyle.css"));
+
+            app.UseStaticFiles();
 
             app.Run();
         }

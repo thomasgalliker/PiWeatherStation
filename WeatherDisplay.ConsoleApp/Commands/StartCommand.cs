@@ -35,7 +35,7 @@ namespace DisplayService.ConsoleApp.Commands
 
             public async Task<int> InvokeAsync(InvocationContext context)
             {
-                ; await this.displayManager.SelectDisplayCompilationAsync("MainWeatherDisplayCompilation");
+                await this.displayManager.SelectDisplayCompilationAsync("OpenWeatherDisplayCompilation");
 
                 return 0;
             }

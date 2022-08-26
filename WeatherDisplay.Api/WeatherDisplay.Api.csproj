@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RaspberryPi.NET\RaspberryPi.NET.csproj" />
     <ProjectReference Include="..\System.Gpio.Devices\System.Gpio.Devices.csproj" />
     <ProjectReference Include="..\WeatherDisplay.Api.Updater\WeatherDisplay.Api.Updater.csproj" />
     <ProjectReference Include="..\WeatherDisplay\WeatherDisplay.csproj" />

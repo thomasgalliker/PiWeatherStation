@@ -15,7 +15,7 @@ using WeatherDisplay.Services.OpenWeatherMap;
 
 namespace WeatherDisplay.Compilations
 {
-    public class MainWeatherDisplayCompilation : IDisplayCompilation
+    public class OpenWeatherDisplayCompilation : IDisplayCompilation
     {
         private readonly IDisplayManager displayManager;
         private readonly IOpenWeatherMapService openWeatherMapService;
@@ -23,7 +23,7 @@ namespace WeatherDisplay.Compilations
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
 
-        public MainWeatherDisplayCompilation(
+        public OpenWeatherDisplayCompilation(
             IDisplayManager displayManager,
             IOpenWeatherMapService openWeatherMapService,
             ITranslationService translationService,
@@ -37,7 +37,7 @@ namespace WeatherDisplay.Compilations
             this.appSettings = appSettings;
         }
 
-        public string Name => "MainWeatherDisplayCompilation";
+        public string Name => "OpenWeatherDisplayCompilation";
 
         public void AddRenderActions()
         {

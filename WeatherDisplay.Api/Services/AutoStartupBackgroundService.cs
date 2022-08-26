@@ -51,7 +51,7 @@ namespace WeatherDisplay.Api.Services
                 this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.CheckAndStartUpdate(); });
 
                 // Add rendering actions + start display manager
-                await this.displayCompilationService.SelectDisplayCompilationAsync("MainWeatherDisplayCompilation");
+                await this.displayCompilationService.SelectDisplayCompilationAsync("OpenWeatherDisplayCompilation");
             }
         }
 
@@ -60,58 +60,11 @@ namespace WeatherDisplay.Api.Services
             var result = await this.autoUpdateService.CheckForUpdateAsync();
             if (result.HasUpdate)
             {
-                var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var updateRequest = new UpdateRequest
-                {
-                    CurrentDirectory = currentDirectory,
-                    UpdateVersion = result.UpdateVersion,
-                    ExecutorSteps = GetExecutorSteps(currentDirectory, result.UpdateVersionSource),
-                };
+                var updateRequest = UpdateRequestFactory.Create(result.UpdateVersion, result.UpdateVersionSource);
                 this.autoUpdateService.StartUpdate(updateRequest);
             }
 
             return result;
-        }
-
-        private static IExecutorStep[] GetExecutorSteps(string currentDirectory, IUpdateVersionSource versionSource)
-        {
-            var downloadHttpFileStep = versionSource.GetDownloadStep();
-
-            return new IExecutorStep[]
-            {
-               downloadHttpFileStep,
-                new ProcessStartExecutorStep
-                {
-                    FileName = "sudo",
-                    Arguments = "systemctl stop weatherdisplay.api.service",
-                    CreateNoWindow = true,
-                },
-                new ExtractZipStep
-                {
-                    SourceArchiveFileName = downloadHttpFileStep.DestinationFileName,
-                    DestinationDirectoryName = currentDirectory,
-                    OverwriteFiles = true,
-                    DeleteSourceArchive = true,
-                },
-                new ProcessStartExecutorStep
-                {
-                    FileName = "sudo",
-                    Arguments = "systemctl daemon-reload",
-                    CreateNoWindow = true,
-                },
-                new ProcessStartExecutorStep
-                {
-                    FileName = "sudo",
-                    Arguments = "systemctl start weatherdisplay.api.service",
-                    CreateNoWindow = true,
-                },
-                //new ProcessStartExecutorStep
-                //{
-                //    FileName = "sudo",
-                //    Arguments = "reboot",
-                //    CreateNoWindow = true,
-                //}
-            };
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

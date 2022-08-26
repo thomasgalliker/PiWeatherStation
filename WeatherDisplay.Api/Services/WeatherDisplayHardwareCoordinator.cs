@@ -9,9 +9,10 @@ namespace WeatherDisplay.Api.Services
     {
         private static readonly IDictionary<int, string> ButtonMappings = new Dictionary<int, string>
         {
-            { 1, "MainWeatherDisplayCompilation" },
+            { 1, "OpenWeatherDisplayCompilation" },
             { 2, "TemperatureWeatherDisplayCompilation" },
             { 3, "WaterTemperatureDisplayCompilation" },
+            { 4, "MeteoSwissWeatherDisplayCompilation" },
         };
 
         private readonly ILogger logger;

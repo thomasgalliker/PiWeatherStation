@@ -50,10 +50,14 @@ namespace WeatherDisplay.Services.Wiewarm
         public async Task<IEnumerable<Bath>> SearchBathsAsync(string search)
         {
             var uri = $"{Endpoint}/bad.json?search={search}";
-            this.logger.LogDebug($"GetBadByIdAsync: GET {uri}");
+            this.logger.LogDebug($"SearchBathsAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri).ConfigureAwait(false);
-            response.EnsureSuccessStatusCode();
+            if (!response.IsSuccessStatusCode)
+            {
+                this.logger.LogDebug($"SearchBathsAsync: failed for uri {uri}");
+                response.EnsureSuccessStatusCode();
+            }
 
             var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
@@ -61,6 +65,4 @@ namespace WeatherDisplay.Services.Wiewarm
             return wiewarmBadResponse;
         }
     }
-
-
 }

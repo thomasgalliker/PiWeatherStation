@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using DisplayService.Services;
 using DisplayService.Settings;
+using MeteoSwissApi;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -78,6 +79,9 @@ namespace WeatherDisplay.Extensions
             services.AddSingleton<IDisplayManager, DisplayManager>();
             services.AddSingleton<IOpenWeatherMapConfiguration>(openWeatherMapConfiguration);
             services.AddSingleton<IOpenWeatherMapService, OpenWeatherMapService>();
+            
+            services.AddSingleton<IMeteoSwissWeatherServiceConfiguration, MeteoSwissWeatherServiceConfiguration>();
+            services.AddSingleton<IMeteoSwissWeatherService, MeteoSwissWeatherService>();
 
             services.AddSingleton<IDeepLTranslationConfiguration>(deepLTranslationConfiguration);
             services.AddSingleton<ITranslationService, DeepLTranslationService>();
