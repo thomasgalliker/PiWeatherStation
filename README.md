@@ -16,7 +16,7 @@ sudo apt upgrade
 
 - Install the GDI+ library. This library is later used to render images via SkiaSharp.
 ```
-sudo apt install libgdiplus
+sudo apt-get install -y libgdiplus
 ```
 
 - Reboot the system.
@@ -24,26 +24,22 @@ sudo apt install libgdiplus
 sudo reboot
 ```
 
-#### Install .NET on Raspberry Pi
-- Go to Microsoft's [dotnet download page](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and download the appropriate version of .NET (ARM32 or ARM64 depending on your Raspberry OS).
+- Set correct timezone. Run command `timedatectl list-timezones` in order to find your timezone.
 ```
-wget https://download.visualstudio.microsoft.com/download/.../dotnet-sdk-6.0.200-linux-arm.tar.gz
+sudo timedatectl set-timezone Europe/Zurich
 ```
 
-- Extract the binaries and export the paths according to the instructions given on the download page:
+#### Install .NET on Raspberry Pi
+- Go to Microsoft's [dotnet download page](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and download the appropriate version of .NET. I usually use the 32bit Version of Raspbian OS, so the appropriate .NET architecture should be ARM32.
+- The following dotnet-install.sh script simplifies the automated installation of dotnet on Linux. We use the most current channel and .NET version 6.0.x, as specified in the following command:
 ```
-mkdir -p $HOME/dotnet && tar zxf dotnet-sdk-6.0.200-linux-arm.tar.gz -C $HOME/dotnet
-export DOTNET_ROOT=$HOME/dotnet
-export PATH=$PATH:$HOME/dotnet
+curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel Current
 ```
-- You can edit your shell profile to permanently add the dotnet commands (even after a reboot):
+
+- Edit the bash profile and add following lines to the end of the file. If `export PATH` already exists, extend it instead of creating a new export. Use `sudo nano ~/.bashrc` to double check if everything is fine.
 ```
-sudo nano ~/.bashrc
-```
-- Edit the appropriate bash profile and add following lines to the end of the file. If `export PATH` already exists, extend it instead of creating a new export.
-```
-export DOTNET_ROOT=$HOME/dotnet
-export PATH=$PATH:$HOME/dotnet
+echo 'export DOTNET_ROOT=$HOME/.dotnet' >> ~/.bashrc
+echo 'export PATH=$PATH:$HOME/.dotnet' >> ~/.bashrc
 ```
 - Reload the ~/.bashrc file with the command:
 ```
@@ -67,7 +63,7 @@ Runtime Environment:
  OS Version:  11
  OS Platform: Linux
  RID:         linux-arm
- Base Path:   /home/pi/dotnet/sdk/6.0.200/
+ Base Path:   /home/pi/.dotnet/sdk/6.0.200/
  ...
 ```
 
@@ -163,7 +159,7 @@ Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
 
 # This environment variable is necessary when dotnet isn't loaded for the specified user.
 # To figure out this value, run 'env | grep DOTNET_ROOT' when dotnet has been loaded into your shell.
-Environment=DOTNET_ROOT=/home/pi/dotnet
+Environment=DOTNET_ROOT=/home/pi/.dotnet
 
 [Install]
 WantedBy=multi-user.target
@@ -260,7 +256,16 @@ content-length: 1460
 - https://www.youtube.com/watch?v=t-rFj54BsDI
 - https://github.com/Tharnas/EInkDisplayService
 - https://github.com/bezysoftware/crypto-clock
+
+
+#### Raspberry Pi Resources
+- https://desertbot.io/blog/headless-pi-zero-ssh-access-over-usb-windows
 - https://www.petecodes.co.uk/install-and-use-microsoft-dot-net-6-with-the-raspberry-pi/
+
+#### Microsoft .NET
+- https://docs.microsoft.com/en-us/dotnet/iot/deployment
+- https://docs.microsoft.com/en-gb/dotnet/core/install/linux-scripted-manual#scripted-install
+- https://docs.microsoft.com/en-gb/dotnet/core/tools/dotnet-install-script
 
 #### Linux and ASP.NET Core related sources
 - https://swimburger.net/blog/dotnet/how-to-run-a-dotnet-core-console-app-as-a-service-using-systemd-on-linux
