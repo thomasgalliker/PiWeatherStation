@@ -7,11 +7,10 @@ using DisplayService.Services;
 using NCrontab;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
-using WeatherDisplay.Model.OpenWeatherMap;
+using OpenWeatherMap.Models;
 using WeatherDisplay.Resources;
-using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.DeepL;
-using WeatherDisplay.Services.OpenWeatherMap;
+using OpenWeatherMap;
 
 namespace WeatherDisplay.Compilations
 {
@@ -268,7 +267,7 @@ namespace WeatherDisplay.Compilations
                         if (airPollutionInfo.Items.FirstOrDefault() is AirPollutionInfoItem airPollutionInfoItem /*&&
                             airPollutionInfoItem.Main.AirQuality > AirQuality.Good*/)
                         {
-                            var airPollutionInfoText = $"{AirQualityTranslations.AirQuality}: {airPollutionInfoItem.Main.AirQuality:N}";
+                            var airPollutionInfoText = $"Air Quality: {airPollutionInfoItem.Main.AirQuality:N}";
 
                             currentWeatherRenderActions.AddRange(new IRenderAction[]
                             {

@@ -9,9 +9,9 @@ using NCrontab;
 using SkiaSharp;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
-using WeatherDisplay.Model.OpenWeatherMap;
+using OpenWeatherMap.Models;
 using WeatherDisplay.Services.DeepL;
-using WeatherDisplay.Services.OpenWeatherMap;
+using OpenWeatherMap;
 
 namespace WeatherDisplay.Compilations
 {

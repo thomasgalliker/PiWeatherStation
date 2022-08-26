@@ -8,10 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NCrontab.Scheduler;
+using OpenWeatherMap;
 using WeatherDisplay.Compilations;
 using WeatherDisplay.Model;
 using WeatherDisplay.Services.DeepL;
-using WeatherDisplay.Services.OpenWeatherMap;
 using WeatherDisplay.Services.Wiewarm;
 using IDateTime = DisplayService.Services.IDateTime;
 using SystemDateTime = DisplayService.Services.SystemDateTime;
@@ -79,7 +79,7 @@ namespace WeatherDisplay.Extensions
             services.AddSingleton<IDisplayManager, DisplayManager>();
             services.AddSingleton<IOpenWeatherMapConfiguration>(openWeatherMapConfiguration);
             services.AddSingleton<IOpenWeatherMapService, OpenWeatherMapService>();
-            
+
             services.AddSingleton<IMeteoSwissWeatherServiceConfiguration, MeteoSwissWeatherServiceConfiguration>();
             services.AddSingleton<IMeteoSwissWeatherService, MeteoSwissWeatherService>();
 

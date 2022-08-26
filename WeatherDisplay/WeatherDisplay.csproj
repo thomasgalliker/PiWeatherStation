@@ -9,10 +9,6 @@
 	</ItemGroup>
 	<ItemGroup>
 	  <EmbeddedResource Include="Resources\*.png" />
-	  <EmbeddedResource Update="Resources\Strings\AirQualityTranslations.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>AirQualityTranslations.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
 	</ItemGroup>
 
 	<ItemGroup>
@@ -23,49 +19,12 @@
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
 		<PackageReference Include="ObjectDumper.NET" Version="3.3.20" />
+		<PackageReference Include="OpenWeatherMap.API" Version="1.0.13-pre" />
 		<PackageReference Include="ResourceLoader" Version="3.2.4" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\DisplayService\DisplayService.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Update="Resources\Strings\HumidityRanges.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>HumidityRanges.resx</DependentUpon>
-	  </Compile>
-	  <Compile Update="Resources\Strings\PressureRanges.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>PressureRanges.resx</DependentUpon>
-	  </Compile>
-	  <Compile Update="Resources\Strings\AirQualityTranslations.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>AirQualityTranslations.resx</DependentUpon>
-	  </Compile>
-	  <Compile Update="Resources\Strings\UVIndexRanges.Designer.cs">
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	    <DependentUpon>UVIndexRanges.resx</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <EmbeddedResource Update="Resources\Strings\HumidityRanges.resx">
-	    <Generator>PublicResXFileCodeGenerator</Generator>
-	    <LastGenOutput>HumidityRanges.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Resources\Strings\PressureRanges.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>PressureRanges.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
-	  <EmbeddedResource Update="Resources\Strings\UVIndexRanges.resx">
-	    <Generator>ResXFileCodeGenerator</Generator>
-	    <LastGenOutput>UVIndexRanges.Designer.cs</LastGenOutput>
-	  </EmbeddedResource>
 	</ItemGroup>
 
 </Project>

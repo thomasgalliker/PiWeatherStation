@@ -6,8 +6,8 @@ using DisplayService.Model;
 using DisplayService.Services;
 using NCrontab;
 using WeatherDisplay.Model;
-using WeatherDisplay.Model.OpenWeatherMap;
-using WeatherDisplay.Services.OpenWeatherMap;
+using OpenWeatherMap.Models;
+using OpenWeatherMap;
 using WeatherDisplay.Services.Wiewarm;
 
 namespace WeatherDisplay.Compilations

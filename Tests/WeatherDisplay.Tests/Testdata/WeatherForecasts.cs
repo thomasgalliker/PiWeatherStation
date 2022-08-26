@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using WeatherDisplay.Model.OpenWeatherMap;
+using OpenWeatherMap.Models;
 
 namespace WeatherDisplay.Tests.Testdata
 {

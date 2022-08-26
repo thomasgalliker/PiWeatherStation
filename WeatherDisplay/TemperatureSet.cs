@@ -1,5 +1,5 @@
 ﻿using System;
-using WeatherDisplay.Model.OpenWeatherMap;
+using OpenWeatherMap.Models;
 
 namespace WeatherDisplay
 {

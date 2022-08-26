@@ -3,8 +3,8 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using WeatherDisplay.Model.OpenWeatherMap.Converters;
 using WeatherDisplay.Model.Wiewarm;
+using WeatherDisplay.Model.Wiewarm.Converters;
 
 namespace WeatherDisplay.Services.Wiewarm
 {
@@ -30,7 +30,7 @@ namespace WeatherDisplay.Services.Wiewarm
                 NullValueHandling = NullValueHandling.Ignore,
             };
 
-            this.serializerSettings.Converters.Add(new CelsiusTemperatureJsonConverter());
+            this.serializerSettings.Converters.Add(new TemperatureJsonConverter());
         }
 
         public async Task<Bath> GetBathByIdAsync(int badId)

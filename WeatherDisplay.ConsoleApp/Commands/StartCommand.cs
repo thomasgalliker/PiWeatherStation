@@ -2,11 +2,10 @@
 using System.CommandLine.Invocation;
 using System.Threading.Tasks;
 using DisplayService.Services;
-using WeatherDisplay;
+using OpenWeatherMap;
 using WeatherDisplay.Compilations;
 using WeatherDisplay.Model;
 using WeatherDisplay.Services.DeepL;
-using WeatherDisplay.Services.OpenWeatherMap;
 
 namespace DisplayService.ConsoleApp.Commands
 {

@@ -1,14 +1,9 @@
-﻿using System.Reflection;
-using DisplayService.Services;
+﻿using DisplayService.Services;
 using NCrontab;
 using NCrontab.Scheduler;
 using NLog;
-using WeatherDisplay.Api.Updater.Models;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Compilations;
-using WeatherDisplay.Model;
-using WeatherDisplay.Services.DeepL;
-using WeatherDisplay.Services.OpenWeatherMap;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace WeatherDisplay.Api.Services

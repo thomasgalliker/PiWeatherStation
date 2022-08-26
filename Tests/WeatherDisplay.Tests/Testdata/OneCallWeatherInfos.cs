@@ -3,21 +3,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using Newtonsoft.Json;
-using WeatherDisplay.Model.OpenWeatherMap;
-using WeatherDisplay.Model.OpenWeatherMap.Converters;
+using OpenWeatherMap;
+using OpenWeatherMap.Models;
 
 namespace WeatherDisplay.Tests.Testdata
 {
     internal static class OneCallWeatherInfos
     {
-        private static readonly JsonSerializerSettings JsonSerializerSettings = CreateMetricJsonSerializerSettings();
-
-        private static JsonSerializerSettings CreateMetricJsonSerializerSettings()
-        {
-            var settings = new JsonSerializerSettings();
-            settings.Converters.Add(new CelsiusTemperatureJsonConverter());
-            return settings;
-        }
+        private static readonly JsonSerializerSettings JsonSerializerSettings = OpenWeatherMapService.GetJsonSerializerSettings("metric");
 
         internal static string GetTestWeatherInfoJson()
         {

@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DisplayService.Tests.Services;
+using OpenWeatherMap;
+using OpenWeatherMap.Models;
 using SkiaSharp;
 using WeatherDisplay.Extensions;
-using WeatherDisplay.Model.OpenWeatherMap;
-using WeatherDisplay.Services;
-using WeatherDisplay.Services.OpenWeatherMap;
-using WeatherDisplay.Tests.Extensions;
 using WeatherDisplay.Tests.Logging;
 using Xunit;
 using Xunit.Abstractions;
@@ -50,11 +48,6 @@ namespace WeatherDisplay.Tests
             static (Temperature Min, Temperature Max) temperatureRangeSelector(IEnumerable<TemperatureSet> s)
             {
                 return (s.Min(x => x.Min) - 1, s.Max(x => x.Max) + 1);
-            }
-
-            (float Min, float Max) precipitationRangeSelector(IEnumerable<float> s)
-            {
-                return (0f, s.Max() + 10);
             }
 
             var latitude = 49.2178194d;

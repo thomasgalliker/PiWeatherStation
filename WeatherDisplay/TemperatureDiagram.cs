@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using OpenWeatherMap.Models;
 using SkiaSharp;
-using WeatherDisplay.Model.OpenWeatherMap;
 
 namespace WeatherDisplay
 {

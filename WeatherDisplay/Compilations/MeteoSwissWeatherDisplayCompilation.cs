@@ -5,8 +5,8 @@ using DisplayService.Model;
 using DisplayService.Services;
 using MeteoSwissApi;
 using NCrontab;
+using OpenWeatherMap.Models;
 using WeatherDisplay.Model;
-using WeatherDisplay.Model.OpenWeatherMap;
 using WeatherDisplay.Resources;
 
 namespace WeatherDisplay.Compilations
