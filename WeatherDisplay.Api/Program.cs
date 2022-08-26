@@ -76,7 +76,7 @@ namespace WeatherDisplay.Api
 
             services.AddSingleton<IJournalctl, Journalctl>();
             //services.AddSingleton<IAccessPoint, AccessPoint>();
-            services.AddSingleton<ISystemCtlHelper, SystemCtlHelper>();
+            services.AddSingleton<ISystemCtl, SystemCtl>();
             services.AddSingleton<IFileSystem, FileSystem>();
             services.AddSingleton<IProcessRunner, SilentProcessRunner>();
             services.AddSingleton<IServiceConfigurator, LinuxServiceConfigurator>();

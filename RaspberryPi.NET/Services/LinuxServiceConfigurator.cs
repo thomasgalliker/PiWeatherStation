@@ -12,18 +12,18 @@ namespace RaspberryPi.Services
     {
         private readonly ILogger logger;
         private readonly IFileSystem fileSystem;
-        private readonly ISystemCtlHelper systemCtlHelper;
+        private readonly ISystemCtl systemCtl;
         private readonly IProcessRunner processRunner;
 
         public LinuxServiceConfigurator(
             ILogger<LinuxServiceConfigurator> logger,
             IFileSystem fileSystem,
-            ISystemCtlHelper systemCtlHelper,
+            ISystemCtl systemCtl,
             IProcessRunner processRunner)
         {
             this.logger = logger;
             this.fileSystem = fileSystem;
-            this.systemCtlHelper = systemCtlHelper;
+            this.systemCtl = systemCtl;
             this.processRunner = processRunner;
 
             this.CheckSystemPrerequisites();
@@ -48,8 +48,8 @@ namespace RaspberryPi.Services
 
         private void UninstallServiceInternal(string serviceName, string systemdUnitFilePath)
         {
-            this.systemCtlHelper.StopService(serviceName);
-            this.systemCtlHelper.DisableService(serviceName);
+            this.systemCtl.StopService(serviceName);
+            this.systemCtl.DisableService(serviceName);
             this.fileSystem.Delete(systemdUnitFilePath);
         }
 
@@ -79,7 +79,7 @@ namespace RaspberryPi.Services
         {
             var serviceFileContent = GenerateSystemdUnitFile(serviceDescription, execStart, userName, serviceDependencies);
             this.WriteUnitFile(systemdUnitFilePath, serviceFileContent);
-            this.systemCtlHelper.EnableService(serviceName);
+            this.systemCtl.EnableService(serviceName);
         }
 
         public void ReinstallService(
@@ -127,7 +127,7 @@ namespace RaspberryPi.Services
             if (!this.fileSystem.Exists("/bin/bash"))
             {
                 throw new Exception(
-                    "Could not detect bash. bash is required to run tentacle.");
+                    "Could not detect bash. Bash is required to run tentacle.");
             }
 
             if (!this.HaveSudoPrivileges())

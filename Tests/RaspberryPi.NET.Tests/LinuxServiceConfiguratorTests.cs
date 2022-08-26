@@ -38,7 +38,7 @@ namespace RaspberryPi.NET.Tests
             // Arrange
             var fileSystemMock = this.autoMocker.GetMock<IFileSystem>();
             var processRunnerMock = this.autoMocker.GetMock<IProcessRunner>();
-            var systemCtlHelperMock = this.autoMocker.GetMock<ISystemCtlHelper>();
+            var systemCtl = this.autoMocker.GetMock<ISystemCtl>();
 
             var linuxServiceConfigurator = this.autoMocker.CreateInstance<LinuxServiceConfigurator>();
 
@@ -56,8 +56,8 @@ namespace RaspberryPi.NET.Tests
             VerifyPrerequisites(processRunnerMock);
             processRunnerMock.VerifyNoOtherCalls();
 
-            systemCtlHelperMock.Verify(s => s.EnableService(ServiceName), Times.Once);
-            systemCtlHelperMock.VerifyNoOtherCalls();
+            systemCtl.Verify(s => s.EnableService(ServiceName), Times.Once);
+            systemCtl.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -66,7 +66,7 @@ namespace RaspberryPi.NET.Tests
             // Arrange
             var fileSystemMock = this.autoMocker.GetMock<IFileSystem>();
             var processRunnerMock = this.autoMocker.GetMock<IProcessRunner>();
-            var systemCtlHelperMock = this.autoMocker.GetMock<ISystemCtlHelper>();
+            var systemCtl = this.autoMocker.GetMock<ISystemCtl>();
 
             var linuxServiceConfigurator = this.autoMocker.CreateInstance<LinuxServiceConfigurator>();
 
@@ -85,10 +85,10 @@ namespace RaspberryPi.NET.Tests
             VerifyPrerequisites(processRunnerMock);
             processRunnerMock.VerifyNoOtherCalls();
 
-            systemCtlHelperMock.Verify(s => s.StopService(ServiceName), Times.Once);
-            systemCtlHelperMock.Verify(s => s.DisableService(ServiceName), Times.Once);
-            systemCtlHelperMock.Verify(s => s.EnableService(ServiceName), Times.Once);
-            systemCtlHelperMock.VerifyNoOtherCalls();
+            systemCtl.Verify(s => s.StopService(ServiceName), Times.Once);
+            systemCtl.Verify(s => s.DisableService(ServiceName), Times.Once);
+            systemCtl.Verify(s => s.EnableService(ServiceName), Times.Once);
+            systemCtl.VerifyNoOtherCalls();
         }
 
         [Fact]
@@ -97,7 +97,7 @@ namespace RaspberryPi.NET.Tests
             // Arrange
             var fileSystemMock = this.autoMocker.GetMock<IFileSystem>();
             var processRunnerMock = this.autoMocker.GetMock<IProcessRunner>();
-            var systemCtlHelperMock = this.autoMocker.GetMock<ISystemCtlHelper>();
+            var systemCtl = this.autoMocker.GetMock<ISystemCtl>();
 
             var linuxServiceConfigurator = this.autoMocker.CreateInstance<LinuxServiceConfigurator>();
 
@@ -112,9 +112,9 @@ namespace RaspberryPi.NET.Tests
             VerifyPrerequisites(processRunnerMock);
             processRunnerMock.VerifyNoOtherCalls();
 
-            systemCtlHelperMock.Verify(s => s.StopService(ServiceName), Times.Once);
-            systemCtlHelperMock.Verify(s => s.DisableService(ServiceName), Times.Once);
-            systemCtlHelperMock.VerifyNoOtherCalls();
+            systemCtl.Verify(s => s.StopService(ServiceName), Times.Once);
+            systemCtl.Verify(s => s.DisableService(ServiceName), Times.Once);
+            systemCtl.VerifyNoOtherCalls();
         }
 
         private static void VerifyPrerequisites(Mock<IFileSystem> fileSystemMock)

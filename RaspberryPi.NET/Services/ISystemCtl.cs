@@ -1,6 +1,6 @@
 ﻿namespace RaspberryPi.Services
 {
-    public interface ISystemCtlHelper
+    public interface ISystemCtl
     {
         bool DisableService(string serviceName);
 

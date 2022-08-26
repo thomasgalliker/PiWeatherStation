@@ -13,15 +13,15 @@ using Xunit.Abstractions;
 
 namespace RaspberryPi.NET.Tests
 {
-    public class SystemCtlHelperTests
+    public class SystemCtlTests
     {
         private readonly AutoMocker autoMocker;
         private const string ServiceName = "serviceName";
 
-        public SystemCtlHelperTests(ITestOutputHelper testOutputHelper)
+        public SystemCtlTests(ITestOutputHelper testOutputHelper)
         {
             this.autoMocker = new AutoMocker();
-            this.autoMocker.Use<ILogger<SystemCtlHelper>>(new TestOutputHelperLogger<SystemCtlHelper>(testOutputHelper));
+            this.autoMocker.Use<ILogger<SystemCtl>>(new TestOutputHelperLogger<SystemCtl>(testOutputHelper));
         }
 
         [Fact]
@@ -32,10 +32,10 @@ namespace RaspberryPi.NET.Tests
             processRunnerMock.Setup(p => p.ExecuteCommand(It.IsAny<CommandLineInvocation>(), It.IsAny<CancellationToken>()))
                 .Returns(new CmdResult(0, Enumerable.Empty<string>(), Enumerable.Empty<string>()));
 
-            var systemCtlHelper = this.autoMocker.CreateInstance<SystemCtlHelper>();
+            var systemCtl = this.autoMocker.CreateInstance<SystemCtl>();
 
             // Act
-            var result = systemCtlHelper.StartService(ServiceName);
+            var result = systemCtl.StartService(ServiceName);
 
             // Assert
             result.Should().BeTrue();
@@ -49,10 +49,10 @@ namespace RaspberryPi.NET.Tests
             processRunnerMock.Setup(p => p.ExecuteCommand(It.IsAny<CommandLineInvocation>(), It.IsAny<CancellationToken>()))
                 .Returns(new CmdResult(99, Enumerable.Empty<string>(), new List<string> { "Service does not exist" }));
 
-            var systemCtlHelper = this.autoMocker.CreateInstance<SystemCtlHelper>();
+            var systemCtl = this.autoMocker.CreateInstance<SystemCtl>();
 
             // Act
-            var result = systemCtlHelper.StartService(ServiceName);
+            var result = systemCtl.StartService(ServiceName);
 
             // Assert
             result.Should().BeFalse();
@@ -66,10 +66,10 @@ namespace RaspberryPi.NET.Tests
             processRunnerMock.Setup(p => p.ExecuteCommand(It.IsAny<CommandLineInvocation>(), It.IsAny<CancellationToken>()))
                 .Returns(new CmdResult(0, Enumerable.Empty<string>(), Enumerable.Empty<string>()));
 
-            var systemCtlHelper = this.autoMocker.CreateInstance<SystemCtlHelper>();
+            var systemCtl = this.autoMocker.CreateInstance<SystemCtl>();
 
             // Act
-            var result = systemCtlHelper.ReloadDaemon();
+            var result = systemCtl.ReloadDaemon();
 
             // Assert
             result.Should().BeTrue();

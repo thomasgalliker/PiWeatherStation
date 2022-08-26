@@ -5,13 +5,13 @@ using RaspberryPi.Internals;
 
 namespace RaspberryPi.Services
 {
-    public class SystemCtlHelper : ISystemCtlHelper
+    public class SystemCtl : ISystemCtl
     {
         private readonly ILogger logger;
         private readonly IProcessRunner processRunner;
 
-        public SystemCtlHelper(
-            ILogger<SystemCtlHelper> logger,
+        public SystemCtl(
+            ILogger<SystemCtl> logger,
             IProcessRunner processRunner)
         {
             this.logger = logger;
