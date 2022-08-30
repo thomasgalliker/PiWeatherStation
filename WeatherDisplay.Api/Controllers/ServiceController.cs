@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using RaspberryPi.Services;
-using WeatherDisplay.Api.Updater.Services;
 
 namespace WeatherDisplay.Api.Controllers
 {
@@ -8,76 +7,80 @@ namespace WeatherDisplay.Api.Controllers
     [Route("api/system/service")]
     public class ServiceController : ControllerBase
     {
-        private const string ServiceName = "weatherdisplay.api";
-        private const string ExecStart = "/home/pi/WeatherDisplay.Api/WeatherDisplay.Api";
-        private const string Username = "pi";
-        private static readonly string[] ServiceDependencies = new string[]
+        private static readonly ServiceDefinition ServiceDefinition = new ServiceDefinition("weatherdisplay.api")
         {
-            "network-online.target",
-            "firewalld.service"
+            ServiceDescription = "WeatherDisplay.Api Service",
+            ServiceType = ServiceType.Notify,
+            WorkingDirectory = "/home/pi/WeatherDisplay.Api",
+            ExecStart = "/home/pi/WeatherDisplay.Api/WeatherDisplay.Api",
+            ExecStop = "/bin/kill ${MAINPID}",
+            KillSignal = "SIGTERM",
+            KillMode = KillMode.Process,
+            Restart = ServiceRestart.No,
+            UserName = "pi",
+            GroupName = "pi",
+            AfterServices = new[]
+            {
+                "network-online.target",
+                "firewalld.service"
+            },
+            WantsServices = new[]
+            {
+                "network-online.target"
+            },
+            Environments = new[]
+            {
+                "ASPNETCORE_ENVIRONMENT=Production",
+                "DOTNET_PRINT_TELEMETRY_MESSAGE=false",
+                "DOTNET_ROOT=/home/pi/.dotnet"
+            }
         };
 
-        private readonly ILogger logger;
         private readonly ISystemCtl systemCtl;
         private readonly IServiceConfigurator serviceConfigurator;
-        private readonly IAutoUpdateService autoUpdateService;
 
         public ServiceController(
-            ILogger<ServiceController> logger,
             ISystemCtl systemCtl,
-            IServiceConfigurator serviceConfigurator,
-            IAutoUpdateService autoUpdateService)
+            IServiceConfigurator serviceConfigurator)
         {
-            this.logger = logger;
             this.systemCtl = systemCtl;
             this.serviceConfigurator = serviceConfigurator;
-            this.autoUpdateService = autoUpdateService;
         }
 
         [HttpGet("start")]
         public void Start()
         {
-            this.systemCtl.StartService(ServiceName);
+            this.systemCtl.StartService(ServiceDefinition.ServiceName);
         }
-        
+
         [HttpGet("stop")]
         public void Stop()
         {
-            this.systemCtl.StopService(ServiceName);
+            this.systemCtl.StopService(ServiceDefinition.ServiceName);
         }
-        
+
         [HttpGet("restart")]
         public void Restart()
         {
-            this.systemCtl.RestartService(ServiceName);
+            this.systemCtl.RestartService(ServiceDefinition.ServiceName);
         }
 
         [HttpGet("install")]
         public void Install()
         {
-            this.serviceConfigurator.InstallService(
-                ServiceName,
-                ExecStart,
-                null,
-                Username,
-                ServiceDependencies);
+            this.serviceConfigurator.InstallService(ServiceDefinition);
         }
 
         [HttpGet("reinstall")]
         public void Reistall()
         {
-            this.serviceConfigurator.ReinstallService(
-                ServiceName,
-                ExecStart,
-                null,
-                Username,
-                ServiceDependencies);
+            this.serviceConfigurator.ReinstallService(ServiceDefinition);
         }
 
         [HttpGet("uninstall")]
         public void Uninstall()
         {
-            this.serviceConfigurator.UninstallService(ServiceName);
+            this.serviceConfigurator.UninstallService(ServiceDefinition.ServiceName);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.Extensions.Logging;
@@ -33,7 +34,6 @@ namespace RaspberryPi.Services
         {
             try
             {
-                serviceName = SanitizeString(serviceName);
                 this.logger.LogDebug($"Uninstalling systemd service \"{serviceName}\"...");
                 var systemdUnitFilePath = GetServiceFilePath(serviceName);
                 this.UninstallServiceInternal(serviceName, systemdUnitFilePath);
@@ -53,61 +53,44 @@ namespace RaspberryPi.Services
             this.fileSystem.Delete(systemdUnitFilePath);
         }
 
-        public void InstallService(
-            string serviceName,
-            string execStart,
-            string serviceDescription,
-            string userName,
-            IEnumerable<string> serviceDependencies)
+        public void InstallService(ServiceDefinition serviceDefinition)
         {
             try
             {
-                serviceName = SanitizeString(serviceName);
-                this.logger.LogDebug($"Installing systemd service \"{serviceName}\"...");
-                var systemdUnitFilePath = GetServiceFilePath(serviceName);
-                this.InstallServiceInternal(serviceName, execStart, serviceDescription, userName, serviceDependencies, systemdUnitFilePath);
-                this.logger.LogDebug($"Systemd service \"{serviceName}\" successfully installed");
+                this.logger.LogDebug($"Installing systemd service \"{serviceDefinition.ServiceName}\"...");
+                var systemdUnitFilePath = GetServiceFilePath(serviceDefinition.ServiceName);
+                this.InstallServiceInternal(systemdUnitFilePath, serviceDefinition);
+                this.logger.LogDebug($"Systemd service \"{serviceDefinition.ServiceName}\" successfully installed");
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, $"Failed to install systemd service \"{serviceName}\"");
+                this.logger.LogError(ex, $"Failed to install systemd service \"{serviceDefinition.ServiceName}\"");
                 throw;
             }
         }
 
-        private void InstallServiceInternal(string serviceName, string execStart, string serviceDescription, string userName, IEnumerable<string> serviceDependencies, string systemdUnitFilePath)
+        private void InstallServiceInternal(string systemdUnitFilePath, ServiceDefinition serviceDefinition)
         {
-            var serviceFileContent = GenerateSystemdUnitFile(serviceDescription, execStart, userName, serviceDependencies);
+            var serviceFileContent = serviceDefinition.GetSystemdUnitFile();
             this.WriteUnitFile(systemdUnitFilePath, serviceFileContent);
-            this.systemCtl.EnableService(serviceName);
+            this.systemCtl.EnableService(serviceDefinition.ServiceName);
         }
 
-        public void ReinstallService(
-            string serviceName,
-            string execStart,
-            string serviceDescription,
-            string userName,
-            IEnumerable<string> serviceDependencies)
+        public void ReinstallService(ServiceDefinition serviceDefinition)
         {
             try
             {
-                serviceName = SanitizeString(serviceName);
-                this.logger.LogDebug($"Reinstalling systemd service \"{serviceName}\"...");
-                var systemdUnitFilePath = GetServiceFilePath(serviceName);
-                this.UninstallServiceInternal(serviceName, systemdUnitFilePath);
-                this.InstallServiceInternal(serviceName, execStart, serviceDescription, userName, serviceDependencies, systemdUnitFilePath);
-                this.logger.LogDebug($"Systemd service \"{serviceName}\" successfully reinstalled");
+                this.logger.LogDebug($"Reinstalling systemd service \"{serviceDefinition.ServiceName}\"...");
+                var systemdUnitFilePath = GetServiceFilePath(serviceDefinition.ServiceName);
+                this.UninstallServiceInternal(serviceDefinition.ServiceName, systemdUnitFilePath);
+                this.InstallServiceInternal(systemdUnitFilePath, serviceDefinition);
+                this.logger.LogDebug($"Systemd service \"{serviceDefinition.ServiceName}\" successfully reinstalled");
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, $"Failed to reinstall systemd service \"{serviceName}\"");
+                this.logger.LogError(ex, $"Failed to reinstall systemd service \"{serviceDefinition.ServiceName}\"");
                 throw;
             }
-        }
-
-        private static string GetServiceFilePath(string cleanedInstanceName)
-        {
-            return $"/etc/systemd/system/{cleanedInstanceName}.service";
         }
 
         private void WriteUnitFile(string path, string contents)
@@ -157,33 +140,9 @@ namespace RaspberryPi.Services
             return result.ExitCode == 0;
         }
 
-        private static string GenerateSystemdUnitFile(
-            string serviceDescription,
-            string execStart,
-            string userName,
-            IEnumerable<string> serviceDependencies)
+        private static string GetServiceFilePath(string serviceName)
         {
-            var stringBuilder = new StringBuilder();
-            stringBuilder.AppendLine("[Unit]");
-            stringBuilder.AppendLine($"Description={serviceDescription}");
-            stringBuilder.AppendLine($"After={string.Join(" ", serviceDependencies)}");
-            stringBuilder.AppendLine();
-            stringBuilder.AppendLine("[Service]");
-            stringBuilder.AppendLine("Type=simple");
-            stringBuilder.AppendLine($"User={userName}");
-            stringBuilder.AppendLine($"ExecStart={execStart}");
-            stringBuilder.AppendLine(" --noninteractive");
-            stringBuilder.AppendLine("Restart=always");
-            stringBuilder.AppendLine();
-            stringBuilder.AppendLine("[Install]");
-            stringBuilder.AppendLine("WantedBy=multi-user.target");
-
-            return stringBuilder.ToString();
-        }
-
-        private static string SanitizeString(string str)
-        {
-            return Regex.Replace(str.Replace("/", ""), @"\s+", "-");
+            return $"/etc/systemd/system/{serviceName}.service";
         }
     }
 }

@@ -1,13 +1,11 @@
-﻿using System.Collections.Generic;
-
-namespace RaspberryPi.Services
+﻿namespace RaspberryPi.Services
 {
     public interface IServiceConfigurator
     {
-        void InstallService(string serviceName, string execStart, string serviceDescription, string userName, IEnumerable<string> serviceDependencies);
-       
-        void ReinstallService(string serviceName, string execStart, string serviceDescription, string userName, IEnumerable<string> serviceDependencies);
-        
+        void InstallService(ServiceDefinition serviceDefinition);
+
+        void ReinstallService(ServiceDefinition serviceDefinition);
+
         void UninstallService(string serviceName);
     }
 }
