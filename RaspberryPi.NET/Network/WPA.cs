@@ -22,20 +22,17 @@ namespace RaspberryPi.Network
         private const string WpaSupplicantService = "wpa_supplicant.service";
         private const string WpaSupplicantConfFilePath = "/etc/wpa_supplicant/wpa_supplicant.conf";
         private readonly ILogger logger;
-        private readonly IProcessRunner processRunner;
         private readonly ISystemCtl systemCtl;
         private readonly IFileSystem fileSystem;
         private readonly IDHCP dhcp;
 
         public WPA(
             ILogger<WPA> logger,
-            IProcessRunner processRunner,
             ISystemCtl systemCtl,
             IFileSystem fileSystem,
             IDHCP dhcp)
         {
             this.logger = logger;
-            this.processRunner = processRunner;
             this.systemCtl = systemCtl;
             this.fileSystem = fileSystem;
             this.dhcp = dhcp;
