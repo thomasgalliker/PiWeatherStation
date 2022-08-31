@@ -33,6 +33,18 @@ namespace RaspberryPi.Services
             return this.RunServiceCommand("stop", serviceName);
         }
 
+        public bool IsEnabled(string serviceName)
+        {
+            var result = this.RunServiceCommand("is-enabled -q", serviceName);
+            return result;
+        }
+
+        public bool IsActive(string serviceName)
+        {
+            var result = this.RunServiceCommand("is-active -q", serviceName);
+            return result;
+        }
+
         public bool EnableService(string serviceName)
         {
             return this.RunServiceCommand("enable", serviceName);
@@ -45,22 +57,22 @@ namespace RaspberryPi.Services
 
         private bool RunServiceCommand(string command, string serviceName)
         {
-            var systemctlCommand = $"systemctl {command} {serviceName}";
-            this.logger.LogDebug($"RunServiceCommand: {systemctlCommand}");
+            var systemCtlCommand = $"systemctl {command} {serviceName}";
+            this.logger.LogDebug($"RunServiceCommand: {systemCtlCommand}");
 
-            var commandLineInvocation = new CommandLineInvocation("/bin/bash", $"-c \"{systemctlCommand}\"");
+            var commandLineInvocation = new CommandLineInvocation("/bin/bash", $"-c \"{systemCtlCommand}\"");
             var result = this.processRunner.ExecuteCommand(commandLineInvocation);
             var success = result.ExitCode == 0;
 
             if (success)
             {
                 this.logger.LogInformation(
-                    $"RunServiceCommand: '{systemctlCommand}' finished successfully");
+                    $"RunServiceCommand: '{systemCtlCommand}' finished successfully");
             }
             else
             {
                 this.logger.LogInformation(
-                    $"RunServiceCommand: '{systemctlCommand}' failed with exit code {result.ExitCode}{Environment.NewLine}" +
+                    $"RunServiceCommand: '{systemCtlCommand}' failed with exit code {result.ExitCode}{Environment.NewLine}" +
                     $"{string.Join(Environment.NewLine, result.Errors.Select(e => $"> Error: {e}"))}");
             }
 

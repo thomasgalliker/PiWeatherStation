@@ -2,6 +2,10 @@
 {
     public interface ISystemCtl
     {
+        bool IsEnabled(string serviceName);
+
+        bool IsActive(string serviceName);
+
         bool DisableService(string serviceName);
 
         bool EnableService(string serviceName);

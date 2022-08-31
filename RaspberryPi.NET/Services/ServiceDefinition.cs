@@ -123,7 +123,7 @@ namespace RaspberryPi.Services
             {
                 stringBuilder.AppendLine($"Group={this.GroupName}");
             }
-            
+
             if (!string.IsNullOrEmpty(this.UserName) || !string.IsNullOrEmpty(this.GroupName))
             {
                 stringBuilder.AppendLine();
