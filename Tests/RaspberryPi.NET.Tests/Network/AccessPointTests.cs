@@ -68,7 +68,7 @@ namespace RaspberryPi.NET.Tests
             systemCtlMock.VerifyNoOtherCalls();
         }
 
-        [Fact]
+        [Fact(Skip = "To be implemented")]
         public async Task ShouldConfigure()
         {
             // Arrange
