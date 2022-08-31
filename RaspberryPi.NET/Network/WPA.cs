@@ -49,7 +49,6 @@ namespace RaspberryPi.Network
                 await this.SetIPAddress(null, null, null, null);
                 this.systemCtl.StartService(WpaSupplicantService);
                 this.systemCtl.EnableService(WpaSupplicantService);
-                //builder.AppendLine(await Command.Execute("systemctl", "enable -q wpa_supplicant.service"));
             }
         }
 
