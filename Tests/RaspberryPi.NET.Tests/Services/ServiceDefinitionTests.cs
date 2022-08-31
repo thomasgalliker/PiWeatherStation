@@ -23,10 +23,8 @@ namespace RaspberryPi.NET.Tests.Services
                 "Type=oneshot\r\n" +
                 "SyslogIdentifier=serviceName\r\n" +
                 "\r\n" +
-                "Restart=no\r\n" +
-                "\r\n" +
                 "[Install]\r\n" +
-                "WantedBy=multi-user.target\r\n");
+                "WantedBy=multi-user.target");
         }
 
         [Fact]
@@ -91,7 +89,7 @@ namespace RaspberryPi.NET.Tests.Services
                 "Environment=DOTNET_ROOT=/home/pi/.dotnet\r\n" +
                 "\r\n" +
                 "[Install]\r\n" +
-                "WantedBy=multi-user.target\r\n");
+                "WantedBy=multi-user.target");
         }
     }
 }

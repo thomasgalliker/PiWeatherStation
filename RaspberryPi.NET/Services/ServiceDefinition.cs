@@ -112,25 +112,25 @@ namespace RaspberryPi.Services
             }
 
             stringBuilder.AppendLine($"SyslogIdentifier={this.ServiceName}");
-            stringBuilder.AppendLine();
 
-            if (!string.IsNullOrEmpty(this.UserName))
-            {
-                stringBuilder.AppendLine($"User={this.UserName}");
-            }
-
-            if (!string.IsNullOrEmpty(this.GroupName))
-            {
-                stringBuilder.AppendLine($"Group={this.GroupName}");
-            }
-
-            if (!string.IsNullOrEmpty(this.UserName) || !string.IsNullOrEmpty(this.GroupName))
+            if(!string.IsNullOrEmpty(this.UserName) || !string.IsNullOrEmpty(this.GroupName))
             {
                 stringBuilder.AppendLine();
-            }
 
+                if (!string.IsNullOrEmpty(this.UserName))
+                {
+                    stringBuilder.AppendLine($"User={this.UserName}");
+                }
+
+                if (!string.IsNullOrEmpty(this.GroupName))
+                {
+                    stringBuilder.AppendLine($"Group={this.GroupName}");
+                }
+            }    
+      
             if (this.Restart is ServiceRestart serviceRestart)
             {
+                stringBuilder.AppendLine();
                 stringBuilder.AppendLine($"Restart={GetRestartDirective(serviceRestart)}");
 
                 if (this.RestartSec != null && serviceRestart != ServiceRestart.No)
@@ -152,7 +152,7 @@ namespace RaspberryPi.Services
             stringBuilder.AppendLine("[Install]");
             stringBuilder.AppendLine("WantedBy=multi-user.target");
 
-            return stringBuilder.ToString();
+            return stringBuilder.ToString().Trim('\n', '\r', ' ');
         }
 
         private ServiceType GetDefaultServiceType()
