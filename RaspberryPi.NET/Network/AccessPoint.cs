@@ -48,7 +48,7 @@ namespace RaspberryPi.Network
         public bool IsEnabled()
         {
             return
-                this.fileSystem.Exists(HostapdWlan0ConfFilePath) &&
+                this.fileSystem.File.Exists(HostapdWlan0ConfFilePath) &&
                 this.systemCtl.IsActive(HostapdServiceName);
         }
 
@@ -99,7 +99,7 @@ namespace RaspberryPi.Network
         /// <param name="ipAddress">IP address</param>
         /// <param name="channel">Optional channel number</param>
         /// <returns></returns>
-        public async Task ConfigureAsync(string ssid, string psk, IPAddress ipAddress, int channel)
+        public async Task ConfigureAsync(string ssid, string psk, IPAddress ipAddress, int? channel = null)
         {
             var countryCode = await this.wpa.GetCountryCode();
 
@@ -108,54 +108,58 @@ namespace RaspberryPi.Network
                 throw new InvalidOperationException("Cannot configure access point because no country code has been set. Use M587 C to set it first");
             }
 
+            var channelString = $"{channel}";
+            if (channel == null)
+            {
+                channelString = "acs_survey";
+            }
+
             if (ssid == "*")
             {
                 // Delete configuration files again
                 var fileDeleted = false;
-                if (this.fileSystem.Exists(HostapdWlan0ConfFilePath))
+                if (this.fileSystem.File.Exists(HostapdWlan0ConfFilePath))
                 {
-                    this.fileSystem.Delete(HostapdWlan0ConfFilePath);
+                    this.fileSystem.File.Delete(HostapdWlan0ConfFilePath);
                     fileDeleted = true;
                 }
 
-                if (this.fileSystem.Exists(DnsmasqConfFilePath))
+                if (this.fileSystem.File.Exists(DnsmasqConfFilePath))
                 {
-                    this.fileSystem.Delete(DnsmasqConfFilePath);
+                    this.fileSystem.File.Delete(DnsmasqConfFilePath);
                     fileDeleted = true;
                 }
 
                 if (fileDeleted)
                 {
                     // Reset IP address configuration to station mode
-                    await this.dhcp.SetIPAddress(InterfaceName, IPAddress.Any, null, null, null);
+                    await this.dhcp.SetIPAddressAsync(InterfaceName, IPAddress.Any, null, null, null);
                 }
             }
             else
             {
                 // Write hostapd config
-                using (FileStream hostapdTemplateStream = new(Path.Combine(Directory.GetCurrentDirectory(), "hostapd.conf"), FileMode.Open, FileAccess.Read))
+                using (var hostapdTemplateStream = Configurations.GetHostapdTemplateStream())
                 {
-                    using StreamReader reader = new(hostapdTemplateStream);
-                    using FileStream hostapdConfigStream = new(HostapdWlan0ConfFilePath, FileMode.Create, FileAccess.Write);
-                    using StreamWriter writer = new(hostapdConfigStream);
+                    using var reader = new StreamReader(hostapdTemplateStream);
+                    using var writer = this.fileSystem.FileStreamFactory.CreateStreamWriter(HostapdWlan0ConfFilePath, FileMode.Create, FileAccess.Write);
 
                     while (!reader.EndOfStream)
                     {
                         var line = await reader.ReadLineAsync();
                         line = line.Replace("{ssid}", ssid);
                         line = line.Replace("{psk}", psk);
-                        line = line.Replace("{channel}", channel.ToString());
+                        line = line.Replace("{channel}", channelString);
                         line = line.Replace("{countryCode}", countryCode);
                         await writer.WriteLineAsync(line);
                     }
                 }
 
                 // Write dnsmasq config
-                using (var dnsmasqTemplateStream = new FileStream(Path.Combine(Directory.GetCurrentDirectory(), "dnsmasq.conf"), FileMode.Open, FileAccess.Read))
+                using (var dnsmasqTemplateStream = Configurations.GetDnsmasqTemplateStream())
                 {
-                    using StreamReader reader = new(dnsmasqTemplateStream);
-                    using FileStream dnsmasqConfigStream = new(DnsmasqConfFilePath, FileMode.Create, FileAccess.Write);
-                    using StreamWriter writer = new(dnsmasqConfigStream);
+                    using var reader = new StreamReader(dnsmasqTemplateStream);
+                    using var writer = this.fileSystem.FileStreamFactory.CreateStreamWriter(DnsmasqConfFilePath, FileMode.Create, FileAccess.Write);
 
                     var ip = ipAddress.GetAddressBytes();
                     var ipRangeStart = $"{ip[0]}.{ip[1]}.{ip[2]}.{(ip[3] is < 100 or > 150 ? 100 : 151)}";
@@ -172,7 +176,7 @@ namespace RaspberryPi.Network
                 }
 
                 // Set IP address configuration for AP mode
-                await this.dhcp.SetIPAddress(InterfaceName, ipAddress, null, null, null, true);
+                await this.dhcp.SetIPAddressAsync(InterfaceName, ipAddress, null, null, null, true);
             }
         }
     }

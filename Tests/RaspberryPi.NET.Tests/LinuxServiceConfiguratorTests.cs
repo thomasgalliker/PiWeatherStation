@@ -53,10 +53,10 @@ namespace RaspberryPi.NET.Tests
             this.autoMocker.Use<ILogger<LinuxServiceConfigurator>>(new TestOutputHelperLogger<LinuxServiceConfigurator>(testOutputHelper));
 
             var fileSystemMock = this.autoMocker.GetMock<IFileSystem>();
-            fileSystemMock.Setup(f => f.Exists("/bin/bash"))
+            fileSystemMock.Setup(f => f.File.Exists("/bin/bash"))
                 .Returns(true);
 
-            fileSystemMock.Setup(f => f.WriteAllText(It.IsAny<string>(), It.IsAny<string>()))
+            fileSystemMock.Setup(f => f.File.WriteAllText(It.IsAny<string>(), It.IsAny<string>()))
                 .Callback((string p, string c) => testOutputHelper.WriteLine(
                     $"WriteAllText:{Environment.NewLine}" +
                     $"{p}{Environment.NewLine}" +
@@ -82,7 +82,7 @@ namespace RaspberryPi.NET.Tests
 
             // Assert
             VerifyPrerequisites(fileSystemMock);
-            fileSystemMock.Verify(f => f.WriteAllText("/etc/systemd/system/serviceName.service", It.IsAny<string>()), Times.Once);
+            fileSystemMock.Verify(f => f.File.WriteAllText("/etc/systemd/system/serviceName.service", It.IsAny<string>()), Times.Once);
             fileSystemMock.VerifyNoOtherCalls();
 
             processRunnerMock.Verify(p => p.ExecuteCommand(It.Is<CommandLineInvocation>(i =>
@@ -110,8 +110,8 @@ namespace RaspberryPi.NET.Tests
 
             // Assert
             VerifyPrerequisites(fileSystemMock);
-            fileSystemMock.Verify(f => f.Delete("/etc/systemd/system/serviceName.service"), Times.Once);
-            fileSystemMock.Verify(f => f.WriteAllText("/etc/systemd/system/serviceName.service", It.IsAny<string>()), Times.Once);
+            fileSystemMock.Verify(f => f.File.Delete("/etc/systemd/system/serviceName.service"), Times.Once);
+            fileSystemMock.Verify(f => f.File.WriteAllText("/etc/systemd/system/serviceName.service", It.IsAny<string>()), Times.Once);
             fileSystemMock.VerifyNoOtherCalls();
 
             processRunnerMock.Verify(p => p.ExecuteCommand(It.Is<CommandLineInvocation>(i =>
@@ -141,7 +141,7 @@ namespace RaspberryPi.NET.Tests
 
             // Assert
             VerifyPrerequisites(fileSystemMock);
-            fileSystemMock.Verify(f => f.Delete("/etc/systemd/system/serviceName.service"), Times.Once);
+            fileSystemMock.Verify(f => f.File.Delete("/etc/systemd/system/serviceName.service"), Times.Once);
             fileSystemMock.VerifyNoOtherCalls();
 
             VerifyPrerequisites(processRunnerMock);
@@ -154,7 +154,7 @@ namespace RaspberryPi.NET.Tests
 
         private static void VerifyPrerequisites(Mock<IFileSystem> fileSystemMock)
         {
-            fileSystemMock.Verify(f => f.Exists("/bin/bash"), Times.Once);
+            fileSystemMock.Verify(f => f.File.Exists("/bin/bash"), Times.Once);
         }
 
         private static void VerifyPrerequisites(Mock<IProcessRunner> processRunnerMock)

@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using RaspberryPi.Internals;
 using RaspberryPi.Services;
+using RaspberryPi.Storage;
 
 namespace RaspberryPi.Network
 {
@@ -19,10 +20,14 @@ namespace RaspberryPi.Network
     {
         private const string DhcpdService = "dhcpcd.service";
 
-        public DHCP(IProcessRunner processRunner, ISystemCtl systemCtl)
+        public DHCP(
+            IProcessRunner processRunner,
+            ISystemCtl systemCtl,
+            IFileSystem fileSystem)
         {
             this.processRunner = processRunner;
             this.systemCtl = systemCtl;
+            this.fileSystem = fileSystem;
         }
 
         /// <summary>
@@ -52,6 +57,7 @@ namespace RaspberryPi.Network
 
         private readonly IProcessRunner processRunner;
         private readonly ISystemCtl systemCtl;
+        private readonly IFileSystem fileSystem;
 
         /// <summary>
         /// Private class representing the IP address configuration as saved in the dhcpcd config
@@ -138,10 +144,10 @@ namespace RaspberryPi.Network
         /// <param name="netmask">Subnet mask or null if unchanged</param>
         /// <param name="dnsServer">Set IP address for AP mode</param>
         /// <returns>Asynchronous task</returns>
-        public async Task SetIPAddress(string iface, IPAddress ip, IPAddress netmask, IPAddress gateway, IPAddress dnsServer, bool? forAP = null)
+        public async Task SetIPAddressAsync(string iface, IPAddress ip, IPAddress netmask, IPAddress gateway, IPAddress dnsServer, bool? forAP = null)
         {
             // Check if the profile already exists and if anything is supposed to change
-            var profiles = await ReadProfiles();
+            var profiles = await this.ReadProfiles();
             IPConfig existingProfile = null;
             foreach (var profile in profiles)
             {
@@ -201,11 +207,11 @@ namespace RaspberryPi.Network
         /// Read the current network profiles
         /// </summary>
         /// <returns>List of configured profiles</returns>
-        private static async Task<List<IPConfig>> ReadProfiles()
+        private async Task<List<IPConfig>> ReadProfiles()
         {
             List<IPConfig> result = new();
 
-            if (File.Exists("/etc/dhcpcd.conf"))
+            if (this.fileSystem.File.Exists("/etc/dhcpcd.conf"))
             {
                 using FileStream configStream = new("/etc/dhcpcd.conf", FileMode.Open, FileAccess.Read);
                 using StreamReader reader = new(configStream);
@@ -400,7 +406,7 @@ namespace RaspberryPi.Network
         /// <returns>Configured IP address or 0.0.0.0 if not configured</returns>
         public async Task<IPAddress> GetConfiguredIPAddress(string iface)
         {
-            var profiles = await ReadProfiles();
+            var profiles = await this.ReadProfiles();
             var ifaceProfile = profiles.FirstOrDefault(profile => profile.Interface == iface);
             return ifaceProfile == null ? IPAddress.Any : ifaceProfile.IP;
         }
@@ -412,7 +418,7 @@ namespace RaspberryPi.Network
         /// <returns>Configured netmask or 0.0.0.0 if not configured</returns>
         public async Task<IPAddress> GetConfiguredNetmask(string iface)
         {
-            var profiles = await ReadProfiles();
+            var profiles = await this.ReadProfiles();
             var ifaceProfile = profiles.FirstOrDefault(profile => profile.Interface == iface);
             return ifaceProfile == null ? IPAddress.Any : ifaceProfile.Subnet;
         }
@@ -424,7 +430,7 @@ namespace RaspberryPi.Network
         /// <returns>Configured gateway or 0.0.0.0 if not configured</returns>
         public async Task<IPAddress> GetConfiguredGateway(string iface)
         {
-            var profiles = await ReadProfiles();
+            var profiles = await this.ReadProfiles();
             var ifaceProfile = profiles.FirstOrDefault(profile => profile.Interface == iface);
             return ifaceProfile == null ? IPAddress.Any : ifaceProfile.Gateway;
         }
@@ -436,7 +442,7 @@ namespace RaspberryPi.Network
         /// <returns>Configured DNS server or 0.0.0.0 if not configured</returns>
         public async Task<IPAddress> GetConfiguredDNSServer(string iface)
         {
-            var profiles = await ReadProfiles();
+            var profiles = await this.ReadProfiles();
             var ifaceProfile = profiles.FirstOrDefault(profile => profile.Interface == iface);
             return ifaceProfile == null ? IPAddress.Any : ifaceProfile.DNSServer;
         }
@@ -447,7 +453,7 @@ namespace RaspberryPi.Network
         /// <returns>Whether there is a DHCP profile for AP mode</returns>
         public async Task<bool> IsAPConfigured()
         {
-            var profiles = await ReadProfiles();
+            var profiles = await this.ReadProfiles();
             return profiles.Any(profile => profile.ForAP);
         }
     }

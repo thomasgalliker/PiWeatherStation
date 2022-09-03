@@ -15,6 +15,16 @@ namespace RaspberryPi.Network
 
         Task<bool> IsAPConfigured();
 
-        Task SetIPAddress(string iface, IPAddress ip, IPAddress netmask, IPAddress gateway, IPAddress dnsServer, bool? forAP = null);
+        /// <summary>
+        /// Sets the IP address.
+        /// </summary>
+        /// <param name="iface"></param>
+        /// <param name="ip"></param>
+        /// <param name="netmask"></param>
+        /// <param name="gateway"></param>
+        /// <param name="dnsServer"></param>
+        /// <param name="forAP"></param>
+        /// <returns></returns>
+        Task SetIPAddressAsync(string iface, IPAddress ip, IPAddress netmask, IPAddress gateway, IPAddress dnsServer, bool? forAP = null);
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading;
@@ -7,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
 using RaspberryPi.Internals;
+using RaspberryPi.Internals.Extensions;
 using RaspberryPi.NET.Tests.Logging;
 using RaspberryPi.Network;
 using RaspberryPi.Services;
@@ -26,10 +28,10 @@ namespace RaspberryPi.NET.Tests
             this.autoMocker.Use<ILogger<AccessPoint>>(new TestOutputHelperLogger<AccessPoint>(testOutputHelper));
 
             var fileSystemMock = this.autoMocker.GetMock<IFileSystem>();
-            fileSystemMock.Setup(f => f.Exists("/bin/bash"))
+            fileSystemMock.Setup(f => f.File.Exists("/bin/bash"))
                 .Returns(true);
 
-            fileSystemMock.Setup(f => f.WriteAllText(It.IsAny<string>(), It.IsAny<string>()))
+            fileSystemMock.Setup(f => f.File.WriteAllText(It.IsAny<string>(), It.IsAny<string>()))
                 .Callback((string p, string c) => testOutputHelper.WriteLine(
                     $"WriteAllText:{Environment.NewLine}" +
                     $"{p}{Environment.NewLine}" +
@@ -68,11 +70,24 @@ namespace RaspberryPi.NET.Tests
             systemCtlMock.VerifyNoOtherCalls();
         }
 
-        [Fact(Skip = "To be implemented")]
+        [Fact]
         public async Task ShouldConfigure()
         {
             // Arrange
+            var fileStreamFactoryMock = this.autoMocker.GetMock<IFileStreamFactory>();
+
+            var hostapdStreamWriterMock = new Mock<StreamWriter>("wlan0.conf");
+            fileStreamFactoryMock.Setup(f => f.CreateStreamWriter("/etc/hostapd/wlan0.conf", FileMode.Create, FileAccess.Write))
+                .Returns(() => hostapdStreamWriterMock.Object);
+
+            var dnsmasqStreamWriterMock = new Mock<StreamWriter>("dnsmasq.conf");
+            fileStreamFactoryMock.Setup(f => f.CreateStreamWriter("/etc/dnsmasq.conf", FileMode.Create, FileAccess.Write))
+                .Returns(() => dnsmasqStreamWriterMock.Object);
+
             var fileSystemMock = this.autoMocker.GetMock<IFileSystem>();
+            fileSystemMock.SetupGet(f => f.FileStreamFactory)
+                .Returns(fileStreamFactoryMock.Object);
+
             var processRunnerMock = this.autoMocker.GetMock<IProcessRunner>();
             var systemCtlMock = this.autoMocker.GetMock<ISystemCtl>();
             var wpaMock = this.autoMocker.GetMock<IWPA>();
@@ -82,22 +97,28 @@ namespace RaspberryPi.NET.Tests
             var accessPoint = this.autoMocker.CreateInstance<AccessPoint>();
 
             // Act
-            await accessPoint.ConfigureAsync("testssid", "testpsdk", IPAddress.Parse("192.168.50.100"), 99);
+            await accessPoint.ConfigureAsync("testssid", "testpsdk", IPAddress.Parse("192.168.50.100"), 6);
 
             // Assert
+            fileSystemMock.Verify(f => f.FileStreamFactory.CreateStreamWriter("/etc/hostapd/wlan0.conf", FileMode.Create, FileAccess.Write), Times.Once);
+            fileSystemMock.Verify(f => f.FileStreamFactory.CreateStreamWriter("/etc/dnsmasq.conf", FileMode.Create, FileAccess.Write), Times.Once);
             fileSystemMock.VerifyNoOtherCalls();
+
             processRunnerMock.VerifyNoOtherCalls();
+
+            wpaMock.Verify(w => w.GetCountryCode(), Times.Once);
             wpaMock.VerifyNoOtherCalls();
 
-            systemCtlMock.Verify(s => s.IsActive("hostapd@wlan0.service"), Times.Once);
-            systemCtlMock.Verify(s => s.StartService("hostapd@wlan0.service"), Times.Once);
-            systemCtlMock.Verify(s => s.EnableService("hostapd@wlan0.service"), Times.Once);
-
-            systemCtlMock.Verify(s => s.IsActive("dnsmasq.service"), Times.Once);
-            systemCtlMock.Verify(s => s.StartService("dnsmasq.service"), Times.Once);
-            systemCtlMock.Verify(s => s.EnableService("dnsmasq.service"), Times.Once);
-
             systemCtlMock.VerifyNoOtherCalls();
+
+            hostapdStreamWriterMock.Verify(a => a.WriteLineAsync("ssid=testssid"), Times.Once);
+            hostapdStreamWriterMock.Verify(a => a.WriteLineAsync("wpa_passphrase=testpsdk"), Times.Once);
+            hostapdStreamWriterMock.Verify(a => a.WriteLineAsync("channel=6"), Times.Once);
+
+            dnsmasqStreamWriterMock.Verify(a => a.WriteLineAsync("interface=wlan0"), Times.Once);
+            dnsmasqStreamWriterMock.Verify(a => a.WriteLineAsync("no-dhcp-interface=eth0"), Times.Once);
+            dnsmasqStreamWriterMock.Verify(a => a.WriteLineAsync("dhcp-range=192.168.50.151,192.168.50.200,255.255.255.0,24h"), Times.Once);
+            dnsmasqStreamWriterMock.Verify(a => a.WriteLineAsync("dhcp-option=option:dns-server,192.168.50.100"), Times.Once);
         }
     }
 }

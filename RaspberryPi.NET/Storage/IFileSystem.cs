@@ -2,10 +2,8 @@
 {
     public interface IFileSystem
     {
-        void Delete(string path);
+        IFile File { get; }
 
-        bool Exists(string path);
-
-        void WriteAllText(string path, string contents);
+        IFileStreamFactory FileStreamFactory { get; }
     }
 }

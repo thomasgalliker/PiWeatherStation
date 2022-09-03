@@ -72,7 +72,7 @@ namespace RaspberryPi.Network
         public async Task<List<string>> GetSSIDs()
         {
             List<string> ssids = new();
-            if (this.fileSystem.Exists(WpaSupplicantConfFilePath))
+            if (this.fileSystem.File.Exists(WpaSupplicantConfFilePath))
             {
                 using FileStream configStream = new(WpaSupplicantConfFilePath, FileMode.Open, FileAccess.Read);
                 using StreamReader reader = new(configStream);
@@ -170,7 +170,7 @@ namespace RaspberryPi.Network
         /// <returns>Country code or null if not found</returns>
         public async Task<string> GetCountryCode()
         {
-            if (this.fileSystem.Exists(WpaSupplicantConfFilePath))
+            if (this.fileSystem.File.Exists(WpaSupplicantConfFilePath))
             {
                 using FileStream configStream = new(WpaSupplicantConfFilePath, FileMode.Open, FileAccess.Read);
                 using StreamReader reader = new(configStream);
@@ -199,7 +199,7 @@ namespace RaspberryPi.Network
         public async Task UpdateSSID(string ssid, string psk, string countryCode = null)
         {
             // Create template if it doesn't already exist or if the 
-            if (!this.fileSystem.Exists(WpaSupplicantConfFilePath))
+            if (!this.fileSystem.File.Exists(WpaSupplicantConfFilePath))
             {
                 if (string.IsNullOrWhiteSpace(countryCode))
                 {
@@ -328,7 +328,7 @@ namespace RaspberryPi.Network
         /// <returns>Asynchronous task</returns>
         public async Task SetIPAddress(IPAddress ip, IPAddress netmask, IPAddress gateway, IPAddress dnsServer, bool forAP = false)
         {
-            await this.dhcp.SetIPAddress("wlan0", ip, netmask, gateway, dnsServer, forAP);
+            await this.dhcp.SetIPAddressAsync("wlan0", ip, netmask, gateway, dnsServer, forAP);
         }
     }
 }

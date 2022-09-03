@@ -46,7 +46,7 @@ namespace RaspberryPi.Services
         {
             this.systemCtl.StopService(serviceName);
             this.systemCtl.DisableService(serviceName);
-            this.fileSystem.Delete(systemdUnitFilePath);
+            this.fileSystem.File.Delete(systemdUnitFilePath);
         }
 
         public void InstallService(ServiceDefinition serviceDefinition)
@@ -91,7 +91,7 @@ namespace RaspberryPi.Services
 
         private void WriteUnitFile(string path, string contents)
         {
-            this.fileSystem.WriteAllText(path, contents);
+            this.fileSystem.File.WriteAllText(path, contents);
 
             var commandLineInvocation = new CommandLineInvocation("/bin/bash", $"-c \"chmod 644 {path}\"");
             var result = this.processRunner.ExecuteCommand(commandLineInvocation);
@@ -103,7 +103,7 @@ namespace RaspberryPi.Services
 
         private void CheckSystemPrerequisites()
         {
-            if (!this.fileSystem.Exists("/bin/bash"))
+            if (!this.fileSystem.File.Exists("/bin/bash"))
             {
                 throw new Exception(
                     "Could not detect bash. Bash is required to run tentacle.");

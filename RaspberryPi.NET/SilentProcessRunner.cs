@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using Microsoft.Extensions.Logging;
 using RaspberryPi.Internals;
 
 namespace RaspberryPi
 {
-    public class SilentProcessRunner : IProcessRunner
+    public class ProcessRunner : IProcessRunner
     {
+        private readonly ILogger<ProcessRunner> logger;
+
+        public ProcessRunner(ILogger<ProcessRunner> logger)
+        {
+            this.logger = logger;
+        }
+
         public CmdResult ExecuteCommand(CommandLineInvocation invocation, CancellationToken cancellationToken = default)
         {
             return this.ExecuteCommand(invocation, Environment.CurrentDirectory, cancellationToken);

@@ -4,19 +4,14 @@ namespace RaspberryPi.Storage
 {
     public class FileSystem : IFileSystem
     {
-        public void Delete(string path)
+        public FileSystem()
         {
-            File.Delete(path);
+            this.FileStreamFactory = new FileStreamFactory();
+            this.File = new File();
         }
 
-        public bool Exists(string path)
-        {
-            return File.Exists(path);
-        }
+        public IFile File { get; }
 
-        public void WriteAllText(string path, string contents)
-        {
-            File.WriteAllText(path, contents);
-        }
+        public IFileStreamFactory FileStreamFactory { get; }
     }
 }
