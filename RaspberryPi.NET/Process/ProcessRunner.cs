@@ -53,7 +53,6 @@ namespace RaspberryPi.Process
                 invocation.Executable,
                 invocation.Arguments,
                 invocation.WorkingDirectory,
-                debugs.Add,
                 x => infos.AppendLine(x),
                 x => errors.AppendLine(x),
                 cancellationToken
@@ -66,7 +65,6 @@ namespace RaspberryPi.Process
             string executable,
             string arguments,
             string workingDirectory,
-            Action<string> debugAction,
             Action<string> infoAction,
             Action<string> errorAction,
             CancellationToken cancellationToken = default)
@@ -84,11 +82,6 @@ namespace RaspberryPi.Process
             if (workingDirectory == null)
             {
                 throw new ArgumentNullException(nameof(workingDirectory));
-            }
-
-            if (debugAction == null)
-            {
-                throw new ArgumentNullException(nameof(debugAction));
             }
 
             if (infoAction == null)
@@ -130,13 +123,13 @@ namespace RaspberryPi.Process
             {
                 // We need to be careful to make sure the message is accurate otherwise people could wrongly assume the exe is in the working directory when it could be somewhere completely different!
                 var executableDirectoryName = Path.GetDirectoryName(executable);
-                debugAction($"Executable directory is {executableDirectoryName}");
+                this.logger.LogDebug($"Executable directory is {executableDirectoryName}");
 
                 var exeInSamePathAsWorkingDirectory = string.Equals(executableDirectoryName?.TrimEnd('\\', '/'), workingDirectory.TrimEnd('\\', '/'), StringComparison.OrdinalIgnoreCase);
                 var exeFileNameOrFullPath = exeInSamePathAsWorkingDirectory ? Path.GetFileName(executable) : executable;
-                debugAction($"Executable name or full path: {exeFileNameOrFullPath}");
+                this.logger.LogDebug($"Executable name or full path: {exeFileNameOrFullPath}");
 
-                debugAction($"Starting {exeFileNameOrFullPath} in working directory '{workingDirectory}'");
+                this.logger.LogDebug($"Starting {exeFileNameOrFullPath} in working directory '{workingDirectory}'");
 
                 using (var outputResetEvent = new ManualResetEventSlim(false))
                 using (var errorResetEvent = new ManualResetEventSlim(false))
@@ -181,13 +174,13 @@ namespace RaspberryPi.Process
                     {
                         if (running)
                         {
-                            KillProcess(process, errorAction);
+                            this.KillProcess(process);
                         }
                     }))
                     {
                         if (cancellationToken.IsCancellationRequested)
                         {
-                            KillProcess(process, errorAction);
+                            this.KillProcess(process);
                         }
 
                         process.BeginOutputReadLine();
@@ -195,14 +188,14 @@ namespace RaspberryPi.Process
 
                         process.WaitForExit();
 
-                        SafelyCancelRead(process.CancelErrorRead, debugAction);
-                        SafelyCancelRead(process.CancelOutputRead, debugAction);
+                        this.SafelyCancelRead(process.CancelErrorRead);
+                        this.SafelyCancelRead(process.CancelOutputRead);
 
-                        SafelyWaitForAllOutput(outputResetEvent, cancellationToken, debugAction);
-                        SafelyWaitForAllOutput(errorResetEvent, cancellationToken, debugAction);
+                        this.SafelyWaitForAllOutput(outputResetEvent, cancellationToken);
+                        this.SafelyWaitForAllOutput(errorResetEvent, cancellationToken);
 
                         var exitCode = SafelyGetExitCode(process);
-                        debugAction($"Process {exeFileNameOrFullPath} in {workingDirectory} exited with code {exitCode}");
+                        this.logger.LogDebug($"Process {exeFileNameOrFullPath} in {workingDirectory} exited with code {exitCode}");
 
                         running = false;
                         return exitCode;
@@ -230,9 +223,7 @@ namespace RaspberryPi.Process
             }
         }
 
-        private static void SafelyWaitForAllOutput(ManualResetEventSlim outputResetEvent,
-            CancellationToken cancel,
-            Action<string> debug)
+        private void SafelyWaitForAllOutput(ManualResetEventSlim outputResetEvent, CancellationToken cancel)
         {
             try
             {
@@ -241,11 +232,11 @@ namespace RaspberryPi.Process
             }
             catch (OperationCanceledException ex)
             {
-                debug($"Swallowing {ex.GetType().Name} while waiting for last of the process output.");
+                this.logger.LogError(ex, $"Swallowing {ex.GetType().Name} while waiting for last of the process output.");
             }
         }
 
-        private static void SafelyCancelRead(Action action, Action<string> debug)
+        private void SafelyCancelRead(Action action)
         {
             try
             {
@@ -253,11 +244,11 @@ namespace RaspberryPi.Process
             }
             catch (InvalidOperationException ex)
             {
-                debug($"Swallowing {ex.GetType().Name} calling {action.Method.Name}.");
+                this.logger.LogError(ex, $"Swallowing {ex.GetType().Name} calling {action.Method.Name}.");
             }
         }
 
-        private static void KillProcess(SystemProcess process, Action<string> error)
+        private void KillProcess(SystemProcess process)
         {
             try
             {
@@ -265,7 +256,7 @@ namespace RaspberryPi.Process
             }
             catch (Exception ex)
             {
-                error($"Failed to kill the launched process: {ex}");
+                this.logger.LogError(ex, $"Failed to kill the launched process: {ex}");
             }
         }
     }

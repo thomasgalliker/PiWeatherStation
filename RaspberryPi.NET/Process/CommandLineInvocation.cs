@@ -4,13 +4,13 @@ namespace RaspberryPi.Process
 {
     public class CommandLineInvocation
     {
-        public CommandLineInvocation(string commandLine, string workingDirectory = null)
-            : this(ParseCommandLine(commandLine), workingDirectory)
+        public CommandLineInvocation(string commandLine)
+            : this(ParseCommandLine(commandLine))
         {
         }
 
-        private CommandLineInvocation((string executable, string arguments) commandLine, string workingDirectory = null)
-            : this(commandLine.executable, commandLine.arguments, workingDirectory)
+        private CommandLineInvocation((string executable, string arguments) commandLine)
+            : this(commandLine.executable, commandLine.arguments)
         {
         }
 
