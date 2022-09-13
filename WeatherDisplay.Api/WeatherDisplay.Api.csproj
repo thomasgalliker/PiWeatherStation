@@ -31,7 +31,7 @@
 
   <ItemGroup>
     <None Update="Scripts\setup.sh">
-      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Scripts\update_weatherdisplay_api.sh">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

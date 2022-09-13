@@ -1,11 +1,10 @@
 using System;
-using System.Linq;
 using System.Threading;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
-using RaspberryPi.Internals;
 using RaspberryPi.NET.Tests.Logging;
+using RaspberryPi.Process;
 using RaspberryPi.Services;
 using RaspberryPi.Storage;
 using Xunit;
@@ -64,7 +63,7 @@ namespace RaspberryPi.NET.Tests
 
             var processRunnerMock = this.autoMocker.GetMock<IProcessRunner>();
             processRunnerMock.Setup(p => p.ExecuteCommand(It.IsAny<CommandLineInvocation>(), It.IsAny<CancellationToken>()))
-                .Returns(new CmdResult(0, Enumerable.Empty<string>(), Enumerable.Empty<string>()));
+                .Returns(new CommandLineResult(0, "", ""));
         }
 
         [Fact]

@@ -8,11 +8,13 @@ namespace RaspberryPi.Network
         Task<string> GetCountryCode();
 
         Task<List<string>> GetSSIDs();
+        
+        Task<string> GetReportAsync();
 
         Task Start();
 
         void Stop();
 
-        Task UpdateSSID(string ssid, string psk, string countryCode = null);
+        Task UpdateSSIDAsync(string ssid, string psk, string countryCode);
     }
 }

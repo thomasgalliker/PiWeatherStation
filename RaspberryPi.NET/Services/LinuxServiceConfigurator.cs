@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.Logging;
 using RaspberryPi.Internals;
+using RaspberryPi.Process;
 using RaspberryPi.Storage;
 
 namespace RaspberryPi.Services
@@ -94,11 +95,7 @@ namespace RaspberryPi.Services
             this.fileSystem.File.WriteAllText(path, contents);
 
             var commandLineInvocation = new CommandLineInvocation("/bin/bash", $"-c \"chmod 644 {path}\"");
-            var result = this.processRunner.ExecuteCommand(commandLineInvocation);
-            if (result.ExitCode != 0)
-            {
-                throw new CommandLineException(result.ExitCode, result.Errors);
-            }
+            this.processRunner.ExecuteCommand(commandLineInvocation);
         }
 
         private void CheckSystemPrerequisites()

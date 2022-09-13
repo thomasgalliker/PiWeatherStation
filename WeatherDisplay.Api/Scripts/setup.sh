@@ -85,8 +85,13 @@ echo "Updating packages"
 sudo apt-get update && sudo apt-get -y upgrade
 echo ""
 
-echo "Installing libgdiplus"
+echo "Installing packages"
 sudo apt-get install -y libgdiplus
+sudo apt-get install -y hostapd
+sudo apt-get install -y dnsmasq
+
+sudo systemctl stop hostapd
+sudo systemctl stop dnsmasq
 echo ""
 
 echo "Installing dotnet"

@@ -8,6 +8,7 @@ using Microsoft.OpenApi.Models;
 using NLog;
 using NLog.Extensions.Logging;
 using RaspberryPi;
+using RaspberryPi.Extensions;
 using RaspberryPi.Services;
 using RaspberryPi.Storage;
 using WeatherDisplay.Api.Services;
@@ -74,12 +75,7 @@ namespace WeatherDisplay.Api
                 });
             });
 
-            services.AddSingleton<IJournalctl, Journalctl>();
-            //services.AddSingleton<IAccessPoint, AccessPoint>();
-            services.AddSingleton<ISystemCtl, SystemCtl>();
-            services.AddSingleton<IFileSystem, FileSystem>();
-            services.AddSingleton<IProcessRunner, SilentProcessRunner>();
-            services.AddSingleton<IServiceConfigurator, LinuxServiceConfigurator>();
+            services.AddRaspberryPi();
 
             // ====== Auto update ======
             var autoUpdateOptions = new AutoUpdateOptions();
@@ -106,6 +102,8 @@ namespace WeatherDisplay.Api
             }
 
             services.AddSingleton<IWeatherDisplayHardwareCoordinator, WeatherDisplayHardwareCoordinator>();
+            services.AddSingleton<IWeatherDisplayServiceConfigurator, WeatherDisplayServiceConfigurator>();
+
             // ====== Weather services ======
             services.AddWeatherDisplay(builder.Configuration);
             services.AddHostedService<AutoStartupBackgroundService>();

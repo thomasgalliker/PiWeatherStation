@@ -1,12 +1,10 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
-using RaspberryPi.Internals;
 using RaspberryPi.NET.Tests.Logging;
+using RaspberryPi.Process;
 using RaspberryPi.Services;
 using Xunit;
 using Xunit.Abstractions;
@@ -30,7 +28,7 @@ namespace RaspberryPi.NET.Tests
             // Arrange
             var processRunnerMock = this.autoMocker.GetMock<IProcessRunner>();
             processRunnerMock.Setup(p => p.ExecuteCommand(It.IsAny<CommandLineInvocation>(), It.IsAny<CancellationToken>()))
-                .Returns(new CmdResult(0, Enumerable.Empty<string>(), Enumerable.Empty<string>()));
+                .Returns(new CommandLineResult(0, "", ""));
 
             var systemCtl = this.autoMocker.CreateInstance<SystemCtl>();
 
@@ -47,7 +45,7 @@ namespace RaspberryPi.NET.Tests
             // Arrange
             var processRunnerMock = this.autoMocker.GetMock<IProcessRunner>();
             processRunnerMock.Setup(p => p.ExecuteCommand(It.IsAny<CommandLineInvocation>(), It.IsAny<CancellationToken>()))
-                .Returns(new CmdResult(99, Enumerable.Empty<string>(), new List<string> { "Service does not exist" }));
+                .Returns(new CommandLineResult(99, "", "Service does not exist"));
 
             var systemCtl = this.autoMocker.CreateInstance<SystemCtl>();
 
@@ -64,7 +62,7 @@ namespace RaspberryPi.NET.Tests
             // Arrange
             var processRunnerMock = this.autoMocker.GetMock<IProcessRunner>();
             processRunnerMock.Setup(p => p.ExecuteCommand(It.IsAny<CommandLineInvocation>(), It.IsAny<CancellationToken>()))
-                .Returns(new CmdResult(0, Enumerable.Empty<string>(), Enumerable.Empty<string>()));
+                .Returns(new CommandLineResult(0, "", ""));
 
             var systemCtl = this.autoMocker.CreateInstance<SystemCtl>();
 

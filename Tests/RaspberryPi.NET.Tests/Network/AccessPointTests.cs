@@ -1,22 +1,20 @@
 using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
-using RaspberryPi.Internals;
-using RaspberryPi.Internals.Extensions;
 using RaspberryPi.NET.Tests.Logging;
 using RaspberryPi.Network;
+using RaspberryPi.Process;
 using RaspberryPi.Services;
 using RaspberryPi.Storage;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace RaspberryPi.NET.Tests
+namespace RaspberryPi.NET.Tests.Network
 {
     public class AccessPointTests
     {
@@ -39,7 +37,7 @@ namespace RaspberryPi.NET.Tests
 
             var processRunnerMock = this.autoMocker.GetMock<IProcessRunner>();
             processRunnerMock.Setup(p => p.ExecuteCommand(It.IsAny<CommandLineInvocation>(), It.IsAny<CancellationToken>()))
-                .Returns(new CmdResult(0, Enumerable.Empty<string>(), Enumerable.Empty<string>()));
+                .Returns(new CommandLineResult(0, "", ""));
         }
 
         [Fact]

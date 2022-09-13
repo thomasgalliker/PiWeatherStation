@@ -7,7 +7,7 @@ using System.Net.NetworkInformation;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using RaspberryPi.Internals;
+using RaspberryPi.Process;
 using RaspberryPi.Services;
 using RaspberryPi.Storage;
 
@@ -18,16 +18,19 @@ namespace RaspberryPi.Network
     /// </summary>
     public class DHCP : IDHCP
     {
-        private const string DhcpdService = "dhcpcd.service";
+        internal const string DhcpdService = "dhcpcd.service";
+        internal const string DhcpdConfFilePath = "/etc/dhcpcd.conf";
 
         public DHCP(
             IProcessRunner processRunner,
             ISystemCtl systemCtl,
-            IFileSystem fileSystem)
+            IFileSystem fileSystem,
+            INetworkInterfaceService networkInterface)
         {
             this.processRunner = processRunner;
             this.systemCtl = systemCtl;
             this.fileSystem = fileSystem;
+            this.networkInterface = networkInterface;
         }
 
         /// <summary>
@@ -58,6 +61,7 @@ namespace RaspberryPi.Network
         private readonly IProcessRunner processRunner;
         private readonly ISystemCtl systemCtl;
         private readonly IFileSystem fileSystem;
+        private readonly INetworkInterfaceService networkInterface;
 
         /// <summary>
         /// Private class representing the IP address configuration as saved in the dhcpcd config
@@ -183,7 +187,7 @@ namespace RaspberryPi.Network
             }
 
             // Rewrite the network config
-            await UpdateProfile(iface, ip, netmask, gateway, dnsServer, forAP ?? false);
+            await this.UpdateProfile(iface, ip, netmask, gateway, dnsServer, forAP ?? false);
 
             // Restart dhcpcd if the AP config may have changed
             if (forAP != null)
@@ -192,14 +196,12 @@ namespace RaspberryPi.Network
             }
 
             // Restart Ethernet adapter if it is up to apply the new configuration
-            if (NetworkInterface.GetAllNetworkInterfaces().Any(item => item.Name == iface && item.OperationalStatus == OperationalStatus.Up) &&
+            var networkInterfaces = this.networkInterface.GetAllNetworkInterfaces();
+            if (networkInterfaces.Any(item => item.Name == iface && item.OperationalStatus == OperationalStatus.Up) &&
                 forAP == null)
             {
-                var ipLinkDownCommand = new CommandLineInvocation("ip", $"link set {iface} down");
-                this.processRunner.ExecuteCommand(ipLinkDownCommand);
-
-                var ipLinkUpCommand = new CommandLineInvocation("ip", $"link set {iface} up");
-                this.processRunner.ExecuteCommand(ipLinkUpCommand);
+                this.processRunner.ExecuteCommand($"ip link set {iface} down");
+                this.processRunner.ExecuteCommand($"ip link set {iface} up");
             }
         }
 
@@ -211,10 +213,9 @@ namespace RaspberryPi.Network
         {
             List<IPConfig> result = new();
 
-            if (this.fileSystem.File.Exists("/etc/dhcpcd.conf"))
+            if (this.fileSystem.File.Exists(DhcpdConfFilePath))
             {
-                using FileStream configStream = new("/etc/dhcpcd.conf", FileMode.Open, FileAccess.Read);
-                using StreamReader reader = new(configStream);
+                using StreamReader reader = this.fileSystem.FileStreamFactory.CreateStreamReader(DhcpdConfFilePath, FileMode.Open, FileAccess.Read);
 
                 IPConfig item = null;
                 while (!reader.EndOfStream)
@@ -292,14 +293,15 @@ namespace RaspberryPi.Network
         /// <param name="dnsServer">DNS server or null if unset</param>
         /// <param name="forAP">Add extra option for AP mode</param>
         /// <returns>Asynchronous task</returns>
-        private static async Task UpdateProfile(string iface, IPAddress ip, IPAddress subnet, IPAddress gateway, IPAddress dnsServer, bool forAP)
+        private async Task UpdateProfile(string iface, IPAddress ip, IPAddress subnet, IPAddress gateway, IPAddress dnsServer, bool forAP)
         {
             if (iface == null)
             {
                 throw new ArgumentNullException(nameof(iface));
             }
 
-            using FileStream configStream = new("/etc/dhcpcd.conf", FileMode.Open, FileAccess.ReadWrite);
+            using var configStream = this.fileSystem.FileStreamFactory.Create(DhcpdConfFilePath, FileMode.Open, FileAccess.ReadWrite);
+            //using FileStream configStream = new(DhcpdConfFilePath, FileMode.Open, FileAccess.ReadWrite);
             using MemoryStream newConfigStream = new();
             using (var reader = new StreamReader(configStream, Encoding.UTF8, true, 1024, leaveOpen: true))
             {

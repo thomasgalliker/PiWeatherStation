@@ -18,6 +18,7 @@ namespace RaspberryPi.Network
         private const string InterfaceName = "wlan0";
         private const string DnsmasqServiceName = "dnsmasq.service";
         private const string DnsmasqConfFilePath = "/etc/dnsmasq.conf";
+        private const string DefaultChannel = "acs_survey";
 
         private readonly ILogger logger;
         private readonly ISystemCtl systemCtl;
@@ -101,17 +102,18 @@ namespace RaspberryPi.Network
         /// <returns></returns>
         public async Task ConfigureAsync(string ssid, string psk, IPAddress ipAddress, int? channel = null)
         {
+            this.logger.LogDebug($"ConfigureAsync: ssid={ssid}");
             var countryCode = await this.wpa.GetCountryCode();
 
             if (string.IsNullOrWhiteSpace(countryCode))
             {
-                throw new InvalidOperationException("Cannot configure access point because no country code has been set. Use M587 C to set it first");
+                throw new InvalidOperationException("Cannot configure access point because no country code has been set.");
             }
 
             var channelString = $"{channel}";
             if (channel == null)
             {
-                channelString = "acs_survey";
+                channelString = DefaultChannel;
             }
 
             if (ssid == "*")
@@ -177,6 +179,8 @@ namespace RaspberryPi.Network
 
                 // Set IP address configuration for AP mode
                 await this.dhcp.SetIPAddressAsync(InterfaceName, ipAddress, null, null, null, true);
+
+                this.logger.LogDebug($"ConfigureAsync for ssid={ssid} finished successfully");
             }
         }
     }

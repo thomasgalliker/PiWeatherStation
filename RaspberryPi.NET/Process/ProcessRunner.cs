@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Text;
 using System.Threading;
 using Microsoft.Extensions.Logging;
-using RaspberryPi.Internals;
+using SystemProcess = System.Diagnostics.Process;
 
-namespace RaspberryPi
+namespace RaspberryPi.Process
 {
     public class ProcessRunner : IProcessRunner
     {
@@ -17,43 +18,57 @@ namespace RaspberryPi
             this.logger = logger;
         }
 
-        public CmdResult ExecuteCommand(CommandLineInvocation invocation, CancellationToken cancellationToken = default)
+        public CommandLineResult TryExecuteCommand(string commandLine, CancellationToken cancellationToken = default)
         {
-            return this.ExecuteCommand(invocation, Environment.CurrentDirectory, cancellationToken);
+            var commandLineInvocation = new CommandLineInvocation(commandLine);
+            return this.TryExecuteCommand(commandLineInvocation);
         }
 
-        public CmdResult ExecuteCommand(CommandLineInvocation invocation, string workingDirectory, CancellationToken cancellationToken = default)
+        public CommandLineResult TryExecuteCommand(CommandLineInvocation invocation, CancellationToken cancellationToken = default)
         {
-            if (workingDirectory == null)
-            {
-                throw new ArgumentNullException(nameof(workingDirectory));
-            }
+            var cmdResult = this.ExecuteCommandInternal(invocation, cancellationToken);
+            return cmdResult;
+        }
 
-            var arguments = $"{invocation.Arguments} {invocation.SystemArguments ?? string.Empty}";
+        public CommandLineResult ExecuteCommand(string commandLine, CancellationToken cancellationToken = default)
+        {
+            var commandLineInvocation = new CommandLineInvocation(commandLine);
+            return this.ExecuteCommand(commandLineInvocation);
+        }
+
+        public CommandLineResult ExecuteCommand(CommandLineInvocation invocation, CancellationToken cancellationToken = default)
+        {
+            var cmdResult = this.ExecuteCommandInternal(invocation, cancellationToken);
+            cmdResult.EnsureSuccessExitCode();
+            return cmdResult;
+        }
+
+        private CommandLineResult ExecuteCommandInternal(CommandLineInvocation invocation, CancellationToken cancellationToken = default)
+        {
             var debugs = new List<string>();
-            var infos = new List<string>();
-            var errors = new List<string>();
+            var infos = new StringBuilder();
+            var errors = new StringBuilder();
 
             var exitCode = this.ExecuteCommand(
                 invocation.Executable,
-                arguments,
-                workingDirectory,
+                invocation.Arguments,
+                invocation.WorkingDirectory,
                 debugs.Add,
-                infos.Add,
-                errors.Add,
+                x => infos.AppendLine(x),
+                x => errors.AppendLine(x),
                 cancellationToken
             );
 
-            return new CmdResult(exitCode, infos, errors);
+            return new CommandLineResult(exitCode, infos.ToString(), errors.ToString());
         }
 
-        public int ExecuteCommand(
+        private int ExecuteCommand(
             string executable,
             string arguments,
             string workingDirectory,
-            Action<string> debug,
-            Action<string> info,
-            Action<string> error,
+            Action<string> debugAction,
+            Action<string> infoAction,
+            Action<string> errorAction,
             CancellationToken cancellationToken = default)
         {
             if (executable == null)
@@ -71,19 +86,19 @@ namespace RaspberryPi
                 throw new ArgumentNullException(nameof(workingDirectory));
             }
 
-            if (debug == null)
+            if (debugAction == null)
             {
-                throw new ArgumentNullException(nameof(debug));
+                throw new ArgumentNullException(nameof(debugAction));
             }
 
-            if (info == null)
+            if (infoAction == null)
             {
-                throw new ArgumentNullException(nameof(info));
+                throw new ArgumentNullException(nameof(infoAction));
             }
 
-            if (error == null)
+            if (errorAction == null)
             {
-                throw new ArgumentNullException(nameof(error));
+                throw new ArgumentNullException(nameof(errorAction));
             }
 
             void WriteData(Action<string> action, ManualResetEventSlim resetEvent, DataReceivedEventArgs e)
@@ -102,7 +117,7 @@ namespace RaspberryPi
                 {
                     try
                     {
-                        error($"Error occurred handling message: {ex}");
+                        errorAction($"Error occurred handling message: {ex}");
                     }
                     catch
                     {
@@ -115,17 +130,17 @@ namespace RaspberryPi
             {
                 // We need to be careful to make sure the message is accurate otherwise people could wrongly assume the exe is in the working directory when it could be somewhere completely different!
                 var executableDirectoryName = Path.GetDirectoryName(executable);
-                debug($"Executable directory is {executableDirectoryName}");
+                debugAction($"Executable directory is {executableDirectoryName}");
 
                 var exeInSamePathAsWorkingDirectory = string.Equals(executableDirectoryName?.TrimEnd('\\', '/'), workingDirectory.TrimEnd('\\', '/'), StringComparison.OrdinalIgnoreCase);
                 var exeFileNameOrFullPath = exeInSamePathAsWorkingDirectory ? Path.GetFileName(executable) : executable;
-                debug($"Executable name or full path: {exeFileNameOrFullPath}");
+                debugAction($"Executable name or full path: {exeFileNameOrFullPath}");
 
-                debug($"Starting {exeFileNameOrFullPath} in working directory '{workingDirectory}'");
+                debugAction($"Starting {exeFileNameOrFullPath} in working directory '{workingDirectory}'");
 
                 using (var outputResetEvent = new ManualResetEventSlim(false))
                 using (var errorResetEvent = new ManualResetEventSlim(false))
-                using (var process = new Process())
+                using (var process = new SystemProcess())
                 {
                     process.StartInfo.FileName = executable;
                     process.StartInfo.Arguments = arguments;
@@ -142,15 +157,23 @@ namespace RaspberryPi
 
                     process.OutputDataReceived += (sender, e) =>
                     {
-                        WriteData(info, outputResetEvent, e);
+                        WriteData(infoAction, outputResetEvent, e);
                     };
 
                     process.ErrorDataReceived += (sender, e) =>
                     {
-                        WriteData(error, errorResetEvent, e);
+                        WriteData(errorAction, errorResetEvent, e);
                     };
 
-                    process.Start();
+                    try
+                    {
+                        process.Start();
+                    }
+                    catch (Exception)
+                    {
+                        // TODO: Use CommandLineException
+                        throw;
+                    }
 
                     var running = true;
 
@@ -158,13 +181,13 @@ namespace RaspberryPi
                     {
                         if (running)
                         {
-                            KillProcess(process, error);
+                            KillProcess(process, errorAction);
                         }
                     }))
                     {
                         if (cancellationToken.IsCancellationRequested)
                         {
-                            KillProcess(process, error);
+                            KillProcess(process, errorAction);
                         }
 
                         process.BeginOutputReadLine();
@@ -172,14 +195,14 @@ namespace RaspberryPi
 
                         process.WaitForExit();
 
-                        SafelyCancelRead(process.CancelErrorRead, debug);
-                        SafelyCancelRead(process.CancelOutputRead, debug);
+                        SafelyCancelRead(process.CancelErrorRead, debugAction);
+                        SafelyCancelRead(process.CancelOutputRead, debugAction);
 
-                        SafelyWaitForAllOutput(outputResetEvent, cancellationToken, debug);
-                        SafelyWaitForAllOutput(errorResetEvent, cancellationToken, debug);
+                        SafelyWaitForAllOutput(outputResetEvent, cancellationToken, debugAction);
+                        SafelyWaitForAllOutput(errorResetEvent, cancellationToken, debugAction);
 
                         var exitCode = SafelyGetExitCode(process);
-                        debug($"Process {exeFileNameOrFullPath} in {workingDirectory} exited with code {exitCode}");
+                        debugAction($"Process {exeFileNameOrFullPath} in {workingDirectory} exited with code {exitCode}");
 
                         running = false;
                         return exitCode;
@@ -188,11 +211,12 @@ namespace RaspberryPi
             }
             catch (Exception ex)
             {
+                // TODO: Use CommandLineException
                 throw new Exception($"Error when attempting to execute {executable}: {ex.Message}", ex);
             }
         }
 
-        private static int SafelyGetExitCode(Process process)
+        private static int SafelyGetExitCode(SystemProcess process)
         {
             try
             {
@@ -233,7 +257,7 @@ namespace RaspberryPi
             }
         }
 
-        private static void KillProcess(Process process, Action<string> error)
+        private static void KillProcess(SystemProcess process, Action<string> error)
         {
             try
             {

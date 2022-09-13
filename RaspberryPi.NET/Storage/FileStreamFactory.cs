@@ -23,6 +23,11 @@ namespace RaspberryPi.Storage
             return new FileStream(path, mode, access, share);
         }
 
+        public StreamReader CreateStreamReader(string path, FileMode mode, FileAccess access)
+        {
+            return new StreamReader(this.Create(path, mode, access));
+        }
+
         public StreamWriter CreateStreamWriter(string path, FileMode mode, FileAccess access)
         {
             return new StreamWriter(this.Create(path, mode, access));

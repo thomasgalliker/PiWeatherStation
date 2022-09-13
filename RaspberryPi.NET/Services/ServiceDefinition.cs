@@ -21,7 +21,7 @@ namespace RaspberryPi.Services
                 throw new ArgumentNullException(nameof(serviceName));
             }
 
-            if (!Regex.IsMatch(serviceName, @"^[a-zA-Z0-9_]*$"))
+            if (!Regex.IsMatch(serviceName, @"^[a-zA-Z0-9_.]*$"))
             {
                 throw new ArgumentException("Service name must only contain alphanumeric characters", nameof(serviceName));
             }
@@ -36,6 +36,8 @@ namespace RaspberryPi.Services
         public string WorkingDirectory { get; set; }
 
         public string ServiceDescription { get; set; }
+
+        public string SyslogIdentifier { get; set; }
 
         public string ExecStart { get; set; }
 
@@ -111,9 +113,13 @@ namespace RaspberryPi.Services
                 stringBuilder.AppendLine($"KillMode={GetKillModeDirective(killMode)}");
             }
 
-            stringBuilder.AppendLine($"SyslogIdentifier={this.ServiceName}");
-
-            if(!string.IsNullOrEmpty(this.UserName) || !string.IsNullOrEmpty(this.GroupName))
+            var syslogIdentifier = this.SyslogIdentifier ?? this.ServiceName;
+            if (!string.IsNullOrEmpty(syslogIdentifier))
+            {
+                stringBuilder.AppendLine($"SyslogIdentifier={syslogIdentifier}");
+            }
+            
+            if (!string.IsNullOrEmpty(this.UserName) || !string.IsNullOrEmpty(this.GroupName))
             {
                 stringBuilder.AppendLine();
 
@@ -126,8 +132,8 @@ namespace RaspberryPi.Services
                 {
                     stringBuilder.AppendLine($"Group={this.GroupName}");
                 }
-            }    
-      
+            }
+
             if (this.Restart is ServiceRestart serviceRestart)
             {
                 stringBuilder.AppendLine();

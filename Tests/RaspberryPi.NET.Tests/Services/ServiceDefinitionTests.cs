@@ -1,4 +1,5 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using RaspberryPi.Services;
 using Xunit;
 
@@ -7,10 +8,23 @@ namespace RaspberryPi.NET.Tests.Services
     public class ServiceDefinitionTests
     {
         [Fact]
+        public void ShouldCreateServiceDefinition_ThrowsArgumentException()
+        {
+            // Arrange
+            var serviceName = "%service/!0";
+
+            // Act
+            Action action = () => new ServiceDefinition(serviceName);
+
+            // Assert
+            action.Should().Throw<ArgumentException>();
+        }
+        
+        [Fact]
         public void ShouldGetSystemdUnitFile_Default()
         {
             // Arrange
-            var serviceDefinition = new ServiceDefinition("serviceName");
+            var serviceDefinition = new ServiceDefinition("service.Name");
 
             // Act
             var result = serviceDefinition.GetSystemdUnitFile();
@@ -21,7 +35,7 @@ namespace RaspberryPi.NET.Tests.Services
                 "\r\n" +
                 "[Service]\r\n" +
                 "Type=oneshot\r\n" +
-                "SyslogIdentifier=serviceName\r\n" +
+                "SyslogIdentifier=service.Name\r\n" +
                 "\r\n" +
                 "[Install]\r\n" +
                 "WantedBy=multi-user.target");
@@ -31,11 +45,12 @@ namespace RaspberryPi.NET.Tests.Services
         public void ShouldGetSystemdUnitFile_Sample()
         {
             // Arrange
-            var serviceDefinition = new ServiceDefinition("serviceName")
+            var serviceDefinition = new ServiceDefinition("service_Name")
             {
                 ServiceDescription = "Test service description",
                 ServiceType = ServiceType.Notify,
                 WorkingDirectory = "/home/pi/directory",
+                SyslogIdentifier = "service.name",
                 ExecStart = "/home/pi/directory/executable",
                 ExecStop = "execStop",
                 KillSignal = "killSignal",
@@ -77,7 +92,7 @@ namespace RaspberryPi.NET.Tests.Services
                 "ExecStop=execStop\r\n" +
                 "KillSignal=killSignal\r\n" +
                 "KillMode=process\r\n" +
-                "SyslogIdentifier=serviceName\r\n" +
+                "SyslogIdentifier=service.name\r\n" +
                 "\r\n" +
                 "User=pi\r\n" +
                 "Group=pi\r\n" +

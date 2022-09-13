@@ -35,38 +35,44 @@ namespace WeatherDisplay.Extensions
             var deepLTranslationSection = configuration.GetSection("DeepL");
             deepLTranslationSection.Bind(deepLTranslationConfiguration);
 
+            var displayConfig = appSettings.Displays.First(); // Supports only one display at the time
+
             // Initialize display
-            IDisplay display;
-            if (appSettings.IsDebug)
+            services.AddSingleton<IDisplay>(x =>
             {
-                display = new NullDisplayService();
-            }
-            else
-            {
-                try
+                IDisplay display;
+                if (appSettings.IsDebug)
                 {
-                    var displayConfig = appSettings.Displays.First(); // Supports only one display at the time
-                    switch (displayConfig.DriverType)
+                    display = new NullDisplayService(x.GetRequiredService<ILogger<NullDisplayService>>());
+                }
+                else
+                {
+                    try
                     {
-                        case "WaveShareDisplay":
-                            display = new WaveShareDisplay(displayConfig.Driver);
-                            break;
-                        default:
-                            throw new NotSupportedException($"DriverType '{displayConfig.DriverType}' is not supported");
+                        switch (displayConfig.DriverType)
+                        {
+                            case "WaveShareDisplay":
+                                display = new WaveShareDisplay(displayConfig.Driver);
+                                break;
+                            default:
+                                throw new NotSupportedException($"DriverType '{displayConfig.DriverType}' is not supported");
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        display = new NullDisplayService(x.GetRequiredService<ILogger<NullDisplayService>>());
                     }
                 }
-                catch (Exception)
-                {
-                    display = new NullDisplayService();
-                }
-            }
+
+                return display;
+            });
 
             // TODO: Load from appsettings
             IRenderSettings renderSettings = new RenderSettings
             {
                 BackgroundColor = "#FFFFFFFF",
             };
-            renderSettings.Resize(display.Width, display.Height);
+            renderSettings.Resize(displayConfig.Width, displayConfig.Height); // TODO: Refactor this
 
             // Register services
             services.AddSingleton<IAppSettings>(appSettings);
@@ -75,7 +81,6 @@ namespace WeatherDisplay.Extensions
             services.AddSingleton<ITimerServiceFactory, TimerServiceFactory>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton<IRenderService, RenderService>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton(renderSettings);
-            services.AddSingleton(display);
             services.AddSingleton<IDisplayManager, DisplayManager>();
             services.AddSingleton<IOpenWeatherMapConfiguration>(openWeatherMapConfiguration);
             services.AddSingleton<IOpenWeatherMapService, OpenWeatherMapService>();

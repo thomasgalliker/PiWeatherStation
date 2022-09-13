@@ -259,6 +259,7 @@ content-length: 1460
 
 
 #### Raspberry Pi Resources
+- https://www.raspberrypi.com/documentation/computers/raspberry-pi.html
 - https://desertbot.io/blog/headless-pi-zero-ssh-access-over-usb-windows
 - https://www.petecodes.co.uk/install-and-use-microsoft-dot-net-6-with-the-raspberry-pi/
 

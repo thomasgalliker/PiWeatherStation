@@ -19,23 +19,26 @@ namespace RaspberryPi.Network
     /// </summary>
     public class WPA : IWPA
     {
-        private const string WpaSupplicantService = "wpa_supplicant.service";
-        private const string WpaSupplicantConfFilePath = "/etc/wpa_supplicant/wpa_supplicant.conf";
+        public const string WpaSupplicantService = "wpa_supplicant.service";
+        public const string WpaSupplicantConfFilePath = "/etc/wpa_supplicant/wpa_supplicant.conf";
         private readonly ILogger logger;
         private readonly ISystemCtl systemCtl;
         private readonly IFileSystem fileSystem;
         private readonly IDHCP dhcp;
+        private readonly INetworkInterfaceService networkInterface;
 
         public WPA(
             ILogger<WPA> logger,
             ISystemCtl systemCtl,
             IFileSystem fileSystem,
-            IDHCP dhcp)
+            IDHCP dhcp,
+            INetworkInterfaceService networkInterface)
         {
             this.logger = logger;
             this.systemCtl = systemCtl;
             this.fileSystem = fileSystem;
             this.dhcp = dhcp;
+            this.networkInterface = networkInterface;
         }
 
         /// <summary>
@@ -74,8 +77,7 @@ namespace RaspberryPi.Network
             List<string> ssids = new();
             if (this.fileSystem.File.Exists(WpaSupplicantConfFilePath))
             {
-                using FileStream configStream = new(WpaSupplicantConfFilePath, FileMode.Open, FileAccess.Read);
-                using StreamReader reader = new(configStream);
+                using var reader = this.fileSystem.FileStreamFactory.CreateStreamReader(WpaSupplicantConfFilePath, FileMode.Open, FileAccess.Read);
 
                 var inNetworkSection = false;
                 string ssid = null;
@@ -88,9 +90,9 @@ namespace RaspberryPi.Network
                         {
                             if (line.StartsWith("ssid="))
                             {
-                                // Parse next SSID
-                                //ssid = line["ssid=".Length..].Trim(' ', '\t', '"');
-                                ssid = line.Substring("ssid=".Length, line.Length).Trim(' ', '\t', '"');
+                                var startPosition = "ssid=".Length;
+                                var endPosition = line.Length - startPosition;
+                                ssid = line.Substring(startPosition, endPosition).Trim(' ', '\t', '"');
                             }
                         }
                         else if (line.StartsWith("}"))
@@ -121,7 +123,7 @@ namespace RaspberryPi.Network
         /// Report the current WiFi stations
         /// </summary>
         /// <returns></returns>
-        public async Task<string> Report()
+        public async Task<string> GetReportAsync()
         {
             var ssids = await this.GetSSIDs();
             if (ssids.Count > 0)
@@ -136,7 +138,8 @@ namespace RaspberryPi.Network
                 }
 
                 // Current IP address configuration
-                foreach (var iface in NetworkInterface.GetAllNetworkInterfaces())
+                var networkInterfaces = this.networkInterface.GetAllNetworkInterfaces();
+                foreach (var iface in networkInterfaces)
                 {
                     if (iface.OperationalStatus == OperationalStatus.Up && iface.Name.StartsWith("w"))
                     {
@@ -172,16 +175,16 @@ namespace RaspberryPi.Network
         {
             if (this.fileSystem.File.Exists(WpaSupplicantConfFilePath))
             {
-                using FileStream configStream = new(WpaSupplicantConfFilePath, FileMode.Open, FileAccess.Read);
-                using StreamReader reader = new(configStream);
+                using var reader = this.fileSystem.FileStreamFactory.CreateStreamReader(WpaSupplicantConfFilePath, FileMode.Open, FileAccess.Read);
 
                 while (!reader.EndOfStream)
                 {
                     var line = (await reader.ReadLineAsync()).TrimStart();
                     if (line.StartsWith("country="))
                     {
-                        // Country code found
-                        return line.Substring("country=".Length, line.Length).Trim(' ', '\t');
+                        var startPosition = "country=".Length;
+                        var endPosition = line.Length - startPosition;
+                        return line.Substring(startPosition, endPosition).Trim(' ', '\t');
                     }
                 }
             }
@@ -196,14 +199,14 @@ namespace RaspberryPi.Network
         /// <param name="psk">Password of the new network or null to delete it</param>
         /// <param name="countryCode">Optional country code, must be set if no country code is present yet</param>
         /// <returns></returns>
-        public async Task UpdateSSID(string ssid, string psk, string countryCode = null)
+        public async Task UpdateSSIDAsync(string ssid, string psk, string countryCode)
         {
             // Create template if it doesn't already exist or if the 
             if (!this.fileSystem.File.Exists(WpaSupplicantConfFilePath))
             {
-                if (string.IsNullOrWhiteSpace(countryCode))
+                if (string.IsNullOrEmpty(countryCode))
                 {
-                    throw new ArgumentException("WiFi country is unset. Please use M587 C to specify your country code (e.g. M587 C\"US\")");
+                    throw new ArgumentException("Parameter countryCode must not be null or empty", nameof(countryCode));
                 }
 
                 using FileStream configTemplateStream = new(WpaSupplicantConfFilePath, FileMode.Create, FileAccess.Write);

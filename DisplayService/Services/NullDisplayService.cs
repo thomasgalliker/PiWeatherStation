@@ -1,11 +1,15 @@
 ﻿using System.IO;
+using Microsoft.Extensions.Logging;
 
 namespace DisplayService.Services
 {
     public class NullDisplayService : IDisplay
     {
-        public NullDisplayService()
+        private readonly ILogger<NullDisplayService> logger;
+
+        public NullDisplayService(ILogger<NullDisplayService> logger)
         {
+            this.logger = logger;
         }
 
         public int Width => 800;
@@ -14,14 +18,17 @@ namespace DisplayService.Services
 
         public void Clear()
         {
+            this.logger.LogDebug("Clear");
         }
 
         public void DisplayImage(Stream bitmapStream)
         {
+            this.logger.LogDebug("DisplayImage");
         }
 
         public void Dispose()
         {
+            this.logger.LogDebug("Dispose");
         }
     }
 }

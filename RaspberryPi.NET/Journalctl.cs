@@ -2,20 +2,26 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using RaspberryPi.Process;
+using SystemProcess = System.Diagnostics.Process;
 
 namespace RaspberryPi
 {
     public class Journalctl : IJournalctl
     {
         private readonly string journalctlPath = "journalctl";
+        private readonly IProcessRunner processRunner;
 
-        public Journalctl()
+        public Journalctl(IProcessRunner processRunner)
         {
+            this.processRunner = processRunner;
         }
 
         public List<string> GetLogs(string sysLogIdentifier)
         {
-            var process = Process.Start(new ProcessStartInfo
+            // TODO: Use processRunner
+
+            var process = SystemProcess.Start(new ProcessStartInfo
             {
                 FileName = journalctlPath,
                 Arguments = $"-u {sysLogIdentifier} -b",
