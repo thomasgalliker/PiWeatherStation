@@ -143,15 +143,7 @@ namespace RaspberryPi.Process
                         WriteData(errorAction, errorResetEvent, e);
                     };
 
-                    try
-                    {
-                        process.Start();
-                    }
-                    catch (Exception)
-                    {
-                        // TODO: Use CommandLineException
-                        throw;
-                    }
+                    process.Start();
 
                     var running = true;
 
