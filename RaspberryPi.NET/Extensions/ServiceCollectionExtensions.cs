@@ -25,6 +25,9 @@ namespace RaspberryPi.Extensions
 
             // Storage
             services.AddSingleton<IFileSystem, FileSystem>();
+
+            // System
+            services.AddSingleton<ISystemInfoService, SystemInfoService>();
         }
     }
 }

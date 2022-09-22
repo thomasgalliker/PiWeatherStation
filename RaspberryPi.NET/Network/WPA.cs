@@ -8,9 +8,9 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using RaspberryPi.Process;
 using RaspberryPi.Services;
 using RaspberryPi.Storage;
-using NetworkInterface = System.Net.NetworkInformation.NetworkInterface;
 
 namespace RaspberryPi.Network
 {
@@ -21,8 +21,13 @@ namespace RaspberryPi.Network
     {
         public const string WpaSupplicantService = "wpa_supplicant.service";
         public const string WpaSupplicantConfFilePath = "/etc/wpa_supplicant/wpa_supplicant.conf";
+
+        private static readonly string[] NewLineChars = new string[] { "\n", "\r\n" };
+        private const string ESSID = "ESSID:\"";
+
         private readonly ILogger logger;
         private readonly ISystemCtl systemCtl;
+        private readonly IProcessRunner processRunner;
         private readonly IFileSystem fileSystem;
         private readonly IDHCP dhcp;
         private readonly INetworkInterfaceService networkInterface;
@@ -30,12 +35,14 @@ namespace RaspberryPi.Network
         public WPA(
             ILogger<WPA> logger,
             ISystemCtl systemCtl,
+            IProcessRunner processRunner,
             IFileSystem fileSystem,
             IDHCP dhcp,
             INetworkInterfaceService networkInterface)
         {
             this.logger = logger;
             this.systemCtl = systemCtl;
+            this.processRunner = processRunner;
             this.fileSystem = fileSystem;
             this.dhcp = dhcp;
             this.networkInterface = networkInterface;
@@ -192,6 +199,23 @@ namespace RaspberryPi.Network
             return null;
         }
 
+        public IEnumerable<string> ScanSSIDs(string iface)
+        {
+            if (string.IsNullOrEmpty(iface))
+            {
+                throw new ArgumentException($"Parameter '{nameof(iface)}' must not be null or empty", nameof(iface));
+            }
+
+            var commandLineResult = this.processRunner.ExecuteCommand($"iwlist {iface} scan");
+
+            var ssids = commandLineResult.OutputData.Split(NewLineChars, StringSplitOptions.RemoveEmptyEntries)
+               .Where(line => line.Contains(ESSID))
+               .Select(line => line.Substring(line.IndexOf(ESSID) + ESSID.Length).TrimEnd('"'))
+               .ToArray();
+
+            return ssids;
+        }
+
         /// <summary>
         /// Update a given SSID or add it to the configuration, or delete either a single or all saved SSIDs
         /// </summary>
@@ -206,7 +230,7 @@ namespace RaspberryPi.Network
             {
                 if (string.IsNullOrEmpty(countryCode))
                 {
-                    throw new ArgumentException("Parameter countryCode must not be null or empty", nameof(countryCode));
+                    throw new ArgumentException($"Parameter '{nameof(countryCode)}' must not be null or empty", nameof(countryCode));
                 }
 
                 using FileStream configTemplateStream = new(WpaSupplicantConfFilePath, FileMode.Create, FileAccess.Write);

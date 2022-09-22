@@ -11,9 +11,9 @@
 
         public int ExitCode { get; }
 
-        public string OutputData { get; set; }
+        public string OutputData { get; }
 
-        public string ErrorData { get; set; }
+        public string ErrorData { get; }
 
         public override string ToString()
         {

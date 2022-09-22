@@ -1,9 +1,12 @@
-﻿using System.IO;
-
-namespace RaspberryPi.Storage
+﻿namespace RaspberryPi.Storage
 {
     public class File : IFile
     {
+        public string[] ReadAllLines(string path)
+        {
+            return System.IO.File.ReadAllLines(path);
+        }
+        
         public void Delete(string path)
         {
             System.IO.File.Delete(path);

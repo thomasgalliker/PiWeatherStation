@@ -61,5 +61,22 @@ namespace RaspberryPi.NET.Tests
             result.OutputData.Should().BeEmpty();
             result.ErrorData.Should().NotBeEmpty();
         }
+
+        [Fact]
+        public void ShouldExecuteCommand_Error2()
+        {
+            // Arrange
+            var commandLine = "cat /proc/cpuinfo";
+
+            var processRunner = this.autoMocker.CreateInstance<ProcessRunner>();
+
+            // Act
+            var result = processRunner.ExecuteCommand(commandLine);
+
+            // Assert
+            result.Should().NotBeNull();
+            result.OutputData.Should().BeEmpty();
+            result.ErrorData.Should().NotBeEmpty();
+        }
     }
 }

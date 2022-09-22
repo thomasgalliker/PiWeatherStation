@@ -20,6 +20,13 @@ namespace WeatherDisplay.Api.Controllers
             this.wpa = wpa;
         }
 
+        [HttpGet("scan")]
+        public IEnumerable<string> ScanAsync()
+        {
+            var ssids = this.wpa.ScanSSIDs("wlan0");
+            return ssids;
+        }
+
         [HttpGet("report")]
         public Task<string> GetReportAsync()
         {

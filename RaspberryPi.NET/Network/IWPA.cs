@@ -15,6 +15,8 @@ namespace RaspberryPi.Network
 
         void Stop();
 
+        IEnumerable<string> ScanSSIDs(string iface);
+
         Task UpdateSSIDAsync(string ssid, string psk, string countryCode);
     }
 }

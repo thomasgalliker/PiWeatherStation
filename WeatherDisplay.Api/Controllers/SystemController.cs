@@ -1,6 +1,7 @@
 using System.IO;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using RaspberryPi;
 using RaspberryPi.Internals;
 using RaspberryPi.Network;
 using RaspberryPi.Process;
@@ -15,6 +16,7 @@ namespace WeatherDisplay.Api.Controllers
     public class SystemController : ControllerBase
     {
         private readonly ILogger logger;
+        private readonly ISystemInfoService systemInfoService;
         private readonly IAccessPoint systemService;
         private readonly IProcessRunner processRunner;
         private readonly IServiceConfigurator serviceConfigurator;
@@ -22,12 +24,14 @@ namespace WeatherDisplay.Api.Controllers
 
         public SystemController(
             ILogger<SystemController> logger,
+            ISystemInfoService systemInfoService,
             IAccessPoint systemService,
             IProcessRunner processRunner,
             IServiceConfigurator serviceConfigurator,
             IAutoUpdateService autoUpdateService)
         {
             this.logger = logger;
+            this.systemInfoService = systemInfoService;
             this.systemService = systemService;
             this.processRunner = processRunner;
             this.serviceConfigurator = serviceConfigurator;
@@ -35,20 +39,10 @@ namespace WeatherDisplay.Api.Controllers
         }
 
         [HttpGet("info")]
-        public async Task<SystemInfoDto> GetSystemInfoAsync()
+        public async Task<CPUInfo> GetSystemInfoAsync()
         {
-            var commandLineInvocation = new CommandLineInvocation("cat", $"/proc/cpuinfo");
-            var result = this.processRunner.ExecuteCommand(commandLineInvocation);
-
-            //Hardware        : BCM2835
-            //Revision        : 902120
-            //Serial          : 0000000053a77f3d
-            //Model           : Raspberry Pi Zero 2 W Rev 1.0
-
-            return new SystemInfoDto
-            {
-                Test = result.OutputData
-            };
+            var cpuInfo = await this.systemInfoService.GetCPUInfoAsync();
+            return cpuInfo;
         }
 
         [HttpGet("update")]

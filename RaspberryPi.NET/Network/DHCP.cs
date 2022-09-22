@@ -51,7 +51,7 @@ namespace RaspberryPi.Network
         /// <summary>
         /// Regex to capture the configured DNS server
         /// </summary>
-        private static readonly Regex _dnsServerRegex = new(@"^static\s+domain_name_servers=(?:.*\s+)?(\d+\.\d+\.\d+\.\d+)");
+        private static readonly Regex DnsServerRegex = new(@"^static\s+domain_name_servers=(?:.*\s+)?(\d+\.\d+\.\d+\.\d+)");
 
         /// <summary>
         /// Regex to detect if the interface config is intended for AP mode
@@ -256,7 +256,7 @@ namespace RaspberryPi.Network
                             else
                             {
                                 // DNS server
-                                match = _dnsServerRegex.Match(line);
+                                match = DnsServerRegex.Match(line);
                                 if (match.Success)
                                 {
                                     item.DNSServer = IPAddress.Parse(match.Groups[1].Value);

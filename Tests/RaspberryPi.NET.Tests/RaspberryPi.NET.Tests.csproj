@@ -8,11 +8,15 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="TestData\cpuinfo.txt" />
 	  <None Remove="TestData\dhcpcd.conf" />
+	  <None Remove="TestData\hostinfo.txt" />
 	  <None Remove="TestData\wpa_supplicant.conf" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="TestData\hostinfo.txt" />
+	  <EmbeddedResource Include="TestData\cpuinfo.txt" />
 	  <EmbeddedResource Include="TestData\dhcpcd.conf" />
 	  <EmbeddedResource Include="TestData\wpa_supplicant.conf" />
 	</ItemGroup>
