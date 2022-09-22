@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -46,7 +47,7 @@ namespace RaspberryPi.NET.Tests
         }
 
         [Fact]
-        public void ShouldExecuteCommand_Error()
+        public void ShouldExecuteCommand_ReturnsErrorData()
         {
             // Arrange
             var commandLineInvocation = new CommandLineInvocation("dotnet", "--arg");
@@ -63,20 +64,18 @@ namespace RaspberryPi.NET.Tests
         }
 
         [Fact]
-        public void ShouldExecuteCommand_Error2()
+        public void ShouldExecuteCommand_ThrowsCommandLineException_IfExecutableDoesNotExist()
         {
             // Arrange
-            var commandLine = "cat /proc/cpuinfo";
+            var commandLine = "executable argument1 argument2";
 
             var processRunner = this.autoMocker.CreateInstance<ProcessRunner>();
 
             // Act
-            var result = processRunner.ExecuteCommand(commandLine);
+            Action action = () => processRunner.ExecuteCommand(commandLine);
 
             // Assert
-            result.Should().NotBeNull();
-            result.OutputData.Should().BeEmpty();
-            result.ErrorData.Should().NotBeEmpty();
+            action.Should().Throw<CommandLineException>();
         }
     }
 }

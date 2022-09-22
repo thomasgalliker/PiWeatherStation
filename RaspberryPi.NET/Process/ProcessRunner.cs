@@ -49,7 +49,7 @@ namespace RaspberryPi.Process
             var infos = new StringBuilder();
             var errors = new StringBuilder();
 
-            var exitCode = this.ExecuteCommand(
+            var exitCode = this.ExecuteCommandInternal(
                 invocation.Executable,
                 invocation.Arguments,
                 invocation.WorkingDirectory,
@@ -61,11 +61,11 @@ namespace RaspberryPi.Process
             return new CommandLineResult(exitCode, infos.ToString(), errors.ToString());
         }
 
-        private int ExecuteCommand(
+        private int ExecuteCommandInternal(
             string executable,
             string arguments,
             string workingDirectory,
-            Action<string> infoAction,
+            Action<string> outputDataAction,
             Action<string> errorAction,
             CancellationToken cancellationToken = default)
         {
@@ -84,9 +84,9 @@ namespace RaspberryPi.Process
                 throw new ArgumentNullException(nameof(workingDirectory));
             }
 
-            if (infoAction == null)
+            if (outputDataAction == null)
             {
-                throw new ArgumentNullException(nameof(infoAction));
+                throw new ArgumentNullException(nameof(outputDataAction));
             }
 
             if (errorAction == null)
@@ -108,28 +108,13 @@ namespace RaspberryPi.Process
                 }
                 catch (Exception ex)
                 {
-                    try
-                    {
-                        errorAction($"Error occurred handling message: {ex}");
-                    }
-                    catch
-                    {
-                        // Ignore
-                    }
+                    errorAction($"Error occurred handling message: {ex}");
                 }
             }
 
             try
             {
-                // We need to be careful to make sure the message is accurate otherwise people could wrongly assume the exe is in the working directory when it could be somewhere completely different!
-                var executableDirectoryName = Path.GetDirectoryName(executable);
-                this.logger.LogDebug($"Executable directory is {executableDirectoryName}");
-
-                var exeInSamePathAsWorkingDirectory = string.Equals(executableDirectoryName?.TrimEnd('\\', '/'), workingDirectory.TrimEnd('\\', '/'), StringComparison.OrdinalIgnoreCase);
-                var exeFileNameOrFullPath = exeInSamePathAsWorkingDirectory ? Path.GetFileName(executable) : executable;
-                this.logger.LogDebug($"Executable name or full path: {exeFileNameOrFullPath}");
-
-                this.logger.LogDebug($"Starting {exeFileNameOrFullPath} in working directory '{workingDirectory}'");
+                this.logger.LogDebug($"Starting process '{executable}' in working directory '{workingDirectory}'...");
 
                 using (var outputResetEvent = new ManualResetEventSlim(false))
                 using (var errorResetEvent = new ManualResetEventSlim(false))
@@ -150,7 +135,7 @@ namespace RaspberryPi.Process
 
                     process.OutputDataReceived += (sender, e) =>
                     {
-                        WriteData(infoAction, outputResetEvent, e);
+                        WriteData(outputDataAction, outputResetEvent, e);
                     };
 
                     process.ErrorDataReceived += (sender, e) =>
@@ -195,7 +180,7 @@ namespace RaspberryPi.Process
                         this.SafelyWaitForAllOutput(errorResetEvent, cancellationToken);
 
                         var exitCode = SafelyGetExitCode(process);
-                        this.logger.LogDebug($"Process {exeFileNameOrFullPath} in {workingDirectory} exited with code {exitCode}");
+                        this.logger.LogDebug($"Process '{executable}' exited with code {exitCode}");
 
                         running = false;
                         return exitCode;
@@ -204,8 +189,9 @@ namespace RaspberryPi.Process
             }
             catch (Exception ex)
             {
-                // TODO: Use CommandLineException
-                throw new Exception($"Error when attempting to execute {executable}: {ex.Message}", ex);
+                var cmdEx = new CommandLineException(ex);
+                this.logger.LogError(cmdEx, $"Process '{executable}' failed with exception");
+                throw cmdEx;
             }
         }
 
