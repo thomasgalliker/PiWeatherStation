@@ -63,7 +63,9 @@ namespace RaspberryPi.NET.Tests
 
             var processRunnerMock = this.autoMocker.GetMock<IProcessRunner>();
             processRunnerMock.Setup(p => p.ExecuteCommand(It.IsAny<CommandLineInvocation>(), It.IsAny<CancellationToken>()))
-                .Returns(new CommandLineResult(0, "", ""));
+                .Returns(new CommandLineResult(0));
+            processRunnerMock.Setup(p => p.TryExecuteCommand(It.IsAny<CommandLineInvocation>(), It.IsAny<CancellationToken>()))
+                .Returns(new CommandLineResult(0));
         }
 
         [Fact]

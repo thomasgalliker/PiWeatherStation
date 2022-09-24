@@ -4,6 +4,10 @@ namespace RaspberryPi.Process
 {
     public class CommandLineResult
     {
+        public CommandLineResult(int exitCode) : this(exitCode, null, null)
+        {
+        }
+
         public CommandLineResult(int exitCode, string outputData, string errorData)
         {
             this.ExitCode = exitCode;

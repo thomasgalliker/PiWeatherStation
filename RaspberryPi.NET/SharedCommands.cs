@@ -11,7 +11,7 @@ namespace RaspberryPi
 
         public static bool IsSystemdInstalled(this IProcessRunner processRunner, CancellationToken cancellationToken = default)
         {
-            var result = processRunner.TryExecuteCommand(IsSystemdInstalledCommand);
+            var result = processRunner.TryExecuteCommand(IsSystemdInstalledCommand, cancellationToken);
             return result.Success;
         }
 
@@ -21,7 +21,7 @@ namespace RaspberryPi
 
         public static bool HaveSudoPrivileges(this IProcessRunner processRunner, CancellationToken cancellationToken = default)
         {
-            var result = processRunner.TryExecuteCommand(HaveSudoPrivilegesCommand);
+            var result = processRunner.TryExecuteCommand(HaveSudoPrivilegesCommand, cancellationToken);
             return result.Success;
         }
     }
