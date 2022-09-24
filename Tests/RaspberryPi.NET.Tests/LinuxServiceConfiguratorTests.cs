@@ -160,12 +160,8 @@ namespace RaspberryPi.NET.Tests
 
         private static void VerifyPrerequisites(Mock<IProcessRunner> processRunnerMock)
         {
-            processRunnerMock.Verify(p => p.ExecuteCommand(It.Is<CommandLineInvocation>(i =>
-                i.Executable == "/bin/bash" &&
-                i.Arguments == "-c \"sudo -vn 2> /dev/null\""), It.IsAny<CancellationToken>()), Times.Once);
-            processRunnerMock.Verify(p => p.ExecuteCommand(It.Is<CommandLineInvocation>(i =>
-                i.Executable == "/bin/bash" &&
-                i.Arguments == "-c \"command -v systemctl >/dev/null\""), It.IsAny<CancellationToken>()), Times.Once);
+            processRunnerMock.Verify(p => p.TryExecuteCommand(SharedCommands.IsSystemdInstalledCommand, It.IsAny<CancellationToken>()), Times.Once);
+            processRunnerMock.Verify(p => p.TryExecuteCommand(SharedCommands.HaveSudoPrivilegesCommand, It.IsAny<CancellationToken>()), Times.Once);
         }
     }
 }
