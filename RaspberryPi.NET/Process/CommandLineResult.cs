@@ -1,15 +1,20 @@
-﻿namespace RaspberryPi.Process
+﻿using System.Reflection;
+
+namespace RaspberryPi.Process
 {
     public class CommandLineResult
     {
         public CommandLineResult(int exitCode, string outputData, string errorData)
         {
             this.ExitCode = exitCode;
+            this.Success = exitCode == 0;
             this.OutputData = outputData;
             this.ErrorData = errorData;
         }
 
         public int ExitCode { get; }
+
+        public bool Success { get; }
 
         public string OutputData { get; }
 

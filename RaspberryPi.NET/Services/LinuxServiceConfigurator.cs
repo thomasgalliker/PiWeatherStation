@@ -106,31 +106,17 @@ namespace RaspberryPi.Services
                     "Could not detect bash. Bash is required to run tentacle.");
             }
 
-            if (!this.HaveSudoPrivileges())
+            if (!this.processRunner.HaveSudoPrivileges())
             {
                 throw new Exception(
                     "Requires elevated privileges. Please run command as sudo.");
             }
 
-            if (!this.IsSystemdInstalled())
+            if (!this.processRunner.IsSystemdInstalled())
             {
                 throw new Exception(
                     "Could not detect systemd. systemd is required to run Tentacle as a service");
             }
-        }
-
-        private bool IsSystemdInstalled()
-        {
-            var commandLineInvocation = new CommandLineInvocation("/bin/bash", "-c \"command -v systemctl >/dev/null\"");
-            var result = this.processRunner.ExecuteCommand(commandLineInvocation);
-            return result.ExitCode == 0;
-        }
-
-        private bool HaveSudoPrivileges()
-        {
-            var commandLineInvocation = new CommandLineInvocation("/bin/bash", "-c \"sudo -vn 2> /dev/null\"");
-            var result = this.processRunner.ExecuteCommand(commandLineInvocation);
-            return result.ExitCode == 0;
         }
 
         private static string GetServiceFilePath(string serviceName)

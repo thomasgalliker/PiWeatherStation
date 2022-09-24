@@ -1,6 +1,6 @@
 ﻿namespace RaspberryPi
 {
-    public class SharedProperties
+    public class SharedConstants
     {
         internal const string Eth0 = "eth0";
         internal const string Wlan0 = "wlan0";

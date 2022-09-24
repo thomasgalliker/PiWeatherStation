@@ -63,8 +63,7 @@ namespace RaspberryPi.Services
 
             var commandLineInvocation = new CommandLineInvocation("/bin/bash", $"-c \"{systemCtlCommand}\"");
             var result = this.processRunner.ExecuteCommand(commandLineInvocation);
-            var success = result.ExitCode == 0;
-
+            var success = result.Success;
             if (success)
             {
                 this.logger.LogInformation(
@@ -87,8 +86,7 @@ namespace RaspberryPi.Services
 
             var commandLineInvocation = new CommandLineInvocation("sudo", systemctlCommand);
             var result = this.processRunner.ExecuteCommand(commandLineInvocation);
-            var success = result.ExitCode == 0;
-
+            var success = result.Success;
             if (success)
             {
                 this.logger.LogInformation(
