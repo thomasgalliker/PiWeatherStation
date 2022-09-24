@@ -6,7 +6,7 @@ namespace WeatherDisplay.Api.Services
     {
         private static readonly ServiceDefinition ServiceDefinition = new ServiceDefinition("weatherdisplay.api")
         {
-            ServiceDescription = "WeatherDisplay.Api Service",
+            ServiceDescription = "WeatherDisplay.Api",
             ServiceType = ServiceType.Notify,
             WorkingDirectory = "/home/pi/WeatherDisplay.Api",
             ExecStart = "/home/pi/WeatherDisplay.Api/WeatherDisplay.Api",

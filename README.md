@@ -117,17 +117,13 @@ If everything works fine so far, we can setup the WeatherDisplay.Api as a servic
 - Navigate to /etc/systemd/system and create a new service definition:
 
 ```
-cd /etc/systemd/system
-```
-
-```
-sudo nano weatherdisplay.api.service
+sudo nano /etc/systemd/system/weatherdisplay.api.service
 ```
 
 - Create a service definition which automatically starts the web API service when the operating system is started.
 ```
 [Unit]
-Description=WeatherDisplay.Api Service
+Description=WeatherDisplay.Api
 
 # When this service should be started up
 After=network-online.target firewalld.service
@@ -139,7 +135,7 @@ Wants=network-online.target
 Type=notify
 WorkingDirectory=/home/pi/WeatherDisplay.Api
 ExecStart=/home/pi/WeatherDisplay.Api/WeatherDisplay.Api
-ExecStop=/bin/kill ${MAINPID}
+ExecStop=/bin/kill $MAINPID
 KillSignal=SIGTERM
 KillMode=process
 SyslogIdentifier=WeatherDisplay.Api

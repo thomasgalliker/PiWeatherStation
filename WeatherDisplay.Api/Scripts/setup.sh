@@ -4,6 +4,7 @@
 # https://gist.github.com/damoclark/ab3d700aafa140efb97e510650d9b1be
 # https://github.com/pi-top/pi-top-4-.NET-SDK/blob/417ea28fdd47480a6c9ef6835e292259a03e7aa0/setup.sh
 # https://github.com/thnk2wn/rasp-cat-siren/blob/main/pi-setup/setup.sh
+# https://github.com/AdamZWinter/cnode/blob/6aa26d5ffd0b95c68d8814f63e300dafd687e138/scripts/setup_mon.sh
 
 echo "PiWeatherStation Setup Script [Version 1.0.0]"
 echo "(c) superdev gmbh. All rights reserved."
