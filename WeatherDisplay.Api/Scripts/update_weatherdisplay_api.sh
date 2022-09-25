@@ -123,28 +123,19 @@ fi
 
 cd $workingDirectory
 
-echo "Running automated raspi-config tasks"
+echo "Configuring raspberry pi..."
 sudo raspi-config nonint do_boot_wait 0                     # Turn on waiting for network before booting
 sudo raspi-config nonint do_boot_splash 0                   # Disable the splash screen
 sudo raspi-config nonint do_spi 0                           # Enable SPI support
 sudo raspi-config nonint do_ssh 0                           # Enable SSH support
 sudo raspi-config nonint do_camera 0                        # Disable camera
-sudo raspi-config nonint do_change_locale $locale           # Change locale
-sudo raspi-config nonint do_configure_keyboard $keyboard    # Change keyboard layout
-sudo raspi-config nonint do_change_timezone $timezone       # Change timezone
 
-echo "Updating timezone"
-sudo timedatectl set-timezone ${timezone}
-echo ""
-
-echo "Configure boot config"
 sudo bash -c "sed -i \"s/^\s*hdmi_force_hotplug=/#hdmi_force_hotplug=/\" $bootConfig"
 sudo bash -c "sed -i \"s/^\s*camera_auto_detect=/#camera_auto_detect=/\" $bootConfig"
 sudo bash -c "sed -i \"s/^\s*display_auto_detect=/#display_auto_detect=/\" $bootConfig"
 sudo bash -c "sed -i \"s/^\s*dtoverlay=vc4-kms-v3d/#dtoverlay=vc4-kms-v3d/\" $bootConfig"
 sudo bash -c "sed -i \"s/^\s*dtparam=audio=on/dtparam=audio=off/\" $bootConfig"
 
-# append lines to config.txt
 dtoverlayToBeAdded="dtoverlay=spi0-1cs,cs0_pin=28"
 cnt=$(grep -c $dtoverlayToBeAdded $bootConfig)
 if [ $cnt -eq 0 ]; then
@@ -156,11 +147,11 @@ EOF"
 fi
 echo ""
 
-echo "Updating packages"
+echo "Updating packages..."
 sudo apt-get update && sudo apt-get -y upgrade
 echo ""
 
-echo "Installing packages"
+echo "Installing packages..."
 sudo apt-get install -y libgdiplus
 sudo apt-get install -y hostapd
 sudo apt-get install -y dnsmasq
@@ -172,7 +163,7 @@ echo ""
 if [ -d $dotnetDirectory ]; then
     echo "dotnet already exists"
 else
-    echo "Installing dotnet"
+    echo "Installing dotnet..."
     sudo curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --install-dir $dotnetDirectory --channel Current
     echo ""
 fi
@@ -259,7 +250,14 @@ if [ "${serviceStatus}" != "active" ]; then
     sudo systemctl start $serviceName
 fi
 
+echo "Updating hostname..."
 sudo hostnamectl set-hostname $host
+
+echo "Updating regional settings..."
+sudo raspi-config nonint do_change_locale $locale
+sudo raspi-config nonint do_configure_keyboard $keyboard
+sudo raspi-config nonint do_change_timezone $timezone
+echo ""
 
 echo "
 =====================================================
