@@ -54,7 +54,7 @@ dotnetDirectory="/home/pi/.dotnet"
 bootConfig="/boot/config.txt"
 workingDirectory="/home/pi/WeatherDisplay.Api"
 executable="WeatherDisplay.Api"
-serviceName="weatherdisplay.api.service"
+serviceName="weatherdisplay.api"
 downloadFile="$workingDirectory/WeatherDisplay.Api.zip"
 
 if [ -z "$systemDir" ]
@@ -83,7 +83,7 @@ then
       keyboard="ch"
 fi
 
-serviceFilePath="$systemDir"/"$serviceName"
+serviceFilePath="$systemDir"/"$serviceName.service"
 
 if [ "$debug" = "true" ]; then
     echo "
