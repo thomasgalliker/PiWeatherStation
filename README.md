@@ -1,9 +1,27 @@
 # PiWeatherStation
-This is a demo project which uses a Raspberry Pi 4 to draw some basic weather information to a 7.5" Waveshare ePaper display. The code is based on .NET 6 and there are two runtime projects you can chose from: A console client (WeatherDisplay.ConsoleApp) and an ASP.NET Core Web API (WeatherDisplay.Api).
+This is a demo project which uses a Raspberry Pi 4 / Zero 2 to draw some basic weather information to a 7.5" Waveshare ePaper display. The code is based on .NET 6 and there are two runtime projects you can chose from: A console client (WeatherDisplay.ConsoleApp) and an ASP.NET Core Web API (WeatherDisplay.Api).
 
 ![](Docs/2022-28-05-DisplayPhoto2.jpg)
 
 ### Quick Setup
+The script file `update_weatherdisplay_api.sh` contains all necessary steps to prepare a new Raspberry Pi to run WeatherDisplay.Api as a service.
+Download the script file and run it as follows.
+```
+curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/draw-temperature-forecast-diagram/WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh | sudo bash /dev/stdin
+```
+Append script parameters if needed:
+- `--pre` to download a pre-release of WeatherDisplay.Api. By default, the latest stable version is downloaded.
+- `--debug` in order to see verbose log output.
+- `--host` to set a custom hostname.
+- `--keyboard` to set the keyboard layout.
+- `--locale` to set the current locale.
+- `--timezone` to set the current timezone.
+```
+curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/draw-temperature-forecast-diagram/WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh | sudo bash /dev/stdin --debug --pre
+```
+
+### Extended Setup / Troubleshooting
+The following steps are fully automated in `update_weatherdisplay_api.sh`. Follow these steps if the update script cause troubles.
 
 #### Prepare the Raspberry Pi
 - Before we install any additional library, make sure the Raspberry OS as well as the installed libraries are on the latest stable releases.
