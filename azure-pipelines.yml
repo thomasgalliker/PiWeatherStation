@@ -114,7 +114,7 @@ steps:
     command: publish
     projects: 'WeatherDisplay.Api/WeatherDisplay.Api.csproj'
     publishWebProjects: false
-    arguments: '--no-restore --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Development /p:EnvironmentName=Development'
+    arguments: '--configuration $(BuildConfiguration) --self-contained false --runtime linux-arm --output $(Build.ArtifactStagingDirectory)/Development /p:EnvironmentName=Development'
     zipAfterPublish: false
     condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
@@ -124,7 +124,7 @@ steps:
     command: publish
     projects: 'WeatherDisplay.Api/WeatherDisplay.Api.csproj'
     publishWebProjects: false
-    arguments: '--no-restore --configuration $(BuildConfiguration) --output $(Build.ArtifactStagingDirectory)/Production /p:EnvironmentName=Production'
+    arguments: '--configuration $(BuildConfiguration) --self-contained false --runtime linux-arm --output $(Build.ArtifactStagingDirectory)/Production /p:EnvironmentName=Production'
     zipAfterPublish: false
     condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
@@ -136,6 +136,7 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/zips/Development/WeatherDisplay.Api_$(semVersion).zip'
     replaceExistingArchive: true
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
     
 - task: ArchiveFiles@2
   displayName: 'Zip WeatherDisplay.Api Production'
@@ -145,6 +146,7 @@ steps:
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/zips/Production/WeatherDisplay.Api_$(semVersion).zip'
     replaceExistingArchive: true
+    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
 - task: PublishCodeCoverageResults@1
   displayName: 'Publish code coverage'
