@@ -1,11 +1,5 @@
 ﻿#!/bin/bash
 
-# Sources:
-# https://gist.github.com/damoclark/ab3d700aafa140efb97e510650d9b1be
-# https://github.com/pi-top/pi-top-4-.NET-SDK/blob/417ea28fdd47480a6c9ef6835e292259a03e7aa0/setup.sh
-# https://github.com/thnk2wn/rasp-cat-siren/blob/main/pi-setup/setup.sh
-# https://github.com/AdamZWinter/cnode/blob/6aa26d5ffd0b95c68d8814f63e300dafd687e138/scripts/setup_mon.sh
-
 echo "
 =====================================================
 PiWeatherStation Setup Script [Version 1.0.0]
@@ -35,6 +29,7 @@ if [ "$#" != 0 ]; then
     case "$opt" in
 
       -h|--host) assert_argument "$1" "$opt"; host="$1"; shift;;
+      -l|--locale) assert_argument "$1" "$opt"; locale="$1"; shift;;
       -k|--keyboard) assert_argument "$1" "$opt"; keyboard="$1"; shift;;
       -t|--timezone) assert_argument "$1" "$opt"; timezone="$1"; shift;;
       -p|--pre) preRelease=true;;
@@ -55,6 +50,8 @@ if [ "$#" != 0 ]; then
   shift  # $EOL
 fi
 
+dotnetDirectory="/home/pi/.dotnet"
+bootConfig="/boot/config.txt"
 workingDirectory="/home/pi/WeatherDisplay.Api"
 executable="WeatherDisplay.Api"
 serviceName="weatherdisplay.api.service"
@@ -76,14 +73,19 @@ then
       timezone="Europe/Zurich"
 fi
 
+if [ -z "$locale" ]
+then
+      locale="en_US.UTF-8"
+fi
+
 if [ -z "$keyboard" ]
 then
-      keyboard="us"
+      keyboard="ch"
 fi
 
 serviceFilePath="$systemDir"/"$serviceName"
 
-if [ "$debug"="true" ]; then
+if [ "$debug" = "true" ]; then
     echo "
 =====================================================
 Debug Variables
@@ -91,13 +93,16 @@ Debug Variables
 preRelease: $preRelease
 systemDir: $systemDir
 workingDirectory: $workingDirectory
+dotnetDirectory: $dotnetDirectory
+bootConfig: $bootConfig
 executable: $executable
 serviceName: $serviceName
 serviceFilePath: $serviceFilePath
 downloadFile: $downloadFile
 host: $host
-timezone: $timezone
+locale: $locale
 keyboard: $keyboard
+timezone: $timezone
 reboot: $reboot
 =====================================================
 " >&2
@@ -105,35 +110,66 @@ fi
 
 #exit 1
 
-if [ ! -d $workingDirectory ]
-then
+echo "
+=====================================================
+Setting up raspberry pi@${host}.local
+=====================================================
+" >&2
+
+if [ ! -d $workingDirectory ]; then
      echo "Creating directory $workingDirectory"
      mkdir $workingDirectory
 fi
 
 cd $workingDirectory
 
-echo "Setting up raspberry pi@${host}.local"
-
 echo "Running automated raspi-config tasks"
-grep -E -v -e '^\s*#' -e '^\s*$' <<END | \
-sed -e 's/$//' -e 's/^\s*/\/usr\/bin\/raspi-config nonint /' | bash -x -
-#
-# Drop this file in SD card root. After booting run: sudo /boot/setup.sh
-# --- Begin raspi-config non-interactive config option specification ---
-# Hardware Configuration
-do_boot_wait 0            # Turn on waiting for network before booting
-do_boot_splash 1          # Disable the splash screen
-do_overscan 1             # Enable overscan
-do_camera 1               # Enable the camera
-do_ssh 0                  # Enable remote ssh login
-# System Configuration
-do_configure_keyboard ${keyboard}
-do_change_timezone ${timezone}
-do_change_locale LANG=en_US.UTF-8
-# Don't add any raspi-config configuration options after 'END' line below & don't remove 'END' line
-END
+sudo raspi-config nonint do_boot_wait 0                     # Turn on waiting for network before booting
+sudo raspi-config nonint do_boot_splash 0                   # Disable the splash screen
+sudo raspi-config nonint do_spi 0                           # Enable SPI support
+sudo raspi-config nonint do_ssh 0                           # Enable SSH support
+sudo raspi-config nonint do_camera 0                        # Disable camera
+sudo raspi-config nonint do_change_locale $locale           # Change locale
+sudo raspi-config nonint do_configure_keyboard $keyboard    # Change keyboard layout
+sudo raspi-config nonint do_change_timezone $timezone       # Change timezone
+
+echo "Updating timezone"
+sudo timedatectl set-timezone ${timezone}
 echo ""
+
+echo "Configure boot config"
+sudo bash -c "sed -i \"s/^\s*hdmi_force_hotplug=/#hdmi_force_hotplug=/\" $bootConfig"
+sudo bash -c "sed -i \"s/^\s*camera_auto_detect=/#camera_auto_detect=/\" $bootConfig"
+sudo bash -c "sed -i \"s/^\s*display_auto_detect=/#display_auto_detect=/\" $bootConfig"
+sudo bash -c "sed -i \"s/^\s*dtoverlay=vc4-kms-v3d/#dtoverlay=vc4-kms-v3d/\" $bootConfig"
+sudo bash -c "sed -i \"s/^\s*dtparam=audio=on/dtparam=audio=off/\" $bootConfig"
+
+# append lines to config.txt
+dtoverlayToBeAdded="dtoverlay=spi0-1cs,cs0_pin=28"
+cnt=$(grep -c $dtoverlayToBeAdded $bootConfig)
+if [ $cnt -eq 0 ]; then
+    sudo bash -c "cat >> $bootConfig <<EOF
+# WeatherDisplay.Api config section:
+$dtoverlayToBeAdded
+dtoverlay=disable-bt
+EOF"
+fi
+echo ""
+
+#grep -E -v -e '^\s*#' -e '^\s*$' <<END | \
+#sed -e 's/$//' -e 's/^\s*/\/usr\/bin\/raspi-config nonint /' | bash -x -
+## Hardware Configuration
+#do_boot_wait 0            # Turn on waiting for network before booting
+#do_boot_splash 1          # Disable the splash screen
+#do_overscan 1             # Enable overscan
+#do_camera 1               # Enable the camera
+#do_ssh 0                  # Enable remote ssh login
+## System Configuration
+#do_configure_keyboard ${keyboard}
+#do_change_timezone ${timezone}
+#do_change_locale LANG=en_US.UTF-8
+#END
+#echo ""
 
 echo "Updating packages"
 sudo apt-get update && sudo apt-get -y upgrade
@@ -148,13 +184,17 @@ sudo systemctl stop hostapd
 sudo systemctl stop dnsmasq
 echo ""
 
-echo "Installing dotnet"
-sudo curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel Current
-echo ""
+if [ -d $dotnetDirectory ]; then
+    echo "dotnet already exists"
+else
+    echo "Installing dotnet"
+    sudo curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --install-dir $dotnetDirectory --channel Current
+    echo ""
+fi
 
 echo "Updating dotnet environment variables"
 if ! grep -q ".NET Core SDK tools" "/home/pi/.bashrc"; then
-  cat << \EOF >> "/home/pi/.bashrc"
+    cat << \EOF >> "/home/pi/.bashrc"
 # .NET Core SDK tools
 export PATH=${PATH}:/home/pi/.dotnet
 export PATH=${PATH}:/home/pi/.dotnet/tools
@@ -167,10 +207,6 @@ export PATH=${PATH}:/home/pi/.dotnet/tools
 export DOTNET_ROOT=/home/pi/.dotnet
 
 sudo -s source /etc/bash.bashrc
-echo ""
-
-echo "Updating timezone"
-sudo timedatectl set-timezone ${timezone}
 echo ""
 
 if [ -f "$downloadFile" ] ; then
@@ -250,9 +286,18 @@ pi@${host}.local will be ready after the reboot...
 =====================================================
 " >&2
 
-if [ "$reboot"="true" ]; then
+if [ "$reboot" = "true" ]; then
     echo "Rebooting..."
     sudo reboot
 else
     echo "Run 'sudo reboot' to reboot manually"
 fi
+
+exit 0
+
+# Links / Sources:
+# https://gist.github.com/damoclark/ab3d700aafa140efb97e510650d9b1be
+# https://github.com/pi-top/pi-top-4-.NET-SDK/blob/417ea28fdd47480a6c9ef6835e292259a03e7aa0/setup.sh
+# https://github.com/thnk2wn/rasp-cat-siren/blob/main/pi-setup/setup.sh
+# https://github.com/AdamZWinter/cnode/blob/6aa26d5ffd0b95c68d8814f63e300dafd687e138/scripts/setup_mon.sh
+# https://raspberrypi.stackexchange.com/questions/28907/how-could-one-automate-the-raspbian-raspi-config-setup
