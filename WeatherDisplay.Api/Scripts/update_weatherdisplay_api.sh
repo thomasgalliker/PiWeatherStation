@@ -156,21 +156,6 @@ EOF"
 fi
 echo ""
 
-#grep -E -v -e '^\s*#' -e '^\s*$' <<END | \
-#sed -e 's/$//' -e 's/^\s*/\/usr\/bin\/raspi-config nonint /' | bash -x -
-## Hardware Configuration
-#do_boot_wait 0            # Turn on waiting for network before booting
-#do_boot_splash 1          # Disable the splash screen
-#do_overscan 1             # Enable overscan
-#do_camera 1               # Enable the camera
-#do_ssh 0                  # Enable remote ssh login
-## System Configuration
-#do_configure_keyboard ${keyboard}
-#do_change_timezone ${timezone}
-#do_change_locale LANG=en_US.UTF-8
-#END
-#echo ""
-
 echo "Updating packages"
 sudo apt-get update && sudo apt-get -y upgrade
 echo ""
