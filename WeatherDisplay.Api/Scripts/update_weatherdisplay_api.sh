@@ -83,7 +83,7 @@ fi
 
 serviceFilePath="$systemDir"/"$serviceName"
 
-if [ "$debug" == "true" ]; then
+if [ "$debug"="true" ]; then
     echo "
 =====================================================
 Debug Variables
@@ -250,7 +250,7 @@ pi@${host}.local will be ready after the reboot...
 =====================================================
 " >&2
 
-if [ "$reboot" == "true" ]; then
+if [ "$reboot"="true" ]; then
     echo "Rebooting..."
     sudo reboot
 else
