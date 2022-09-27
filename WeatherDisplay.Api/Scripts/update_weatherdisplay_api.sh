@@ -29,9 +29,9 @@ if [ "$#" != 0 ]; then
     case "$opt" in
 
       -h|--host) assert_argument "$1" "$opt"; host="$1"; shift;;
+      -t|--timezone) assert_argument "$1" "$opt"; timezone="$1"; shift;;
       -l|--locale) assert_argument "$1" "$opt"; locale="$1"; shift;;
       -k|--keyboard) assert_argument "$1" "$opt"; keyboard="$1"; shift;;
-      -t|--timezone) assert_argument "$1" "$opt"; timezone="$1"; shift;;
       -p|--pre) preRelease=true;;
       -v|--debug) debug=true;;
       -n|--no-reboot) reboot=false;;
@@ -68,21 +68,6 @@ then
     host="raspi$serialNumber"
 fi
 
-if [ -z "$timezone" ]
-then
-      timezone="Europe/Zurich"
-fi
-
-if [ -z "$locale" ]
-then
-      locale="en_US.UTF-8"
-fi
-
-if [ -z "$keyboard" ]
-then
-      keyboard="ch"
-fi
-
 serviceFilePath="$systemDir"/"$serviceName.service"
 
 if [ "$debug" = "true" ]; then
@@ -100,21 +85,15 @@ serviceName: $serviceName
 serviceFilePath: $serviceFilePath
 downloadFile: $downloadFile
 host: $host
+timezone: $timezone
 locale: $locale
 keyboard: $keyboard
-timezone: $timezone
 reboot: $reboot
 =====================================================
 " >&2
 fi
 
 #exit 1
-
-echo "
-=====================================================
-Setting up raspberry pi@${host}.local
-=====================================================
-" >&2
 
 if [ ! -d $workingDirectory ]; then
      echo "Creating directory $workingDirectory"
@@ -123,7 +102,7 @@ fi
 
 cd $workingDirectory
 
-echo "Configuring raspberry pi..."
+echo "Setting up raspberry pi@${host}.local..."
 sudo raspi-config nonint do_boot_wait 0                     # Turn on waiting for network before booting
 sudo raspi-config nonint do_boot_splash 0                   # Disable the splash screen
 sudo raspi-config nonint do_spi 0                           # Enable SPI support
@@ -189,14 +168,16 @@ if [ -f "$downloadFile" ] ; then
     rm "$downloadFile"
 fi
 
-if($preRelease = true) then
+if [ "$preRelease" = "true" ]; then
   downloadUrl=$(curl -s https://api.github.com/repos/thomasgalliker/PiWeatherStation/releases | grep browser_download_url | cut -d '"' -f 4 | head -n 1)
 else
   downloadUrl=$(curl -s https://api.github.com/repos/thomasgalliker/PiWeatherStation/releases/latest | grep browser_download_url | cut -d '"' -f 4)
 fi
 
-echo "Download from url $downloadUrl..."
+echo "Downloading WeatherDisplay.Api..."
+echo "$downloadUrl"
 curl -L --output "$downloadFile" --progress-bar $downloadUrl
+echo ""
 
 serviceStatus="$(systemctl is-active $serviceName)"
 if [ "${serviceStatus}" = "active" ]; then
@@ -204,7 +185,7 @@ if [ "${serviceStatus}" = "active" ]; then
     sudo systemctl stop $serviceName
 fi
 
-echo "Updating weatherdisplay service..."
+echo "Installing WeatherDisplay.Api..."
 unzip -q -o "$downloadFile" -d $workingDirectory
 rm "$downloadFile"
 
@@ -244,37 +225,47 @@ EOF
 fi
 
 if [ "${serviceStatus}" != "active" ]; then
-    echo "Starting $serviceName..."
+    echo "Starting service $serviceName..."
     sudo systemctl daemon-reload
     sudo systemctl enable $serviceName
-    sudo systemctl start $serviceName
+    #sudo systemctl start $serviceName
+fi
+
+if [ ! -z "$timezone" ]; then
+    echo "Updating timezone $timezone..."
+    sudo raspi-config nonint do_change_timezone $timezone
+fi
+
+if [ ! -z "$locale" ]; then
+    echo "Updating locale $locale..."
+    sudo raspi-config nonint do_change_locale $locale
+fi
+
+if [ ! -z "$keyboard" ]; then
+    echo "Updating keyboard layout $keyboard..."
+    sudo raspi-config nonint do_configure_keyboard $keyboard
 fi
 
 echo "Updating hostname..."
 sudo hostnamectl set-hostname $host
-
-echo "Updating regional settings..."
-sudo raspi-config nonint do_change_locale $locale
-sudo raspi-config nonint do_configure_keyboard $keyboard
-sudo raspi-config nonint do_change_timezone $timezone
-echo ""
 
 echo "
 =====================================================
 Installation is completed
 =====================================================
 
-pi@${host}.local will be ready after the reboot...
+pi@${host}.local will be ready
+after the reboot.
 
-=====================================================
 " >&2
 
 if [ "$reboot" = "true" ]; then
-    echo "Rebooting..."
+    echo "Rebooting now..."
     sudo reboot
 else
-    echo "Run 'sudo reboot' to reboot manually"
+    echo "Run 'sudo reboot' to reboot manually."
 fi
+echo "====================================================="
 
 exit 0
 
