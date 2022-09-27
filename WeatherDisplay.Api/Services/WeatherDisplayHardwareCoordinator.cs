@@ -45,7 +45,7 @@ namespace WeatherDisplay.Api.Services
             }
             else
             {
-                throw new NotSupportedException($"Button with buttonId={buttonId} does not exist.");
+                throw new NotSupportedException($"Button with buttonId={buttonId} is currently not supported.");
             }
         }
 
