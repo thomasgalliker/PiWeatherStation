@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using DisplayService.Services;
 using Microsoft.Extensions.Logging;
+using WeatherDisplay.Internals;
 
 namespace WeatherDisplay.Compilations
 {
     public class DisplayCompilationService : IDisplayCompilationService
     {
+        private readonly SyncHelper syncHelper = new SyncHelper();
         private readonly ILogger logger;
         private readonly IDisplayManager displayManager;
         private readonly IEnumerable<IDisplayCompilation> displayCompilations;
 
         public DisplayCompilationService(
-            ILogger<DisplayCompilationService> logger, 
+            ILogger<DisplayCompilationService> logger,
             IDisplayManager displayManager,
             IEnumerable<IDisplayCompilation> displayCompilations)
         {
@@ -26,19 +27,22 @@ namespace WeatherDisplay.Compilations
 
         public async Task SelectDisplayCompilationAsync(string name)
         {
-            this.logger.LogDebug($"SelectDisplayCompilationAsync: name={name}");
-
-            var selectedDisplayCompilation = this.displayCompilations.SingleOrDefault(c => c.Name == name);
-            if (selectedDisplayCompilation == null)
+            await this.syncHelper.RunOnceAsync(async () =>
             {
-                throw new ArgumentException("Could not find display compilation", nameof(name));
-            }
+                this.logger.LogDebug($"SelectDisplayCompilationAsync: name={name}");
 
-            this.displayManager.RemoveRenderingActions();
+                var selectedDisplayCompilation = this.displayCompilations.SingleOrDefault(c => c.Name == name);
+                if (selectedDisplayCompilation == null)
+                {
+                    throw new ArgumentException("Could not find display compilation", nameof(name));
+                }
 
-            selectedDisplayCompilation.AddRenderActions();
+                this.displayManager.RemoveRenderingActions();
 
-            await this.displayManager.StartAsync();
+                selectedDisplayCompilation.AddRenderActions();
+
+                await this.displayManager.StartAsync();
+            });
         }
     }
 }
