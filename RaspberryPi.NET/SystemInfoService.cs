@@ -1,18 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
+using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using RaspberryPi.Process;
 using RaspberryPi.Storage;
 
 namespace RaspberryPi
 {
+    /// <inheritdoc/>
     public class SystemInfoService : ISystemInfoService
     {
-        private const string CpuInfoFilePath = "/proc/cpuinfo";
-        private const string MemInfoFilePath = "/proc/meminfo";
-        private const string UptimeFilePath = "/proc/uptime";
+        internal const string CpuInfoFilePath = "/proc/cpuinfo";
+        internal const string MemInfoFilePath = "/proc/meminfo";
+        internal const string MeasureTemp = "vcgencmd measure_temp";
+        internal const string MeasureVolts = "vcgencmd measure_volts";
+        internal const string GetThrottled = "vcgencmd get_throttled";
+
+        private static readonly Regex CputTemperaturePattern = new Regex(@"[0-9.-]{3,}");
 
         private readonly IFileSystem fileSystem;
         private readonly IProcessRunner processRunner;
@@ -25,6 +33,7 @@ namespace RaspberryPi
             this.processRunner = processRunner;
         }
 
+        /// <inheritdoc/>
         public void SetHostname(string hostname)
         {
             if (string.IsNullOrEmpty(hostname))
@@ -35,6 +44,7 @@ namespace RaspberryPi
             this.processRunner.ExecuteCommand($"sudo hostnamectl set-hostname {hostname}");
         }
 
+        /// <inheritdoc/>
         public async Task<HostInfo> GetHostInfoAsync()
         {
             var hostInfo = new HostInfo();
@@ -78,10 +88,11 @@ namespace RaspberryPi
             return hostInfo;
         }
 
-        public async Task<CPUInfo> GetCPUInfoAsync()
+        /// <inheritdoc/>
+        public async Task<CpuInfo> GetCpuInfoAsync()
         {
             var processorInfos = new List<ProcessorInfo>();
-            var cpuInfo = new CPUInfo
+            var cpuInfo = new CpuInfo
             {
                 Processors = processorInfos
             };
@@ -144,6 +155,63 @@ namespace RaspberryPi
             return cpuInfo;
         }
 
+        /// <inheritdoc/>
+        public CpuSensorsStatus GetCpuSensorsStatus()
+        {
+            // Sources:
+            // https://github.com/rembertmagri/pi-control-panel/blob/a5e4f0bf25cd9574a7a799ad4183f57494295e24/src/Infrastructure/PiControlPanel.Infrastructure.OnDemand/Services/CpuService.cs
+            // https://stackoverflow.com/questions/12798611/splitting-a-hex-number
+            // 
+            var result = this.processRunner.ExecuteCommand(MeasureTemp);
+
+            var temperature = 0d;
+            var match = CputTemperaturePattern.Match(result.OutputData);
+            if (match.Success)
+            {
+                temperature = double.Parse(match.Value, CultureInfo.InvariantCulture);
+            }
+
+            var voltage = 0d;
+            result = this.processRunner.ExecuteCommand(MeasureVolts);
+            var voltageSplit = result.OutputData.Trim().Split('=');
+            if (voltageSplit.Length >= 2)
+            {
+                var voltsWithUnit = voltageSplit[1];
+                var voltsString = voltsWithUnit.Substring(0, voltsWithUnit.Length - 1);
+                voltage = double.Parse(voltsString, CultureInfo.InvariantCulture);
+            }
+
+            result = this.processRunner.ExecuteCommand(GetThrottled);
+            var getThrottledResult = result.OutputData.Substring(result.OutputData.IndexOf('x') + 1);
+            var getThrottledInBinary = Convert.ToString(Convert.ToInt32(getThrottledResult, 16), 2);
+            var binaryLength = getThrottledInBinary.Length;
+
+            // Bit  Hex     Value Meaning
+            // 0    1       Under-voltage detected
+            // 1    2       ARM frequency has been caped
+            // 2    4       Currently throttled
+            // 3    8       Soft temperature limit is active
+            // 16   1000    Under-voltage has occurred
+            // 17   2000    ARM frequency capping has occurred
+            // 18   4000    Throttling has occurred
+            // 19   8000    Soft temperature limit has occurred
+
+            return new CpuSensorsStatus
+            {
+                Temperature = temperature,
+                Voltage = voltage,
+                UnderVoltageDetected = binaryLength > 0 && '1'.Equals(getThrottledInBinary[binaryLength - 1]),
+                ArmFrequencyCapped = binaryLength > 1 && '1'.Equals(getThrottledInBinary[binaryLength - 2]),
+                CurrentlyThrottled = binaryLength > 2 && '1'.Equals(getThrottledInBinary[binaryLength - 3]),
+                SoftTemperatureLimitActive = binaryLength > 3 && '1'.Equals(getThrottledInBinary[binaryLength - 4]),
+                UnderVoltageOccurred = binaryLength > 16 && '1'.Equals(getThrottledInBinary[binaryLength - 17]),
+                ArmFrequencyCappingOccurred = binaryLength > 17 && '1'.Equals(getThrottledInBinary[binaryLength - 18]),
+                ThrottlingOccurred = binaryLength > 18 && '1'.Equals(getThrottledInBinary[binaryLength - 19]),
+                SoftTemperatureLimitOccurred = binaryLength > 19 && '1'.Equals(getThrottledInBinary[binaryLength - 20]),
+            };
+        }
+
+        /// <inheritdoc/>
         public int GetMemoryInfo()
         {
             var memInfoLines = this.fileSystem.File.ReadAllLines(MemInfoFilePath);

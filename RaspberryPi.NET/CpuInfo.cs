@@ -2,9 +2,9 @@
 
 namespace RaspberryPi
 {
-    public class CPUInfo
+    public class CpuInfo
     {
-        public CPUInfo()
+        public CpuInfo()
         {
             this.Processors = new List<ProcessorInfo>();
         }

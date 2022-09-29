@@ -70,7 +70,7 @@ namespace RaspberryPi.NET.Tests.Network
         }
 
         [Fact]
-        public async Task ShouldGetCPUInfo()
+        public async Task ShouldGetCpuInfo()
         {
             // Arrange
             var cpuInfoTxt = Files.GetCPUInfoTxt();
@@ -81,7 +81,7 @@ namespace RaspberryPi.NET.Tests.Network
             var systemInfoService = this.autoMocker.CreateInstance<SystemInfoService>();
 
             // Act
-            var cpuInfo = await systemInfoService.GetCPUInfoAsync();
+            var cpuInfo = await systemInfoService.GetCpuInfoAsync();
 
             // Assert
             cpuInfo.Should().NotBeNull();
@@ -90,6 +90,40 @@ namespace RaspberryPi.NET.Tests.Network
             cpuInfo.Revision.Should().Be("902120");
             cpuInfo.Serial.Should().Be("0000000053a77f3d");
             cpuInfo.Model.Should().Be("Raspberry Pi Zero 2 W Rev 1.0");
+        }
+
+        [Fact]
+        public void ShouldGetCpuSensorsStatus()
+        {
+            // Arrange
+            var processRunnerMock = this.autoMocker.GetMock<IProcessRunner>();
+            processRunnerMock.Setup(p => p.ExecuteCommand(SystemInfoService.MeasureTemp, It.IsAny<CancellationToken>()))
+                .Returns(new CommandLineResult("temp=34.9'C"));
+            processRunnerMock.Setup(p => p.ExecuteCommand(SystemInfoService.MeasureVolts, It.IsAny<CancellationToken>()))
+                .Returns(new CommandLineResult("volt=1.2500V"));
+            processRunnerMock.Setup(p => p.ExecuteCommand(SystemInfoService.GetThrottled, It.IsAny<CancellationToken>()))
+                .Returns(new CommandLineResult("throttled=0x50005"));
+
+            var systemInfoService = this.autoMocker.CreateInstance<SystemInfoService>();
+
+            // Act
+            var cpuSensorsStatus = systemInfoService.GetCpuSensorsStatus();
+
+            // Assert
+            cpuSensorsStatus.Should().BeEquivalentTo(
+                new CpuSensorsStatus
+                {
+                    Temperature = 34.9d,
+                    Voltage = 1.25d,
+                    UnderVoltageDetected = true,
+                    ArmFrequencyCapped = false,
+                    CurrentlyThrottled = true,
+                    SoftTemperatureLimitActive = false,
+                    UnderVoltageOccurred = true,
+                    ArmFrequencyCappingOccurred = false,
+                    ThrottlingOccurred = true,
+                    SoftTemperatureLimitOccurred = false,
+                });
         }
     }
 }

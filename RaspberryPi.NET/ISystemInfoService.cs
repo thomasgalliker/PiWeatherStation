@@ -6,7 +6,9 @@ namespace RaspberryPi
     {
         void SetHostname(string hostname);
 
-        Task<CPUInfo> GetCPUInfoAsync();
+        Task<CpuInfo> GetCpuInfoAsync();
+
+        CpuSensorsStatus GetCpuSensorsStatus();
 
         int GetMemoryInfo();
 

@@ -38,11 +38,18 @@ namespace WeatherDisplay.Api.Controllers
             this.autoUpdateService = autoUpdateService;
         }
 
-        [HttpGet("info")]
-        public async Task<CPUInfo> GetSystemInfoAsync()
+        [HttpGet("cpuinfo")]
+        public async Task<CpuInfo> GetSystemInfoAsync()
         {
-            var cpuInfo = await this.systemInfoService.GetCPUInfoAsync();
+            var cpuInfo = await this.systemInfoService.GetCpuInfoAsync();
             return cpuInfo;
+        }
+        
+        [HttpGet("cpusensors")]
+        public CpuSensorsStatus GetCpuSensorsStatus()
+        {
+            var cpuSensorsStatus = this.systemInfoService.GetCpuSensorsStatus();
+            return cpuSensorsStatus;
         }
 
         [HttpGet("update")]
