@@ -179,11 +179,13 @@ namespace DisplayService.Services
                 throw new ArgumentOutOfRangeException(nameof(fontWidth), fontWidth, "Font width must be between 1 and to 9");
             }
 
-            SKPaint paint = new()
+            
+            var paint = new SKPaint()
             {
                 TextSize = fontSize,
                 IsAntialias = true,
             };
+
             if (!string.IsNullOrWhiteSpace(font))
             {
                 paint.Typeface = GetTypeface(font, fontWeight, fontWidth) ?? throw new ArgumentException("Font not found", nameof(font));

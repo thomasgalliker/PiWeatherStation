@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using DisplayService.Model;
 using DisplayService.Resources;
 using DisplayService.Services;
@@ -199,33 +200,102 @@ namespace DisplayService.Tests.Services
             // Arrange
             IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
 
-            var fontSize = 100;
+            var fontSize = 70;
+            var numberOfValues = 20;
 
-            var textTopLeft1 = new RenderActions.Text
+            var textWithFitWidth = new RenderActions.Text
             {
                 X = 0,
                 Y = 0,
                 VerticalTextAlignment = VerticalAlignment.Top,
                 HorizontalTextAlignment = HorizontalAlignment.Left,
-                Value = string.Join("_", Enumerable.Range(1, 20)),
+                Value = string.Join("_", Enumerable.Range(1, numberOfValues)),
                 ForegroundColor = SKColors.Black.ToString(),
+                BackgroundColor = SKColors.LightGray.ToString(),
                 FontSize = fontSize,
                 AdjustsFontSizeToFitWidth = true,
             };
-            renderService.Text(textTopLeft1);
-            
-            var textTopLeft2 = new RenderActions.Text
+            renderService.Text(textWithFitWidth);
+
+            var textWithoutFitWidth = new RenderActions.Text
             {
                 X = 0,
                 Y = 100,
                 VerticalTextAlignment = VerticalAlignment.Top,
                 HorizontalTextAlignment = HorizontalAlignment.Left,
-                Value = string.Join("_", Enumerable.Range(1, 100)),
+                Value = string.Join("_", Enumerable.Range(1, numberOfValues)),
                 ForegroundColor = SKColors.Black.ToString(),
+                BackgroundColor = SKColors.LightGray.ToString(),
                 FontSize = fontSize,
+                AdjustsFontSizeToFitWidth = false,
+            };
+            renderService.Text(textWithoutFitWidth);
+
+            // Act
+            var bitmapStream = renderService.GetScreen();
+
+            // Assert
+            bitmapStream.Should().NotBeNull();
+            this.testHelper.WriteFile(bitmapStream);
+        }
+        
+        [Fact]
+        public void ShouldGetScreen_Text_AdjustsFontSizeToFitHeight()
+        {
+            // Arrange
+            IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
+
+            var fontSize = 1000;
+            var startAt = 8;
+            var numberOfValues = 3;
+
+            var textWithFitHeight = new RenderActions.Text
+            {
+                X = 0,
+                Y = 0,
+                VerticalTextAlignment = VerticalAlignment.Top,
+                HorizontalTextAlignment = HorizontalAlignment.Left,
+                Value = string.Join("_", Enumerable.Range(startAt, numberOfValues)),
+                ForegroundColor = SKColors.Black.ToString(),
+                BackgroundColor = SKColors.LightGray.ToString(),
+                FontSize = fontSize,
+                AdjustsFontSizeToFitHeight = true,
+                AdjustsFontSizeToFitWidth = false,
+            };
+            renderService.Text(textWithFitHeight);
+
+            // Act
+            var bitmapStream = renderService.GetScreen();
+
+            // Assert
+            bitmapStream.Should().NotBeNull();
+            this.testHelper.WriteFile(bitmapStream);
+        }
+        
+        [Fact]
+        public void ShouldGetScreen_Text_AdjustsFontSizeToFitWidthAndHeight()
+        {
+            // Arrange
+            IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
+
+            var fontSize = 1000;
+            var startAt = 8;
+            var numberOfValues = 3;
+
+            var textWithFitHeight = new RenderActions.Text
+            {
+                X = 0,
+                Y = 0,
+                VerticalTextAlignment = VerticalAlignment.Top,
+                HorizontalTextAlignment = HorizontalAlignment.Left,
+                Value = string.Join("_", Enumerable.Range(startAt, numberOfValues)),
+                ForegroundColor = SKColors.Black.ToString(),
+                BackgroundColor = SKColors.LightGray.ToString(),
+                FontSize = fontSize,
+                AdjustsFontSizeToFitHeight = true,
                 AdjustsFontSizeToFitWidth = true,
             };
-            renderService.Text(textTopLeft2);
+            renderService.Text(textWithFitHeight);
 
             // Act
             var bitmapStream = renderService.GetScreen();
@@ -392,6 +462,61 @@ namespace DisplayService.Tests.Services
                 Image = TestImages.GetTestImage2(),
             };
             renderService.Image(image);
+
+            // Act
+            var bitmapStream = renderService.GetScreen();
+
+            // Assert
+            bitmapStream.Should().NotBeNull();
+            this.testHelper.WriteFile(bitmapStream);
+        }
+
+        [Fact]
+        public void ShouldGetScreen_StackLayout()
+        {
+            // Arrange
+            IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
+
+            var text1 = new RenderActions.Text
+            {
+                X = 0,
+                Y = 0,
+                Value = "80",
+                ForegroundColor = "000000",
+                BackgroundColor = "#f542ad",
+                VerticalTextAlignment = VerticalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center,
+                FontSize = 70,
+            };
+
+            var text2 = new RenderActions.Text
+            {
+                X = 0,
+                Y = 0,
+                Value = "°C",
+                ForegroundColor = "000000",
+                BackgroundColor = "#42e6f5",
+                VerticalAlignment = VerticalAlignment.Center,
+                VerticalTextAlignment = VerticalAlignment.Bottom,
+                FontSize = 35,
+            };
+
+            var stackLayout = new RenderActions.StackLayout
+            {
+                Width = 200,
+                Height = 100,
+                X = 400,
+                Y = 240,
+                Orientation = StackOrientation.Horizontal,
+                Spacing = 6,
+                VerticalAlignment = VerticalAlignment.Center,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                BackgroundColor = "#e8e8e8"
+            };
+            stackLayout.Children.Add(text1);
+            stackLayout.Children.Add(text2);
+
+            renderService.StackLayout(stackLayout);
 
             // Act
             var bitmapStream = renderService.GetScreen();

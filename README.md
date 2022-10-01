@@ -1,9 +1,27 @@
 # PiWeatherStation
-This is a demo project which uses a Raspberry Pi 4 to draw some basic weather information to a 7.5" Waveshare ePaper display. The code is based on .NET 6 and there are two runtime projects you can chose from: A console client (WeatherDisplay.ConsoleApp) and an ASP.NET Core Web API (WeatherDisplay.Api).
+This is a demo project which uses a Raspberry Pi 4 / Zero 2 to draw some basic weather information to a 7.5" Waveshare ePaper display. The code is based on .NET 6 and there are two runtime projects you can chose from: A console client (WeatherDisplay.ConsoleApp) and an ASP.NET Core Web API (WeatherDisplay.Api).
 
-![Image of display](https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/Docs/36EB74EE-C3E5-4597-B31A-64257AC646FB.jpeg)
+![](Docs/2022-28-05-DisplayPhoto2.jpg)
 
 ### Quick Setup
+The script file `update_weatherdisplay_api.sh` contains all necessary steps to prepare a new Raspberry Pi to run WeatherDisplay.Api as a service.
+Download the script file and run it as follows.
+```
+curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/draw-temperature-forecast-diagram/WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh | sudo bash /dev/stdin
+```
+Append script parameters if needed:
+- `--pre` to download a pre-release of WeatherDisplay.Api. By default, the latest stable version is downloaded.
+- `--debug` in order to see verbose log output.
+- `--host` to set a custom hostname.
+- `--keyboard` to set the keyboard layout.
+- `--locale` to set the current locale.
+- `--timezone` to set the current timezone.
+```
+curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/draw-temperature-forecast-diagram/WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh | sudo bash /dev/stdin --debug --pre
+```
+
+### Extended Setup / Troubleshooting
+The following steps are fully automated in `update_weatherdisplay_api.sh`. Follow these steps if the update script cause troubles.
 
 #### Prepare the Raspberry Pi
 - Before we install any additional library, make sure the Raspberry OS as well as the installed libraries are on the latest stable releases.
@@ -16,7 +34,7 @@ sudo apt upgrade
 
 - Install the GDI+ library. This library is later used to render images via SkiaSharp.
 ```
-sudo apt install libgdiplus
+sudo apt-get install -y libgdiplus
 ```
 
 - Reboot the system.
@@ -24,26 +42,26 @@ sudo apt install libgdiplus
 sudo reboot
 ```
 
-#### Install .NET on Raspberry Pi
-- Go to Microsoft's [dotnet download page](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and download the appropriate version of .NET (ARM32 or ARM64 depending on your Raspberry OS).
+- Set correct timezone. Run command `timedatectl list-timezones` in order to find your timezone.
 ```
-wget https://download.visualstudio.microsoft.com/download/.../dotnet-sdk-6.0.200-linux-arm.tar.gz
+sudo timedatectl set-timezone Europe/Zurich
 ```
 
-- Extract the binaries and export the paths according to the instructions given on the download page:
+#### Install .NET on Raspberry Pi
+- Go to Microsoft's [dotnet download page](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and download the appropriate version of .NET. I usually use the 32bit Version of Raspbian OS, so the appropriate .NET architecture should be ARM32.
+- The following dotnet-install.sh script simplifies the automated installation of dotnet on Linux. We use the most current channel and .NET version 6.0.x, as specified in the following command:
 ```
-mkdir -p $HOME/dotnet && tar zxf dotnet-sdk-6.0.200-linux-arm.tar.gz -C $HOME/dotnet
-export DOTNET_ROOT=$HOME/dotnet
-export PATH=$PATH:$HOME/dotnet
+curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel Current
 ```
-- You can edit your shell profile to permanently add the dotnet commands (even after a reboot):
+
+- Edit the bash profile and add following lines to the end of the file. If `export PATH` already exists, extend it instead of creating a new export. Use `sudo nano ~/.bashrc` to double check if everything is fine.
 ```
-sudo nano ~/.bashrc
+echo 'export DOTNET_ROOT=$HOME/.dotnet' >> ~/.bashrc
+echo 'export PATH=$PATH:$HOME/.dotnet' >> ~/.bashrc
 ```
-- Edit the appropriate bash profile and add following lines to the end of the file. If `export PATH` already exists, extend it instead of creating a new export.
+- Reload the ~/.bashrc file with the command:
 ```
-export DOTNET_ROOT=$HOME/dotnet
-export PATH=$PATH:$HOME/dotnet
+source ~/.bashrc
 ```
 
 - Reboot the system.
@@ -63,7 +81,7 @@ Runtime Environment:
  OS Version:  11
  OS Platform: Linux
  RID:         linux-arm
- Base Path:   /home/pi/dotnet/sdk/6.0.200/
+ Base Path:   /home/pi/.dotnet/sdk/6.0.200/
  ...
 ```
 
@@ -117,17 +135,13 @@ If everything works fine so far, we can setup the WeatherDisplay.Api as a servic
 - Navigate to /etc/systemd/system and create a new service definition:
 
 ```
-cd /etc/systemd/system
-```
-
-```
-sudo nano weatherdisplay.api.service
+sudo nano /etc/systemd/system/weatherdisplay.api.service
 ```
 
 - Create a service definition which automatically starts the web API service when the operating system is started.
 ```
 [Unit]
-Description=WeatherDisplay.Api Service
+Description=WeatherDisplay.Api
 
 # When this service should be started up
 After=network-online.target firewalld.service
@@ -139,8 +153,9 @@ Wants=network-online.target
 Type=notify
 WorkingDirectory=/home/pi/WeatherDisplay.Api
 ExecStart=/home/pi/WeatherDisplay.Api/WeatherDisplay.Api
-ExecStop=/bin/kill ${MAINPID}
+ExecStop=/bin/kill $MAINPID
 KillSignal=SIGTERM
+KillMode=process
 SyslogIdentifier=WeatherDisplay.Api
 
 # Use your username to keep things simple, for production scenario's I recommend a dedicated user/group.
@@ -150,8 +165,7 @@ SyslogIdentifier=WeatherDisplay.Api
 User=pi
 Group=pi
 
-Restart=always
-RestartSec=5
+Restart=no
 
 # ASP.NET environment variable
 Environment=ASPNETCORE_ENVIRONMENT=Production
@@ -159,7 +173,7 @@ Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
 
 # This environment variable is necessary when dotnet isn't loaded for the specified user.
 # To figure out this value, run 'env | grep DOTNET_ROOT' when dotnet has been loaded into your shell.
-Environment=DOTNET_ROOT=/home/pi/dotnet
+Environment=DOTNET_ROOT=/home/pi/.dotnet
 
 [Install]
 WantedBy=multi-user.target
@@ -172,8 +186,9 @@ Explanations for some of the configuration values:
 | `ExecStart` | Systemd will run this executable to start the service. |
 | `ExecStop` | Defines the way the service is stopped when systemctl stop is called on this service. Together with KillSignal, this value is responsible for a graceful shutdown. |
 | `KillSignal` | Is a very important value to determine how the ASP.NET Core web service is stopped. If the wrong value is used, the service is killed without gracefully shutting down it's services (e.g. BackgroundService, IHostedService, IDispose, etc). |
+| `KillMode` | Setting KillMode to process instead of control-group (default) allows to shutdown the main process and spawn new processes (e.g. for automatic update service). |
 | `SyslogIdentifier` | Primary identifier of this service. This name is used to run systemctl start/stop operations as well as to read the service log (journalctl). |
-| `Restart` | Ensure the service restarts after crashing. |
+| `Restart` | Ensure the service restarts after crashing. Takes one of no, on-success, on-failure, on-abnormal, on-watchdog, on-abort, or always. |
 | `RestartSec` | Amount of time to wait before restarting the service. |
 
 - Enable the service definition:
@@ -241,6 +256,13 @@ last-modified: Sat, 16 Oct 2021 12:54:30 GMT
 content-length: 1460
 ```
 
+### Images
+- Weather Display Rendering Image
+![Rendering Image](Docs/2022-28-05-DisplayScreen.png)
+
+- Weather Display Photo
+![Display Photo](Docs/2022-28-05-DisplayPhoto1.jpg)
+
 ### Links
 #### Similar projects / Waveshare / IoT
 - https://github.com/eXoCooLd/Waveshare.EPaperDisplay
@@ -248,7 +270,17 @@ content-length: 1460
 - https://www.youtube.com/watch?v=t-rFj54BsDI
 - https://github.com/Tharnas/EInkDisplayService
 - https://github.com/bezysoftware/crypto-clock
+
+
+#### Raspberry Pi Resources
+- https://www.raspberrypi.com/documentation/computers/raspberry-pi.html
+- https://desertbot.io/blog/headless-pi-zero-ssh-access-over-usb-windows
 - https://www.petecodes.co.uk/install-and-use-microsoft-dot-net-6-with-the-raspberry-pi/
+
+#### Microsoft .NET
+- https://docs.microsoft.com/en-us/dotnet/iot/deployment
+- https://docs.microsoft.com/en-gb/dotnet/core/install/linux-scripted-manual#scripted-install
+- https://docs.microsoft.com/en-gb/dotnet/core/tools/dotnet-install-script
 
 #### Linux and ASP.NET Core related sources
 - https://swimburger.net/blog/dotnet/how-to-run-a-dotnet-core-console-app-as-a-service-using-systemd-on-linux

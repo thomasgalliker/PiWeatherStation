@@ -7,6 +7,10 @@ using SkiaSharp;
 
 namespace DisplayService.Services
 {
+    /// <summary>
+    /// This service is responsible for rendering all the existing rendering actions
+    /// into a bitmap image which can later be used to display on the display hardware.
+    /// </summary>
     public class RenderService : IRenderService
     {
         private readonly ILogger<RenderService> logger;
@@ -23,32 +27,18 @@ namespace DisplayService.Services
 
             this.screen = new SKBitmap(this.renderSettings.Width, this.renderSettings.Height);
             this.canvas = new SKCanvas(this.screen);
-            this.ClearCanvas();
+            this.Clear();
         }
 
-        private void ClearCanvas()
+        public void Clear()
         {
             this.logger.LogDebug($"Clear(color={this.renderSettings.BackgroundColor})");
             this.canvas.Clear(SKColor.Parse(this.renderSettings.BackgroundColor));
         }
 
-        public void Clear()
+        public void Add(IRenderAction renderAction)
         {
-            this.logger.LogDebug("Clear");
-
-            try
-            {
-                this.ClearCanvas();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Failed to clear", ex);
-            }
-        }
-
-        public void Refresh()
-        {
-            this.RefreshScreen();
+            renderAction.Render(this);
         }
 
         public void Image(RenderActions.Image image)
@@ -63,26 +53,56 @@ namespace DisplayService.Services
 
         public void Text(RenderActions.Text text)
         {
+            this.Text(this.canvas, text);
+        }
+
+        private SKRect Text(SKCanvas canvas, RenderActions.Text text)
+        {
             text.Value = text.Value.Replace("\r", " ").Replace("\n", string.Empty);
 
             try
             {
+                var alignmentYOffset = CalculateAlignmentYOffset(canvas.DeviceClipBounds, text);
+
                 var paint = RenderTools.GetPaint(text.Font, text.FontSize, text.FontWeight, text.FontWidth, text.ForegroundColor, text.Bold);
                 var (width, height, horizontalOffset, verticalOffset, left, top) = RenderTools.GetBounds(text.X, text.Y, text.Value, text.HorizontalTextAlignment, text.VerticalTextAlignment, paint);
 
+
+                verticalOffset += (int)alignmentYOffset;
+                top += (int)alignmentYOffset;
+
                 if (text.AdjustsFontSizeToFitWidth)
                 {
-                    var maxWidth = this.renderSettings.Width;
-                    if (left + width > maxWidth)
+                    var canvasWidth = canvas.DeviceClipBounds.Width;
+                    var canvasHeight = canvas.DeviceClipBounds.Height;
+
+                    if (left + width > canvasWidth)
                     {
-                        var maxFontSize = GetMaxFontSize(maxWidth - left, paint.Typeface, text.Value);
+                        var maxFontSize = GetMaxFontSize(canvasWidth - left, null, paint.Typeface, text.Value);
                         if (text.FontSize != maxFontSize)
                         {
                             // In case we got a change in font size,
                             // we retry to draw the text
                             text.FontSize = maxFontSize;
-                            this.Text(text);
-                            return;
+                            return this.Text(canvas, text);
+                        }
+                    }
+                }
+
+                if (text.AdjustsFontSizeToFitHeight)
+                {
+                    var canvasWidth = canvas.DeviceClipBounds.Width;
+                    var canvasHeight = canvas.DeviceClipBounds.Height;
+
+                    if (top + height > canvasHeight)
+                    {
+                        var maxFontSize = GetMaxFontSize(null, canvasHeight - top, paint.Typeface, text.Value);
+                        if (text.FontSize != maxFontSize)
+                        {
+                            // In case we got a change in font size,
+                            // we retry to draw the text
+                            text.FontSize = maxFontSize;
+                            return this.Text(canvas, text);
                         }
                     }
                 }
@@ -90,17 +110,22 @@ namespace DisplayService.Services
                 var textXPosition = text.X + horizontalOffset;
                 var textYPosition = text.Y + verticalOffset;
 
+                var backgroundRect = SKRect.Create(x: left, y: top, width: width, height: height);
+
                 // Draw text background
                 if (text.BackgroundColor != null)
                 {
-                    var backgroundPaint = new SKPaint { Color = SKColor.Parse(text.BackgroundColor) };
-                    this.canvas.DrawRect(x: left, y: top, w: width, h: height, backgroundPaint);
-                    backgroundPaint.Dispose();
+                    using (var backgroundPaint = new SKPaint { Color = SKColor.Parse(text.BackgroundColor) })
+                    {
+                        canvas.DrawRect(backgroundRect, backgroundPaint);
+                    }
                 }
 
                 // Draw text foreground
-                this.logger.LogDebug($"DrawText(text=\"{ text.Value}\", x={textXPosition}, y={textYPosition})");
-                this.canvas.DrawText(text.Value, textXPosition, textYPosition, paint);
+                this.logger.LogDebug($"DrawText(text=\"{text.Value}\", x={textXPosition}, y={textYPosition})");
+                canvas.DrawText(text.Value, textXPosition, textYPosition, paint);
+
+                return backgroundRect;
             }
             catch (Exception ex)
             {
@@ -108,7 +133,7 @@ namespace DisplayService.Services
             }
         }
 
-        private static float GetMaxFontSize(double sectorSize, SKTypeface typeface, string text, float degreeOfCertainty = 1f, float minFontSize = 1f, float maxFontSize = 100f)
+        private static float GetMaxFontSize(double? maxWidth, double? maxHeight, SKTypeface typeface, string text, float degreeOfCertainty = 1f, float minFontSize = 1f, float maxFontSize = 1000f)
         {
             var max = maxFontSize; // The upper bound. We know the font size is below this value
             var min = minFontSize; // The lower bound, We know the font size is equal to or above this value
@@ -120,7 +145,9 @@ namespace DisplayService.Services
                 using (var ft = new SKFont(typeface, value))
                 using (var paint = new SKPaint(ft))
                 {
-                    if (paint.MeasureText(text) > sectorSize) // Measure the string size at this font size
+                    var rect = new SKRect();
+                    var width = paint.MeasureText(text, ref rect);
+                    if ((maxWidth is double maxWidthValue && rect.Width > maxWidthValue) || (maxHeight is double maxHeightValue && rect.Height > maxHeightValue)) // Measure the string size at this font size
                     {
                         // The text size is too large
                         // therefore the max possible size is below value
@@ -145,7 +172,13 @@ namespace DisplayService.Services
                 }
             }
         }
+
         public void Rectangle(RenderActions.Rectangle rectangle)
+        {
+            this.Rectangle(this.canvas, rectangle);
+        }
+
+        private void Rectangle(SKCanvas canvas, RenderActions.Rectangle rectangle)
         {
             try
             {
@@ -155,15 +188,13 @@ namespace DisplayService.Services
                 this.logger.LogDebug($"DrawRect(x: {x}, y: {y}, width: {rectangle.Width}, height: {rectangle.Height})");
                 var rect = SKRect.Create(x, y, width: rectangle.Width, height: rectangle.Height);
 
-                // the brush (fill with blue)
+                // Draw background color
                 var paint = new SKPaint
                 {
                     Style = SKPaintStyle.Fill,
                     Color = SKColor.Parse(rectangle.BackgroundColor),
                 };
-
-                // Draw fill
-                this.canvas.DrawRect(rect, paint);
+                canvas.DrawRect(rect, paint);
 
                 // Draw stroke (if set)
                 if (rectangle.StrokeWidth > 0)
@@ -171,7 +202,7 @@ namespace DisplayService.Services
                     paint.Style = SKPaintStyle.Stroke;
                     paint.Color = SKColor.Parse(rectangle.StrokeColor);
                     paint.StrokeWidth = rectangle.StrokeWidth;
-                    this.canvas.DrawRect(rect, paint);
+                    canvas.DrawRect(rect, paint);
                 }
 
                 paint.Dispose();
@@ -180,6 +211,94 @@ namespace DisplayService.Services
             {
                 throw new Exception($"DrawRect failed with exception: {ex.Message}", ex);
             }
+        }
+
+        public void StackLayout(RenderActions.StackLayout stackLayout)
+        {
+            try
+            {
+                var x = CalculateX(stackLayout);
+                var y = CalculateY(stackLayout);
+
+
+                this.logger.LogDebug($"DrawRect(x: {x}, y: {y}, width: {stackLayout.Width}, height: {stackLayout.Height})");
+                var rect = SKRect.Create(x, y, width: stackLayout.Width, height: stackLayout.Height);
+
+                using (var stackLayoutImage = new SKBitmap(stackLayout.Width, stackLayout.Height, isOpaque: false))
+                {
+                    using (var canvas = new SKCanvas(stackLayoutImage))
+                    {
+                        // Draw background color
+                        var backgroundRect = SKRect.Create(x: 0, y: 0, width: stackLayout.Width, height: stackLayout.Height);
+                        using (var backgroundPaint = new SKPaint
+                        {
+                            Style = SKPaintStyle.Fill,
+                            Color = SKColor.Parse(stackLayout.BackgroundColor),
+                        })
+                        {
+                            canvas.DrawRect(backgroundRect, backgroundPaint);
+                        }
+
+                        if (stackLayout.Children != null)
+                        {
+                            var childOffset = 0;
+                            foreach (var renderAction in stackLayout.Children)
+                            {
+                                if (renderAction is RenderActions.Text text)
+                                {
+                                    if (stackLayout.Orientation == StackOrientation.Horizontal)
+                                    {
+                                        text.X += childOffset;
+                                    }
+                                    else
+                                    {
+                                        text.Y += childOffset;
+                                    }
+
+                                    var textRect = this.Text(canvas, text);
+                                    childOffset += stackLayout.Orientation == StackOrientation.Horizontal ? (int)textRect.Width : (int)textRect.Height;
+                                }
+                                //else if (renderAction is RenderActions.Rectangle rectangle)
+                                //{
+                                //    this.Rectangle(canvas, rectangle);
+                                //}
+                                else
+                                {
+                                    throw new NotSupportedException();
+                                }
+
+                                childOffset += stackLayout.Spacing;
+                            }
+                        }
+
+                    }
+
+                    this.canvas.DrawBitmap(stackLayoutImage, rect);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"DrawRect failed with exception: {ex.Message}", ex);
+            }
+        }
+
+        private static float CalculateAlignmentYOffset(SKRect canvas, IAlignable alignable)
+        {
+            float y = 0;
+            switch (alignable.VerticalAlignment)
+            {
+                case VerticalAlignment.Top:
+                    y = canvas.Top;
+                    break;
+                case VerticalAlignment.Center:
+                    y = canvas.Height / 2;
+                    break;
+                case VerticalAlignment.Bottom:
+                    y = canvas.Bottom;
+                    break;
+            }
+
+            return y;
         }
 
         private static float CalculateY(ISurface surface)
@@ -257,11 +376,6 @@ namespace DisplayService.Services
             return memoryStream;
         }
 
-        private void RefreshScreen()
-        {
-            this.ClearCanvas();
-        }
-
         private void AddImage(RenderActions.Image image)
         {
             if (image is null)
@@ -299,13 +413,13 @@ namespace DisplayService.Services
 
             if (skBitmap != null)
             {
-
                 // Draw image background
                 if (image.BackgroundColor != null)
                 {
-                    var backgroundPaint = new SKPaint { Color = SKColor.Parse(image.BackgroundColor) };
-                    this.canvas.DrawRect(x, y, w: image.Width, h: image.Height, backgroundPaint);
-                    backgroundPaint.Dispose();
+                    using (var backgroundPaint = new SKPaint { Color = SKColor.Parse(image.BackgroundColor) })
+                    {
+                        this.canvas.DrawRect(x, y, w: image.Width, h: image.Height, backgroundPaint);
+                    }
                 }
 
                 // Draw image

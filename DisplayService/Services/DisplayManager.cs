@@ -13,7 +13,7 @@ namespace DisplayService.Services
     public class DisplayManager : IDisplayManager
     {
         private readonly IDictionary<Guid, IRenderActionFactory> renderingSetup = new Dictionary<Guid, IRenderActionFactory>();
-        private readonly ILogger<DisplayManager> logger;
+        private readonly ILogger logger;
         private readonly IRenderService renderService;
         private readonly IDisplay display;
         private readonly IScheduler scheduler;
@@ -192,27 +192,32 @@ namespace DisplayService.Services
             }
         }
 
-        public async Task ClearAsync()
+        public void RemoveRenderingActions()
         {
-            this.logger.LogInformation("ClearAsync");
-
-            // Clear display
-            this.renderService.Clear();
-            await this.UpdateDisplayAsync();
-        }
-
-        public async Task ResetAsync()
-        {
-            this.logger.LogInformation("ResetAsync");
+            this.logger.LogInformation("RemoveRenderingActions");
 
             this.scheduler.Stop();
-            //this.scheduler.RemoveAllTasks();
+
+            var scheduledTasks = this.scheduler.GetTasks()
+                .Where(t => this.renderingSetup.ContainsKey(t.Id))
+                .ToArray();
+
+            this.scheduler.RemoveTasks(scheduledTasks);
 
             // Remove existing rendering setups
             this.renderingSetup.Clear();
 
             // Clear display
             this.renderService.Clear();
+        }
+
+        public async Task ResetAsync()
+        {
+            this.logger.LogInformation("ResetAsync");
+
+            this.RemoveRenderingActions();
+
+            // Update display
             await this.UpdateDisplayAsync();
         }
 

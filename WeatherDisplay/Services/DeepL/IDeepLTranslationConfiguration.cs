@@ -1,4 +1,4 @@
-﻿namespace WeatherDisplay.Services
+﻿namespace WeatherDisplay.Services.DeepL
 {
     public interface IDeepLTranslationConfiguration
     {

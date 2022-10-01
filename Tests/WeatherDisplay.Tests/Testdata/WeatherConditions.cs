@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using WeatherDisplay.Model.OpenWeatherMap;
+using OpenWeatherMap.Models;
 
 namespace WeatherDisplay.Tests.Testdata
 {
