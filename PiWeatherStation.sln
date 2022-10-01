@@ -28,10 +28,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Api.Updater"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Gpio.Devices", "System.Gpio.Devices\System.Gpio.Devices.csproj", "{AB09B92D-8284-4339-A7A6-86F4654B3508}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaspberryPi.NET", "RaspberryPi.NET\RaspberryPi.NET.csproj", "{A1281B03-A696-4FC2-A1F2-28DE1FBF28AC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaspberryPi.NET.Tests", "Tests\RaspberryPi.NET.Tests\RaspberryPi.NET.Tests.csproj", "{3B1EC122-F3FE-4228-AFCA-1B04208A3985}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|anycpu = Debug|anycpu
@@ -70,14 +66,6 @@ Global
 		{AB09B92D-8284-4339-A7A6-86F4654B3508}.Debug|anycpu.Build.0 = Debug|Any CPU
 		{AB09B92D-8284-4339-A7A6-86F4654B3508}.Release|anycpu.ActiveCfg = Release|Any CPU
 		{AB09B92D-8284-4339-A7A6-86F4654B3508}.Release|anycpu.Build.0 = Release|Any CPU
-		{A1281B03-A696-4FC2-A1F2-28DE1FBF28AC}.Debug|anycpu.ActiveCfg = Debug|Any CPU
-		{A1281B03-A696-4FC2-A1F2-28DE1FBF28AC}.Debug|anycpu.Build.0 = Debug|Any CPU
-		{A1281B03-A696-4FC2-A1F2-28DE1FBF28AC}.Release|anycpu.ActiveCfg = Release|Any CPU
-		{A1281B03-A696-4FC2-A1F2-28DE1FBF28AC}.Release|anycpu.Build.0 = Release|Any CPU
-		{3B1EC122-F3FE-4228-AFCA-1B04208A3985}.Debug|anycpu.ActiveCfg = Debug|Any CPU
-		{3B1EC122-F3FE-4228-AFCA-1B04208A3985}.Debug|anycpu.Build.0 = Debug|Any CPU
-		{3B1EC122-F3FE-4228-AFCA-1B04208A3985}.Release|anycpu.ActiveCfg = Release|Any CPU
-		{3B1EC122-F3FE-4228-AFCA-1B04208A3985}.Release|anycpu.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -85,7 +73,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D529340B-CA55-4627-8AD7-637A562BF6B9} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
 		{6C143F7B-29EA-483F-A453-04849AC0BC72} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
-		{3B1EC122-F3FE-4228-AFCA-1B04208A3985} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1503D0DA-AA89-4AE5-8FE8-8167624E7A30}

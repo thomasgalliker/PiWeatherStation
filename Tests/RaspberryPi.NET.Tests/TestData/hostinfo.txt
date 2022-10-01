@@ -1,7 +1,0 @@
-﻿   Static hostname: testraspi
-         Icon name: computer
-        Machine ID: cddb04fdadd242d5bd415ac5931050be
-           Boot ID: 497cb38084944957a9655ddc57e34625
-  Operating System: Raspbian GNU/Linux 11 (bullseye)
-            Kernel: Linux 5.15.61-v7+
-      Architecture: arm
