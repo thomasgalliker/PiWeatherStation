@@ -1,12 +1,9 @@
-﻿using System.Reflection;
-using DisplayService.Services;
+﻿using DisplayService.Services;
 using NCrontab;
 using NCrontab.Scheduler;
 using NLog;
-using WeatherDisplay.Api.Updater.Models;
 using WeatherDisplay.Api.Updater.Services;
-using WeatherDisplay.Model;
-using WeatherDisplay.Services;
+using WeatherDisplay.Compilations;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace WeatherDisplay.Api.Services
@@ -15,31 +12,25 @@ namespace WeatherDisplay.Api.Services
     {
         private readonly ILogger logger;
         private readonly IAutoUpdateService autoUpdateService;
+        private readonly IDisplayCompilationService displayCompilationService;
         private readonly IScheduler scheduler;
         private readonly IDisplayManager displayManager;
-        private readonly IOpenWeatherMapService openWeatherMapService;
-        private readonly ITranslationService translationService;
-        private readonly IDateTime dateTime;
-        private readonly IAppSettings appSettings;
+        private readonly IWeatherDisplayHardwareCoordinator gpioButtonService;
 
         public AutoStartupBackgroundService(
             ILogger<AutoStartupBackgroundService> logger,
             IAutoUpdateService autoUpdateService,
+            IDisplayCompilationService displayCompilationService,
+            IWeatherDisplayHardwareCoordinator gpioButtonService,
             IScheduler scheduler,
-            IDisplayManager displayManager,
-            IOpenWeatherMapService openWeatherMapService,
-            ITranslationService translationService,
-            IDateTime dateTime,
-            IAppSettings appSettings)
+            IDisplayManager displayManager)
         {
             this.logger = logger;
             this.autoUpdateService = autoUpdateService;
+            this.displayCompilationService = displayCompilationService;
+            this.gpioButtonService = gpioButtonService;
             this.scheduler = scheduler;
             this.displayManager = displayManager;
-            this.openWeatherMapService = openWeatherMapService;
-            this.translationService = translationService;
-            this.dateTime = dateTime;
-            this.appSettings = appSettings;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -55,8 +46,7 @@ namespace WeatherDisplay.Api.Services
                 this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.CheckAndStartUpdate(); });
 
                 // Add rendering actions + start display manager
-                this.displayManager.AddWeatherRenderActions(this.openWeatherMapService, this.translationService, this.dateTime, this.appSettings);
-                await this.displayManager.StartAsync(cancellationToken);
+                await this.displayCompilationService.SelectDisplayCompilationAsync("OpenWeatherDisplayCompilation");
             }
         }
 
@@ -65,58 +55,11 @@ namespace WeatherDisplay.Api.Services
             var result = await this.autoUpdateService.CheckForUpdateAsync();
             if (result.HasUpdate)
             {
-                var currentDirectory = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                var updateRequest = new UpdateRequest
-                {
-                    CurrentDirectory = currentDirectory,
-                    UpdateVersion = result.UpdateVersion,
-                    ExecutorSteps = GetExecutorSteps(currentDirectory, result.UpdateVersionSource),
-                };
+                var updateRequest = UpdateRequestFactory.Create(result.UpdateVersion, result.UpdateVersionSource);
                 this.autoUpdateService.StartUpdate(updateRequest);
             }
 
             return result;
-        }
-
-        private static IExecutorStep[] GetExecutorSteps(string currentDirectory, IUpdateVersionSource versionSource)
-        {
-            var downloadHttpFileStep = versionSource.GetDownloadStep();
-
-            return new IExecutorStep[]
-            {
-               downloadHttpFileStep,
-                new ProcessStartExecutorStep
-                {
-                    FileName = "sudo",
-                    Arguments = "systemctl stop weatherdisplay.api.service",
-                    CreateNoWindow = true,
-                },
-                new ExtractZipStep
-                {
-                    SourceArchiveFileName = downloadHttpFileStep.DestinationFileName,
-                    DestinationDirectoryName = currentDirectory,
-                    OverwriteFiles = true,
-                    DeleteSourceArchive = true,
-                },
-                new ProcessStartExecutorStep
-                {
-                    FileName = "sudo",
-                    Arguments = "systemctl daemon-reload",
-                    CreateNoWindow = true,
-                },
-                new ProcessStartExecutorStep
-                {
-                    FileName = "sudo",
-                    Arguments = "systemctl start weatherdisplay.api.service",
-                    CreateNoWindow = true,
-                },
-                //new ProcessStartExecutorStep
-                //{
-                //    FileName = "sudo",
-                //    Arguments = "reboot",
-                //    CreateNoWindow = true,
-                //}
-            };
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)

@@ -27,27 +27,6 @@ namespace DisplayService.Tests.Services
         }
 
         [Fact]
-        public void ShouldClearAsync()
-        {
-            // Arrange
-            var displayMock = this.autoMocker.GetMock<IDisplay>();
-            var renderServiceMock = this.autoMocker.GetMock<IRenderService>();
-
-            IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.AddRenderAction(() => new RenderActions.Text { Value = "Test" });
-            displayManager.StartAsync();
-
-            // Act
-            displayManager.ClearAsync();
-            displayManager.StartAsync();
-
-            // Assert
-            displayMock.Verify(d => d.DisplayImage(It.IsAny<Stream>()), Times.Exactly(3));
-            renderServiceMock.Verify(r => r.Clear(), Times.Exactly(3));
-            renderServiceMock.Verify(r => r.Text(It.IsAny<RenderActions.Text>()), Times.Exactly(2));
-        }
-
-        [Fact]
         public void ShouldResetAsync()
         {
             // Arrange

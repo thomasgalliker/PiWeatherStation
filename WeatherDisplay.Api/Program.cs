@@ -1,10 +1,16 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+﻿using System.Gpio.Devices;
+using System.IdentityModel.Tokens.Jwt;
+using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog;
 using NLog.Extensions.Logging;
+using RaspberryPi;
+using RaspberryPi.Extensions;
+using RaspberryPi.Services;
+using RaspberryPi.Storage;
 using WeatherDisplay.Api.Services;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Extensions;
@@ -15,6 +21,10 @@ namespace WeatherDisplay.Api
     {
         private static void Main(string[] args)
         {
+            Console.WriteLine(
+                $"WeatherStation version {typeof(Program).Assembly.GetName().Version} {Environment.NewLine}" +
+                $"Copyright(C) superdev GmbH. All rights reserved.{Environment.NewLine}");
+
             var builder = WebApplication.CreateBuilder(args);
             builder.Host.UseSystemd();
             builder.Host.UseWindowsService();
@@ -65,6 +75,8 @@ namespace WeatherDisplay.Api
                 });
             });
 
+            services.AddRaspberryPi();
+
             // ====== Auto update ======
             var autoUpdateOptions = new AutoUpdateOptions();
             builder.Configuration.GetSection("AutoUpdateOptions").Bind(autoUpdateOptions);
@@ -77,6 +89,20 @@ namespace WeatherDisplay.Api
             services.AddSingleton<ILocalVersionChecker, ProductVersionChecker>();
             services.AddSingleton<IRemoteVersionChecker, GithubVersionChecker>();
             services.AddSingleton<IAutoUpdateService, AutoUpdateService>();
+
+            // ====== Hardware access ======
+            var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+            if (isWindows)
+            {
+                services.AddSingleton<IGpioController, GpioControllerSimulator>();
+            }
+            else
+            {
+                services.AddSingleton<IGpioController, GpioControllerWrapper>();
+            }
+
+            services.AddSingleton<IWeatherDisplayHardwareCoordinator, WeatherDisplayHardwareCoordinator>();
+            services.AddSingleton<IWeatherDisplayServiceConfigurator, WeatherDisplayServiceConfigurator>();
 
             // ====== Weather services ======
             services.AddWeatherDisplay(builder.Configuration);
@@ -140,7 +166,9 @@ namespace WeatherDisplay.Api
             });
 
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(o => o.InjectStylesheet("/swagger-ui/SwaggerStyle.css"));
+
+            app.UseStaticFiles();
 
             app.Run();
         }

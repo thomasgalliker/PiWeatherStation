@@ -1,4 +1,4 @@
-﻿namespace WeatherDisplay.Services
+﻿namespace WeatherDisplay.Services.DeepL
 {
     public class DeepLTranslationConfiguration : IDeepLTranslationConfiguration
     {

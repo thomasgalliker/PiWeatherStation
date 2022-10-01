@@ -48,7 +48,7 @@ namespace WeatherDisplay.Api.Updater.Services
             this.processFactory = processFactory;
         }
 
-        public async Task<UpdateCheckResult> CheckForUpdateAsync()
+        public async Task<UpdateCheckResult> CheckForUpdateAsync(bool force = false)
         {
             this.logger.LogInformation("CheckForUpdateAsync");
 
@@ -59,22 +59,29 @@ namespace WeatherDisplay.Api.Updater.Services
                 var updateVersionSource = await this.remoteVersionChecker.GetLatestVersionAsync();
                 var remoteSemanticVersion = updateVersionSource.Version;
 
-#if DEBUG
-                if (localSemanticVersion == LocalDebugVersion)
+                if (force)
                 {
-                    this.logger.LogDebug($"CheckForUpdateAsync skipping since local version {localSemanticVersion} is a debug version");
-                    return new UpdateCheckResult(localSemanticVersion);
-                }
-#endif
-                if (localSemanticVersion < remoteSemanticVersion)
-                {
-                    this.logger.LogDebug($"CheckForUpdateAsync found remote version {remoteSemanticVersion} to be newer than local version {localSemanticVersion}");
+                    this.logger.LogDebug($"CheckForUpdateAsync forces remote version {remoteSemanticVersion} over local version {localSemanticVersion}");
                     result = new UpdateCheckResult(localSemanticVersion, updateVersionSource);
                 }
                 else
                 {
-                    this.logger.LogDebug($"CheckForUpdateAsync has not found a version newer than local version {remoteSemanticVersion}");
-                    return new UpdateCheckResult(localSemanticVersion, remoteSemanticVersion);
+                    if (localSemanticVersion == LocalDebugVersion)
+                    {
+                        this.logger.LogDebug($"CheckForUpdateAsync skipping since local version {localSemanticVersion} is a debug version");
+                        return new UpdateCheckResult(localSemanticVersion);
+                    }
+
+                    if (localSemanticVersion < remoteSemanticVersion)
+                    {
+                        this.logger.LogDebug($"CheckForUpdateAsync found remote version {remoteSemanticVersion} to be newer than local version {localSemanticVersion}");
+                        result = new UpdateCheckResult(localSemanticVersion, updateVersionSource);
+                    }
+                    else
+                    {
+                        this.logger.LogDebug($"CheckForUpdateAsync has not found a version newer than local version {remoteSemanticVersion}");
+                        return new UpdateCheckResult(localSemanticVersion, remoteSemanticVersion);
+                    }
                 }
             }
             catch (Exception ex)
@@ -110,7 +117,6 @@ namespace WeatherDisplay.Api.Updater.Services
                 var updateRequestJson = JsonConvert.SerializeObject(updateRequestDto);
                 var updateRequestJsonBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(updateRequestJson));
 
-
                 this.logger.LogInformation($"StartUpdate: Preparing update directory {updateDirectory}");
                 if (!Directory.Exists(updateDirectory))
                 {
@@ -141,8 +147,11 @@ namespace WeatherDisplay.Api.Updater.Services
                 };
                 var process = this.processFactory.CreateProcess(processStartInfo);
 
-                this.logger.LogInformation($"StartUpdate: Starting update executor process...");
-                process.Start();
+                this.logger.LogInformation($"StartUpdate: Starting update executor process...{Environment.NewLine}" +
+                    $"ProcessStartInfo: {processStartInfo.FileName} {processStartInfo.Arguments}");
+
+                var success = process.Start();
+                this.logger.LogInformation($"StartUpdate: success={success}");
             }
             catch (Exception ex)
             {

@@ -61,7 +61,7 @@ namespace WeatherDisplay.Api.Updater
 
         private static string GetLogFileName()
         {
-            return $"update-log-{DateTime.Now:yyyyddMM-HHmmss-fff}.log";
+            return $"update-log-{DateTime.Now:yyyyMMdd-HHmmss-fff}.log";
         }
 
         private static void RedirectConsoleOutputToFile(string logFilename)

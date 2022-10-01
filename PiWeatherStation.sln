@@ -24,7 +24,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Api", "Weath
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Tests", "Tests\WeatherDisplay.Tests\WeatherDisplay.Tests.csproj", "{6C143F7B-29EA-483F-A453-04849AC0BC72}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDisplay.Api.Updater", "WeatherDisplay.Api.Updater\WeatherDisplay.Api.Updater.csproj", "{D6872635-D71F-4A3E-A16A-13CD173FC0F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Api.Updater", "WeatherDisplay.Api.Updater\WeatherDisplay.Api.Updater.csproj", "{D6872635-D71F-4A3E-A16A-13CD173FC0F5}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Gpio.Devices", "System.Gpio.Devices\System.Gpio.Devices.csproj", "{AB09B92D-8284-4339-A7A6-86F4654B3508}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,6 +62,10 @@ Global
 		{D6872635-D71F-4A3E-A16A-13CD173FC0F5}.Debug|anycpu.Build.0 = Debug|Any CPU
 		{D6872635-D71F-4A3E-A16A-13CD173FC0F5}.Release|anycpu.ActiveCfg = Release|Any CPU
 		{D6872635-D71F-4A3E-A16A-13CD173FC0F5}.Release|anycpu.Build.0 = Release|Any CPU
+		{AB09B92D-8284-4339-A7A6-86F4654B3508}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{AB09B92D-8284-4339-A7A6-86F4654B3508}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{AB09B92D-8284-4339-A7A6-86F4654B3508}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{AB09B92D-8284-4339-A7A6-86F4654B3508}.Release|anycpu.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

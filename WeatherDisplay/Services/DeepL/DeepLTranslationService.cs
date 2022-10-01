@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using WeatherDisplay.Model.DeepL;
 
-namespace WeatherDisplay.Services
+namespace WeatherDisplay.Services.DeepL
 {
     public sealed class DeepLTranslationService : ITranslationService
     {
