@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using DisplayService.Internals;
 using FluentAssertions;
-using WeatherDisplay.Internals;
 using Xunit;
 using Xunit.Abstractions;
 
-namespace WeatherDisplay.Tests.Internals
+namespace DisplayService.Tests.Internals
 {
     public class AsyncLockTests
     {

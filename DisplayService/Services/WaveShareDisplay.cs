@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using DisplayService.Internals;
 using Waveshare;
 using Waveshare.Devices;
 using Waveshare.Interfaces;
@@ -10,6 +11,7 @@ namespace DisplayService.Services
     public class WaveShareDisplay : IDisplay
     {
         private readonly IEPaperDisplay ePaperDisplay;
+
         private bool disposed;
 
         public WaveShareDisplay(string displayType)

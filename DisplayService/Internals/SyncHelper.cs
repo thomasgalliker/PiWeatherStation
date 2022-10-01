@@ -3,11 +3,10 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
 
-namespace WeatherDisplay.Internals
+namespace DisplayService.Internals
 {
-    internal class SyncHelper
+    public class SyncHelper
     {
         private readonly ConcurrentQueue<TaskCompletionSource<object>> requestQueue = new ConcurrentQueue<TaskCompletionSource<object>>();
 

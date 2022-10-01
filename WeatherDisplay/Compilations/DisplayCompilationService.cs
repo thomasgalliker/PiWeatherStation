@@ -4,16 +4,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using DisplayService.Services;
 using Microsoft.Extensions.Logging;
-using WeatherDisplay.Internals;
+using DisplayService.Internals;
 
 namespace WeatherDisplay.Compilations
 {
     public class DisplayCompilationService : IDisplayCompilationService
     {
-        private readonly SyncHelper syncHelper = new SyncHelper();
         private readonly ILogger logger;
         private readonly IDisplayManager displayManager;
         private readonly IEnumerable<IDisplayCompilation> displayCompilations;
+
+        private readonly SyncHelper syncHelper = new SyncHelper();
 
         public DisplayCompilationService(
             ILogger<DisplayCompilationService> logger,
