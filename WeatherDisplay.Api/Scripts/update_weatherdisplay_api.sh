@@ -136,7 +136,12 @@ sudo apt-get install -y hostapd
 sudo apt-get install -y dnsmasq
 
 sudo systemctl stop hostapd
+sudo systemctl unmask hostapd
+sudo systemctl disable hostapd
+
 sudo systemctl stop dnsmasq
+sudo systemctl unmask dnsmasq
+sudo systemctl disable dnsmasq
 echo ""
 
 if [ -d $dotnetDirectory ]; then
@@ -209,6 +214,7 @@ ExecStop=/bin/kill \$MAINPID
 KillSignal=SIGTERM
 KillMode=process
 SyslogIdentifier=$executable
+TimeoutStopSec=20
 
 User=pi
 Group=pi
@@ -247,7 +253,10 @@ if [ ! -z "$keyboard" ]; then
 fi
 
 echo "Updating hostname..."
-sudo hostnamectl set-hostname $host
+currentHostname=`cat /etc/hostname | tr -d " \t\n\r"`
+sudo raspi-config nonint do_hostname $host
+echo $host > /etc/hostname
+sed -i "s/127.0.1.1.*$currentHostname/127.0.1.1\t$host/g" /etc/hosts
 
 echo "
 =====================================================
