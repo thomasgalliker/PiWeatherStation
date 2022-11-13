@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 
 echo "
 =====================================================
@@ -48,6 +48,11 @@ if [ "$#" != 0 ]; then
     esac
   done
   shift  # $EOL
+fi
+
+if [ $(id -u) != 0 ]; then
+    echo "You need to be root to run this script! Please run 'sudo bash $0'"
+    exit 1
 fi
 
 dotnetDirectory="/home/pi/.dotnet"
