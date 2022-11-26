@@ -9,6 +9,8 @@ namespace WeatherDisplay.Model
 
         CultureInfo CultureInfo { get; set; }
 
+        bool RunSetup { get; set; }
+
         bool IsDebug { get; set; }
 
         WaterTemperatureDisplayCompilationOptions WaterTemperatureDisplayCompilation { get; set; }

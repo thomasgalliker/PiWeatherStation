@@ -8,11 +8,18 @@ namespace WeatherDisplay.Api.Services
 {
     public class WeatherDisplayHardwareCoordinator : IWeatherDisplayHardwareCoordinator, IDisposable
     {
+        private static readonly TimeSpan ButtonDebounceTime = TimeSpan.FromMilliseconds(10);
+        private static readonly PinMode ButtonPinMode = PinMode.InputPullUp;
+
         private readonly ILogger logger;
         private readonly IAppSettings appSettings;
         private readonly IGpioController gpioController;
         private readonly IDisplayCompilationService displayCompilationService;
         private readonly GpioButton button1;
+        private readonly GpioButton button2;
+        private readonly GpioButton button3;
+        private readonly GpioButton button4;
+
         private bool disposed;
 
         public WeatherDisplayHardwareCoordinator(
@@ -26,9 +33,19 @@ namespace WeatherDisplay.Api.Services
             this.gpioController = gpioController;
             this.displayCompilationService = displayCompilationService;
 
-            this.logger.LogDebug($"Initialize a new GPIO button");
-            this.button1 = new GpioButton(5, this.gpioController, true, PinMode.InputPullUp, debounceTime: TimeSpan.FromMilliseconds(10));
+            this.logger.LogDebug($"Initialize GPIO buttons");
+
+            this.button1 = new GpioButton(3, this.gpioController, shouldDispose: true, ButtonPinMode, ButtonDebounceTime);
             this.button1.Press += this.OnButton1Pressed;
+
+            this.button2 = new GpioButton(5, this.gpioController, shouldDispose: true, ButtonPinMode, ButtonDebounceTime);
+            this.button2.Press += this.OnButton2Pressed;
+
+            this.button3 = new GpioButton(7, this.gpioController, shouldDispose: true, ButtonPinMode, ButtonDebounceTime);
+            this.button3.Press += this.OnButton3Pressed;
+
+            this.button4 = new GpioButton(11, this.gpioController, shouldDispose: true, ButtonPinMode, ButtonDebounceTime);
+            this.button4.Press += this.OnButton4Pressed;
         }
 
         public async Task HandleButtonPress(int buttonId)
@@ -57,6 +74,21 @@ namespace WeatherDisplay.Api.Services
         {
             await this.HandleButtonPress(buttonId: 1);
         }
+        
+        private async void OnButton2Pressed(object sender, EventArgs e)
+        {
+            await this.HandleButtonPress(buttonId: 2);
+        }
+        
+        private async void OnButton3Pressed(object sender, EventArgs e)
+        {
+            await this.HandleButtonPress(buttonId: 3);
+        }
+        
+        private async void OnButton4Pressed(object sender, EventArgs e)
+        {
+            await this.HandleButtonPress(buttonId: 4);
+        }
 
         protected virtual void Dispose(bool disposing)
         {
@@ -66,6 +98,15 @@ namespace WeatherDisplay.Api.Services
                 {
                     this.button1.Press -= this.OnButton1Pressed;
                     this.button1.Dispose();
+
+                    this.button2.Press -= this.OnButton2Pressed;
+                    this.button2.Dispose();
+
+                    this.button3.Press -= this.OnButton3Pressed;
+                    this.button3.Dispose();
+
+                    this.button4.Press -= this.OnButton4Pressed;
+                    this.button4.Dispose();
                 }
 
                 this.disposed = true;

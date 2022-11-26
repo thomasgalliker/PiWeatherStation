@@ -1,14 +1,14 @@
 ﻿using System.Collections.Generic;
 
-namespace WeatherDisplay.Model
+namespace WeatherDisplay.Model.MeteoSwiss
 {
     public class MeteoSwissWeatherDisplayCompilationOptions
     {
         public MeteoSwissWeatherDisplayCompilationOptions()
         {
-            this.Places = new List<Place>();
+            this.Places = new List<MeteoSwissPlace>();
         }
 
-        public ICollection<Place> Places { get; set; }
+        public ICollection<MeteoSwissPlace> Places { get; set; }
     }
 }

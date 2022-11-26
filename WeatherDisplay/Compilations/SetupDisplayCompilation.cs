@@ -7,13 +7,13 @@ using WeatherDisplay.Model;
 
 namespace WeatherDisplay.Compilations
 {
-    public class ErrorDisplayCompilation : IDisplayCompilation
+    public class SetupDisplayCompilation : IDisplayCompilation
     {
         private readonly IDisplayManager displayManager;
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
 
-        public ErrorDisplayCompilation(
+        public SetupDisplayCompilation(
             IDisplayManager displayManager,
             IDateTime dateTime,
             IAppSettings appSettings)
@@ -23,7 +23,7 @@ namespace WeatherDisplay.Compilations
             this.appSettings = appSettings;
         }
 
-        public string Name => "ErrorDisplayCompilation";
+        public string Name => "SetupDisplayCompilation";
 
         public void AddRenderActions()
         {
@@ -75,7 +75,7 @@ namespace WeatherDisplay.Compilations
                 },
                 CrontabSchedule.Parse("0 0 * * *")); // Update every day at 00:00
 
-            // Error info
+            // Setup info
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
@@ -95,7 +95,7 @@ namespace WeatherDisplay.Compilations
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"Unbekannter Fehler. Bitte Internetverbindung prüfen und Gerät neustarten.",
+                            Value = $"Setup. Hier QR Code anzeigen.",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,

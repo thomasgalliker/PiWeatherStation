@@ -45,4 +45,8 @@
     <None Include="wwwroot\swagger-ui\SwaggerStyle.css" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services\Configuration\" />
+  </ItemGroup>
+
 </Project>

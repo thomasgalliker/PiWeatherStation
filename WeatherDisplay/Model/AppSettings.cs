@@ -27,6 +27,8 @@ namespace WeatherDisplay.Model
             }
         }
 
+        public bool RunSetup { get; set; }
+
         public bool IsDebug { get; set; }
 
         public WaterTemperatureDisplayCompilationOptions WaterTemperatureDisplayCompilation { get; set; }

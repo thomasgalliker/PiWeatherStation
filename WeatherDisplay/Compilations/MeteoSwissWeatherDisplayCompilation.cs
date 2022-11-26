@@ -7,6 +7,7 @@ using MeteoSwissApi;
 using NCrontab;
 using OpenWeatherMap.Models;
 using WeatherDisplay.Model;
+using WeatherDisplay.Model.MeteoSwiss;
 using WeatherDisplay.Resources;
 
 namespace WeatherDisplay.Compilations

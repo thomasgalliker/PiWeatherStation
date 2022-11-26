@@ -4,6 +4,7 @@ using NCrontab.Scheduler;
 using NLog;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Compilations;
+using WeatherDisplay.Model;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace WeatherDisplay.Api.Services
@@ -11,6 +12,7 @@ namespace WeatherDisplay.Api.Services
     public class AutoStartupBackgroundService : IHostedService
     {
         private readonly ILogger logger;
+        private readonly IAppSettings appSettings;
         private readonly IAutoUpdateService autoUpdateService;
         private readonly IDisplayCompilationService displayCompilationService;
         private readonly IWeatherDisplayHardwareCoordinator weatherDisplayHardwareCoordinator;
@@ -19,6 +21,7 @@ namespace WeatherDisplay.Api.Services
 
         public AutoStartupBackgroundService(
             ILogger<AutoStartupBackgroundService> logger,
+            IAppSettings appSettings,
             IAutoUpdateService autoUpdateService,
             IDisplayCompilationService displayCompilationService,
             IWeatherDisplayHardwareCoordinator weatherDisplayHardwareCoordinator,
@@ -26,6 +29,7 @@ namespace WeatherDisplay.Api.Services
             IDisplayManager displayManager)
         {
             this.logger = logger;
+            this.appSettings = appSettings;
             this.autoUpdateService = autoUpdateService;
             this.displayCompilationService = displayCompilationService;
             this.weatherDisplayHardwareCoordinator = weatherDisplayHardwareCoordinator;
@@ -39,16 +43,24 @@ namespace WeatherDisplay.Api.Services
 
             try
             {
-                var result = await this.CheckAndStartUpdate();
-                if (!result.HasUpdate)
+                var runSetup = this.appSettings.RunSetup;
+                if (runSetup)
                 {
-                    // Schedule automatic update check for "Daily, 4:50 at night"
-                    //this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });
-                    // Schedule automatic update check every hour at minute 50
-                    this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.CheckAndStartUpdate(); });
+                    await this.displayCompilationService.SelectDisplayCompilationAsync("SetupDisplayCompilation");
+                }
+                else
+                {
+                    var result = await this.CheckAndStartUpdate();
+                    if (!result.HasUpdate)
+                    {
+                        // Schedule automatic update check for "Daily, 4:50 at night"
+                        //this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });
+                        // Schedule automatic update check every hour at minute 50
+                        this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.CheckAndStartUpdate(); });
 
-                    // Add rendering actions + start display manager
-                    await this.weatherDisplayHardwareCoordinator.HandleButtonPress(1);
+                        // Add rendering actions + start display manager
+                        await this.weatherDisplayHardwareCoordinator.HandleButtonPress(1);
+                    }
                 }
             }
             catch (Exception ex)

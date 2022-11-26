@@ -11,6 +11,7 @@ using NCrontab.Scheduler;
 using OpenWeatherMap;
 using WeatherDisplay.Compilations;
 using WeatherDisplay.Model;
+using WeatherDisplay.Model.MeteoSwiss;
 using WeatherDisplay.Services.DeepL;
 using WeatherDisplay.Services.Wiewarm;
 using IDateTime = DisplayService.Services.IDateTime;
