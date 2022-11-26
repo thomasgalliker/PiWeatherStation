@@ -8,6 +8,7 @@ using DisplayService.Internals;
 
 namespace WeatherDisplay.Compilations
 {
+    // TODO: Rename to "NavigationService" as its purpose is to connect user input with display compilations
     public class DisplayCompilationService : IDisplayCompilationService
     {
         private readonly ILogger logger;

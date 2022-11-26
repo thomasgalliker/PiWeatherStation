@@ -2,20 +2,14 @@
 using System.Gpio.Devices;
 using System.Gpio.Devices.Buttons;
 using WeatherDisplay.Compilations;
+using WeatherDisplay.Model;
 
 namespace WeatherDisplay.Api.Services
 {
     public class WeatherDisplayHardwareCoordinator : IWeatherDisplayHardwareCoordinator, IDisposable
     {
-        private static readonly IDictionary<int, string> ButtonMappings = new Dictionary<int, string>
-        {
-            { 1, "OpenWeatherDisplayCompilation" },
-            { 2, "TemperatureWeatherDisplayCompilation" },
-            { 3, "WaterTemperatureDisplayCompilation" },
-            { 4, "MeteoSwissWeatherDisplayCompilation" },
-        };
-
         private readonly ILogger logger;
+        private readonly IAppSettings appSettings;
         private readonly IGpioController gpioController;
         private readonly IDisplayCompilationService displayCompilationService;
         private readonly GpioButton button1;
@@ -23,10 +17,12 @@ namespace WeatherDisplay.Api.Services
 
         public WeatherDisplayHardwareCoordinator(
             ILogger<WeatherDisplayHardwareCoordinator> logger,
+            IAppSettings appSettings,
             IGpioController gpioController,
             IDisplayCompilationService displayCompilationService)
         {
             this.logger = logger;
+            this.appSettings = appSettings;
             this.gpioController = gpioController;
             this.displayCompilationService = displayCompilationService;
 
@@ -39,14 +35,22 @@ namespace WeatherDisplay.Api.Services
         {
             this.logger.LogDebug($"HandleButtonPress: buttonId={buttonId}");
 
-            if (ButtonMappings.TryGetValue(buttonId, out var displayCompilationName))
-            {
-                await this.displayCompilationService.SelectDisplayCompilationAsync(displayCompilationName);
-            }
-            else
+            var buttonMappings = this.appSettings.ButtonMappings.Where(b => b.ButtonId == buttonId);
+            var buttonMappingsCount = buttonMappings.Count();
+            if (buttonMappingsCount == 0)
             {
                 throw new NotSupportedException($"Button with buttonId={buttonId} is currently not supported.");
             }
+
+            if (buttonMappingsCount > 1)
+            {
+                throw new NotSupportedException(
+                    $"Button with buttonId={buttonId} has multiple assignments:{Environment.NewLine}" +
+                    $"{string.Join(Environment.NewLine, buttonMappings.Select(b => $"- {b.Name}"))}");
+            }
+
+            var buttonMapping = buttonMappings.Single();
+            await this.displayCompilationService.SelectDisplayCompilationAsync(buttonMapping.Name);
         }
 
         private async void OnButton1Pressed(object sender, EventArgs e)

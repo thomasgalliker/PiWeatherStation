@@ -38,16 +38,27 @@ namespace WeatherDisplay.Tests
             this.appSettingsMock = this.autoMocker.GetMock<IAppSettings>();
             this.appSettingsMock.SetupGet(r => r.Title)
                 .Returns("Test");
-            this.appSettingsMock.SetupGet(r => r.Places)
-                .Returns(new List<Place> { new Place { Name = "Test Place", Longitude = 1d, Latitude = 2d } });
+
+            this.appSettingsMock.SetupGet(r => r.WaterTemperatureDisplayCompilation)
+                .Returns(new WaterTemperatureDisplayCompilationOptions
+                {
+                    Places = new List<Place>
+                    {
+                        new Place
+                        {
+                            Name = "Test Place",
+                            Longitude = 1d, Latitude = 2d
+                        }
+                    }
+                });
 
             var renderSettingsMock = this.autoMocker.GetMock<IRenderSettings>();
             renderSettingsMock.SetupGet(r => r.Height)
-                .Returns(480);
+                    .Returns(480);
             renderSettingsMock.SetupGet(r => r.Width)
-                .Returns(800);
+                    .Returns(800);
             renderSettingsMock.SetupGet(r => r.BackgroundColor)
-                .Returns(SKColors.White.ToString());
+                    .Returns(SKColors.White.ToString());
 
             this.dateTimeMock = this.autoMocker.GetMock<IDateTime>();
             this.dateTimeMock.SetupGet(d => d.Now)

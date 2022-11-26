@@ -38,8 +38,17 @@ namespace WeatherDisplay.Tests.Compilations
             this.appSettingsMock = this.autoMocker.GetMock<IAppSettings>();
             this.appSettingsMock.SetupGet(r => r.Title)
                 .Returns("Test");
-            this.appSettingsMock.SetupGet(r => r.Places)
-                .Returns(new List<Place> { new Place { Name = "Test Place", Longitude = 1d, Latitude = 2d } });
+            this.appSettingsMock.SetupGet(r => r.OpenWeatherDisplayCompilation)
+                .Returns(new OpenWeatherDisplayCompilationOptions
+                {
+                    Places = new List<Place>
+                       {
+                           new Place {
+                               Name = "Test Place",
+                               Longitude = 1d, Latitude = 2d
+                           }
+                       }
+                });
 
             var renderSettingsMock = this.autoMocker.GetMock<IRenderSettings>();
             renderSettingsMock.SetupGet(r => r.Height)

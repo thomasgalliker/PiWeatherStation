@@ -1,5 +1,6 @@
 ﻿using System.Gpio.Devices;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -7,10 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog;
 using NLog.Extensions.Logging;
-using RaspberryPi;
 using RaspberryPi.Extensions;
-using RaspberryPi.Services;
-using RaspberryPi.Storage;
 using WeatherDisplay.Api.Services;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Extensions;
@@ -26,6 +24,7 @@ namespace WeatherDisplay.Api
                 $"Copyright(C) superdev GmbH. All rights reserved.{Environment.NewLine}");
 
             var builder = WebApplication.CreateBuilder(args);
+            builder.WebHost.UseKestrel();
             builder.Host.UseSystemd();
             builder.Host.UseWindowsService();
 

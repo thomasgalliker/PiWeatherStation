@@ -30,10 +30,32 @@ namespace WeatherDisplay.Extensions
             var openWeatherMapConfiguration = new OpenWeatherMapConfiguration();
             var openWeatherMapSection = configuration.GetSection("OpenWeatherMap");
             openWeatherMapSection.Bind(openWeatherMapConfiguration);
+            services.AddSingleton<IOpenWeatherMapConfiguration>(openWeatherMapConfiguration);
 
             var deepLTranslationConfiguration = new DeepLTranslationConfiguration();
             var deepLTranslationSection = configuration.GetSection("DeepL");
             deepLTranslationSection.Bind(deepLTranslationConfiguration);
+            services.AddSingleton<IDeepLTranslationConfiguration>(deepLTranslationConfiguration);
+
+            var meteoSwissWeatherDisplayCompilationOptions = new MeteoSwissWeatherDisplayCompilationOptions();
+            var meteoSwissWeatherDisplayCompilationSection = configuration.GetSection("MeteoSwissWeatherDisplayCompilation");
+            meteoSwissWeatherDisplayCompilationSection.Bind(meteoSwissWeatherDisplayCompilationOptions);
+            services.AddSingleton(meteoSwissWeatherDisplayCompilationOptions);
+            
+            var openWeatherDisplayCompilationOptions = new OpenWeatherDisplayCompilationOptions();
+            var openWeatherDisplayCompilationSection = configuration.GetSection("OpenWeatherDisplayCompilation");
+            openWeatherDisplayCompilationSection.Bind(openWeatherDisplayCompilationOptions);
+            services.AddSingleton(openWeatherDisplayCompilationOptions);
+            
+            var temperatureWeatherDisplayCompilationOptions = new TemperatureWeatherDisplayCompilationOptions();
+            var temperatureWeatherDisplayCompilationSection = configuration.GetSection("TemperatureWeatherDisplayCompilation");
+            temperatureWeatherDisplayCompilationSection.Bind(temperatureWeatherDisplayCompilationOptions);
+            services.AddSingleton(temperatureWeatherDisplayCompilationOptions);
+            
+            var waterTemperatureDisplayCompilationOptions = new WaterTemperatureDisplayCompilationOptions();
+            var waterTemperatureDisplayCompilationSection = configuration.GetSection("WaterTemperatureDisplayCompilation");
+            waterTemperatureDisplayCompilationSection.Bind(waterTemperatureDisplayCompilationOptions);
+            services.AddSingleton(waterTemperatureDisplayCompilationOptions);
 
             var displayConfig = appSettings.Displays.First(); // Supports only one display at the time
 
@@ -82,13 +104,11 @@ namespace WeatherDisplay.Extensions
             services.AddSingleton<IRenderService, RenderService>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton(renderSettings);
             services.AddSingleton<IDisplayManager, DisplayManager>();
-            services.AddSingleton<IOpenWeatherMapConfiguration>(openWeatherMapConfiguration);
             services.AddSingleton<IOpenWeatherMapService, OpenWeatherMapService>();
 
             services.AddSingleton<IMeteoSwissWeatherServiceConfiguration, MeteoSwissWeatherServiceConfiguration>();
             services.AddSingleton<IMeteoSwissWeatherService, MeteoSwissWeatherService>();
 
-            services.AddSingleton<IDeepLTranslationConfiguration>(deepLTranslationConfiguration);
             services.AddSingleton<ITranslationService, DeepLTranslationService>();
             services.AddSingleton<IDisplayCompilationService, DisplayCompilationService>();
             services.RegisterAllTypes<IDisplayCompilation>(lifetime: ServiceLifetime.Singleton);

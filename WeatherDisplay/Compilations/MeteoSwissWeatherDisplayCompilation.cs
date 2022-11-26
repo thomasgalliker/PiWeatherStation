@@ -17,17 +17,20 @@ namespace WeatherDisplay.Compilations
         private readonly IMeteoSwissWeatherService meteoSwissWeatherService;
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
+        private readonly MeteoSwissWeatherDisplayCompilationOptions options;
 
         public MeteoSwissWeatherDisplayCompilation(
             IDisplayManager displayManager,
             IMeteoSwissWeatherService openWeatherMapService,
             IDateTime dateTime,
-            IAppSettings appSettings)
+            IAppSettings appSettings,
+            MeteoSwissWeatherDisplayCompilationOptions options)
         {
             this.displayManager = displayManager;
             this.meteoSwissWeatherService = openWeatherMapService;
             this.dateTime = dateTime;
             this.appSettings = appSettings;
+            this.options = options;
         }
 
         public string Name => "MeteoSwissWeatherDisplayCompilation";
@@ -86,7 +89,7 @@ namespace WeatherDisplay.Compilations
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var place = this.appSettings.Places.First();
+                    var place = this.options.Places.First();
 
                     // Get current weather & daily forecasts
                     var weatherInfo = await this.meteoSwissWeatherService.GetCurrentWeatherAsync(place.Plz);

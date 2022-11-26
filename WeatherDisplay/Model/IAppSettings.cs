@@ -11,8 +11,12 @@ namespace WeatherDisplay.Model
 
         bool IsDebug { get; set; }
 
-        List<AppSettings.DisplaySetting> Displays { get; set; }
+        WaterTemperatureDisplayCompilationOptions WaterTemperatureDisplayCompilation { get; set; }
 
-        List<Place> Places { get; set; }
+        OpenWeatherDisplayCompilationOptions OpenWeatherDisplayCompilation { get; set; }
+
+        ICollection<DisplaySetting> Displays { get; set; }
+        
+        ICollection<ButtonMapping> ButtonMappings { get; set; }
     }
 }

@@ -21,19 +21,22 @@ namespace WeatherDisplay.Compilations
         private readonly ITranslationService translationService;
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
+        private readonly OpenWeatherDisplayCompilationOptions options;
 
         public OpenWeatherDisplayCompilation(
             IDisplayManager displayManager,
             IOpenWeatherMapService openWeatherMapService,
             ITranslationService translationService,
             IDateTime dateTime,
-            IAppSettings appSettings)
+            IAppSettings appSettings,
+            OpenWeatherDisplayCompilationOptions options)
         {
             this.displayManager = displayManager;
             this.openWeatherMapService = openWeatherMapService;
             this.translationService = translationService;
             this.dateTime = dateTime;
             this.appSettings = appSettings;
+            this.options = options;
         }
 
         public string Name => "OpenWeatherDisplayCompilation";
@@ -94,7 +97,7 @@ namespace WeatherDisplay.Compilations
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var place = this.appSettings.Places.First();
+                    var place = this.options.Places.First();
 
                     // Get current weather & daily forecasts
                     var oneCallOptions = new OneCallOptions

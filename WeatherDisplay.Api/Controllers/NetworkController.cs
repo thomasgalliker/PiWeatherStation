@@ -1,5 +1,6 @@
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using RaspberryPi;
 using RaspberryPi.Network;
 
 namespace WeatherDisplay.Api.Controllers
@@ -9,43 +10,47 @@ namespace WeatherDisplay.Api.Controllers
     public class NetworkController : ControllerBase
     {
         private const string DefaultIPAddress = "192.168.99.1";
-        private readonly IAccessPoint accessPoint;
+        private readonly INetworkInterfaceService networkInterfaceService;
+        private readonly INetworkManager networkManager;
         private readonly IWPA wpa;
 
         public NetworkController(
-            IAccessPoint accessPoint,
+            INetworkInterfaceService networkInterfaceService,
+            INetworkManager networkManager,
             IWPA wpa)
         {
-            this.accessPoint = accessPoint;
+            this.networkInterfaceService = networkInterfaceService;
+            this.networkManager = networkManager;
             this.wpa = wpa;
         }
 
         [HttpGet("scan")]
         public IEnumerable<string> ScanAsync()
         {
-            var ssids = this.wpa.ScanSSIDs("wlan0");
+            var wlan0 = this.networkInterfaceService.GetByName("wlan0");
+            var ssids = this.wpa.ScanSSIDs(wlan0);
             return ssids;
         }
 
-        [HttpGet("report")]
-        public Task<string> GetReportAsync()
+        [HttpGet("accesspoint/setup")]
+        public async Task ConfigureAccessPoint(string ssid, string psk, string ipAddress = DefaultIPAddress, int? channel = null, Country country = null)
         {
-            var report = this.wpa.GetReportAsync();
-            return report;
+            var wlan0 = this.networkInterfaceService.GetByName("wlan0");
+            var parsedIPAddress = IPAddress.Parse(ipAddress);
+            await this.networkManager.SetupAccessPoint(wlan0, ssid, psk, parsedIPAddress, channel, country);
         }
         
-
-        [HttpGet("accesspoint/configure")]
-        public void ConfigureAccessPoint(string ssid, string psk, string ipAddress = DefaultIPAddress, int? channel = null)
+        [HttpGet("stationmode/setup")]
+        public async Task SetupStationMode(string ssid, string psk)
         {
-            var parsedIPAddress = IPAddress.Parse(ipAddress);
-            this.accessPoint.ConfigureAsync(ssid, psk, parsedIPAddress, channel);
-        }
+            var wlan0 = this.networkInterfaceService.GetByName("wlan0");
 
-        [HttpGet("wpa/updatessid")]
-        public async Task UpdateSSIDAsync(string ssid, string psk, string countryCode)
-        {
-            await this.wpa.UpdateSSIDAsync(ssid, psk, countryCode);
+            var network = new WPASupplicantNetwork
+            {
+                SSID = ssid,
+                PSK = psk,
+            };
+            await this.networkManager.SetupStationMode(wlan0, network);
         }
     }
 }

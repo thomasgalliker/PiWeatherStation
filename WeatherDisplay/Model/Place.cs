@@ -1,5 +1,8 @@
-﻿namespace WeatherDisplay.Model
+﻿using System.Diagnostics;
+
+namespace WeatherDisplay.Model
 {
+    [DebuggerDisplay("{this.Name}")]
     public class Place
     {
         public Place()
