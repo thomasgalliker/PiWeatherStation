@@ -33,16 +33,11 @@ namespace WeatherDisplay.Tests
         public TemperatureDiagramUnitTests(ITestOutputHelper testOutputHelper)
         {
             this.testHelper = new TestHelper(testOutputHelper);
+
             this.autoMocker = new AutoMocker();
-
-            this.appSettingsMock = this.autoMocker.GetMock<IAppSettings>();
-            this.appSettingsMock.SetupGet(r => r.Title)
-                .Returns("Test");
-
-            this.appSettingsMock.SetupGet(r => r.WaterTemperatureDisplayCompilation)
-                .Returns(new WaterTemperatureDisplayCompilationOptions
-                {
-                    Places = new List<Place>
+            this.autoMocker.Use(new WaterTemperatureDisplayCompilationOptions
+            {
+                Places = new List<Place>
                     {
                         new Place
                         {
@@ -50,7 +45,7 @@ namespace WeatherDisplay.Tests
                             Longitude = 1d, Latitude = 2d
                         }
                     }
-                });
+            });
 
             var renderSettingsMock = this.autoMocker.GetMock<IRenderSettings>();
             renderSettingsMock.SetupGet(r => r.Height)

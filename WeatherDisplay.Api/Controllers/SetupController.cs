@@ -1,49 +1,79 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RaspberryPi.Network;
 using RaspberryPi.Process;
+using WeatherDisplay.Api.Services.Configuration;
 using WeatherDisplay.Model;
+using WeatherDisplay.Model.MeteoSwiss;
 
 namespace WeatherDisplay.Api.Controllers
 {
+    [AllowAnonymous]
     [ApiController]
     [Route("api/system/setup")]
     public class SetupController : ControllerBase
     {
         private readonly INetworkInterfaceService networkInterfaceService;
         private readonly INetworkManager networkManager;
-        private readonly IAppSettings appSettings;
-        //private readonly IConfiguration configuration;
+        private readonly IWritableOptions<AppSettings> woAppSettings;
+        private readonly IWritableOptions<OpenWeatherDisplayCompilationOptions> woOpenWeatherDisplayCompilationOptions;
         private readonly IProcessRunner processRunner;
 
         public SetupController(
             INetworkInterfaceService networkInterfaceService,
             INetworkManager networkManager,
-            IAppSettings appSettings,
-            //IWritableOptions<> configuration,
+            IWritableOptions<AppSettings> woAppSettings,
+            IWritableOptions<OpenWeatherDisplayCompilationOptions> woOpenWeatherDisplayCompilationOptions,
             IProcessRunner processRunner)
         {
             this.networkInterfaceService = networkInterfaceService;
             this.networkManager = networkManager;
-            this.appSettings = appSettings;
-            //this.configuration = configuration;
+            this.woAppSettings = woAppSettings;
+            this.woOpenWeatherDisplayCompilationOptions = woOpenWeatherDisplayCompilationOptions;
             this.processRunner = processRunner;
         }
 
         [HttpGet("run")]
-        public async Task RunAsync(string ssid, string psk, string place, string latitude, string longitude)
+        public void Run(string ssid, string psk, string place, double latitude, double longitude)
         {
-            // Connect to wifi network
-            var wlan0 = this.networkInterfaceService.GetByName("wlan0");
+            // TODO: Input validation!
 
-            var network = new WPASupplicantNetwork
+            var placeObj = new Place
             {
-                SSID = ssid,
-                PSK = psk,
+                Name = place,
+                Latitude = latitude,
+                Longitude = longitude
             };
-            await this.networkManager.SetupStationMode(wlan0, network);
+
+            // Connect to wifi network
+            //var wlan0 = this.networkInterfaceService.GetByName("wlan0");
+
+            //var network = new WPASupplicantNetwork
+            //{
+            //    SSID = ssid,
+            //    PSK = psk,
+            //};
+            //await this.networkManager.SetupStationMode(wlan0, network);
+
+            this.woOpenWeatherDisplayCompilationOptions.Update((o) =>
+            {
+                o.Places = new[]
+                {
+                    placeObj
+                };
+                return o;
+            });
+            
+            //this.writableAppSettings.UpdateProperty(a => a.WaterTemperatureDisplayCompilation, new WaterTemperatureDisplayCompilationOptions
+            //{
+            //    Places = new[]
+            //    {
+            //        placeObj
+            //    },
+            //});
 
             // If everything succeeded, we set the RunSetup flag to false
-            this.appSettings.RunSetup = false;
+            this.woAppSettings.UpdateProperty(a => a.RunSetup, false);
 
             this.processRunner.ExecuteCommand("sudo reboot");
         }

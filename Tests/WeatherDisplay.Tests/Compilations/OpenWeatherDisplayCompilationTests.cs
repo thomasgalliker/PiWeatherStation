@@ -25,7 +25,6 @@ namespace WeatherDisplay.Tests.Compilations
     {
         private readonly TestHelper testHelper;
         private readonly AutoMocker autoMocker;
-        private readonly Mock<IAppSettings> appSettingsMock;
         private readonly Mock<IDateTime> dateTimeMock;
         private readonly TestDisplay testDisplay;
         private readonly Mock<IOpenWeatherMapService> openWeatherMapServiceMock;
@@ -34,21 +33,16 @@ namespace WeatherDisplay.Tests.Compilations
         {
             this.testHelper = new TestHelper(testOutputHelper);
             this.autoMocker = new AutoMocker();
-
-            this.appSettingsMock = this.autoMocker.GetMock<IAppSettings>();
-            this.appSettingsMock.SetupGet(r => r.Title)
-                .Returns("Test");
-            this.appSettingsMock.SetupGet(r => r.OpenWeatherDisplayCompilation)
-                .Returns(new OpenWeatherDisplayCompilationOptions
-                {
-                    Places = new List<Place>
+            this.autoMocker.Use(new OpenWeatherDisplayCompilationOptions
+            {
+                Places = new List<Place>
                        {
                            new Place {
                                Name = "Test Place",
                                Longitude = 1d, Latitude = 2d
                            }
                        }
-                });
+            });
 
             var renderSettingsMock = this.autoMocker.GetMock<IRenderSettings>();
             renderSettingsMock.SetupGet(r => r.Height)

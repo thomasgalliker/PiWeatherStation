@@ -27,6 +27,8 @@ namespace WeatherDisplay.Extensions
             var appSettings = new AppSettings();
             var appSettingsSection = configuration.GetSection("AppSettings");
             appSettingsSection.Bind(appSettings);
+            services.AddSingleton<IAppSettings>(appSettings); // TODO: Remove IAppSettings and make properties virtual
+            services.Configure<AppSettings>(appSettingsSection);
 
             var openWeatherMapConfiguration = new OpenWeatherMapConfiguration();
             var openWeatherMapSection = configuration.GetSection("OpenWeatherMap");
@@ -42,17 +44,17 @@ namespace WeatherDisplay.Extensions
             var meteoSwissWeatherDisplayCompilationSection = configuration.GetSection("MeteoSwissWeatherDisplayCompilation");
             meteoSwissWeatherDisplayCompilationSection.Bind(meteoSwissWeatherDisplayCompilationOptions);
             services.AddSingleton(meteoSwissWeatherDisplayCompilationOptions);
-            
+
             var openWeatherDisplayCompilationOptions = new OpenWeatherDisplayCompilationOptions();
             var openWeatherDisplayCompilationSection = configuration.GetSection("OpenWeatherDisplayCompilation");
             openWeatherDisplayCompilationSection.Bind(openWeatherDisplayCompilationOptions);
             services.AddSingleton(openWeatherDisplayCompilationOptions);
-            
+
             var temperatureWeatherDisplayCompilationOptions = new TemperatureWeatherDisplayCompilationOptions();
             var temperatureWeatherDisplayCompilationSection = configuration.GetSection("TemperatureWeatherDisplayCompilation");
             temperatureWeatherDisplayCompilationSection.Bind(temperatureWeatherDisplayCompilationOptions);
             services.AddSingleton(temperatureWeatherDisplayCompilationOptions);
-            
+
             var waterTemperatureDisplayCompilationOptions = new WaterTemperatureDisplayCompilationOptions();
             var waterTemperatureDisplayCompilationSection = configuration.GetSection("WaterTemperatureDisplayCompilation");
             waterTemperatureDisplayCompilationSection.Bind(waterTemperatureDisplayCompilationOptions);
@@ -61,7 +63,7 @@ namespace WeatherDisplay.Extensions
             var displayConfig = appSettings.Displays.First(); // Supports only one display at the time
 
             // Initialize display
-            services.AddSingleton<IDisplay>(x =>
+            services.AddSingleton(x =>
             {
                 IDisplay display;
                 if (appSettings.IsDebug)
@@ -98,7 +100,6 @@ namespace WeatherDisplay.Extensions
             renderSettings.Resize(displayConfig.Width, displayConfig.Height); // TODO: Refactor this
 
             // Register services
-            services.AddSingleton<IAppSettings>(appSettings);
             services.AddSingleton<ICacheService, CacheService>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton<IDateTime, SystemDateTime>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton<ITimerServiceFactory, TimerServiceFactory>(); // TODO Move to separate ServiceCollectionExtensions

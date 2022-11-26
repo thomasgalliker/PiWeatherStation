@@ -21,19 +21,18 @@ namespace WeatherDisplay.Model
             get => this.cultureInfo;
             set
             {
-                this.cultureInfo = value;
-                CultureInfo.CurrentCulture = value;
-                CultureInfo.CurrentUICulture = value;
+                if (value != null)
+                {
+                    this.cultureInfo = value;
+                    CultureInfo.CurrentCulture = value;
+                    CultureInfo.CurrentUICulture = value;
+                }
             }
         }
 
         public bool RunSetup { get; set; }
 
         public bool IsDebug { get; set; }
-
-        public WaterTemperatureDisplayCompilationOptions WaterTemperatureDisplayCompilation { get; set; }
-
-        public OpenWeatherDisplayCompilationOptions OpenWeatherDisplayCompilation { get; set; }
 
         public ICollection<DisplaySetting> Displays { get; set; }
 

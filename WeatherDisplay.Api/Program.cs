@@ -1,6 +1,5 @@
 ﻿using System.Gpio.Devices;
 using System.IdentityModel.Tokens.Jwt;
-using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -10,8 +9,10 @@ using NLog;
 using NLog.Extensions.Logging;
 using RaspberryPi.Extensions;
 using WeatherDisplay.Api.Services;
+using WeatherDisplay.Api.Services.Configuration;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Extensions;
+using WeatherDisplay.Model;
 
 namespace WeatherDisplay.Api
 {
@@ -105,6 +106,9 @@ namespace WeatherDisplay.Api
 
             // ====== Weather services ======
             services.AddWeatherDisplay(builder.Configuration);
+            services.ConfigureWritable<WeatherDisplay.Model.AppSettings>(builder.Configuration.GetSection("AppSettings"), "appsettings.Development.json");
+            services.ConfigureWritable<OpenWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("OpenWeatherDisplayCompilation"), "appsettings.Development.json");
+
             services.AddHostedService<AutoStartupBackgroundService>();
 
             // ====== Authentification & authorization ======

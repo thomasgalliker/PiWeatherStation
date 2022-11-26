@@ -13,10 +13,6 @@ namespace WeatherDisplay.Model
 
         bool IsDebug { get; set; }
 
-        WaterTemperatureDisplayCompilationOptions WaterTemperatureDisplayCompilation { get; set; }
-
-        OpenWeatherDisplayCompilationOptions OpenWeatherDisplayCompilation { get; set; }
-
         ICollection<DisplaySetting> Displays { get; set; }
         
         ICollection<ButtonMapping> ButtonMappings { get; set; }
