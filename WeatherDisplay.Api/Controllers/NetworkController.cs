@@ -37,7 +37,7 @@ namespace WeatherDisplay.Api.Controllers
         {
             var wlan0 = this.networkInterfaceService.GetByName("wlan0");
             var parsedIPAddress = IPAddress.Parse(ipAddress);
-            await this.networkManager.SetupAccessPoint(wlan0, ssid, psk, parsedIPAddress, channel, country);
+            await this.networkManager.SetupAccessPoint2(wlan0, ssid, psk, parsedIPAddress, channel, country);
         }
         
         [HttpGet("stationmode/setup")]

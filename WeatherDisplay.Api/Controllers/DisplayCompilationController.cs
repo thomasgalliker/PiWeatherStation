@@ -1,7 +1,4 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Options;
-using RaspberryPi.Network;
 using RaspberryPi.Process;
 using WeatherDisplay.Api.Services.Configuration;
 using WeatherDisplay.Compilations;
@@ -10,7 +7,6 @@ using WeatherDisplay.Model.MeteoSwiss;
 
 namespace WeatherDisplay.Api.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("api/displaycompilations")]
     public class DisplayCompilationController : ControllerBase
@@ -28,8 +24,8 @@ namespace WeatherDisplay.Api.Controllers
 
         [HttpPost(nameof(OpenWeatherDisplayCompilation))]
         public void ConfigureOpenWeatherDisplayCompilation(
-            [FromServices] IWritableOptions<OpenWeatherDisplayCompilationOptions> openWeatherDisplayCompilationOptions, 
-            [FromBody]OpenWeatherDisplayCompilationOptions options)
+            [FromServices] IWritableOptions<OpenWeatherDisplayCompilationOptions> openWeatherDisplayCompilationOptions,
+            [FromBody] OpenWeatherDisplayCompilationOptions options)
         {
             // TODO: Input validation!
 
@@ -43,7 +39,7 @@ namespace WeatherDisplay.Api.Controllers
 
         [HttpPost(nameof(TemperatureWeatherDisplayCompilation))]
         public void TemperatureWeatherDisplayCompilationOptions(
-            [FromServices] IWritableOptions<TemperatureWeatherDisplayCompilationOptions> temperatureWeatherDisplayCompilationOptions, 
+            [FromServices] IWritableOptions<TemperatureWeatherDisplayCompilationOptions> temperatureWeatherDisplayCompilationOptions,
             [FromBody] TemperatureWeatherDisplayCompilationOptions options)
         {
             // TODO: Input validation!
@@ -58,7 +54,7 @@ namespace WeatherDisplay.Api.Controllers
 
         [HttpPost(nameof(MeteoSwissWeatherDisplayCompilation))]
         public void MeteoSwissWeatherDisplayCompilationOptions(
-            [FromServices] IWritableOptions<MeteoSwissWeatherDisplayCompilationOptions> meteoSwissWeatherDisplayCompilationOptions, 
+            [FromServices] IWritableOptions<MeteoSwissWeatherDisplayCompilationOptions> meteoSwissWeatherDisplayCompilationOptions,
             [FromBody] MeteoSwissWeatherDisplayCompilationOptions options)
         {
             // TODO: Input validation!
@@ -73,7 +69,7 @@ namespace WeatherDisplay.Api.Controllers
 
         [HttpPost(nameof(WaterTemperatureDisplayCompilation))]
         public void WaterTemperatureDisplayCompilationOptions(
-            [FromServices] IWritableOptions<WaterTemperatureDisplayCompilationOptions> waterTemperatureDisplayCompilationOptions, 
+            [FromServices] IWritableOptions<WaterTemperatureDisplayCompilationOptions> waterTemperatureDisplayCompilationOptions,
             [FromBody] WaterTemperatureDisplayCompilationOptions options)
         {
             // TODO: Input validation!
