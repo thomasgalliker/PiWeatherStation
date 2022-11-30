@@ -75,7 +75,12 @@ steps:
     targetType: 'inline'
     script: |
       sed -i 's|1.0.0|$(Build.BuildNumber)|g' WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh
-
+      
+- task: UseDotNet@2
+  displayName: 'Use .NET 6.x'
+  inputs:
+    version: 6.x
+    
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet 6.x'
   inputs:
