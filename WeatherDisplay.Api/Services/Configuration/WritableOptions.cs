@@ -63,12 +63,12 @@ namespace WeatherDisplay.Api.Services.Configuration
             File.WriteAllText(physicalPath, updatedFileContent);
         }
 
-        public void Update(Action<T> applyChanges)
+        public void Update(Action<T> options)
         {
-            this.Update(t => applyChanges(t));
+            this.Update(t => options(t));
         }
 
-        public void Update(Func<T, T> applyChanges)
+        public void Update(Func<T, T> options)
         {
             var fileProvider = this.environment.ContentRootFileProvider;
             var fileInfo = fileProvider.GetFileInfo(this.file);
@@ -79,7 +79,7 @@ namespace WeatherDisplay.Api.Services.Configuration
 
             var sectionObject = this.DeserializeSection(jObject);
 
-            sectionObject = applyChanges(sectionObject);
+            sectionObject = options(sectionObject);
 
             jObject[this.section] = JObject.Parse(JsonConvert.SerializeObject(sectionObject, this.jsonSerializerSettings));
 

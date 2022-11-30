@@ -49,14 +49,14 @@ namespace WeatherDisplay.Api.Controllers
             // TODO: Input validation!
 
             // Connect to wifi network
-            //var wlan0 = this.networkInterfaceService.GetByName("wlan0");
+            var wlan0 = this.networkInterfaceService.GetByName("wlan0");
 
-            //var network = new WPASupplicantNetwork
-            //{
-            //    SSID = ssid,
-            //    PSK = psk,
-            //};
-            //await this.networkManager.SetupStationMode(wlan0, network);
+            var network = new WPASupplicantNetwork
+            {
+                SSID = ssid,
+                PSK = psk,
+            };
+            await this.networkManager.SetupStationMode(wlan0, network);
 
             var placeObj = new Place
             {
