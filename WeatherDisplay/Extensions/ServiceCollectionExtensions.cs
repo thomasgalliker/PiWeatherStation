@@ -30,6 +30,9 @@ namespace WeatherDisplay.Extensions
             services.AddSingleton<IAppSettings>(appSettings); // TODO: Remove IAppSettings and make properties virtual
             services.Configure<AppSettings>(appSettingsSection);
 
+            // TODO Try to minimize boiler-plate code with this method
+            //services.AddConfigurationBindings(configuration).Bind<AppSettings>("AppSettings");
+
             var openWeatherMapConfiguration = new OpenWeatherMapConfiguration();
             var openWeatherMapSection = configuration.GetSection("OpenWeatherMap");
             openWeatherMapSection.Bind(openWeatherMapConfiguration);
@@ -40,25 +43,25 @@ namespace WeatherDisplay.Extensions
             deepLTranslationSection.Bind(deepLTranslationConfiguration);
             services.AddSingleton<IDeepLTranslationConfiguration>(deepLTranslationConfiguration);
 
-            var meteoSwissWeatherDisplayCompilationOptions = new MeteoSwissWeatherDisplayCompilationOptions();
-            var meteoSwissWeatherDisplayCompilationSection = configuration.GetSection("MeteoSwissWeatherDisplayCompilation");
-            meteoSwissWeatherDisplayCompilationSection.Bind(meteoSwissWeatherDisplayCompilationOptions);
-            services.AddSingleton(meteoSwissWeatherDisplayCompilationOptions);
+            //var meteoSwissWeatherDisplayCompilationOptions = new MeteoSwissWeatherDisplayCompilationOptions();
+            //var meteoSwissWeatherDisplayCompilationSection = configuration.GetSection("MeteoSwissWeatherDisplayCompilation");
+            //meteoSwissWeatherDisplayCompilationSection.Bind(meteoSwissWeatherDisplayCompilationOptions);
+            //services.AddSingleton(meteoSwissWeatherDisplayCompilationOptions);
 
-            var openWeatherDisplayCompilationOptions = new OpenWeatherDisplayCompilationOptions();
-            var openWeatherDisplayCompilationSection = configuration.GetSection("OpenWeatherDisplayCompilation");
-            openWeatherDisplayCompilationSection.Bind(openWeatherDisplayCompilationOptions);
-            services.AddSingleton(openWeatherDisplayCompilationOptions);
+            //var openWeatherDisplayCompilationOptions = new OpenWeatherDisplayCompilationOptions();
+            //var openWeatherDisplayCompilationSection = configuration.GetSection("OpenWeatherDisplayCompilation");
+            //openWeatherDisplayCompilationSection.Bind(openWeatherDisplayCompilationOptions);
+            //services.AddSingleton(openWeatherDisplayCompilationOptions);
 
-            var temperatureWeatherDisplayCompilationOptions = new TemperatureWeatherDisplayCompilationOptions();
-            var temperatureWeatherDisplayCompilationSection = configuration.GetSection("TemperatureWeatherDisplayCompilation");
-            temperatureWeatherDisplayCompilationSection.Bind(temperatureWeatherDisplayCompilationOptions);
-            services.AddSingleton(temperatureWeatherDisplayCompilationOptions);
+            //var temperatureWeatherDisplayCompilationOptions = new TemperatureWeatherDisplayCompilationOptions();
+            //var temperatureWeatherDisplayCompilationSection = configuration.GetSection("TemperatureWeatherDisplayCompilation");
+            //temperatureWeatherDisplayCompilationSection.Bind(temperatureWeatherDisplayCompilationOptions);
+            //services.AddSingleton(temperatureWeatherDisplayCompilationOptions);
 
-            var waterTemperatureDisplayCompilationOptions = new WaterTemperatureDisplayCompilationOptions();
-            var waterTemperatureDisplayCompilationSection = configuration.GetSection("WaterTemperatureDisplayCompilation");
-            waterTemperatureDisplayCompilationSection.Bind(waterTemperatureDisplayCompilationOptions);
-            services.AddSingleton(waterTemperatureDisplayCompilationOptions);
+            //var waterTemperatureDisplayCompilationOptions = new WaterTemperatureDisplayCompilationOptions();
+            //var waterTemperatureDisplayCompilationSection = configuration.GetSection("WaterTemperatureDisplayCompilation");
+            //waterTemperatureDisplayCompilationSection.Bind(waterTemperatureDisplayCompilationOptions);
+            //services.AddSingleton(waterTemperatureDisplayCompilationOptions);
 
             var displayConfig = appSettings.Displays.First(); // Supports only one display at the time
 
@@ -113,11 +116,16 @@ namespace WeatherDisplay.Extensions
 
             services.AddSingleton<ITranslationService, DeepLTranslationService>();
             services.AddSingleton<IDisplayCompilationService, DisplayCompilationService>();
-            services.RegisterAllTypes<IDisplayCompilation>(lifetime: ServiceLifetime.Singleton);
+            services.RegisterAllTypesAsSelf<IDisplayCompilation>(lifetime: ServiceLifetime.Singleton);
 
             services.AddSingleton<IWiewarmService, WiewarmService>();
 
             services.AddSingleton<IScheduler>(x => new Scheduler(x.GetRequiredService<ILogger<Scheduler>>()));
+        }
+
+        public static CustomConfigurationBinder AddConfigurationBindings(this IServiceCollection services, IConfiguration configuration)
+        {
+            return new CustomConfigurationBinder(services, configuration);
         }
 
         public static void RegisterAllTypes<T>(this IServiceCollection services, Assembly[] assemblies = null, ServiceLifetime lifetime = ServiceLifetime.Transient)
@@ -131,6 +139,20 @@ namespace WeatherDisplay.Extensions
             foreach (var type in typesFromAssemblies)
             {
                 services.Add(new ServiceDescriptor(typeof(T), type, lifetime));
+            }
+        }
+
+        public static void RegisterAllTypesAsSelf<T>(this IServiceCollection services, Assembly[] assemblies = null, ServiceLifetime lifetime = ServiceLifetime.Transient)
+        {
+            if (assemblies == null)
+            {
+                assemblies = new[] { Assembly.GetExecutingAssembly() };
+            }
+
+            var typesFromAssemblies = assemblies.SelectMany(a => a.DefinedTypes.Where(x => x.GetInterfaces().Contains(typeof(T))));
+            foreach (var type in typesFromAssemblies)
+            {
+                services.Add(new ServiceDescriptor(type, type, lifetime));
             }
         }
     }

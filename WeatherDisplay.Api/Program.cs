@@ -13,6 +13,7 @@ using WeatherDisplay.Api.Services.Configuration;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
+using WeatherDisplay.Model.MeteoSwiss;
 
 namespace WeatherDisplay.Api
 {
@@ -106,8 +107,11 @@ namespace WeatherDisplay.Api
 
             // ====== Weather services ======
             services.AddWeatherDisplay(builder.Configuration);
-            services.ConfigureWritable<WeatherDisplay.Model.AppSettings>(builder.Configuration.GetSection("AppSettings"), "appsettings.Development.json");
+            services.ConfigureWritable<AppSettings>(builder.Configuration.GetSection("AppSettings"), "appsettings.Development.json");
             services.ConfigureWritable<OpenWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("OpenWeatherDisplayCompilation"), "appsettings.Development.json");
+            services.ConfigureWritable<TemperatureWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("TemperatureWeatherDisplayCompilation"), "appsettings.Development.json");
+            services.ConfigureWritable<MeteoSwissWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("MeteoSwissWeatherDisplayCompilation"), "appsettings.Development.json");
+            services.ConfigureWritable<WaterTemperatureDisplayCompilationOptions>(builder.Configuration.GetSection("WaterTemperatureDisplayCompilation"), "appsettings.Development.json");
 
             services.AddHostedService<AutoStartupBackgroundService>();
 

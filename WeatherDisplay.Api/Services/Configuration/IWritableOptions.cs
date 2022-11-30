@@ -7,8 +7,8 @@ namespace WeatherDisplay.Api.Services.Configuration
     {
         void UpdateProperty<TValue>(Expression<Func<T, TValue>> propertySelector, TValue value);
 
-        void Update(Action<T> applyChanges);
+        void Update(Action<T> options);
 
-        void Update(Func<T, T> applyChanges);
+        void Update(Func<T, T> options);
     }
 }

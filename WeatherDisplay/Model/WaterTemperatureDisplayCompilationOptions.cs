@@ -6,10 +6,9 @@ namespace WeatherDisplay.Model
     {
         public WaterTemperatureDisplayCompilationOptions()
         {
-
-            this.Places = new List<Place>();
+            this.Places = new List<string>();
         }
 
-        public ICollection<Place> Places { get; set; }
+        public ICollection<string> Places { get; set; }
     }
 }

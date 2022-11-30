@@ -4,6 +4,7 @@ using System.Reflection;
 using DisplayService.Model;
 using DisplayService.Services;
 using MeteoSwissApi;
+using Microsoft.Extensions.Options;
 using NCrontab;
 using OpenWeatherMap.Models;
 using WeatherDisplay.Model;
@@ -18,14 +19,14 @@ namespace WeatherDisplay.Compilations
         private readonly IMeteoSwissWeatherService meteoSwissWeatherService;
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
-        private readonly MeteoSwissWeatherDisplayCompilationOptions options;
+        private readonly IOptionsMonitor<MeteoSwissWeatherDisplayCompilationOptions> options;
 
         public MeteoSwissWeatherDisplayCompilation(
             IDisplayManager displayManager,
             IMeteoSwissWeatherService openWeatherMapService,
             IDateTime dateTime,
             IAppSettings appSettings,
-            MeteoSwissWeatherDisplayCompilationOptions options)
+            IOptionsMonitor<MeteoSwissWeatherDisplayCompilationOptions> options)
         {
             this.displayManager = displayManager;
             this.meteoSwissWeatherService = openWeatherMapService;
@@ -33,8 +34,6 @@ namespace WeatherDisplay.Compilations
             this.appSettings = appSettings;
             this.options = options;
         }
-
-        public string Name => "MeteoSwissWeatherDisplayCompilation";
 
         public void AddRenderActions()
         {
@@ -90,7 +89,7 @@ namespace WeatherDisplay.Compilations
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var place = this.options.Places.First();
+                    var place = this.options.CurrentValue.Places.First();
 
                     // Get current weather & daily forecasts
                     var weatherInfo = await this.meteoSwissWeatherService.GetCurrentWeatherAsync(place.Plz);

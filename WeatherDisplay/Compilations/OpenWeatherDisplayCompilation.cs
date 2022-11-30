@@ -11,6 +11,7 @@ using OpenWeatherMap.Models;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Services.DeepL;
 using OpenWeatherMap;
+using Microsoft.Extensions.Options;
 
 namespace WeatherDisplay.Compilations
 {
@@ -21,7 +22,7 @@ namespace WeatherDisplay.Compilations
         private readonly ITranslationService translationService;
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
-        private readonly OpenWeatherDisplayCompilationOptions options;
+        private readonly IOptionsMonitor<OpenWeatherDisplayCompilationOptions> options;
 
         public OpenWeatherDisplayCompilation(
             IDisplayManager displayManager,
@@ -29,7 +30,7 @@ namespace WeatherDisplay.Compilations
             ITranslationService translationService,
             IDateTime dateTime,
             IAppSettings appSettings,
-            OpenWeatherDisplayCompilationOptions options)
+            IOptionsMonitor<OpenWeatherDisplayCompilationOptions> options)
         {
             this.displayManager = displayManager;
             this.openWeatherMapService = openWeatherMapService;
@@ -38,8 +39,6 @@ namespace WeatherDisplay.Compilations
             this.appSettings = appSettings;
             this.options = options;
         }
-
-        public string Name => "OpenWeatherDisplayCompilation";
 
         public void AddRenderActions()
         {
@@ -97,7 +96,7 @@ namespace WeatherDisplay.Compilations
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var place = this.options.Places.First();
+                    var place = this.options.CurrentValue.Places.First();
 
                     // Get current weather & daily forecasts
                     var oneCallOptions = new OneCallOptions

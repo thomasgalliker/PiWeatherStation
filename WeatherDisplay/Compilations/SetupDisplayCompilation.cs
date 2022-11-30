@@ -23,8 +23,6 @@ namespace WeatherDisplay.Compilations
             this.appSettings = appSettings;
         }
 
-        public string Name => "SetupDisplayCompilation";
-
         public void AddRenderActions()
         {
             // Date header

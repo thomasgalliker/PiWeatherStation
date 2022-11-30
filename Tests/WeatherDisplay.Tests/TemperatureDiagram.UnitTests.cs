@@ -37,14 +37,11 @@ namespace WeatherDisplay.Tests
             this.autoMocker = new AutoMocker();
             this.autoMocker.Use(new WaterTemperatureDisplayCompilationOptions
             {
-                Places = new List<Place>
-                    {
-                        new Place
-                        {
-                            Name = "Test Place",
-                            Longitude = 1d, Latitude = 2d
-                        }
-                    }
+                Places = new[]
+                {
+                    "Test Place 1",
+                    "Test Place 2",
+                }
             });
 
             var renderSettingsMock = this.autoMocker.GetMock<IRenderSettings>();

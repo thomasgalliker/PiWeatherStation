@@ -6,7 +6,6 @@ namespace WeatherDisplay.Model
     {
         public OpenWeatherDisplayCompilationOptions()
         {
-
             this.Places = new List<Place>();
         }
 

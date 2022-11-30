@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Services;
+using Microsoft.Extensions.Options;
 using NCrontab;
 using OpenWeatherMap;
 using WeatherDisplay.Model;
@@ -16,21 +17,19 @@ namespace WeatherDisplay.Compilations
         private readonly IDisplayManager displayManager;
         private readonly IWiewarmService wiewarmService;
         private readonly IDateTime dateTime;
-        private readonly WaterTemperatureDisplayCompilationOptions options;
+        private readonly IOptionsMonitor<WaterTemperatureDisplayCompilationOptions> options;
 
         public WaterTemperatureDisplayCompilation(
             IDisplayManager displayManager,
             IWiewarmService wiewarmService,
             IDateTime dateTime,
-            WaterTemperatureDisplayCompilationOptions options)
+            IOptionsMonitor<WaterTemperatureDisplayCompilationOptions> options)
         {
             this.displayManager = displayManager;
             this.wiewarmService = wiewarmService;
             this.dateTime = dateTime;
             this.options = options;
         }
-
-        public string Name => "WaterTemperatureDisplayCompilation";
 
         public void AddRenderActions()
         {
@@ -87,7 +86,7 @@ namespace WeatherDisplay.Compilations
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var place = this.options.Places.First();
+                    var places = this.options.CurrentValue.Places;
 
                     // Get current weather & daily forecasts
                     var oneCallOptions = new OneCallOptions
@@ -98,7 +97,7 @@ namespace WeatherDisplay.Compilations
                         IncludeHourlyForecasts = true,
                     };
 
-                    var searchTerms = new[] { "Bern", "Zug", "Luzern" };
+                    var searchTerms = places.ToArray();
 
                     var searchTasks = searchTerms.Select(s => this.wiewarmService.SearchBathsAsync(s));
                     var baths = (await Task.WhenAll(searchTasks))

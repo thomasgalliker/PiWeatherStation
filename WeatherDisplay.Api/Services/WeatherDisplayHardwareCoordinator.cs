@@ -63,11 +63,11 @@ namespace WeatherDisplay.Api.Services
             {
                 throw new NotSupportedException(
                     $"Button with buttonId={buttonId} has multiple assignments:{Environment.NewLine}" +
-                    $"{string.Join(Environment.NewLine, buttonMappings.Select(b => $"- {b.Name}"))}");
+                    $"{string.Join(Environment.NewLine, buttonMappings.Select(b => $"- {b.DisplayCompilation}"))}");
             }
 
             var buttonMapping = buttonMappings.Single();
-            await this.displayCompilationService.SelectDisplayCompilationAsync(buttonMapping.Name);
+            await this.displayCompilationService.SelectDisplayCompilationAsync(buttonMapping.DisplayCompilation);
         }
 
         private async void OnButton1Pressed(object sender, EventArgs e)
