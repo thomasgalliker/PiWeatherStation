@@ -1,15 +1,12 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RaspberryPi.Network;
 using RaspberryPi.Process;
 using WeatherDisplay.Api.Services.Configuration;
-using WeatherDisplay.Compilations;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.MeteoSwiss;
 
 namespace WeatherDisplay.Api.Controllers
 {
-    [AllowAnonymous]
     [ApiController]
     [Route("api/system/setup")]
     public class SetupController : ControllerBase
@@ -73,7 +70,7 @@ namespace WeatherDisplay.Api.Controllers
                 };
                 return o;
             });
-            
+
             this.temperatureWeatherDisplayCompilationOptions.Update((o) =>
             {
                 o.Places = new[]
@@ -97,7 +94,7 @@ namespace WeatherDisplay.Api.Controllers
                 };
                 return o;
             });
-            
+
             this.waterTemperatureDisplayCompilationOptions.Update((o) =>
             {
                 o.Places = new[]
