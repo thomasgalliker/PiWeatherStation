@@ -11,8 +11,8 @@ using NCrontab.Scheduler;
 using OpenWeatherMap;
 using WeatherDisplay.Compilations;
 using WeatherDisplay.Model;
-using WeatherDisplay.Model.MeteoSwiss;
 using WeatherDisplay.Services.DeepL;
+using WeatherDisplay.Services.QR;
 using WeatherDisplay.Services.Wiewarm;
 using IDateTime = DisplayService.Services.IDateTime;
 using SystemDateTime = DisplayService.Services.SystemDateTime;
@@ -119,6 +119,7 @@ namespace WeatherDisplay.Extensions
             services.RegisterAllTypesAsSelf<IDisplayCompilation>(lifetime: ServiceLifetime.Singleton);
 
             services.AddSingleton<IWiewarmService, WiewarmService>();
+            services.AddSingleton<IQRCodeService, QRCodeService>();
 
             services.AddSingleton<IScheduler>(x => new Scheduler(x.GetRequiredService<ILogger<Scheduler>>()));
         }

@@ -3,7 +3,9 @@ using System.Reflection;
 using DisplayService.Model;
 using DisplayService.Services;
 using NCrontab;
+using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
+using WeatherDisplay.Services.QR;
 
 namespace WeatherDisplay.Compilations
 {
@@ -12,15 +14,18 @@ namespace WeatherDisplay.Compilations
         private readonly IDisplayManager displayManager;
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
+        private readonly IQRCodeService qrCodeService;
 
         public SetupDisplayCompilation(
             IDisplayManager displayManager,
             IDateTime dateTime,
-            IAppSettings appSettings)
+            IAppSettings appSettings,
+            IQRCodeService qrCodeService)
         {
             this.displayManager = displayManager;
             this.dateTime = dateTime;
             this.appSettings = appSettings;
+            this.qrCodeService = qrCodeService;
         }
 
         public void AddRenderActions()
@@ -77,6 +82,11 @@ namespace WeatherDisplay.Compilations
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
+                    // TODO: Get ssid/psdk from system
+                    var ssid = "testssid";
+                    var psk = "testpassword";
+                    var qrCodeBitmap = this.qrCodeService.GenerateWifiQRCode(ssid, psk);
+
                     var currentWeatherRenderActions = new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
@@ -93,10 +103,18 @@ namespace WeatherDisplay.Compilations
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"Setup. Hier QR Code anzeigen.",
+                            Value = $"Verbinden Sie sich mit folgendem WiFi Netzwerk: {ssid} - {psk}",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
+                        },
+                        new RenderActions.StreamImage
+                        {
+                            X = 20,
+                            Y = 140,
+                            Image = qrCodeBitmap.ToStream(),
+                            Width= 320,
+                            Height= 320,
                         },
                     };
 
