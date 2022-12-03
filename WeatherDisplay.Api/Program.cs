@@ -19,6 +19,8 @@ namespace WeatherDisplay.Api
 {
     internal static class Program
     {
+        private const string UserSpecificAppSettingsFileName = "appsettings.User.json";
+
         private static void Main(string[] args)
         {
             Console.WriteLine(
@@ -41,7 +43,8 @@ namespace WeatherDisplay.Api
             builder.Configuration
                 .SetBasePath(builder.Environment.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddJsonFile(UserSpecificAppSettingsFileName, optional: true, reloadOnChange: true);
 
             // ====== Setup services ======
             var services = builder.Services;
@@ -107,11 +110,11 @@ namespace WeatherDisplay.Api
 
             // ====== Weather services ======
             services.AddWeatherDisplay(builder.Configuration);
-            services.ConfigureWritable<AppSettings>(builder.Configuration.GetSection("AppSettings"), "appsettings.Development.json");
-            services.ConfigureWritable<OpenWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("OpenWeatherDisplayCompilation"), "appsettings.Development.json");
-            services.ConfigureWritable<TemperatureWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("TemperatureWeatherDisplayCompilation"), "appsettings.Development.json");
-            services.ConfigureWritable<MeteoSwissWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("MeteoSwissWeatherDisplayCompilation"), "appsettings.Development.json");
-            services.ConfigureWritable<WaterTemperatureDisplayCompilationOptions>(builder.Configuration.GetSection("WaterTemperatureDisplayCompilation"), "appsettings.Development.json");
+            services.ConfigureWritable<AppSettings>(builder.Configuration.GetSection("AppSettings"), UserSpecificAppSettingsFileName);
+            services.ConfigureWritable<OpenWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("OpenWeatherDisplayCompilation"), UserSpecificAppSettingsFileName);
+            services.ConfigureWritable<TemperatureWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("TemperatureWeatherDisplayCompilation"), UserSpecificAppSettingsFileName);
+            services.ConfigureWritable<MeteoSwissWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("MeteoSwissWeatherDisplayCompilation"), UserSpecificAppSettingsFileName);
+            services.ConfigureWritable<WaterTemperatureDisplayCompilationOptions>(builder.Configuration.GetSection("WaterTemperatureDisplayCompilation"), UserSpecificAppSettingsFileName);
 
             services.AddHostedService<AutoStartupBackgroundService>();
 

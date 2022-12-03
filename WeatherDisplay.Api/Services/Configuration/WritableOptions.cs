@@ -43,10 +43,7 @@ namespace WeatherDisplay.Api.Services.Configuration
         {
             var fileProvider = this.environment.ContentRootFileProvider;
             var fileInfo = fileProvider.GetFileInfo(this.file);
-            var physicalPath = fileInfo.PhysicalPath;
-            var fileContent = File.ReadAllText(physicalPath);
-
-            var jObject = JsonConvert.DeserializeObject<JObject>(fileContent);
+            var jObject = GetJsonContent(fileInfo);
 
             var propertyUpdater = PropertyUpdater<T, TValue>.GetPropertyUpdater(() => propertySelector);
 
@@ -60,7 +57,7 @@ namespace WeatherDisplay.Api.Services.Configuration
             sectionObject[propertyUpdater.Name] = JToken.FromObject(value);
 
             var updatedFileContent = JsonConvert.SerializeObject(jObject, this.jsonSerializerSettings);
-            File.WriteAllText(physicalPath, updatedFileContent);
+            File.WriteAllText(fileInfo.PhysicalPath, updatedFileContent);
         }
 
         public void Update(Action<T> options)
@@ -72,10 +69,7 @@ namespace WeatherDisplay.Api.Services.Configuration
         {
             var fileProvider = this.environment.ContentRootFileProvider;
             var fileInfo = fileProvider.GetFileInfo(this.file);
-            var physicalPath = fileInfo.PhysicalPath;
-            var fileContent = File.ReadAllText(physicalPath);
-
-            var jObject = JsonConvert.DeserializeObject<JObject>(fileContent);
+            var jObject = GetJsonContent(fileInfo);
 
             var sectionObject = this.DeserializeSection(jObject);
 
@@ -84,7 +78,23 @@ namespace WeatherDisplay.Api.Services.Configuration
             jObject[this.section] = JObject.Parse(JsonConvert.SerializeObject(sectionObject, this.jsonSerializerSettings));
 
             var updatedFileContent = JsonConvert.SerializeObject(jObject, this.jsonSerializerSettings);
-            File.WriteAllText(physicalPath, updatedFileContent);
+            File.WriteAllText(fileInfo.PhysicalPath, updatedFileContent);
+        }
+
+        private static JObject GetJsonContent(Microsoft.Extensions.FileProviders.IFileInfo fileInfo)
+        {
+            JObject jObject;
+            if (fileInfo.Exists)
+            {
+                var fileContent = File.ReadAllText(fileInfo.PhysicalPath);
+                jObject = JsonConvert.DeserializeObject<JObject>(fileContent);
+            }
+            else
+            {
+                jObject = new JObject();
+            }
+
+            return jObject;
         }
 
         private T DeserializeSection(JObject jObject)

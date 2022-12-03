@@ -255,5 +255,6 @@ paket-files/
 *.p12
 **/ServiceAccountKeyFile.json
 /WeatherDisplay.Api/Cache
+/WeatherDisplay.Api/appsettings.User.json
 internal-nlog.txt
 **/_installedVersion.json
