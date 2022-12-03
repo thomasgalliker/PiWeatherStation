@@ -28,7 +28,7 @@ variables:
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
   majorVersion: 1
-  minorVersion: 3
+  minorVersion: 4
   patchVersion: $[counter(format('{0}.{1}', variables.majorVersion, variables.minorVersion), 0)]
   ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
     # Versioning: 1.0.0
@@ -75,7 +75,12 @@ steps:
     targetType: 'inline'
     script: |
       sed -i 's|1.0.0|$(Build.BuildNumber)|g' WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh
-
+      
+- task: UseDotNet@2
+  displayName: 'Use .NET 6.x'
+  inputs:
+    version: 6.x
+    
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet 6.x'
   inputs:

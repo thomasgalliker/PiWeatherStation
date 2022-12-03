@@ -6,8 +6,8 @@ namespace WeatherDisplay.Api.Services
     {
         private static readonly ServiceDefinition ServiceDefinition = new ServiceDefinition("weatherdisplay.api")
         {
-            ServiceDescription = "WeatherDisplay.Api",
-            ServiceType = ServiceType.Notify,
+            Description = "WeatherDisplay.Api",
+            Type = ServiceType.Notify,
             WorkingDirectory = "/home/pi/WeatherDisplay.Api",
             ExecStart = "/home/pi/WeatherDisplay.Api/WeatherDisplay.Api",
             ExecStop = "/bin/kill ${MAINPID}",
@@ -17,19 +17,23 @@ namespace WeatherDisplay.Api.Services
             UserName = "pi",
             GroupName = "pi",
             AfterServices = new[]
-         {
+            {
                 "network-online.target",
                 "firewalld.service"
             },
-            WantsServices = new[]
-         {
+            Wants = new[]
+            {
                 "network-online.target"
             },
             Environments = new[]
-         {
+            {
                 "ASPNETCORE_ENVIRONMENT=Production",
                 "DOTNET_PRINT_TELEMETRY_MESSAGE=false",
                 "DOTNET_ROOT=/home/pi/.dotnet"
+            },
+            WantedBy = new[]
+            {
+                "multi-user.target"
             }
         };
 

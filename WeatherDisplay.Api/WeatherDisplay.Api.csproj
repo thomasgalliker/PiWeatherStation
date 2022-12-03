@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+	<ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
   </PropertyGroup>
 
   <ItemGroup>
@@ -23,7 +24,7 @@
 	<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.23.1" />
 	<PackageReference Include="NCrontab.Scheduler.AspNetCore" Version="1.0.43" />
 	<PackageReference Include="NLog.Web.AspNetCore" Version="5.1.4" />
-	<PackageReference Include="RaspberryPi.NET" Version="1.0.11-pre" />
+	<PackageReference Include="RaspberryPi.NET" Version="1.0.34-pre" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
   </ItemGroup>

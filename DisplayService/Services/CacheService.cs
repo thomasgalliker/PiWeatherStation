@@ -3,21 +3,24 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using DisplayService.Extensions;
-using DisplayService.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace DisplayService.Services
 {
     public class CacheService : ICacheService
     {
-        private const string cacheFileName = "IoTDisplayScreen.png";
+        private const string CacheFileName = "IoTDisplayScreen.png";
         private readonly DirectoryInfo cacheFolder;
         private readonly int maxArchiveFiles;
         private readonly ILogger logger;
+        private readonly IFileNameRandomizer fileNameRandomizer;
 
-        public CacheService(ILogger<CacheService> logger)
+        public CacheService(
+            ILogger<CacheService> logger,
+            IDateTime dateTime)
         {
             this.logger = logger;
+            this.fileNameRandomizer = new DateTimeFileNameRandomizer(dateTime);
 
             this.cacheFolder = new DirectoryInfo(Path.GetFullPath("./Cache")); // TODO Get this path from a configuration
             if (!this.cacheFolder.Exists)
@@ -27,13 +30,13 @@ namespace DisplayService.Services
             this.maxArchiveFiles = 10; // TODO Get this path from a configuration
         }
 
-        private string CacheFile => Path.Combine(this.cacheFolder.FullName, cacheFileName);
+        private string CacheFile => Path.Combine(this.cacheFolder.FullName, CacheFileName);
 
         public async Task SaveToCache(Stream bitmapStream)
         {
             this.DeleteRollingCacheFiles();
 
-            var cacheFile = FileHelper.RandomizeFilePath(this.CacheFile);
+            var cacheFile = this.fileNameRandomizer.Next(this.CacheFile);
 
             try
             {
@@ -53,8 +56,8 @@ namespace DisplayService.Services
 
         private void DeleteRollingCacheFiles()
         {
-            var cacheFileNameWithoutExtension = Path.GetFileNameWithoutExtension(cacheFileName);
-            var cacheFileExtension = Path.GetExtension(cacheFileName);
+            var cacheFileNameWithoutExtension = Path.GetFileNameWithoutExtension(CacheFileName);
+            var cacheFileExtension = Path.GetExtension(CacheFileName);
             var searchPattern = $"{cacheFileNameWithoutExtension}*{cacheFileExtension}";
 
             this.logger.LogInformation($"DeleteRollingCacheFiles (searchPattern: {searchPattern}, maxArchiveFiles={this.maxArchiveFiles})");

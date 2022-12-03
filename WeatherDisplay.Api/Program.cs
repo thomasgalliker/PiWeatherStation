@@ -7,18 +7,20 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog;
 using NLog.Extensions.Logging;
-using RaspberryPi;
 using RaspberryPi.Extensions;
-using RaspberryPi.Services;
-using RaspberryPi.Storage;
 using WeatherDisplay.Api.Services;
+using WeatherDisplay.Api.Services.Configuration;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Extensions;
+using WeatherDisplay.Model;
+using WeatherDisplay.Model.MeteoSwiss;
 
 namespace WeatherDisplay.Api
 {
     internal static class Program
     {
+        private const string UserSpecificAppSettingsFileName = "appsettings.User.json";
+
         private static void Main(string[] args)
         {
             Console.WriteLine(
@@ -26,6 +28,7 @@ namespace WeatherDisplay.Api
                 $"Copyright(C) superdev GmbH. All rights reserved.{Environment.NewLine}");
 
             var builder = WebApplication.CreateBuilder(args);
+            builder.WebHost.UseKestrel();
             builder.Host.UseSystemd();
             builder.Host.UseWindowsService();
 
@@ -40,7 +43,8 @@ namespace WeatherDisplay.Api
             builder.Configuration
                 .SetBasePath(builder.Environment.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
+                .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+                .AddJsonFile(UserSpecificAppSettingsFileName, optional: true, reloadOnChange: true);
 
             // ====== Setup services ======
             var services = builder.Services;
@@ -106,6 +110,12 @@ namespace WeatherDisplay.Api
 
             // ====== Weather services ======
             services.AddWeatherDisplay(builder.Configuration);
+            services.ConfigureWritable<AppSettings>(builder.Configuration.GetSection("AppSettings"), UserSpecificAppSettingsFileName);
+            services.ConfigureWritable<OpenWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("OpenWeatherDisplayCompilation"), UserSpecificAppSettingsFileName);
+            services.ConfigureWritable<TemperatureWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("TemperatureWeatherDisplayCompilation"), UserSpecificAppSettingsFileName);
+            services.ConfigureWritable<MeteoSwissWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("MeteoSwissWeatherDisplayCompilation"), UserSpecificAppSettingsFileName);
+            services.ConfigureWritable<WaterTemperatureDisplayCompilationOptions>(builder.Configuration.GetSection("WaterTemperatureDisplayCompilation"), UserSpecificAppSettingsFileName);
+
             services.AddHostedService<AutoStartupBackgroundService>();
 
             // ====== Authentification & authorization ======

@@ -9,10 +9,12 @@ namespace WeatherDisplay.Model
 
         CultureInfo CultureInfo { get; set; }
 
+        bool RunSetup { get; set; }
+
         bool IsDebug { get; set; }
 
-        List<AppSettings.DisplaySetting> Displays { get; set; }
-
-        List<Place> Places { get; set; }
+        ICollection<DisplaySetting> Displays { get; set; }
+        
+        ICollection<ButtonMapping> ButtonMappings { get; set; }
     }
 }

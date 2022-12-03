@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace WeatherDisplay.Internals
+namespace DisplayService.Internals
 {
-    internal class AsyncSemaphore
+    public class AsyncSemaphore
     {
         private readonly Queue<TaskCompletionSource<bool>> waiters = new Queue<TaskCompletionSource<bool>>();
         private int currentCount;

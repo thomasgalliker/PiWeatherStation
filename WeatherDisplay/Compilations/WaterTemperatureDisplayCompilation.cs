@@ -4,10 +4,10 @@ using System.Reflection;
 using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Services;
+using Microsoft.Extensions.Options;
 using NCrontab;
-using WeatherDisplay.Model;
-using OpenWeatherMap.Models;
 using OpenWeatherMap;
+using WeatherDisplay.Model;
 using WeatherDisplay.Services.Wiewarm;
 
 namespace WeatherDisplay.Compilations
@@ -17,21 +17,19 @@ namespace WeatherDisplay.Compilations
         private readonly IDisplayManager displayManager;
         private readonly IWiewarmService wiewarmService;
         private readonly IDateTime dateTime;
-        private readonly IAppSettings appSettings;
+        private readonly IOptionsMonitor<WaterTemperatureDisplayCompilationOptions> options;
 
         public WaterTemperatureDisplayCompilation(
             IDisplayManager displayManager,
             IWiewarmService wiewarmService,
             IDateTime dateTime,
-            IAppSettings appSettings)
+            IOptionsMonitor<WaterTemperatureDisplayCompilationOptions> options)
         {
             this.displayManager = displayManager;
             this.wiewarmService = wiewarmService;
             this.dateTime = dateTime;
-            this.appSettings = appSettings;
+            this.options = options;
         }
-
-        public string Name => "WaterTemperatureDisplayCompilation";
 
         public void AddRenderActions()
         {
@@ -88,7 +86,7 @@ namespace WeatherDisplay.Compilations
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var place = this.appSettings.Places.First();
+                    var places = this.options.CurrentValue.Places;
 
                     // Get current weather & daily forecasts
                     var oneCallOptions = new OneCallOptions
@@ -99,7 +97,7 @@ namespace WeatherDisplay.Compilations
                         IncludeHourlyForecasts = true,
                     };
 
-                    var searchTerms = new[] { "Bern", "Zug", "Luzern" };
+                    var searchTerms = places.ToArray();
 
                     var searchTasks = searchTerms.Select(s => this.wiewarmService.SearchBathsAsync(s));
                     var baths = (await Task.WhenAll(searchTasks))
@@ -131,7 +129,7 @@ namespace WeatherDisplay.Compilations
                                 FontSize = 20,
                             };
                             basinRenderActions.Add(basinRenderAction);
-                            
+
                             var temperatureRenderAction = new RenderActions.Text
                             {
                                 X = 780,
@@ -154,11 +152,6 @@ namespace WeatherDisplay.Compilations
                     return basinRenderActions;
                 },
                 CrontabSchedule.Parse("*/15 * * * *")); // Update every 15mins
-        }
-
-        private static (Temperature Min, Temperature Max) TemperatureRangeSelector(IEnumerable<TemperatureSet> s)
-        {
-            return (s.Min(x => x.Min) - 1, s.Max(x => x.Max) + 1);
         }
     }
 }

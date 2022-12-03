@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 
 namespace WeatherDisplay.Model
@@ -11,7 +10,7 @@ namespace WeatherDisplay.Model
         public AppSettings()
         {
             this.Displays = new List<DisplaySetting>();
-            this.Places = new List<Place>();
+            this.ButtonMappings = new List<ButtonMapping>();
         }
 
         public string Title { get; set; }
@@ -21,35 +20,21 @@ namespace WeatherDisplay.Model
             get => this.cultureInfo;
             set
             {
-                this.cultureInfo = value;
-                CultureInfo.CurrentCulture = value;
-                CultureInfo.CurrentUICulture = value;
+                if (value != null)
+                {
+                    this.cultureInfo = value;
+                    CultureInfo.CurrentCulture = value;
+                    CultureInfo.CurrentUICulture = value;
+                }
             }
         }
 
+        public bool RunSetup { get; set; }
+
         public bool IsDebug { get; set; }
 
-        public List<DisplaySetting> Displays { get; set; }
+        public ICollection<DisplaySetting> Displays { get; set; }
 
-        public List<Place> Places { get; set; }
-
-        public string StateFolder { get; set; }
-
-        public string BackgroundColor { get; set; }
-
-        public string ForegroundColor { get; set; }
-
-        public class DisplaySetting
-        {
-            public string DriverType { get; set; }
-
-            public string Driver { get; set; }
-
-            public int Width { get; set; } = 800;
-
-            public int Height { get; set; } = 480;
-
-            public int Rotation { get; set; }
-        }
+        public ICollection<ButtonMapping> ButtonMappings { get; set; }
     }
 }

@@ -1,11 +1,10 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace WeatherDisplay.Internals
+namespace DisplayService.Internals
 {
-    internal class AsyncLock
+    public class AsyncLock
     {
         private readonly AsyncSemaphore semaphore;
         private readonly Task<IDisposable> releaserTask;
@@ -15,43 +14,6 @@ namespace WeatherDisplay.Internals
             this.semaphore = new AsyncSemaphore(1);
             this.releaserTask = Task.FromResult<IDisposable>(new Releaser(this));
         }
-
-        //public void RunOnce(Action action)
-        //{
-        //    if (Monitor.TryEnter(action))
-        //    {
-        //        try
-        //        {
-        //            action();
-        //        }
-        //        finally
-        //        {
-        //            Monitor.Exit(action);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        Debug.WriteLine($"TryEnter not successful");
-        //    }
-        //}
-        
-        //public async Task RunOnceAsync(Func<Task> task)
-        //{
-        //    if (Monitor.TryEnter(task))
-        //    {
-        //        try
-        //        {
-        //            await task();
-        //        }
-        //        finally
-        //        {
-        //            Monitor.Exit(task);
-        //        }
-        //    }
-        //    else
-        //    {
-        //    }
-        //}
 
         public Task<IDisposable> LockAsync()
         {

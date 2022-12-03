@@ -2,8 +2,6 @@
 {
     public interface IDisplayCompilation
     {
-        string Name { get; }
-
         void AddRenderActions();
     }
 }

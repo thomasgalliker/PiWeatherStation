@@ -4,6 +4,7 @@ using DisplayService.Services;
 using DisplayService.Settings;
 using DisplayService.Tests.Services;
 using FluentAssertions;
+using Microsoft.Extensions.Options;
 using Moq;
 using Moq.AutoMock;
 using NCrontab.Scheduler;
@@ -25,7 +26,6 @@ namespace WeatherDisplay.Tests.Compilations
     {
         private readonly TestHelper testHelper;
         private readonly AutoMocker autoMocker;
-        private readonly Mock<IAppSettings> appSettingsMock;
         private readonly Mock<IDateTime> dateTimeMock;
         private readonly TestDisplay testDisplay;
         private readonly Mock<IOpenWeatherMapService> openWeatherMapServiceMock;
@@ -34,12 +34,20 @@ namespace WeatherDisplay.Tests.Compilations
         {
             this.testHelper = new TestHelper(testOutputHelper);
             this.autoMocker = new AutoMocker();
-
-            this.appSettingsMock = this.autoMocker.GetMock<IAppSettings>();
-            this.appSettingsMock.SetupGet(r => r.Title)
-                .Returns("Test");
-            this.appSettingsMock.SetupGet(r => r.Places)
-                .Returns(new List<Place> { new Place { Name = "Test Place", Longitude = 1d, Latitude = 2d } });
+            var openWeatherDisplayCompilationOptionsMock = this.autoMocker.GetMock<IOptionsMonitor<OpenWeatherDisplayCompilationOptions>>();
+            openWeatherDisplayCompilationOptionsMock.Setup(o => o.CurrentValue)
+                .Returns(new OpenWeatherDisplayCompilationOptions
+                {
+                    Places = new List<Place>
+                    {
+                        new Place
+                        {
+                            Name = "Test Place",
+                            Latitude = 47.1823761d,
+                            Longitude = 8.4611036d
+                        }
+                    }
+                });
 
             var renderSettingsMock = this.autoMocker.GetMock<IRenderSettings>();
             renderSettingsMock.SetupGet(r => r.Height)
@@ -79,7 +87,7 @@ namespace WeatherDisplay.Tests.Compilations
             displayCompilation.AddRenderActions();
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            _ = displayManager.StartAsync();
+            displayManager.StartAsync();
 
             // Act
             schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
@@ -118,7 +126,7 @@ namespace WeatherDisplay.Tests.Compilations
             displayCompilation.AddRenderActions();
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            _ = displayManager.StartAsync();
+            displayManager.StartAsync();
 
             // Act
             schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
@@ -156,7 +164,7 @@ namespace WeatherDisplay.Tests.Compilations
             displayCompilation.AddRenderActions();
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            _ = displayManager.StartAsync();
+            displayManager.StartAsync();
 
             // Act
             for (var i = 0; i < numberOfHours; i++)
@@ -198,7 +206,7 @@ namespace WeatherDisplay.Tests.Compilations
             displayCompilation.AddRenderActions();
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            _ = displayManager.StartAsync();
+            displayManager.StartAsync();
 
             // Act
             for (var i = 0; i < numberOfDaysInYear; i++)

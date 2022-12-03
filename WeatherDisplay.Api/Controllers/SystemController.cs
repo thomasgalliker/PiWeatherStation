@@ -1,8 +1,5 @@
-using System.IO;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using RaspberryPi;
-using RaspberryPi.Internals;
 using RaspberryPi.Network;
 using RaspberryPi.Process;
 using RaspberryPi.Services;
@@ -44,7 +41,7 @@ namespace WeatherDisplay.Api.Controllers
             var cpuInfo = await this.systemInfoService.GetCpuInfoAsync();
             return cpuInfo;
         }
-        
+
         [HttpGet("cpusensors")]
         public CpuSensorsStatus GetCpuSensorsStatus()
         {
@@ -66,10 +63,5 @@ namespace WeatherDisplay.Api.Controllers
                 this.autoUpdateService.StartUpdate(updateRequest);
             }
         }
-    }
-
-    public class SystemInfoDto
-    {
-        public string Test { get; internal set; }
     }
 }
