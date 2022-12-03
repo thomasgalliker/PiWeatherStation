@@ -35,22 +35,22 @@ namespace WeatherDisplay.Api.Services
 
             this.logger.LogDebug($"Initialize GPIO buttons");
 
-            this.button1 = new GpioButton(3, this.gpioController, shouldDispose: true, ButtonPinMode, ButtonDebounceTime);
+            this.button1 = new GpioButton(5, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
             this.button1.Press += this.OnButton1Pressed;
 
-            this.button2 = new GpioButton(5, this.gpioController, shouldDispose: true, ButtonPinMode, ButtonDebounceTime);
+            this.button2 = new GpioButton(6, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
             this.button2.Press += this.OnButton2Pressed;
 
-            this.button3 = new GpioButton(7, this.gpioController, shouldDispose: true, ButtonPinMode, ButtonDebounceTime);
+            this.button3 = new GpioButton(16, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
             this.button3.Press += this.OnButton3Pressed;
 
-            this.button4 = new GpioButton(11, this.gpioController, shouldDispose: true, ButtonPinMode, ButtonDebounceTime);
+            this.button4 = new GpioButton(26, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
             this.button4.Press += this.OnButton4Pressed;
         }
 
         public async Task HandleButtonPress(int buttonId)
         {
-            this.logger.LogDebug($"HandleButtonPress: buttonId={buttonId}");
+            this.logger.LogDebug($"HandleButtonPress:{Environment.NewLine} {Environment.NewLine}  >>>   buttonId={buttonId}");
 
             var buttonMappings = this.appSettings.ButtonMappings.Where(b => b.ButtonId == buttonId);
             var buttonMappingsCount = buttonMappings.Count();
@@ -115,7 +115,8 @@ namespace WeatherDisplay.Api.Services
 
         public void Dispose()
         {
-            // Do not change this code. Put cleanup code in 'Dispose(bool disposing)' method
+            // Do not change this code.
+            // Put cleanup code in 'Dispose(bool disposing)' method
             this.Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
