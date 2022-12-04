@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Services;
 using MeteoSwissApi;
@@ -8,25 +9,24 @@ using Microsoft.Extensions.Options;
 using NCrontab;
 using OpenWeatherMap.Models;
 using WeatherDisplay.Model;
-using WeatherDisplay.Model.MeteoSwiss;
 using WeatherDisplay.Resources;
 
-namespace WeatherDisplay.Compilations
+namespace WeatherDisplay.Pages.MeteoSwiss
 {
-    public class MeteoSwissWeatherDisplayCompilation : IDisplayCompilation
+    public class MeteoSwissWeatherPage : INavigatedAware
     {
         private readonly IDisplayManager displayManager;
         private readonly IMeteoSwissWeatherService meteoSwissWeatherService;
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
-        private readonly IOptionsMonitor<MeteoSwissWeatherDisplayCompilationOptions> options;
+        private readonly IOptionsMonitor<MeteoSwissWeatherPageOptions> options;
 
-        public MeteoSwissWeatherDisplayCompilation(
+        public MeteoSwissWeatherPage(
             IDisplayManager displayManager,
             IMeteoSwissWeatherService openWeatherMapService,
             IDateTime dateTime,
             IAppSettings appSettings,
-            IOptionsMonitor<MeteoSwissWeatherDisplayCompilationOptions> options)
+            IOptionsMonitor<MeteoSwissWeatherPageOptions> options)
         {
             this.displayManager = displayManager;
             this.meteoSwissWeatherService = openWeatherMapService;
@@ -35,7 +35,7 @@ namespace WeatherDisplay.Compilations
             this.options = options;
         }
 
-        public void AddRenderActions()
+        public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
             // Date header
             this.displayManager.AddRenderActions(
@@ -502,6 +502,8 @@ namespace WeatherDisplay.Compilations
                     return currentWeatherRenderActions;
                 },
                 CrontabSchedule.Parse("*/15 * * * *")); // Update every 15mins
+
+            return Task.CompletedTask;
         }
 
         private static string FormatRain(double rain)

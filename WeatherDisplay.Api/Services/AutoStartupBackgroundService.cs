@@ -3,8 +3,8 @@ using NCrontab;
 using NCrontab.Scheduler;
 using NLog;
 using WeatherDisplay.Api.Updater.Services;
-using WeatherDisplay.Compilations;
 using WeatherDisplay.Model;
+using WeatherDisplay.Pages;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace WeatherDisplay.Api.Services
@@ -14,7 +14,7 @@ namespace WeatherDisplay.Api.Services
         private readonly ILogger logger;
         private readonly IAppSettings appSettings;
         private readonly IAutoUpdateService autoUpdateService;
-        private readonly IDisplayCompilationService displayCompilationService;
+        private readonly INavigationService navigationService;
         private readonly IWeatherDisplayHardwareCoordinator weatherDisplayHardwareCoordinator;
         private readonly IScheduler scheduler;
         private readonly IDisplayManager displayManager;
@@ -23,7 +23,7 @@ namespace WeatherDisplay.Api.Services
             ILogger<AutoStartupBackgroundService> logger,
             IAppSettings appSettings,
             IAutoUpdateService autoUpdateService,
-            IDisplayCompilationService displayCompilationService,
+            INavigationService navigationService,
             IWeatherDisplayHardwareCoordinator weatherDisplayHardwareCoordinator,
             IScheduler scheduler,
             IDisplayManager displayManager)
@@ -31,7 +31,7 @@ namespace WeatherDisplay.Api.Services
             this.logger = logger;
             this.appSettings = appSettings;
             this.autoUpdateService = autoUpdateService;
-            this.displayCompilationService = displayCompilationService;
+            this.navigationService = navigationService;
             this.weatherDisplayHardwareCoordinator = weatherDisplayHardwareCoordinator;
             this.scheduler = scheduler;
             this.displayManager = displayManager;
@@ -46,7 +46,7 @@ namespace WeatherDisplay.Api.Services
                 var runSetup = this.appSettings.RunSetup;
                 if (runSetup)
                 {
-                    await this.displayCompilationService.SelectDisplayCompilationAsync("SetupDisplayCompilation");
+                    await this.navigationService.NavigateAsync(App.Pages.SetupPage);
                 }
                 else
                 {
@@ -66,7 +66,7 @@ namespace WeatherDisplay.Api.Services
             catch (Exception ex)
             {
                 this.logger.LogError(ex, "StartAsync failed with exception");
-                await this.displayCompilationService.SelectDisplayCompilationAsync("ErrorDisplayCompilation");
+                await this.navigationService.NavigateAsync(App.Pages.ErrorPage);
             }
         }
 

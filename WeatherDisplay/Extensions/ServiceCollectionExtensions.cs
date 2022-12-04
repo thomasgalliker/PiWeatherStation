@@ -9,8 +9,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NCrontab.Scheduler;
 using OpenWeatherMap;
-using WeatherDisplay.Compilations;
 using WeatherDisplay.Model;
+using WeatherDisplay.Pages;
 using WeatherDisplay.Services.DeepL;
 using WeatherDisplay.Services.QR;
 using WeatherDisplay.Services.Wiewarm;
@@ -115,8 +115,8 @@ namespace WeatherDisplay.Extensions
             services.AddSingleton<IMeteoSwissWeatherService, MeteoSwissWeatherService>();
 
             services.AddSingleton<ITranslationService, DeepLTranslationService>();
-            services.AddSingleton<IDisplayCompilationService, DisplayCompilationService>();
-            services.RegisterAllTypesAsSelf<IDisplayCompilation>(lifetime: ServiceLifetime.Singleton);
+            services.AddSingleton<INavigationService, NavigationService>();
+            services.RegisterAllTypesAsSelf<INavigatedAware>(lifetime: ServiceLifetime.Singleton);
 
             services.AddSingleton<IWiewarmService, WiewarmService>();
             services.AddSingleton<IQRCodeService, QRCodeService>();

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Services;
 using Microsoft.Extensions.Options;
@@ -12,20 +13,20 @@ using SkiaSharp;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 
-namespace WeatherDisplay.Compilations
+namespace WeatherDisplay.Pages
 {
-    public class TemperatureWeatherDisplayCompilation : IDisplayCompilation
+    public class TemperatureDiagramPage : INavigatedAware
     {
         private readonly IDisplayManager displayManager;
         private readonly IOpenWeatherMapService openWeatherMapService;
         private readonly IDateTime dateTime;
-        private readonly IOptionsMonitor<TemperatureWeatherDisplayCompilationOptions> options;
+        private readonly IOptionsMonitor<TemperatureDiagramPageOptions> options;
 
-        public TemperatureWeatherDisplayCompilation(
+        public TemperatureDiagramPage(
             IDisplayManager displayManager,
             IOpenWeatherMapService openWeatherMapService,
             IDateTime dateTime,
-            IOptionsMonitor<TemperatureWeatherDisplayCompilationOptions> options)
+            IOptionsMonitor<TemperatureDiagramPageOptions> options)
         {
             this.displayManager = displayManager;
             this.openWeatherMapService = openWeatherMapService;
@@ -33,7 +34,7 @@ namespace WeatherDisplay.Compilations
             this.options = options;
         }
 
-        public void AddRenderActions()
+        public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
             // Date header
             this.displayManager.AddRenderActions(
@@ -223,6 +224,8 @@ namespace WeatherDisplay.Compilations
                     return currentWeatherRenderActions;
                 },
                 CrontabSchedule.Parse("*/15 * * * *")); // Update every 15mins
+
+            return Task.CompletedTask;
         }
 
         private static (Temperature Min, Temperature Max) TemperatureRangeSelector(IEnumerable<TemperatureSet> s)

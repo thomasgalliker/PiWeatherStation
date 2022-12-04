@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace WeatherDisplay.Model.MeteoSwiss
+namespace WeatherDisplay.Pages.MeteoSwiss
 {
-    public class MeteoSwissWeatherDisplayCompilationOptions
+    public class MeteoSwissWeatherPageOptions
     {
-        public MeteoSwissWeatherDisplayCompilationOptions()
+        public MeteoSwissWeatherPageOptions()
         {
             this.Places = new List<MeteoSwissPlace>();
         }

@@ -2,9 +2,9 @@
 
 namespace WeatherDisplay.Model
 {
-    public class OpenWeatherDisplayCompilationOptions
+    public class TemperatureDiagramPageOptions
     {
-        public OpenWeatherDisplayCompilationOptions()
+        public TemperatureDiagramPageOptions()
         {
             this.Places = new List<Place>();
         }

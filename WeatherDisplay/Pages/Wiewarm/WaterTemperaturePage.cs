@@ -7,23 +7,22 @@ using DisplayService.Services;
 using Microsoft.Extensions.Options;
 using NCrontab;
 using OpenWeatherMap;
-using WeatherDisplay.Model;
 using WeatherDisplay.Services.Wiewarm;
 
-namespace WeatherDisplay.Compilations
+namespace WeatherDisplay.Pages.Wiewarm
 {
-    public class WaterTemperatureDisplayCompilation : IDisplayCompilation
+    public class WaterTemperaturePage : INavigatedAware
     {
         private readonly IDisplayManager displayManager;
         private readonly IWiewarmService wiewarmService;
         private readonly IDateTime dateTime;
-        private readonly IOptionsMonitor<WaterTemperatureDisplayCompilationOptions> options;
+        private readonly IOptionsMonitor<WaterTemperaturePageOptions> options;
 
-        public WaterTemperatureDisplayCompilation(
+        public WaterTemperaturePage(
             IDisplayManager displayManager,
             IWiewarmService wiewarmService,
             IDateTime dateTime,
-            IOptionsMonitor<WaterTemperatureDisplayCompilationOptions> options)
+            IOptionsMonitor<WaterTemperaturePageOptions> options)
         {
             this.displayManager = displayManager;
             this.wiewarmService = wiewarmService;
@@ -31,7 +30,7 @@ namespace WeatherDisplay.Compilations
             this.options = options;
         }
 
-        public void AddRenderActions()
+        public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
             // Date header
             this.displayManager.AddRenderActions(
@@ -152,6 +151,8 @@ namespace WeatherDisplay.Compilations
                     return basinRenderActions;
                 },
                 CrontabSchedule.Parse("*/15 * * * *")); // Update every 15mins
+
+            return Task.CompletedTask;
         }
     }
 }

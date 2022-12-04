@@ -3,7 +3,9 @@ using RaspberryPi.Network;
 using RaspberryPi.Process;
 using WeatherDisplay.Api.Services.Configuration;
 using WeatherDisplay.Model;
-using WeatherDisplay.Model.MeteoSwiss;
+using WeatherDisplay.Pages.MeteoSwiss;
+using WeatherDisplay.Pages.OpenWeatherMap;
+using WeatherDisplay.Pages.Wiewarm;
 
 namespace WeatherDisplay.Api.Controllers
 {
@@ -14,29 +16,29 @@ namespace WeatherDisplay.Api.Controllers
         private readonly INetworkInterfaceService networkInterfaceService;
         private readonly INetworkManager networkManager;
         private readonly IWritableOptions<AppSettings> appSettings;
-        private readonly IWritableOptions<OpenWeatherDisplayCompilationOptions> openWeatherDisplayCompilationOptions;
-        private readonly IWritableOptions<TemperatureWeatherDisplayCompilationOptions> temperatureWeatherDisplayCompilationOptions;
-        private readonly IWritableOptions<MeteoSwissWeatherDisplayCompilationOptions> meteoSwissWeatherDisplayCompilationOptions;
-        private readonly IWritableOptions<WaterTemperatureDisplayCompilationOptions> waterTemperatureDisplayCompilationOptions;
+        private readonly IWritableOptions<OpenWeatherMapPageOptions> openWeatherMapPageOptions;
+        private readonly IWritableOptions<TemperatureDiagramPageOptions> temperatureDiagramPageOptions;
+        private readonly IWritableOptions<MeteoSwissWeatherPageOptions> meteoSwissWeatherPageOptions;
+        private readonly IWritableOptions<WaterTemperaturePageOptions> waterTemperaturePageOptions;
         private readonly IProcessRunner processRunner;
 
         public SetupController(
             INetworkInterfaceService networkInterfaceService,
             INetworkManager networkManager,
             IWritableOptions<AppSettings> appSettings,
-            IWritableOptions<OpenWeatherDisplayCompilationOptions> openWeatherDisplayCompilationOptions,
-            IWritableOptions<TemperatureWeatherDisplayCompilationOptions> temperatureWeatherDisplayCompilationOptions,
-            IWritableOptions<MeteoSwissWeatherDisplayCompilationOptions> meteoSwissWeatherDisplayCompilationOptions,
-            IWritableOptions<WaterTemperatureDisplayCompilationOptions> waterTemperatureDisplayCompilationOptions,
+            IWritableOptions<OpenWeatherMapPageOptions> openWeatherMapPageOptions,
+            IWritableOptions<TemperatureDiagramPageOptions> temperatureDiagramPageOptions,
+            IWritableOptions<MeteoSwissWeatherPageOptions> meteoSwissWeatherPageOptions,
+            IWritableOptions<WaterTemperaturePageOptions> waterTemperaturePageOptions,
             IProcessRunner processRunner)
         {
             this.networkInterfaceService = networkInterfaceService;
             this.networkManager = networkManager;
             this.appSettings = appSettings;
-            this.openWeatherDisplayCompilationOptions = openWeatherDisplayCompilationOptions;
-            this.temperatureWeatherDisplayCompilationOptions = temperatureWeatherDisplayCompilationOptions;
-            this.meteoSwissWeatherDisplayCompilationOptions = meteoSwissWeatherDisplayCompilationOptions;
-            this.waterTemperatureDisplayCompilationOptions = waterTemperatureDisplayCompilationOptions;
+            this.openWeatherMapPageOptions = openWeatherMapPageOptions;
+            this.temperatureDiagramPageOptions = temperatureDiagramPageOptions;
+            this.meteoSwissWeatherPageOptions = meteoSwissWeatherPageOptions;
+            this.waterTemperaturePageOptions = waterTemperaturePageOptions;
             this.processRunner = processRunner;
         }
 
@@ -62,7 +64,7 @@ namespace WeatherDisplay.Api.Controllers
                 Longitude = longitude
             };
 
-            this.openWeatherDisplayCompilationOptions.Update((o) =>
+            this.openWeatherMapPageOptions.Update((o) =>
             {
                 o.Places = new[]
                 {
@@ -71,7 +73,7 @@ namespace WeatherDisplay.Api.Controllers
                 return o;
             });
 
-            this.temperatureWeatherDisplayCompilationOptions.Update((o) =>
+            this.temperatureDiagramPageOptions.Update((o) =>
             {
                 o.Places = new[]
                 {
@@ -86,7 +88,7 @@ namespace WeatherDisplay.Api.Controllers
                 Plz = plz,
             };
 
-            this.meteoSwissWeatherDisplayCompilationOptions.Update((o) =>
+            this.meteoSwissWeatherPageOptions.Update((o) =>
             {
                 o.Places = new[]
                 {
@@ -95,7 +97,7 @@ namespace WeatherDisplay.Api.Controllers
                 return o;
             });
 
-            this.waterTemperatureDisplayCompilationOptions.Update((o) =>
+            this.waterTemperaturePageOptions.Update((o) =>
             {
                 o.Places = new[]
                 {

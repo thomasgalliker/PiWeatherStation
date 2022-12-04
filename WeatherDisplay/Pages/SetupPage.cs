@@ -3,28 +3,41 @@ using System.Reflection;
 using DisplayService.Model;
 using DisplayService.Services;
 using NCrontab;
+using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
+using WeatherDisplay.Services.QR;
+using RaspberryPi;
+using RaspberryPi.Network;
+using System.Threading.Tasks;
 
-namespace WeatherDisplay.Compilations
+namespace WeatherDisplay.Pages
 {
-    public class ErrorDisplayCompilation : IDisplayCompilation
+    public class SetupPage : INavigatedAware
     {
         private readonly IDisplayManager displayManager;
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
+        private readonly INetworkManager networkManager;
+        private readonly IQRCodeService qrCodeService;
 
-        public ErrorDisplayCompilation(
+        public SetupPage(
             IDisplayManager displayManager,
             IDateTime dateTime,
-            IAppSettings appSettings)
+            IAppSettings appSettings,
+            INetworkManager networkManager,
+            IQRCodeService qrCodeService)
         {
             this.displayManager = displayManager;
             this.dateTime = dateTime;
             this.appSettings = appSettings;
+            this.networkManager = networkManager;
+            this.qrCodeService = qrCodeService;
         }
 
-        public void AddRenderActions()
+        public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
+            //this.networkManager.SetupAccessPoint()
+
             // Date header
             this.displayManager.AddRenderActions(
                 () =>
@@ -73,10 +86,15 @@ namespace WeatherDisplay.Compilations
                 },
                 CrontabSchedule.Parse("0 0 * * *")); // Update every day at 00:00
 
-            // Error info
+            // Setup info
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
+                    // TODO: Get ssid/psdk from system
+                    var ssid = "testssid";
+                    var psk = "testpassword";
+                    var qrCodeBitmap = this.qrCodeService.GenerateWifiQRCode(ssid, psk);
+
                     var currentWeatherRenderActions = new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
@@ -93,10 +111,18 @@ namespace WeatherDisplay.Compilations
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"Unbekannter Fehler. Bitte Internetverbindung prüfen und Gerät neustarten.",
+                            Value = $"Verbinden Sie sich mit folgendem WiFi Netzwerk: {ssid} - {psk}",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
+                        },
+                        new RenderActions.StreamImage
+                        {
+                            X = 20,
+                            Y = 140,
+                            Image = qrCodeBitmap.ToStream(),
+                            Width= 320,
+                            Height= 320,
                         },
                     };
 
@@ -107,6 +133,8 @@ namespace WeatherDisplay.Compilations
 
                     return currentWeatherRenderActions;
                 });
+
+            return Task.CompletedTask;
         }
     }
 }
