@@ -11,6 +11,7 @@ using NCrontab.Scheduler;
 using OpenWeatherMap;
 using WeatherDisplay.Model;
 using WeatherDisplay.Pages;
+using WeatherDisplay.Services;
 using WeatherDisplay.Services.DeepL;
 using WeatherDisplay.Services.QR;
 using WeatherDisplay.Services.Wiewarm;
@@ -94,6 +95,7 @@ namespace WeatherDisplay.Extensions
             services.AddSingleton<IMeteoSwissWeatherServiceConfiguration, MeteoSwissWeatherServiceConfiguration>();
             services.AddSingleton<IMeteoSwissWeatherService, MeteoSwissWeatherService>();
 
+            services.AddSingleton<INetworkManager, NetworkManager>();
             services.AddSingleton<ITranslationService, DeepLTranslationService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.RegisterAllTypesAsSelf<INavigatedAware>(lifetime: ServiceLifetime.Singleton);

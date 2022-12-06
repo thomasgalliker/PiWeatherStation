@@ -5,9 +5,8 @@ using DisplayService.Services;
 using NCrontab;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
+using WeatherDisplay.Services;
 using WeatherDisplay.Services.QR;
-using RaspberryPi;
-using RaspberryPi.Network;
 using System.Threading.Tasks;
 
 namespace WeatherDisplay.Pages
@@ -34,9 +33,9 @@ namespace WeatherDisplay.Pages
             this.qrCodeService = qrCodeService;
         }
 
-        public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
+        public async Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
-            //this.networkManager.SetupAccessPoint()
+            var accessPoint = await this.networkManager.SetupAccessPoint();
 
             // Date header
             this.displayManager.AddRenderActions(
@@ -90,10 +89,7 @@ namespace WeatherDisplay.Pages
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    // TODO: Get ssid/psdk from system
-                    var ssid = "testssid";
-                    var psk = "testpassword";
-                    var qrCodeBitmap = this.qrCodeService.GenerateWifiQRCode(ssid, psk);
+                    var qrCodeBitmap = this.qrCodeService.GenerateWifiQRCode(accessPoint.SSID, accessPoint.PSK);
 
                     var currentWeatherRenderActions = new List<IRenderAction>
                     {
@@ -111,18 +107,41 @@ namespace WeatherDisplay.Pages
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"Verbinden Sie sich mit folgendem WiFi Netzwerk: {ssid} - {psk}",
+                            Value = $"Verbinden Sie sich mit folgendem WiFi:",
+                            ForegroundColor = "#000000",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 20,
+                            Y = 140,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"SSID: {accessPoint.SSID}",
+                            ForegroundColor = "#000000",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 20,
+                            Y = 160,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"Passwort: {accessPoint.PSK}",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
                         },
                         new RenderActions.StreamImage
                         {
-                            X = 20,
-                            Y = 140,
+                            X = 780,
+                            Y = 120,
                             Image = qrCodeBitmap.ToStream(),
-                            Width= 320,
-                            Height= 320,
+                            Width= 340,
+                            Height= 340,
+                            HorizontalAlignment = HorizontalAlignment.Right
                         },
                     };
 
@@ -133,8 +152,6 @@ namespace WeatherDisplay.Pages
 
                     return currentWeatherRenderActions;
                 });
-
-            return Task.CompletedTask;
         }
     }
 }

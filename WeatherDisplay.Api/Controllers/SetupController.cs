@@ -1,11 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
-using RaspberryPi.Network;
 using RaspberryPi.Process;
 using WeatherDisplay.Api.Services.Configuration;
 using WeatherDisplay.Model;
 using WeatherDisplay.Pages.MeteoSwiss;
 using WeatherDisplay.Pages.OpenWeatherMap;
 using WeatherDisplay.Pages.Wiewarm;
+using INetworkManager = WeatherDisplay.Services.INetworkManager;
 
 namespace WeatherDisplay.Api.Controllers
 {
@@ -13,7 +13,6 @@ namespace WeatherDisplay.Api.Controllers
     [Route("api/system/setup")]
     public class SetupController : ControllerBase
     {
-        private readonly INetworkInterfaceService networkInterfaceService;
         private readonly INetworkManager networkManager;
         private readonly IWritableOptions<AppSettings> appSettings;
         private readonly IWritableOptions<OpenWeatherMapPageOptions> openWeatherMapPageOptions;
@@ -23,7 +22,6 @@ namespace WeatherDisplay.Api.Controllers
         private readonly IProcessRunner processRunner;
 
         public SetupController(
-            INetworkInterfaceService networkInterfaceService,
             INetworkManager networkManager,
             IWritableOptions<AppSettings> appSettings,
             IWritableOptions<OpenWeatherMapPageOptions> openWeatherMapPageOptions,
@@ -32,7 +30,6 @@ namespace WeatherDisplay.Api.Controllers
             IWritableOptions<WaterTemperaturePageOptions> waterTemperaturePageOptions,
             IProcessRunner processRunner)
         {
-            this.networkInterfaceService = networkInterfaceService;
             this.networkManager = networkManager;
             this.appSettings = appSettings;
             this.openWeatherMapPageOptions = openWeatherMapPageOptions;
@@ -48,14 +45,7 @@ namespace WeatherDisplay.Api.Controllers
             // TODO: Input validation!
 
             // Connect to wifi network
-            var wlan0 = this.networkInterfaceService.GetByName("wlan0");
-
-            var network = new WPASupplicantNetwork
-            {
-                SSID = ssid,
-                PSK = psk,
-            };
-            await this.networkManager.SetupStationMode(wlan0, network);
+            await this.networkManager.SetupStationMode(ssid, psk);
 
             var placeObj = new Place
             {
