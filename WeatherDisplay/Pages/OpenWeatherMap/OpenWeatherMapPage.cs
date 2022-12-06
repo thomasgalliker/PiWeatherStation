@@ -12,25 +12,26 @@ using WeatherDisplay.Resources;
 using WeatherDisplay.Services.DeepL;
 using OpenWeatherMap;
 using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
 
-namespace WeatherDisplay.Compilations
+namespace WeatherDisplay.Pages.OpenWeatherMap
 {
-    public class OpenWeatherDisplayCompilation : IDisplayCompilation
+    public class OpenWeatherMapPage : INavigatedAware
     {
         private readonly IDisplayManager displayManager;
         private readonly IOpenWeatherMapService openWeatherMapService;
         private readonly ITranslationService translationService;
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
-        private readonly IOptionsMonitor<OpenWeatherDisplayCompilationOptions> options;
+        private readonly IOptionsMonitor<OpenWeatherMapPageOptions> options;
 
-        public OpenWeatherDisplayCompilation(
+        public OpenWeatherMapPage(
             IDisplayManager displayManager,
             IOpenWeatherMapService openWeatherMapService,
             ITranslationService translationService,
             IDateTime dateTime,
             IAppSettings appSettings,
-            IOptionsMonitor<OpenWeatherDisplayCompilationOptions> options)
+            IOptionsMonitor<OpenWeatherMapPageOptions> options)
         {
             this.displayManager = displayManager;
             this.openWeatherMapService = openWeatherMapService;
@@ -40,7 +41,7 @@ namespace WeatherDisplay.Compilations
             this.options = options;
         }
 
-        public void AddRenderActions()
+        public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
             var weatherIconMapping = new HighContrastWeatherIconMapping();
 
@@ -576,13 +577,13 @@ namespace WeatherDisplay.Compilations
                     var numberOfForecastItems = 7;
                     dailyForecasts = oneCallWeatherInfo.DailyForecasts.Take(numberOfForecastItems).ToList();
                     var spacing = 20;
-                    var widthPerDailyForecast = (800 - ((numberOfForecastItems + 1) * spacing)) / numberOfForecastItems;
+                    var widthPerDailyForecast = (800 - (numberOfForecastItems + 1) * spacing) / numberOfForecastItems;
                     var xOffset = spacing;
 
                     for (var i = 0; i < dailyForecasts.Count; i++)
                     {
                         var dailyWeatherForecast = dailyForecasts[i];
-                        var xCenter = xOffset + (widthPerDailyForecast / 2);
+                        var xCenter = xOffset + widthPerDailyForecast / 2;
 
                         var dailyWeatherCondition = dailyWeatherForecast.Weather.First();
                         var dailyWeatherImage = await this.openWeatherMapService.GetWeatherIconAsync(dailyWeatherCondition, weatherIconMapping);
@@ -652,6 +653,8 @@ namespace WeatherDisplay.Compilations
                     return currentWeatherRenderActions;
                 },
                 CrontabSchedule.Parse("*/15 * * * *")); // Update every 15mins
+
+            return Task.CompletedTask;
         }
 
         private static string FormatRain(double rain)

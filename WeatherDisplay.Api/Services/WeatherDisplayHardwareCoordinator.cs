@@ -1,8 +1,8 @@
 ﻿using System.Device.Gpio;
 using System.Gpio.Devices;
 using System.Gpio.Devices.Buttons;
-using WeatherDisplay.Compilations;
 using WeatherDisplay.Model;
+using WeatherDisplay.Pages;
 
 namespace WeatherDisplay.Api.Services
 {
@@ -14,7 +14,7 @@ namespace WeatherDisplay.Api.Services
         private readonly ILogger logger;
         private readonly IAppSettings appSettings;
         private readonly IGpioController gpioController;
-        private readonly IDisplayCompilationService displayCompilationService;
+        private readonly INavigationService navigationService;
         private readonly GpioButton button1;
         private readonly GpioButton button2;
         private readonly GpioButton button3;
@@ -26,12 +26,12 @@ namespace WeatherDisplay.Api.Services
             ILogger<WeatherDisplayHardwareCoordinator> logger,
             IAppSettings appSettings,
             IGpioController gpioController,
-            IDisplayCompilationService displayCompilationService)
+            INavigationService navigationService)
         {
             this.logger = logger;
             this.appSettings = appSettings;
             this.gpioController = gpioController;
-            this.displayCompilationService = displayCompilationService;
+            this.navigationService = navigationService;
 
             this.logger.LogDebug($"Initialize GPIO buttons");
 
@@ -50,7 +50,7 @@ namespace WeatherDisplay.Api.Services
 
         public async Task HandleButtonPress(int buttonId)
         {
-            this.logger.LogDebug($"HandleButtonPress:{Environment.NewLine} {Environment.NewLine}  >>>   buttonId={buttonId}");
+            this.logger.LogDebug($"HandleButtonPress: buttonId={buttonId}");
 
             var buttonMappings = this.appSettings.ButtonMappings.Where(b => b.ButtonId == buttonId);
             var buttonMappingsCount = buttonMappings.Count();
@@ -63,11 +63,11 @@ namespace WeatherDisplay.Api.Services
             {
                 throw new NotSupportedException(
                     $"Button with buttonId={buttonId} has multiple assignments:{Environment.NewLine}" +
-                    $"{string.Join(Environment.NewLine, buttonMappings.Select(b => $"- {b.DisplayCompilation}"))}");
+                    $"{string.Join(Environment.NewLine, buttonMappings.Select(b => $"- {b.Page}"))}");
             }
 
             var buttonMapping = buttonMappings.Single();
-            await this.displayCompilationService.SelectDisplayCompilationAsync(buttonMapping.DisplayCompilation);
+            await this.navigationService.NavigateAsync(buttonMapping.Page);
         }
 
         private async void OnButton1Pressed(object sender, EventArgs e)

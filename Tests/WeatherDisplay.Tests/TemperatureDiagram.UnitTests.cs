@@ -11,6 +11,7 @@ using OpenWeatherMap.Models;
 using SkiaSharp;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
+using WeatherDisplay.Pages.Wiewarm;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Services.DeepL;
 using WeatherDisplay.Tests.Testdata;
@@ -35,7 +36,7 @@ namespace WeatherDisplay.Tests
             this.testHelper = new TestHelper(testOutputHelper);
 
             this.autoMocker = new AutoMocker();
-            this.autoMocker.Use(new WaterTemperatureDisplayCompilationOptions
+            this.autoMocker.Use(new WaterTemperaturePageOptions
             {
                 Places = new[]
                 {

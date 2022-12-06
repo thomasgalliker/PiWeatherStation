@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace WeatherDisplay.Model
+namespace WeatherDisplay.Pages.Wiewarm
 {
-    public class WaterTemperatureDisplayCompilationOptions
+    public class WaterTemperaturePageOptions
     {
-        public WaterTemperatureDisplayCompilationOptions()
+        public WaterTemperaturePageOptions()
         {
             this.Places = new List<string>();
         }

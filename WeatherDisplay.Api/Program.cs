@@ -13,7 +13,9 @@ using WeatherDisplay.Api.Services.Configuration;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
-using WeatherDisplay.Model.MeteoSwiss;
+using WeatherDisplay.Pages.MeteoSwiss;
+using WeatherDisplay.Pages.OpenWeatherMap;
+using WeatherDisplay.Pages.Wiewarm;
 
 namespace WeatherDisplay.Api
 {
@@ -111,10 +113,10 @@ namespace WeatherDisplay.Api
             // ====== Weather services ======
             services.AddWeatherDisplay(builder.Configuration);
             services.ConfigureWritable<AppSettings>(builder.Configuration.GetSection("AppSettings"), UserSpecificAppSettingsFileName);
-            services.ConfigureWritable<OpenWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("OpenWeatherDisplayCompilation"), UserSpecificAppSettingsFileName);
-            services.ConfigureWritable<TemperatureWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("TemperatureWeatherDisplayCompilation"), UserSpecificAppSettingsFileName);
-            services.ConfigureWritable<MeteoSwissWeatherDisplayCompilationOptions>(builder.Configuration.GetSection("MeteoSwissWeatherDisplayCompilation"), UserSpecificAppSettingsFileName);
-            services.ConfigureWritable<WaterTemperatureDisplayCompilationOptions>(builder.Configuration.GetSection("WaterTemperatureDisplayCompilation"), UserSpecificAppSettingsFileName);
+            services.ConfigureWritable<OpenWeatherMapPageOptions>(builder.Configuration.GetSection("OpenWeatherMapPageOptions"), UserSpecificAppSettingsFileName);
+            services.ConfigureWritable<TemperatureDiagramPageOptions>(builder.Configuration.GetSection("TemperatureDiagramPageOptions"), UserSpecificAppSettingsFileName);
+            services.ConfigureWritable<MeteoSwissWeatherPageOptions>(builder.Configuration.GetSection("MeteoSwissWeatherPageOptions"), UserSpecificAppSettingsFileName);
+            services.ConfigureWritable<WaterTemperaturePageOptions>(builder.Configuration.GetSection("WaterTemperaturePageOptions"), UserSpecificAppSettingsFileName);
 
             services.AddHostedService<AutoStartupBackgroundService>();
 

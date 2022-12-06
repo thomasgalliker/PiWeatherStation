@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using DisplayService.Services;
 using DisplayService.Settings;
 using DisplayService.Tests.Services;
@@ -11,8 +12,9 @@ using NCrontab.Scheduler;
 using OpenWeatherMap;
 using OpenWeatherMap.Models;
 using SkiaSharp;
-using WeatherDisplay.Compilations;
 using WeatherDisplay.Model;
+using WeatherDisplay.Pages;
+using WeatherDisplay.Pages.OpenWeatherMap;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Tests.Extensions;
 using WeatherDisplay.Tests.Testdata;
@@ -20,9 +22,9 @@ using Xunit;
 using Xunit.Abstractions;
 using IDateTime = DisplayService.Services.IDateTime;
 
-namespace WeatherDisplay.Tests.Compilations
+namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
 {
-    public class OpenWeatherDisplayCompilationTests
+    public class OpenWeatherMapPageTests
     {
         private readonly TestHelper testHelper;
         private readonly AutoMocker autoMocker;
@@ -30,13 +32,13 @@ namespace WeatherDisplay.Tests.Compilations
         private readonly TestDisplay testDisplay;
         private readonly Mock<IOpenWeatherMapService> openWeatherMapServiceMock;
 
-        public OpenWeatherDisplayCompilationTests(ITestOutputHelper testOutputHelper)
+        public OpenWeatherMapPageTests(ITestOutputHelper testOutputHelper)
         {
             this.testHelper = new TestHelper(testOutputHelper);
             this.autoMocker = new AutoMocker();
-            var openWeatherDisplayCompilationOptionsMock = this.autoMocker.GetMock<IOptionsMonitor<OpenWeatherDisplayCompilationOptions>>();
-            openWeatherDisplayCompilationOptionsMock.Setup(o => o.CurrentValue)
-                .Returns(new OpenWeatherDisplayCompilationOptions
+            var openWeatherMapPageOptionsMock = this.autoMocker.GetMock<IOptionsMonitor<OpenWeatherMapPageOptions>>();
+            openWeatherMapPageOptionsMock.Setup(o => o.CurrentValue)
+                .Returns(new OpenWeatherMapPageOptions
                 {
                     Places = new List<Place>
                     {
@@ -75,7 +77,7 @@ namespace WeatherDisplay.Tests.Compilations
         }
 
         [Fact]
-        public void ShouldRenderWeatherActions()
+        public async Task ShouldRenderWeatherActions()
         {
             // Arrange
             var taskIds = new List<Guid>();
@@ -83,11 +85,11 @@ namespace WeatherDisplay.Tests.Compilations
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                 Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
-            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<OpenWeatherDisplayCompilation>();
-            displayCompilation.AddRenderActions();
+            INavigatedAware page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
+            await page.OnNavigatedToAsync(parameters: null);
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.StartAsync();
+            _ = displayManager.StartAsync();
 
             // Act
             schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
@@ -106,7 +108,7 @@ namespace WeatherDisplay.Tests.Compilations
         }
 
         [Fact]
-        public void ShouldRenderWeatherActions_TemperatureChanges()
+        public async Task ShouldRenderWeatherActions_TemperatureChanges()
         {
             // Arrange
             this.openWeatherMapServiceMock.SetupSequence(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()))
@@ -122,11 +124,11 @@ namespace WeatherDisplay.Tests.Compilations
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                 Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
-            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<OpenWeatherDisplayCompilation>();
-            displayCompilation.AddRenderActions();
+            INavigatedAware page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
+            await page.OnNavigatedToAsync(parameters: null);
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.StartAsync();
+            _ = displayManager.StartAsync();
 
             // Act
             schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
@@ -145,7 +147,7 @@ namespace WeatherDisplay.Tests.Compilations
         }
 
         [Fact]
-        public void ShouldRenderWeatherActions_DateTimeChanges_Hours()
+        public async Task ShouldRenderWeatherActions_DateTimeChanges_Hours()
         {
             // Arrange
             var startDateTime = new DateTime(2000, 01, 01, 0, 0, 0, DateTimeKind.Local);
@@ -160,11 +162,11 @@ namespace WeatherDisplay.Tests.Compilations
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                  Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
-            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<OpenWeatherDisplayCompilation>();
-            displayCompilation.AddRenderActions();
+            INavigatedAware page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
+            await page.OnNavigatedToAsync(parameters: null);
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.StartAsync();
+            _ = displayManager.StartAsync();
 
             // Act
             for (var i = 0; i < numberOfHours; i++)
@@ -183,7 +185,7 @@ namespace WeatherDisplay.Tests.Compilations
         }
 
         [Fact]
-        public void ShouldRenderWeatherActions_DateTimeChanges_Days()
+        public async Task ShouldRenderWeatherActions_DateTimeChanges_Days()
         {
             // Arrange
             var beginOfYear = new DateTime(2000, 01, 01, 23, 59, 59, DateTimeKind.Local);
@@ -202,11 +204,11 @@ namespace WeatherDisplay.Tests.Compilations
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                   Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
-            IDisplayCompilation displayCompilation = this.autoMocker.CreateInstance<OpenWeatherDisplayCompilation>();
-            displayCompilation.AddRenderActions();
+            INavigatedAware page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
+            await page.OnNavigatedToAsync(parameters: null);
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
-            displayManager.StartAsync();
+            _ = displayManager.StartAsync();
 
             // Act
             for (var i = 0; i < numberOfDaysInYear; i++)

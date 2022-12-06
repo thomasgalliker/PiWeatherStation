@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace WeatherDisplay.Model
+namespace WeatherDisplay.Pages.MeteoSwiss
 {
     [DebuggerDisplay("{this.Name}")]
     public class MeteoSwissPlace

@@ -1,34 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Services;
 using NCrontab;
-using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
-using WeatherDisplay.Services.QR;
 
-namespace WeatherDisplay.Compilations
+namespace WeatherDisplay.Pages
 {
-    public class SetupDisplayCompilation : IDisplayCompilation
+    public class ErrorPage : INavigatedAware
     {
         private readonly IDisplayManager displayManager;
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
-        private readonly IQRCodeService qrCodeService;
 
-        public SetupDisplayCompilation(
+        public ErrorPage(
             IDisplayManager displayManager,
             IDateTime dateTime,
-            IAppSettings appSettings,
-            IQRCodeService qrCodeService)
+            IAppSettings appSettings)
         {
             this.displayManager = displayManager;
             this.dateTime = dateTime;
             this.appSettings = appSettings;
-            this.qrCodeService = qrCodeService;
         }
 
-        public void AddRenderActions()
+        public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
             // Date header
             this.displayManager.AddRenderActions(
@@ -78,15 +74,10 @@ namespace WeatherDisplay.Compilations
                 },
                 CrontabSchedule.Parse("0 0 * * *")); // Update every day at 00:00
 
-            // Setup info
+            // Error info
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    // TODO: Get ssid/psdk from system
-                    var ssid = "testssid";
-                    var psk = "testpassword";
-                    var qrCodeBitmap = this.qrCodeService.GenerateWifiQRCode(ssid, psk);
-
                     var currentWeatherRenderActions = new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
@@ -103,18 +94,10 @@ namespace WeatherDisplay.Compilations
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"Verbinden Sie sich mit folgendem WiFi Netzwerk: {ssid} - {psk}",
+                            Value = $"Unbekannter Fehler. Bitte Internetverbindung prüfen und Gerät neustarten.",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
-                        },
-                        new RenderActions.StreamImage
-                        {
-                            X = 20,
-                            Y = 140,
-                            Image = qrCodeBitmap.ToStream(),
-                            Width= 320,
-                            Height= 320,
                         },
                     };
 
@@ -125,6 +108,8 @@ namespace WeatherDisplay.Compilations
 
                     return currentWeatherRenderActions;
                 });
+
+            return Task.CompletedTask;
         }
     }
 }
