@@ -153,7 +153,7 @@ if [ -d $dotnetDirectory ]; then
     echo "dotnet already exists"
 else
     echo "Installing dotnet..."
-    sudo curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --install-dir $dotnetDirectory --channel Current
+    sudo curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --install-dir $dotnetDirectory --channel Current
     echo ""
 fi
 

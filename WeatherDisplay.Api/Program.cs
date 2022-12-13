@@ -1,8 +1,13 @@
 ﻿using System.Gpio.Devices;
 using System.IdentityModel.Tokens.Jwt;
+using System.Net;
 using System.Runtime.InteropServices;
+using System.Security.Authentication;
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NLog;
@@ -10,6 +15,7 @@ using NLog.Extensions.Logging;
 using RaspberryPi.Extensions;
 using WeatherDisplay.Api.Services;
 using WeatherDisplay.Api.Services.Configuration;
+using WeatherDisplay.Api.Services.Security;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
@@ -29,8 +35,31 @@ namespace WeatherDisplay.Api
                 $"WeatherStation version {typeof(Program).Assembly.GetName().Version} {Environment.NewLine}" +
                 $"Copyright(C) superdev GmbH. All rights reserved.{Environment.NewLine}");
 
+            var privateKeyFile = "localhost.pfx";
+            var publicKeyFile = "localhost.crt";
+            var httpsEndpoint = IPAddress.Any;
+
             var builder = WebApplication.CreateBuilder(args);
-            builder.WebHost.UseKestrel();
+            builder.WebHost.UseKestrel(o =>
+            {
+                o.ConfigureHttpsDefaults(httpsOptions =>
+                {
+                    var (Private, Public) = CreateSelfSignedCertificate(privateKeyFile, publicKeyFile, httpsEndpoint);
+
+                    try
+                    {
+                        httpsOptions.ServerCertificate = Private;
+                    }
+                    catch (CryptographicException)
+                    {
+                        Console.Error.WriteLine("Error importing certificate.");
+                    }
+
+                    httpsOptions.SslProtocols = SslProtocols.Tls12;
+                    Console.WriteLine("Using certificate with hash: " + httpsOptions.ServerCertificate.GetCertHashString());
+                });
+            });
+
             builder.Host.UseSystemd();
             builder.Host.UseWindowsService();
 
@@ -168,7 +197,7 @@ namespace WeatherDisplay.Api
                 app.UseHsts();
             }
 
-            //app.UseHttpsRedirection();
+            app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -183,6 +212,53 @@ namespace WeatherDisplay.Api
             app.UseStaticFiles();
 
             app.Run();
+        }
+
+        private static (X509Certificate2 Private, X509Certificate2 Public) CreateSelfSignedCertificate(string privateKeyFile, string publicKeyFile, IPAddress httpsEndpoint)
+        {
+            var now = DateTime.Now;
+
+            X509Certificate2 privateKeyCertificate;
+            if (File.Exists(privateKeyFile))
+            {
+                privateKeyCertificate = new X509Certificate2(privateKeyFile);
+                if (privateKeyCertificate.NotAfter.AddYears(-1) < now)
+                {
+                    privateKeyCertificate = null;
+                }
+            }
+            else
+            {
+                privateKeyCertificate = null;
+            }
+
+            X509Certificate2 publicKeyCertificate;
+            if (File.Exists(publicKeyFile))
+            {
+                publicKeyCertificate = new X509Certificate2(publicKeyFile);
+                if (publicKeyCertificate.NotAfter.AddYears(-1) < now)
+                {
+                    publicKeyCertificate = null;
+                }
+            }
+            else
+            {
+                publicKeyCertificate = null;
+            }
+
+            if (privateKeyCertificate == null || publicKeyCertificate == null)
+            {
+                Console.WriteLine("Creating certificate...");
+
+                var certificate = Certificates.CreateSelfSignedCertificate(httpsEndpoint, "CN=WeatherDisplay");
+                File.WriteAllBytes(privateKeyFile, certificate.Export(X509ContentType.Pfx));
+                File.WriteAllBytes(publicKeyFile, certificate.Export(X509ContentType.Cert));
+
+                privateKeyCertificate = new X509Certificate2(privateKeyFile);
+                publicKeyCertificate = new X509Certificate2(publicKeyFile);
+            }
+
+            return (privateKeyCertificate, publicKeyCertificate);
         }
     }
 }

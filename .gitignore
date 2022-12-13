@@ -253,6 +253,7 @@ paket-files/
 *.bak
 *.p8
 *.p12
+*.crt
 **/ServiceAccountKeyFile.json
 /WeatherDisplay.Api/Cache
 /WeatherDisplay.Api/appsettings.User.json
