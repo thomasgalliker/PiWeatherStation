@@ -6,7 +6,7 @@ using DisplayService.Services;
 using NCrontab;
 using WeatherDisplay.Model;
 
-namespace WeatherDisplay.Pages
+namespace WeatherDisplay.Pages.SystemInfo
 {
     public class ErrorPage : INavigatedAware
     {
