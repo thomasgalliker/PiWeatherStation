@@ -2,7 +2,6 @@
 using System.Drawing.Imaging;
 using System.IO;
 using DisplayService.Extensions;
-using SkiaSharp;
 
 namespace WeatherDisplay.Extensions
 {
