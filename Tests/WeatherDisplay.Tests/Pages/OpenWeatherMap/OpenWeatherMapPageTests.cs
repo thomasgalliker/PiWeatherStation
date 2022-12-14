@@ -44,9 +44,15 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
                     {
                         new Place
                         {
-                            Name = "Test Place",
-                            Latitude = 47.1823761d,
-                            Longitude = 8.4611036d
+                            Name = "Test Place 1",
+                            Latitude = 47.1111111d,
+                            Longitude = 8.1111111d
+                        },
+                        new Place
+                        {
+                            Name = "Test Place 2",
+                            Latitude = 47.2222222d,
+                            Longitude = 8.2222222d
                         }
                     }
                 });
@@ -96,6 +102,41 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
             schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
             schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
             schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+
+            // Assert
+            var bitmapStream = this.testDisplay.GetDisplayImage();
+            bitmapStream.Should().NotBeNull();
+            this.testHelper.WriteFile(bitmapStream);
+
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(4));
+            this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(32));
+            this.openWeatherMapServiceMock.VerifyNoOtherCalls();
+        }
+
+        [Fact]
+        public async Task ShouldRenderWeatherActions_WithMultiplePlaces()
+        {
+            // Arrange
+            var taskIds = new List<Guid>();
+            var schedulerMock = this.autoMocker.GetMock<IScheduler>();
+            schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
+                Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
+
+            INavigatedAware page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
+            await page.OnNavigatedToAsync(parameters: null);
+
+            IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
+            _ = displayManager.StartAsync();
+
+            schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+
+            // Act
+            for (var i = 0; i < 3; i++)
+            {
+                taskIds.Clear();
+                await page.OnNavigatedToAsync(parameters: null);
+                schedulerMock.Raise(s => s.Next += null, new ScheduledEventArgs(DateTime.Now, taskIds.ToArray()));
+            }
 
             // Assert
             var bitmapStream = this.testDisplay.GetDisplayImage();
