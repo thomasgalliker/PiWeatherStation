@@ -5,6 +5,7 @@ using NLog;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Model;
 using WeatherDisplay.Pages;
+using WeatherDisplay.Pages.SystemInfo;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace WeatherDisplay.Api.Services
@@ -66,7 +67,9 @@ namespace WeatherDisplay.Api.Services
             catch (Exception ex)
             {
                 this.logger.LogError(ex, "StartAsync failed with exception");
-                await this.navigationService.NavigateAsync(App.Pages.ErrorPage);
+
+                var navigationParameters = new ErrorPage.NavigationParameters { Exception = ex };
+                await this.navigationService.NavigateAsync(App.Pages.ErrorPage, navigationParameters);
             }
         }
 
