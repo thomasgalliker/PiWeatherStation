@@ -14,6 +14,7 @@ namespace WeatherDisplay.Pages
         private readonly IServiceProvider serviceProvider;
 
         private readonly SyncHelper syncHelper = new SyncHelper();
+        private object currentPage;
 
         public NavigationService(
             ILogger<NavigationService> logger,
@@ -37,7 +38,13 @@ namespace WeatherDisplay.Pages
                 throw new ArgumentException(nameof(name));
             }
 
-            await this.syncHelper.RunOnceAsync(async () =>
+            if (this.currentPage?.GetType().Name == name)
+            {
+                this.logger.LogDebug($"NavigateAsync: name={name} --> is already displayed");
+                return;
+            }
+
+            this.currentPage = await this.syncHelper.RunOnceAsync(async () =>
             {
                 this.logger.LogDebug($"NavigateAsync: name={name}, navigationParameters={navigationParameters?.ToString() ?? "null"}");
 
@@ -81,6 +88,8 @@ namespace WeatherDisplay.Pages
                 await selectedPage.OnNavigatedToAsync(navigationParameters);
 
                 await this.displayManager.StartAsync();
+
+                return selectedPage;
             });
         }
     }
