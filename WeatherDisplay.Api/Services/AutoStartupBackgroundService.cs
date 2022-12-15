@@ -16,7 +16,7 @@ namespace WeatherDisplay.Api.Services
         private readonly IAppSettings appSettings;
         private readonly IAutoUpdateService autoUpdateService;
         private readonly INavigationService navigationService;
-        private readonly IWeatherDisplayHardwareCoordinator weatherDisplayHardwareCoordinator;
+        private readonly IButtonsAccessService buttonsAccessService;
         private readonly IScheduler scheduler;
         private readonly IDisplayManager displayManager;
 
@@ -25,7 +25,7 @@ namespace WeatherDisplay.Api.Services
             IAppSettings appSettings,
             IAutoUpdateService autoUpdateService,
             INavigationService navigationService,
-            IWeatherDisplayHardwareCoordinator weatherDisplayHardwareCoordinator,
+            IButtonsAccessService buttonsAccessService,
             IScheduler scheduler,
             IDisplayManager displayManager)
         {
@@ -33,7 +33,7 @@ namespace WeatherDisplay.Api.Services
             this.appSettings = appSettings;
             this.autoUpdateService = autoUpdateService;
             this.navigationService = navigationService;
-            this.weatherDisplayHardwareCoordinator = weatherDisplayHardwareCoordinator;
+            this.buttonsAccessService = buttonsAccessService;
             this.scheduler = scheduler;
             this.displayManager = displayManager;
         }
@@ -60,7 +60,12 @@ namespace WeatherDisplay.Api.Services
                         this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.CheckAndStartUpdate(); });
 
                         // Add rendering actions + start display manager
-                        await this.weatherDisplayHardwareCoordinator.HandleButtonPress(1);
+                        var defaultButton = this.appSettings.ButtonMappings
+                            .OrderBy(m => m.ButtonId)
+                            .FirstOrDefault(m => m.Default);
+
+                        var defaultButtonId = defaultButton?.ButtonId ?? 1;
+                        await this.buttonsAccessService.HandleButtonPress(defaultButtonId);
                     }
                 }
             }
