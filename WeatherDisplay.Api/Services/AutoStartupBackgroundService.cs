@@ -55,17 +55,16 @@ namespace WeatherDisplay.Api.Services
                     if (!result.HasUpdate)
                     {
                         // Schedule automatic update check for "Daily, 4:50 at night"
-                        //this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });
+                        // this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });
                         // Schedule automatic update check every hour at minute 50
                         this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.CheckAndStartUpdate(); });
 
-                        // Add rendering actions + start display manager
+                        // Select the start page
                         var defaultButton = this.appSettings.ButtonMappings
                             .OrderBy(m => m.ButtonId)
-                            .FirstOrDefault(m => m.Default);
+                            .FirstOrDefault(m => m.Default) ?? this.appSettings.ButtonMappings.First();
 
-                        var defaultButtonId = defaultButton?.ButtonId ?? 1;
-                        await this.buttonsAccessService.HandleButtonPress(defaultButtonId);
+                        await this.navigationService.NavigateAsync(defaultButton.Page);
                     }
                 }
             }
