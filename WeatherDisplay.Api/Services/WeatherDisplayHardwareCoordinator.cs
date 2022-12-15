@@ -37,6 +37,7 @@ namespace WeatherDisplay.Api.Services
 
             this.button1 = new GpioButton(5, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
             this.button1.Press += this.OnButton1Pressed;
+            this.button1.Holding += this.OnButton1Holding;
 
             this.button2 = new GpioButton(6, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
             this.button2.Press += this.OnButton2Pressed;
@@ -75,6 +76,11 @@ namespace WeatherDisplay.Api.Services
             await this.HandleButtonPress(buttonId: 1);
         }
         
+        private async void OnButton1Holding(object sender, EventArgs e)
+        {
+            await this.HandleButtonPress(buttonId: 1);
+        }
+        
         private async void OnButton2Pressed(object sender, EventArgs e)
         {
             await this.HandleButtonPress(buttonId: 2);
@@ -97,6 +103,7 @@ namespace WeatherDisplay.Api.Services
                 if (disposing)
                 {
                     this.button1.Press -= this.OnButton1Pressed;
+                    this.button1.Holding -= this.OnButton1Holding;
                     this.button1.Dispose();
 
                     this.button2.Press -= this.OnButton2Pressed;
