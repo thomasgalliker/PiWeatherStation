@@ -26,6 +26,11 @@ namespace WeatherDisplay.Pages
             this.serviceProvider = serviceProvider;
         }
 
+        public string GetCurrentPage()
+        {
+            return this.currentPage?.GetType().Name;
+        }
+
         public Task NavigateAsync(string name)
         {
             return this.NavigateAsync(name, null);
@@ -38,7 +43,8 @@ namespace WeatherDisplay.Pages
                 throw new ArgumentException(nameof(name));
             }
 
-            if (this.currentPage?.GetType().Name == name)
+            var currentPageName = this.GetCurrentPage();
+            if (currentPageName == name)
             {
                 this.logger.LogDebug($"NavigateAsync: name={name} --> is already displayed");
                 return;
