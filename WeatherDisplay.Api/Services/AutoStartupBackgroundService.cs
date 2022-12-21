@@ -5,6 +5,7 @@ using NLog;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Model;
 using WeatherDisplay.Pages;
+using WeatherDisplay.Pages.SystemInfo;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace WeatherDisplay.Api.Services
@@ -15,7 +16,7 @@ namespace WeatherDisplay.Api.Services
         private readonly IAppSettings appSettings;
         private readonly IAutoUpdateService autoUpdateService;
         private readonly INavigationService navigationService;
-        private readonly IWeatherDisplayHardwareCoordinator weatherDisplayHardwareCoordinator;
+        private readonly IButtonsAccessService buttonsAccessService;
         private readonly IScheduler scheduler;
         private readonly IDisplayManager displayManager;
 
@@ -24,7 +25,7 @@ namespace WeatherDisplay.Api.Services
             IAppSettings appSettings,
             IAutoUpdateService autoUpdateService,
             INavigationService navigationService,
-            IWeatherDisplayHardwareCoordinator weatherDisplayHardwareCoordinator,
+            IButtonsAccessService buttonsAccessService,
             IScheduler scheduler,
             IDisplayManager displayManager)
         {
@@ -32,7 +33,7 @@ namespace WeatherDisplay.Api.Services
             this.appSettings = appSettings;
             this.autoUpdateService = autoUpdateService;
             this.navigationService = navigationService;
-            this.weatherDisplayHardwareCoordinator = weatherDisplayHardwareCoordinator;
+            this.buttonsAccessService = buttonsAccessService;
             this.scheduler = scheduler;
             this.displayManager = displayManager;
         }
@@ -54,19 +55,25 @@ namespace WeatherDisplay.Api.Services
                     if (!result.HasUpdate)
                     {
                         // Schedule automatic update check for "Daily, 4:50 at night"
-                        //this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });
+                        // this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });
                         // Schedule automatic update check every hour at minute 50
                         this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.CheckAndStartUpdate(); });
 
-                        // Add rendering actions + start display manager
-                        await this.weatherDisplayHardwareCoordinator.HandleButtonPress(1);
+                        // Select the start page
+                        var defaultButton = this.appSettings.ButtonMappings
+                            .OrderBy(m => m.ButtonId)
+                            .FirstOrDefault(m => m.Default) ?? this.appSettings.ButtonMappings.First();
+
+                        await this.navigationService.NavigateAsync(defaultButton.Page);
                     }
                 }
             }
             catch (Exception ex)
             {
                 this.logger.LogError(ex, "StartAsync failed with exception");
-                await this.navigationService.NavigateAsync(App.Pages.ErrorPage);
+
+                var navigationParameters = new ErrorPage.NavigationParameters { Exception = ex };
+                await this.navigationService.NavigateAsync(App.Pages.ErrorPage, navigationParameters);
             }
         }
 

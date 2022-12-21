@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 
 namespace System.Gpio.Devices.Buttons
@@ -27,6 +28,7 @@ namespace System.Gpio.Devices.Buttons
         private readonly bool buttonState;             // the current reading from the input pin
         private readonly bool lastButtonState = false;   // the previous reading from the input pin
 
+        private bool isHoldingEnabledAuto = false;
 
         /// <summary>
         /// Delegate for button up event.
@@ -51,7 +53,35 @@ namespace System.Gpio.Devices.Buttons
         /// <summary>
         /// Delegate for button holding event.
         /// </summary>
-        public event EventHandler<ButtonHoldingEventArgs> Holding;
+        private event EventHandler<ButtonHoldingEventArgs> HoldingEvent;
+        public event EventHandler<ButtonHoldingEventArgs> Holding
+        {
+            add
+            {
+                this.HoldingEvent += value;
+
+                if (this.IsHoldingEnabled == false && GetEventSubscribers(this.HoldingEvent) > 0)
+                {
+                    this.isHoldingEnabledAuto = true;
+                    this.IsHoldingEnabled = true;
+                }
+            }
+            remove
+            {
+                this.HoldingEvent -= value;
+
+                if (this.isHoldingEnabledAuto && GetEventSubscribers(this.HoldingEvent) < 1)
+                {
+                    this.isHoldingEnabledAuto = false;
+                    this.IsHoldingEnabled = false;
+                }
+            }
+        }
+
+        private static int GetEventSubscribers<T>(EventHandler<T> eventHandler)
+        {
+            return eventHandler?.GetInvocationList().Count() ?? 0;
+        }
 
         /// <summary>
         /// Define if holding event is enabled or disabled on the button.
@@ -152,7 +182,7 @@ namespace System.Gpio.Devices.Buttons
             if (this.IsHoldingEnabled && this.holdingState == ButtonHoldingState.Started)
             {
                 this.holdingState = ButtonHoldingState.Completed;
-                Holding?.Invoke(this, new ButtonHoldingEventArgs { HoldingState = ButtonHoldingState.Completed });
+                HoldingEvent?.Invoke(this, new ButtonHoldingEventArgs { HoldingState = ButtonHoldingState.Completed });
             }
 
             if (this.IsDoublePressEnabled)
@@ -182,7 +212,7 @@ namespace System.Gpio.Devices.Buttons
             this.holdingTimer = null;
             this.holdingState = ButtonHoldingState.Started;
 
-            Holding?.Invoke(this, new ButtonHoldingEventArgs { HoldingState = ButtonHoldingState.Started });
+            HoldingEvent?.Invoke(this, new ButtonHoldingEventArgs { HoldingState = ButtonHoldingState.Started });
         }
 
         /// <summary>

@@ -2,17 +2,17 @@
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Services;
+using Microsoft.Extensions.Options;
 using NCrontab;
+using OpenWeatherMap;
+using OpenWeatherMap.Models;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
-using OpenWeatherMap.Models;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Services.DeepL;
-using OpenWeatherMap;
-using Microsoft.Extensions.Options;
-using System.Threading.Tasks;
 
 namespace WeatherDisplay.Pages.OpenWeatherMap
 {
@@ -24,6 +24,8 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
         private readonly IOptionsMonitor<OpenWeatherMapPageOptions> options;
+
+        private int currentPageIndex = -1;
 
         public OpenWeatherMapPage(
             IDisplayManager displayManager,
@@ -43,6 +45,9 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
 
         public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
+            var places = this.options.CurrentValue.Places;
+            var place = places.GetNextIterative(ref this.currentPageIndex);
+
             var weatherIconMapping = new HighContrastWeatherIconMapping();
 
             // Date header
@@ -97,8 +102,6 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var place = this.options.CurrentValue.Places.First();
-
                     // Get current weather & daily forecasts
                     var oneCallOptions = new OneCallOptions
                     {
@@ -577,13 +580,13 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                     var numberOfForecastItems = 7;
                     dailyForecasts = oneCallWeatherInfo.DailyForecasts.Take(numberOfForecastItems).ToList();
                     var spacing = 20;
-                    var widthPerDailyForecast = (800 - (numberOfForecastItems + 1) * spacing) / numberOfForecastItems;
+                    var widthPerDailyForecast = (800 - ((numberOfForecastItems + 1) * spacing)) / numberOfForecastItems;
                     var xOffset = spacing;
 
                     for (var i = 0; i < dailyForecasts.Count; i++)
                     {
                         var dailyWeatherForecast = dailyForecasts[i];
-                        var xCenter = xOffset + widthPerDailyForecast / 2;
+                        var xCenter = xOffset + (widthPerDailyForecast / 2);
 
                         var dailyWeatherCondition = dailyWeatherForecast.Weather.First();
                         var dailyWeatherImage = await this.openWeatherMapService.GetWeatherIconAsync(dailyWeatherCondition, weatherIconMapping);

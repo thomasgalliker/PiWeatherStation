@@ -9,7 +9,7 @@ using WeatherDisplay.Services;
 using WeatherDisplay.Services.QR;
 using System.Threading.Tasks;
 
-namespace WeatherDisplay.Pages
+namespace WeatherDisplay.Pages.SystemInfo
 {
     public class SetupPage : INavigatedAware
     {

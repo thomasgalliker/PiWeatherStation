@@ -28,6 +28,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Api.Updater"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Gpio.Devices", "System.Gpio.Devices\System.Gpio.Devices.csproj", "{AB09B92D-8284-4339-A7A6-86F4654B3508}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Gpio.Devices.Tests", "Tests\System.Gpio.Devices.Tests\System.Gpio.Devices.Tests.csproj", "{210BABA9-5E8D-4F3F-8792-DC431CA90730}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|anycpu = Debug|anycpu
@@ -66,6 +68,10 @@ Global
 		{AB09B92D-8284-4339-A7A6-86F4654B3508}.Debug|anycpu.Build.0 = Debug|Any CPU
 		{AB09B92D-8284-4339-A7A6-86F4654B3508}.Release|anycpu.ActiveCfg = Release|Any CPU
 		{AB09B92D-8284-4339-A7A6-86F4654B3508}.Release|anycpu.Build.0 = Release|Any CPU
+		{210BABA9-5E8D-4F3F-8792-DC431CA90730}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{210BABA9-5E8D-4F3F-8792-DC431CA90730}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{210BABA9-5E8D-4F3F-8792-DC431CA90730}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{210BABA9-5E8D-4F3F-8792-DC431CA90730}.Release|anycpu.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,6 +79,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D529340B-CA55-4627-8AD7-637A562BF6B9} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
 		{6C143F7B-29EA-483F-A453-04849AC0BC72} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
+		{210BABA9-5E8D-4F3F-8792-DC431CA90730} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1503D0DA-AA89-4AE5-8FE8-8167624E7A30}

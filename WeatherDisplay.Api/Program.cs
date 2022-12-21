@@ -136,7 +136,7 @@ namespace WeatherDisplay.Api
                 services.AddSingleton<IGpioController, GpioControllerWrapper>();
             }
 
-            services.AddSingleton<IWeatherDisplayHardwareCoordinator, WeatherDisplayHardwareCoordinator>();
+            services.AddSingleton<IButtonsAccessService, ButtonsAccessService>();
             services.AddSingleton<IWeatherDisplayServiceConfigurator, WeatherDisplayServiceConfigurator>();
 
             // ====== Weather services ======

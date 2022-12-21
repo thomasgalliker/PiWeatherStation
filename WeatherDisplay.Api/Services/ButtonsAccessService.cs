@@ -6,7 +6,7 @@ using WeatherDisplay.Pages;
 
 namespace WeatherDisplay.Api.Services
 {
-    public class WeatherDisplayHardwareCoordinator : IWeatherDisplayHardwareCoordinator, IDisposable
+    public class ButtonsAccessService : IButtonsAccessService, IDisposable
     {
         private static readonly TimeSpan ButtonDebounceTime = TimeSpan.FromMilliseconds(10);
         private static readonly PinMode ButtonPinMode = PinMode.InputPullUp;
@@ -22,8 +22,8 @@ namespace WeatherDisplay.Api.Services
 
         private bool disposed;
 
-        public WeatherDisplayHardwareCoordinator(
-            ILogger<WeatherDisplayHardwareCoordinator> logger,
+        public ButtonsAccessService(
+            ILogger<ButtonsAccessService> logger,
             IAppSettings appSettings,
             IGpioController gpioController,
             INavigationService navigationService)
@@ -46,6 +46,7 @@ namespace WeatherDisplay.Api.Services
 
             this.button4 = new GpioButton(26, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
             this.button4.Press += this.OnButton4Pressed;
+            this.button4.Holding += this.OnButton4Holding;
         }
 
         public async Task HandleButtonPress(int buttonId)
@@ -70,21 +71,36 @@ namespace WeatherDisplay.Api.Services
             await this.navigationService.NavigateAsync(buttonMapping.Page);
         }
 
+        public async Task HandleButtonHolding(int buttonId)
+        {
+            this.logger.LogDebug($"HandleButtonHold: buttonId={buttonId}");
+
+            if (buttonId == 4)
+            {
+                await this.navigationService.NavigateAsync(App.Pages.SetupPage);
+            }
+        }
+
         private async void OnButton1Pressed(object sender, EventArgs e)
         {
             await this.HandleButtonPress(buttonId: 1);
         }
-        
+
+        private async void OnButton4Holding(object sender, EventArgs e)
+        {
+            await this.HandleButtonHolding(buttonId: 4);
+        }
+
         private async void OnButton2Pressed(object sender, EventArgs e)
         {
             await this.HandleButtonPress(buttonId: 2);
         }
-        
+
         private async void OnButton3Pressed(object sender, EventArgs e)
         {
             await this.HandleButtonPress(buttonId: 3);
         }
-        
+
         private async void OnButton4Pressed(object sender, EventArgs e)
         {
             await this.HandleButtonPress(buttonId: 4);
@@ -106,6 +122,7 @@ namespace WeatherDisplay.Api.Services
                     this.button3.Dispose();
 
                     this.button4.Press -= this.OnButton4Pressed;
+                    this.button4.Holding -= this.OnButton4Holding;
                     this.button4.Dispose();
                 }
 

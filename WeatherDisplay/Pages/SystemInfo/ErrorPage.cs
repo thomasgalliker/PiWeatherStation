@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Threading.Tasks;
 using DisplayService.Model;
@@ -6,7 +7,7 @@ using DisplayService.Services;
 using NCrontab;
 using WeatherDisplay.Model;
 
-namespace WeatherDisplay.Pages
+namespace WeatherDisplay.Pages.SystemInfo
 {
     public class ErrorPage : INavigatedAware
     {
@@ -24,8 +25,15 @@ namespace WeatherDisplay.Pages
             this.appSettings = appSettings;
         }
 
+        public class NavigationParameters : INavigationParameters
+        {
+            public Exception Exception { get; set; }
+        }
+
         public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
+            var parameters = (NavigationParameters)navigationParameters;
+
             // Date header
             this.displayManager.AddRenderActions(
                 () =>
@@ -75,10 +83,10 @@ namespace WeatherDisplay.Pages
                 CrontabSchedule.Parse("0 0 * * *")); // Update every day at 00:00
 
             // Error info
-            this.displayManager.AddRenderActionsAsync(
-                async () =>
+            this.displayManager.AddRenderActions(
+                () =>
                 {
-                    var currentWeatherRenderActions = new List<IRenderAction>
+                    var errorInfos = new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
                         {
@@ -94,7 +102,19 @@ namespace WeatherDisplay.Pages
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"Unbekannter Fehler. Bitte Internetverbindung prüfen und Gerät neustarten.",
+                            Value = $"Ein Fehler ist aufgetreten.",
+                            ForegroundColor = "#000000",
+                            BackgroundColor = "#FFFFFF",
+                            FontSize = 20,
+                            Bold = true,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 20,
+                            Y = 160,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"Bitte Internetverbindung prüfen und Gerät ggf. neustarten.",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
@@ -103,10 +123,21 @@ namespace WeatherDisplay.Pages
 
                     if (this.appSettings.IsDebug)
                     {
-
+                        errorInfos.Add(
+                            new RenderActions.Text
+                            {
+                                X = 20,
+                                Y = 200,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = parameters.Exception.Message,
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 20,
+                            });
                     }
 
-                    return currentWeatherRenderActions;
+                    return errorInfos;
                 });
 
             return Task.CompletedTask;
