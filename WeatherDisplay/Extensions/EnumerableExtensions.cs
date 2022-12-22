@@ -22,5 +22,31 @@ namespace WeatherDisplay.Extensions
             return item;
         }
 
+        public static T GetNextElement<T>(this T[] array, T element, T defaultValue = default)
+        {
+            var elem = defaultValue;
+
+            if (array.Length == 0)
+            {
+                return elem;
+            }
+
+            var index = Array.IndexOf(array, element);
+            if (index < 0 && array.Length > 0)
+            {
+                return defaultValue;
+            }
+
+            if (array.Length > 1 && index >= 0 && index < array.Length - 1)
+            {
+                elem = array[index + 1];
+            }
+            else if (index == array.Length - 1)
+            {
+                elem = array[0];
+            }
+
+            return elem;
+        }
     }
 }

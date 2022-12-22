@@ -3,6 +3,7 @@ using NCrontab;
 using NCrontab.Scheduler;
 using NLog;
 using WeatherDisplay.Api.Updater.Services;
+using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Pages;
 using WeatherDisplay.Pages.SystemInfo;
@@ -59,11 +60,7 @@ namespace WeatherDisplay.Api.Services
                         // Schedule automatic update check every hour at minute 50
                         this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.CheckAndStartUpdate(); });
 
-                        // Select the start page
-                        var defaultButton = this.appSettings.ButtonMappings
-                            .OrderBy(m => m.ButtonId)
-                            .FirstOrDefault(m => m.Default) ?? this.appSettings.ButtonMappings.First();
-
+                        var defaultButton = this.appSettings.ButtonMappings.GetDefaultButtonMapping();
                         await this.navigationService.NavigateAsync(defaultButton.Page);
                     }
                 }
