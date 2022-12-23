@@ -44,11 +44,11 @@ namespace WeatherDisplay.Pages
             }
 
             var currentPageName = this.GetCurrentPage();
-            if (currentPageName == name)
-            {
-                this.logger.LogDebug($"NavigateAsync: name={name} --> is already displayed");
-                return;
-            }
+            //if (currentPageName == name)
+            //{
+            //    this.logger.LogDebug($"NavigateAsync: name={name} --> is already displayed");
+            //    return;
+            //}
 
             this.currentPage = await this.syncHelper.RunOnceAsync(async () =>
             {

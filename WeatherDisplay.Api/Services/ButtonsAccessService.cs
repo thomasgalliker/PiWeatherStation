@@ -1,6 +1,7 @@
 ﻿using System.Device.Gpio;
 using System.Gpio.Devices;
 using System.Gpio.Devices.Buttons;
+using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Pages;
 
@@ -53,22 +54,34 @@ namespace WeatherDisplay.Api.Services
         {
             this.logger.LogDebug($"HandleButtonPress: buttonId={buttonId}");
 
-            var buttonMappings = this.appSettings.ButtonMappings.Where(b => b.ButtonId == buttonId);
-            var buttonMappingsCount = buttonMappings.Count();
-            if (buttonMappingsCount == 0)
+            var currentPage = this.navigationService.GetCurrentPage();
+            if (App.Pages.IsSystemPage(currentPage))
             {
-                throw new NotSupportedException($"Button with buttonId={buttonId} is currently not supported.");
+                if (buttonId == 4)
+                {
+                    var nextPage = App.Pages.GetNextSystemPage(currentPage);
+                    await this.navigationService.NavigateAsync(nextPage);
+                }
             }
-
-            if (buttonMappingsCount > 1)
+            else
             {
-                throw new NotSupportedException(
-                    $"Button with buttonId={buttonId} has multiple assignments:{Environment.NewLine}" +
-                    $"{string.Join(Environment.NewLine, buttonMappings.Select(b => $"- {b.Page}"))}");
-            }
+                var buttonMappings = this.appSettings.ButtonMappings.Where(b => b.ButtonId == buttonId);
+                var buttonMappingsCount = buttonMappings.Count();
+                if (buttonMappingsCount == 0)
+                {
+                    throw new NotSupportedException($"Button with buttonId={buttonId} is currently not supported.");
+                }
 
-            var buttonMapping = buttonMappings.Single();
-            await this.navigationService.NavigateAsync(buttonMapping.Page);
+                if (buttonMappingsCount > 1)
+                {
+                    throw new NotSupportedException(
+                        $"Button with buttonId={buttonId} has multiple assignments:{Environment.NewLine}" +
+                        $"{string.Join(Environment.NewLine, buttonMappings.Select(b => $"- {b.Page}"))}");
+                }
+
+                var buttonMapping = buttonMappings.Single();
+                await this.navigationService.NavigateAsync(buttonMapping.Page);
+            }
         }
 
         public async Task HandleButtonHolding(int buttonId)
@@ -77,7 +90,16 @@ namespace WeatherDisplay.Api.Services
 
             if (buttonId == 4)
             {
-                await this.navigationService.NavigateAsync(App.Pages.SetupPage);
+                var currentPage = this.navigationService.GetCurrentPage();
+                if (App.Pages.IsSystemPage(currentPage))
+                {
+                    var defaultButton = this.appSettings.ButtonMappings.GetDefaultButtonMapping();
+                    await this.navigationService.NavigateAsync(defaultButton.Page);
+                }
+                else
+                {
+                    await this.navigationService.NavigateAsync(App.Pages.SetupPage);
+                }
             }
         }
 
