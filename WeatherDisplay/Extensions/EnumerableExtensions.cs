@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json.Linq;
 
 namespace WeatherDisplay.Extensions
 {
@@ -22,31 +23,31 @@ namespace WeatherDisplay.Extensions
             return item;
         }
 
-        public static T GetNextElement<T>(this T[] array, T element, T defaultValue = default)
+        public static T GetNextElement<T>(this IList<T> list, T element, T defaultValue = default)
         {
-            var elem = defaultValue;
+            var next = defaultValue;
 
-            if (array.Length == 0)
+            if (list.Count == 0)
             {
-                return elem;
+                return next;
             }
 
-            var index = Array.IndexOf(array, element);
-            if (index < 0 && array.Length > 0)
+            var index = list.IndexOf(element);
+            if (index < 0 && list.Count > 0)
             {
                 return defaultValue;
             }
 
-            if (array.Length > 1 && index >= 0 && index < array.Length - 1)
+            if (list.Count > 1 && index >= 0 && index < list.Count - 1)
             {
-                elem = array[index + 1];
+                next = list[index + 1];
             }
-            else if (index == array.Length - 1)
+            else if (index == list.Count - 1)
             {
-                elem = array[0];
+                next = list[0];
             }
 
-            return elem;
+            return next;
         }
     }
 }

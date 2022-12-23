@@ -25,7 +25,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
         private readonly IAppSettings appSettings;
         private readonly IOptionsMonitor<OpenWeatherMapPageOptions> options;
 
-        private int currentPageIndex = -1;
+        private Place currentPlace = null;
 
         public OpenWeatherMapPage(
             IDisplayManager displayManager,
@@ -45,8 +45,8 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
 
         public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
-            var places = this.options.CurrentValue.Places;
-            var place = places.GetNextIterative(ref this.currentPageIndex);
+            var places = this.options.CurrentValue.Places.ToList();
+            var place = this.currentPlace = places.GetNextElement(this.currentPlace, defaultValue: places.First());
 
             var weatherIconMapping = new HighContrastWeatherIconMapping();
 
