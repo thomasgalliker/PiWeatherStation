@@ -45,6 +45,8 @@ namespace WeatherDisplay.Api.Services
 
             try
             {
+                this.buttonsAccessService.InitializeButtons();
+
                 var runSetup = this.appSettings.RunSetup;
                 if (runSetup)
                 {
