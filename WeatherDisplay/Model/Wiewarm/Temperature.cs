@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
 
 namespace WeatherDisplay.Model.Wiewarm
 {
     [Serializable]
     public struct Temperature : IComparable, IComparable<Temperature>, IComparable<double>, IEquatable<Temperature>, IFormattable
     {
+        private const double Zero = 0d;
         public const double AbsoluteZeroCelsius = -273.15;
         public const double AbsoluteZeroFahrenheit = -459.67;
 
@@ -14,10 +16,15 @@ namespace WeatherDisplay.Model.Wiewarm
         public const double FahrenheitPerKelvin = 9.0 / 5.0;
         public const double KelvinPerFahrenheit = 5.0 / 9.0;
 
-        public static readonly Temperature ZeroKelvin = Temperature.FromKelvin(0.0);
-        public static readonly Temperature ZeroCelsius = Temperature.FromCelsius(0.0);
-        public static readonly Temperature ZeroFahrenheit = Temperature.FromFahrenheit(0.0);
+        public static readonly Temperature ZeroKelvin = FromKelvin(0.0);
+        public static readonly Temperature ZeroCelsius = FromCelsius(0.0);
+        public static readonly Temperature ZeroFahrenheit = FromFahrenheit(0.0);
         public static readonly Temperature MinValue = ZeroKelvin;
+
+        private static readonly char[] NumericalToStringPrefixes =
+        {
+            'N', 'D', 'F'
+        };
 
         public Temperature(double value, TemperatureUnit unit)
         {
@@ -61,7 +68,7 @@ namespace WeatherDisplay.Model.Wiewarm
 
         public static double KelvinToFahrenheit(double kelvin)
         {
-            return (kelvin * 1.8) + AbsoluteZeroFahrenheit;
+            return kelvin * 1.8 + AbsoluteZeroFahrenheit;
         }
 
         public static double FahrenheitToKelvin(double fahrenheit)
@@ -71,7 +78,7 @@ namespace WeatherDisplay.Model.Wiewarm
 
         public static double CelsiusToFahrenheit(double celsius)
         {
-            return (celsius * 1.8) + 32.0;
+            return celsius * 1.8 + 32.0;
         }
 
         public static double FahrenheitToCelsius(double fahrenheit)
@@ -195,14 +202,13 @@ namespace WeatherDisplay.Model.Wiewarm
 
         /// <summary>
         /// Returns the string representation of the temperature.
-        /// Default format is "0.##" and the respective unit.
+        /// Default format is "0.## °C" (where °C is replaced with the respective unit).s
         /// </summary>
         /// <param name="format">
         /// The format.
         /// This can either be a number format (e.g. "0" or "0.##").
-        /// Following formats are valid too: "U" = Unit string only (e.g. °C). "N" = Nummeric value only
+        /// Following formats are valid too: "U" = Unit string only (e.g. °C). "N" = Numeric value only.
         /// </param>
-        /// <returns></returns>
         public string ToString(string format)
         {
             return this.ToString(format, CultureInfo.CurrentCulture);
@@ -215,10 +221,7 @@ namespace WeatherDisplay.Model.Wiewarm
                 format = "0.##";
             }
 
-            if (provider == null)
-            {
-                provider = CultureInfo.CurrentCulture;
-            }
+            provider = provider != null ? provider : CultureInfo.CurrentCulture;
 
             var unitString = EnumUtils.GetDescription(this.Unit);
 
@@ -227,9 +230,18 @@ namespace WeatherDisplay.Model.Wiewarm
                 return unitString;
             }
 
-            var temperatureString = $"{this.Value.ToString(format, provider)}";
+            // In order to avoid string formatted numbers like "-0" we parse-back to double
+            // and check if the double value is exactly "0" or "-0".
+            // See also: https://stackoverflow.com/questions/3139538/is-minus-zero-0-equivalent-to-zero-0-in-c-sharp
+            var temperatureString = this.Value.ToString(format, provider);
+            if (double.TryParse(temperatureString, out var parsed) &&
+                Equals(parsed, Zero) &&
+                BitConverter.DoubleToInt64Bits(Zero) != BitConverter.DoubleToInt64Bits(parsed))
+            {
+                temperatureString = Zero.ToString(format, provider);
+            }
 
-            if (format.StartsWith("N"))
+            if (NumericalToStringPrefixes.Contains(format[0]))
             {
                 return temperatureString;
             }
