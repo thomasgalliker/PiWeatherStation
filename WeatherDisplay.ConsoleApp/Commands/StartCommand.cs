@@ -3,8 +3,8 @@ using System.CommandLine.Invocation;
 using System.Threading.Tasks;
 using DisplayService.Services;
 using OpenWeatherMap;
-using WeatherDisplay.Compilations;
 using WeatherDisplay.Model;
+using WeatherDisplay.Pages;
 using WeatherDisplay.Services.DeepL;
 
 namespace DisplayService.ConsoleApp.Commands
@@ -14,27 +14,27 @@ namespace DisplayService.ConsoleApp.Commands
         public const string CommandName = "start";
 
         public StartCommand(
-            IDisplayCompilationService displayCompilationService,
+            INavigationService navigationService,
             IOpenWeatherMapService openWeatherMapService,
             ITranslationService translationService,
             IDateTime dateTime,
             IAppSettings appSettings) : base(CommandName, "Starts the scheduled rendering process")
         {
-            this.Handler = new StartCommandHandler(displayCompilationService);
+            this.Handler = new StartCommandHandler(navigationService);
         }
 
         private class StartCommandHandler : ICommandHandler
         {
-            private readonly IDisplayCompilationService displayManager;
+            private readonly INavigationService displayManager;
 
-            public StartCommandHandler(IDisplayCompilationService displayManager)
+            public StartCommandHandler(INavigationService displayManager)
             {
                 this.displayManager = displayManager;
             }
 
             public async Task<int> InvokeAsync(InvocationContext context)
             {
-                await this.displayManager.SelectDisplayCompilationAsync("OpenWeatherDisplayCompilation");
+                await this.displayManager.NavigateAsync("OpenWeatherMapPage");
 
                 return 0;
             }

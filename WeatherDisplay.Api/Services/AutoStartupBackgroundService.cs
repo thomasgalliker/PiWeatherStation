@@ -3,7 +3,10 @@ using NCrontab;
 using NCrontab.Scheduler;
 using NLog;
 using WeatherDisplay.Api.Updater.Services;
-using WeatherDisplay.Compilations;
+using WeatherDisplay.Extensions;
+using WeatherDisplay.Model;
+using WeatherDisplay.Pages;
+using WeatherDisplay.Pages.SystemInfo;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace WeatherDisplay.Api.Services
@@ -11,24 +14,27 @@ namespace WeatherDisplay.Api.Services
     public class AutoStartupBackgroundService : IHostedService
     {
         private readonly ILogger logger;
+        private readonly IAppSettings appSettings;
         private readonly IAutoUpdateService autoUpdateService;
-        private readonly IDisplayCompilationService displayCompilationService;
+        private readonly INavigationService navigationService;
+        private readonly IButtonsAccessService buttonsAccessService;
         private readonly IScheduler scheduler;
         private readonly IDisplayManager displayManager;
-        private readonly IWeatherDisplayHardwareCoordinator gpioButtonService;
 
         public AutoStartupBackgroundService(
             ILogger<AutoStartupBackgroundService> logger,
+            IAppSettings appSettings,
             IAutoUpdateService autoUpdateService,
-            IDisplayCompilationService displayCompilationService,
-            IWeatherDisplayHardwareCoordinator gpioButtonService,
+            INavigationService navigationService,
+            IButtonsAccessService buttonsAccessService,
             IScheduler scheduler,
             IDisplayManager displayManager)
         {
             this.logger = logger;
+            this.appSettings = appSettings;
             this.autoUpdateService = autoUpdateService;
-            this.displayCompilationService = displayCompilationService;
-            this.gpioButtonService = gpioButtonService;
+            this.navigationService = navigationService;
+            this.buttonsAccessService = buttonsAccessService;
             this.scheduler = scheduler;
             this.displayManager = displayManager;
         }
@@ -37,16 +43,36 @@ namespace WeatherDisplay.Api.Services
         {
             this.logger.LogDebug("StartAsync");
 
-            var result = await this.CheckAndStartUpdate();
-            if (!result.HasUpdate)
+            try
             {
-                // Schedule automatic update check for "Daily, 4:50 at night"
-                //this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });
-                // Schedule automatic update check every hour at minute 50
-                this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.CheckAndStartUpdate(); });
+                this.buttonsAccessService.InitializeButtons();
 
-                // Add rendering actions + start display manager
-                await this.displayCompilationService.SelectDisplayCompilationAsync("OpenWeatherDisplayCompilation");
+                var runSetup = this.appSettings.RunSetup;
+                if (runSetup)
+                {
+                    await this.navigationService.NavigateAsync(App.Pages.SetupPage);
+                }
+                else
+                {
+                    var result = await this.CheckAndStartUpdate();
+                    if (!result.HasUpdate)
+                    {
+                        // Schedule automatic update check for "Daily, 4:50 at night"
+                        // this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });
+                        // Schedule automatic update check every hour at minute 50
+                        this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.CheckAndStartUpdate(); });
+
+                        var defaultButton = this.appSettings.ButtonMappings.GetDefaultButtonMapping();
+                        await this.navigationService.NavigateAsync(defaultButton.Page);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, "StartAsync failed with exception");
+
+                var navigationParameters = new ErrorPage.NavigationParameters { Exception = ex };
+                await this.navigationService.NavigateAsync(App.Pages.ErrorPage, navigationParameters);
             }
         }
 

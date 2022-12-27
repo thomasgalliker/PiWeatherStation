@@ -24,8 +24,7 @@ namespace System.Gpio.Devices.Buttons
         /// <param name="gpio">Gpio Controller.</param>
         /// <param name="shouldDispose">True to dispose the GpioController.</param>
         /// <param name="debounceTime">The amount of time during which the transitions are ignored, or zero</param>
-        public GpioButton(int buttonPin, IGpioController gpio = null, bool shouldDispose = true, PinMode pinMode = PinMode.InputPullUp,
-            TimeSpan debounceTime = default)
+        public GpioButton(int buttonPin, IGpioController gpio = null, bool shouldDispose = true, PinMode pinMode = PinMode.InputPullUp, TimeSpan debounceTime = default)
             : this(buttonPin, DefaultDoublePressDuration, DefaultHoldingDuration, gpio, shouldDispose, pinMode, debounceTime)
         {
         }

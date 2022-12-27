@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using DisplayService.Internals;
 using Microsoft.Extensions.Logging;
 
 namespace DisplayService.Services
@@ -6,6 +7,8 @@ namespace DisplayService.Services
     public class NullDisplayService : IDisplay
     {
         private readonly ILogger<NullDisplayService> logger;
+
+        private readonly SyncHelper syncHelper = new SyncHelper();
 
         public NullDisplayService(ILogger<NullDisplayService> logger)
         {
@@ -23,7 +26,10 @@ namespace DisplayService.Services
 
         public void DisplayImage(Stream bitmapStream)
         {
-            this.logger.LogDebug("DisplayImage");
+            this.syncHelper.RunOnce(() =>
+            {
+                this.logger.LogDebug("DisplayImage");
+            });
         }
 
         public void Dispose()

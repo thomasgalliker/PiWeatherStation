@@ -47,6 +47,7 @@ namespace WeatherDisplay.Api.Updater.Services
                 this.process.OutputDataReceived -= value;
             }
         }
+
         public event DataReceivedEventHandler ErrorDataReceived
         {
             add

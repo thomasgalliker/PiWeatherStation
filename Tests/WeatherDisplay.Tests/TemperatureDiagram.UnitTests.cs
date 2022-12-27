@@ -11,6 +11,7 @@ using OpenWeatherMap.Models;
 using SkiaSharp;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
+using WeatherDisplay.Pages.Wiewarm;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Services.DeepL;
 using WeatherDisplay.Tests.Testdata;
@@ -33,21 +34,24 @@ namespace WeatherDisplay.Tests
         public TemperatureDiagramUnitTests(ITestOutputHelper testOutputHelper)
         {
             this.testHelper = new TestHelper(testOutputHelper);
-            this.autoMocker = new AutoMocker();
 
-            this.appSettingsMock = this.autoMocker.GetMock<IAppSettings>();
-            this.appSettingsMock.SetupGet(r => r.Title)
-                .Returns("Test");
-            this.appSettingsMock.SetupGet(r => r.Places)
-                .Returns(new List<Place> { new Place { Name = "Test Place", Longitude = 1d, Latitude = 2d } });
+            this.autoMocker = new AutoMocker();
+            this.autoMocker.Use(new WaterTemperaturePageOptions
+            {
+                Places = new[]
+                {
+                    "Test Place 1",
+                    "Test Place 2",
+                }
+            });
 
             var renderSettingsMock = this.autoMocker.GetMock<IRenderSettings>();
             renderSettingsMock.SetupGet(r => r.Height)
-                .Returns(480);
+                    .Returns(480);
             renderSettingsMock.SetupGet(r => r.Width)
-                .Returns(800);
+                    .Returns(800);
             renderSettingsMock.SetupGet(r => r.BackgroundColor)
-                .Returns(SKColors.White.ToString());
+                    .Returns(SKColors.White.ToString());
 
             this.dateTimeMock = this.autoMocker.GetMock<IDateTime>();
             this.dateTimeMock.SetupGet(d => d.Now)

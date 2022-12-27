@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
+using DisplayService.Internals;
 using Waveshare;
 using Waveshare.Devices;
 using Waveshare.Interfaces;
@@ -10,6 +11,8 @@ namespace DisplayService.Services
     public class WaveShareDisplay : IDisplay
     {
         private readonly IEPaperDisplay ePaperDisplay;
+        private readonly SyncHelper syncHelper = new SyncHelper();
+
         private bool disposed;
 
         public WaveShareDisplay(string displayType)
@@ -40,10 +43,13 @@ namespace DisplayService.Services
 
         private void DisplayImage(Bitmap bitmap)
         {
-            Console.WriteLine($"WaveShareDisplay: DisplayImage");
-            this.ePaperDisplay.PowerOn();
-            this.ePaperDisplay.DisplayImage(bitmap);
-            this.ePaperDisplay.PowerOff();
+            this.syncHelper.RunOnce(() =>
+            {
+                Console.WriteLine($"WaveShareDisplay: DisplayImage");
+                this.ePaperDisplay.PowerOn();
+                this.ePaperDisplay.DisplayImage(bitmap);
+                this.ePaperDisplay.PowerOff();
+            });
         }
 
         ///private void Renderer_ScreenChanged(object sender, EventArgs e)

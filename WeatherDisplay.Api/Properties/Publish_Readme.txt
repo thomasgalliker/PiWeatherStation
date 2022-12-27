@@ -1,1 +1,1 @@
-﻿ dotnet publish .\WeatherDisplay.Api\WeatherDisplay.Api.csproj --configuration Release --self-contained false --runtime linux-arm /p:EnvironmentName=Production
+﻿dotnet publish .\WeatherDisplay.Api\WeatherDisplay.Api.csproj --configuration Release --self-contained false --runtime linux-arm --framework net6.0 /p:EnvironmentName=Production

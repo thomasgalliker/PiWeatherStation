@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 
 echo "
 =====================================================
@@ -48,6 +48,11 @@ if [ "$#" != 0 ]; then
     esac
   done
   shift  # $EOL
+fi
+
+if [ $(id -u) != 0 ]; then
+    echo "You need to be root to run this script! Please run 'sudo bash $0'"
+    exit 1
 fi
 
 dotnetDirectory="/home/pi/.dotnet"
@@ -136,14 +141,19 @@ sudo apt-get install -y hostapd
 sudo apt-get install -y dnsmasq
 
 sudo systemctl stop hostapd
+sudo systemctl unmask hostapd
+sudo systemctl disable hostapd
+
 sudo systemctl stop dnsmasq
+sudo systemctl unmask dnsmasq
+sudo systemctl disable dnsmasq
 echo ""
 
 if [ -d $dotnetDirectory ]; then
     echo "dotnet already exists"
 else
     echo "Installing dotnet..."
-    sudo curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --install-dir $dotnetDirectory --channel Current
+    sudo curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --install-dir $dotnetDirectory --channel Current
     echo ""
 fi
 
@@ -209,6 +219,7 @@ ExecStop=/bin/kill \$MAINPID
 KillSignal=SIGTERM
 KillMode=process
 SyslogIdentifier=$executable
+TimeoutStopSec=20
 
 User=pi
 Group=pi
@@ -247,7 +258,10 @@ if [ ! -z "$keyboard" ]; then
 fi
 
 echo "Updating hostname..."
-sudo hostnamectl set-hostname $host
+currentHostname=`cat /etc/hostname | tr -d " \t\n\r"`
+sudo raspi-config nonint do_hostname $host
+echo $host > /etc/hostname
+sed -i "s/127.0.1.1.*$currentHostname/127.0.1.1\t$host/g" /etc/hosts
 
 echo "
 =====================================================
