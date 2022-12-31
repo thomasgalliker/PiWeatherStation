@@ -55,13 +55,13 @@ namespace WeatherDisplay.Api.Services
                 }
                 else
                 {
-                    var result = await this.CheckAndStartUpdate();
-                    if (!result.HasUpdate)
+                    var updateInProgress = await this.TryInstallUpdateAsync();
+                    if (!updateInProgress)
                     {
                         // Schedule automatic update check for "Daily, 4:50 at night"
                         // this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });
                         // Schedule automatic update check every hour at minute 50
-                        this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.CheckAndStartUpdate(); });
+                        this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.TryInstallUpdateAsync(); });
 
                         var defaultButton = this.appSettings.ButtonMappings.GetDefaultButtonMapping();
                         await this.navigationService.NavigateAsync(defaultButton.Page);
@@ -77,16 +77,24 @@ namespace WeatherDisplay.Api.Services
             }
         }
 
-        private async Task<UpdateCheckResult> CheckAndStartUpdate()
+        private async Task<bool> TryInstallUpdateAsync()
         {
-            var result = await this.autoUpdateService.CheckForUpdateAsync();
-            if (result.HasUpdate)
+            try
             {
-                var updateRequest = UpdateRequestFactory.Create(result.UpdateVersion, result.UpdateVersionSource);
-                this.autoUpdateService.StartUpdate(updateRequest);
-            }
+                var result = await this.autoUpdateService.CheckForUpdateAsync();
+                if (result.HasUpdate)
+                {
+                    var updateRequest = UpdateRequestFactory.Create(result.UpdateVersion, result.UpdateVersionSource);
+                    this.autoUpdateService.StartUpdate(updateRequest);
+                }
 
-            return result;
+                return result.HasUpdate;
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, "TryInstallUpdateAsync failed with exception");
+                return false;
+            }
         }
 
         public async Task StopAsync(CancellationToken cancellationToken)
