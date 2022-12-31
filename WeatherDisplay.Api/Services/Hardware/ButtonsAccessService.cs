@@ -5,7 +5,7 @@ using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Pages;
 
-namespace WeatherDisplay.Api.Services
+namespace WeatherDisplay.Api.Services.Hardware
 {
     public class ButtonsAccessService : IButtonsAccessService, IDisposable
     {

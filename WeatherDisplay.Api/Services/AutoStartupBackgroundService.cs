@@ -2,6 +2,7 @@
 using NCrontab;
 using NCrontab.Scheduler;
 using NLog;
+using WeatherDisplay.Api.Services.Hardware;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
