@@ -8,8 +8,10 @@ using MeteoSwissApi;
 using Microsoft.Extensions.Options;
 using NCrontab;
 using OpenWeatherMap.Models;
+using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Resources;
+using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages.MeteoSwiss
 {
@@ -20,6 +22,8 @@ namespace WeatherDisplay.Pages.MeteoSwiss
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
         private readonly IOptionsMonitor<MeteoSwissWeatherPageOptions> options;
+
+        private MeteoSwissPlace currentPlace = null;
 
         public MeteoSwissWeatherPage(
             IDisplayManager displayManager,
@@ -37,6 +41,9 @@ namespace WeatherDisplay.Pages.MeteoSwiss
 
         public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
+            var places = this.options.CurrentValue.Places.ToList();
+            var place = this.currentPlace = places.GetNextElement(this.currentPlace, defaultValue: places.First());
+
             // Date header
             this.displayManager.AddRenderActions(
                 () =>
@@ -89,8 +96,6 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var place = this.options.CurrentValue.Places.First();
-
                     // Get current weather & daily forecasts
                     var weatherInfo = await this.meteoSwissWeatherService.GetCurrentWeatherAsync(place.Plz);
                     //var currentWeatherImage = await this.meteoSwissWeatherService.GetWeatherIconAsync(weatherInfo.CurrentWeather.IconV2);

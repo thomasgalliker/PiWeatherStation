@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    },
+    "SampleApp.BME680": {
+      "commandName": "Project",
+      "commandLineArgs": "bme680"
+    }
+  }
+}

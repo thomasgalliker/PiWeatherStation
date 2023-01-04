@@ -1,8 +1,10 @@
-﻿namespace WeatherDisplay.Api.Services.Hardware
+﻿using System.Threading.Tasks;
+
+namespace WeatherDisplay.Services.Hardware
 {
     public interface IButtonsAccessService
     {
-        void InitializeButtons();
+        void Initialize();
 
         Task HandleButtonPress(int buttonId);
 

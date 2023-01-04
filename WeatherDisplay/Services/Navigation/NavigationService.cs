@@ -5,7 +5,7 @@ using DisplayService.Internals;
 using DisplayService.Services;
 using Microsoft.Extensions.Logging;
 
-namespace WeatherDisplay.Pages
+namespace WeatherDisplay.Services.Navigation
 {
     public class NavigationService : INavigationService
     {

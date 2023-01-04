@@ -1,7 +1,7 @@
-﻿using System.Device.Gpio;
+﻿using System.Device.I2c;
 using System.Diagnostics.CodeAnalysis;
 
-namespace System.Gpio.Devices
+namespace System.Device.Gpio
 {
     [ExcludeFromCodeCoverage]
     public class GpioControllerWrapper : IGpioController
@@ -12,7 +12,7 @@ namespace System.Gpio.Devices
             : this(new GpioController())
         {
         }
-        
+
         public GpioControllerWrapper(GpioController gpioController)
         {
             this.gpioController = gpioController;

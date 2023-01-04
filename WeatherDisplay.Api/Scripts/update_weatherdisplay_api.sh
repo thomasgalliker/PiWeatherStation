@@ -111,6 +111,7 @@ echo "Setting up raspberry pi@${host}.local..."
 sudo raspi-config nonint do_boot_wait 0                     # Turn on waiting for network before booting
 sudo raspi-config nonint do_boot_splash 0                   # Disable the splash screen
 sudo raspi-config nonint do_spi 0                           # Enable SPI support
+sudo raspi-config nonint do_i2c 0                           # Enable I2C support
 sudo raspi-config nonint do_ssh 0                           # Enable SSH support
 sudo raspi-config nonint do_camera 0                        # Disable camera
 

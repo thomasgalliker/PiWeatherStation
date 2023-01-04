@@ -1,11 +1,15 @@
-﻿using System.Device.Gpio;
-using System.Gpio.Devices;
+﻿using System;
+using System.Device.Gpio;
+using System.Device.I2c;
 using System.Gpio.Devices.Buttons;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
-using WeatherDisplay.Pages;
+using WeatherDisplay.Services.Navigation;
 
-namespace WeatherDisplay.Api.Services.Hardware
+namespace WeatherDisplay.Services.Hardware
 {
     public class ButtonsAccessService : IButtonsAccessService, IDisposable
     {
@@ -22,7 +26,7 @@ namespace WeatherDisplay.Api.Services.Hardware
         private GpioButton button3;
         private GpioButton button4;
 
-        private bool buttonsInitialized;
+        private bool initialized;
         private bool disposed;
 
         public ButtonsAccessService(
@@ -37,15 +41,15 @@ namespace WeatherDisplay.Api.Services.Hardware
             this.navigationService = navigationService;
         }
 
-        public void InitializeButtons()
+        public void Initialize()
         {
-            if (this.buttonsInitialized)
+            if (this.initialized)
             {
-                this.logger.LogDebug($"ConfigureButtons: Already initialized");
+                this.logger.LogDebug($"Initialize: Already initialized");
                 return;
             }
 
-            this.logger.LogDebug($"ConfigureButtons");
+            this.logger.LogDebug($"Initialize");
 
             var buttonMappings = this.appSettings.ButtonMappings;
 
@@ -78,7 +82,7 @@ namespace WeatherDisplay.Api.Services.Hardware
                 this.button4.Holding += this.OnButton4Holding;
             }
 
-            this.buttonsInitialized = true;
+            this.initialized = true;
         }
 
         public async Task HandleButtonPress(int buttonId)
@@ -177,6 +181,8 @@ namespace WeatherDisplay.Api.Services.Hardware
                     this.button4.Press -= this.OnButton4Pressed;
                     this.button4.Holding -= this.OnButton4Holding;
                     this.button4.Dispose();
+
+                    this.initialized = false;
                 }
 
                 this.disposed = true;
@@ -185,8 +191,6 @@ namespace WeatherDisplay.Api.Services.Hardware
 
         public void Dispose()
         {
-            // Do not change this code.
-            // Put cleanup code in 'Dispose(bool disposing)' method
             this.Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }

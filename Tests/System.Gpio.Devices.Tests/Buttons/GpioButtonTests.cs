@@ -1,4 +1,5 @@
 ﻿using System.Device.Gpio;
+using System.Device.I2c;
 using System.Gpio.Devices.Buttons;
 using FluentAssertions;
 using Moq;

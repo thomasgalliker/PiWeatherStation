@@ -306,6 +306,9 @@ content-length: 1460
 - https://openweathermap.org/api
 - http://snowfence.umn.edu/Components/winddirectionanddegrees.htm
 
+#### BME680
+- https://www.laub-home.de/wiki/Raspberry_Pi_BME680_Gas_Sensor
+
 #### Linux Shell Scripts
 - https://stackoverflow.com/questions/192249/how-do-i-parse-command-line-arguments-in-bash
 - 

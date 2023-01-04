@@ -1,15 +1,15 @@
-﻿using System.Device.Gpio;
+﻿using System.Device.I2c;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 
-namespace System.Gpio.Devices
+namespace System.Device.Gpio
 {
     [ExcludeFromCodeCoverage]
-    public class GpioControllerSimulator : IGpioController
+    internal class GpioControllerMock : IGpioController
     {
-        private readonly ILogger<GpioControllerSimulator> logger;
+        private readonly ILogger logger;
 
-        public GpioControllerSimulator(ILogger<GpioControllerSimulator> logger)
+        public GpioControllerMock(ILogger<GpioControllerMock> logger)
         {
             this.logger = logger;
         }

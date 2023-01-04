@@ -1,4 +1,5 @@
 ﻿using System.Gpio.Devices;
+using System.Gpio.Devices.Extensions;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net;
 using System.Runtime.InteropServices;
@@ -9,12 +10,14 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using NLog;
 using NLog.Extensions.Logging;
 using RaspberryPi.Extensions;
+using UnitsNet.Serialization.JsonNet;
 using WeatherDisplay.Api.Services;
 using WeatherDisplay.Api.Services.Configuration;
-using WeatherDisplay.Api.Services.Hardware;
 using WeatherDisplay.Api.Services.Security;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Extensions;
@@ -80,7 +83,16 @@ namespace WeatherDisplay.Api
             // ====== Setup services ======
             var services = builder.Services;
             services.AddEndpointsApiExplorer();
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(opt =>
+            {
+                opt.SerializerSettings.Converters.Add(new UnitsNetIQuantityJsonConverter());
+                opt.SerializerSettings.Converters.Add(new StringEnumConverter());
+                opt.SerializerSettings.DateFormatHandling= DateFormatHandling.IsoDateFormat;
+                opt.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
+                opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(option =>
             {
@@ -109,6 +121,7 @@ namespace WeatherDisplay.Api
                     }
                 });
             });
+            services.AddSwaggerGenNewtonsoftSupport();
 
             services.AddRaspberryPi();
 
@@ -126,17 +139,8 @@ namespace WeatherDisplay.Api
             services.AddSingleton<IAutoUpdateService, AutoUpdateService>();
 
             // ====== Hardware access ======
-            var isWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-            if (isWindows)
-            {
-                services.AddSingleton<IGpioController, GpioControllerSimulator>();
-            }
-            else
-            {
-                services.AddSingleton<IGpioController, GpioControllerWrapper>();
-            }
+            services.AddGpioDevices();
 
-            services.AddSingleton<IButtonsAccessService, ButtonsAccessService>();
             services.AddSingleton<IWeatherDisplayServiceConfigurator, WeatherDisplayServiceConfigurator>();
 
             // ====== Weather services ======

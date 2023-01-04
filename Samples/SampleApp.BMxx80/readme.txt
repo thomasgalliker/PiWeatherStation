@@ -1,0 +1,1 @@
+﻿dotnet publish .\Samples\SampleApp.BMxx80\SampleApp.BMxx80.csproj --configuration Release --self-contained false --runtime linux-arm --framework net7.0 /p:EnvironmentName=Production

@@ -1,6 +1,6 @@
 ﻿using System.Device.Gpio;
 
-namespace System.Gpio.Devices
+namespace System.Device.I2c
 {
     public interface IGpioController : IDisposable
     {

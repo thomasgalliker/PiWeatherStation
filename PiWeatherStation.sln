@@ -30,6 +30,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Gpio.Devices", "Syst
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Gpio.Devices.Tests", "Tests\System.Gpio.Devices.Tests\System.Gpio.Devices.Tests.csproj", "{210BABA9-5E8D-4F3F-8792-DC431CA90730}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{EDB08A6F-4288-416E-9A52-3D1C3FF22919}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp.BMxx80", "Samples\SampleApp.BMxx80\SampleApp.BMxx80.csproj", "{B66C3786-0F86-48C3-9886-CF0AC65C8365}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|anycpu = Debug|anycpu
@@ -72,6 +76,10 @@ Global
 		{210BABA9-5E8D-4F3F-8792-DC431CA90730}.Debug|anycpu.Build.0 = Debug|Any CPU
 		{210BABA9-5E8D-4F3F-8792-DC431CA90730}.Release|anycpu.ActiveCfg = Release|Any CPU
 		{210BABA9-5E8D-4F3F-8792-DC431CA90730}.Release|anycpu.Build.0 = Release|Any CPU
+		{B66C3786-0F86-48C3-9886-CF0AC65C8365}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{B66C3786-0F86-48C3-9886-CF0AC65C8365}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{B66C3786-0F86-48C3-9886-CF0AC65C8365}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{B66C3786-0F86-48C3-9886-CF0AC65C8365}.Release|anycpu.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,6 +88,7 @@ Global
 		{D529340B-CA55-4627-8AD7-637A562BF6B9} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
 		{6C143F7B-29EA-483F-A453-04849AC0BC72} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
 		{210BABA9-5E8D-4F3F-8792-DC431CA90730} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
+		{B66C3786-0F86-48C3-9886-CF0AC65C8365} = {EDB08A6F-4288-416E-9A52-3D1C3FF22919}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1503D0DA-AA89-4AE5-8FE8-8167624E7A30}

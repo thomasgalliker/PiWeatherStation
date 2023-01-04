@@ -13,6 +13,7 @@ using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Services.DeepL;
+using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages.OpenWeatherMap
 {

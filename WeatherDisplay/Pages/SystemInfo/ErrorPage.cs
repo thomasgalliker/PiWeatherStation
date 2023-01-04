@@ -6,6 +6,7 @@ using DisplayService.Model;
 using DisplayService.Services;
 using NCrontab;
 using WeatherDisplay.Model;
+using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {

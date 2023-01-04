@@ -10,9 +10,10 @@ using Microsoft.Extensions.Logging;
 using NCrontab.Scheduler;
 using OpenWeatherMap;
 using WeatherDisplay.Model;
-using WeatherDisplay.Pages;
 using WeatherDisplay.Services;
 using WeatherDisplay.Services.DeepL;
+using WeatherDisplay.Services.Hardware;
+using WeatherDisplay.Services.Navigation;
 using WeatherDisplay.Services.QR;
 using WeatherDisplay.Services.Wiewarm;
 using IDateTime = DisplayService.Services.IDateTime;
@@ -102,6 +103,9 @@ namespace WeatherDisplay.Extensions
 
             services.AddSingleton<IWiewarmService, WiewarmService>();
             services.AddSingleton<IQRCodeService, QRCodeService>();
+
+            services.AddSingleton<IButtonsAccessService, ButtonsAccessService>();
+            services.AddSingleton<ISensorAccessService, SensorAccessService>();
 
             services.AddSingleton<IScheduler>(x => new Scheduler(x.GetRequiredService<ILogger<Scheduler>>()));
         }
