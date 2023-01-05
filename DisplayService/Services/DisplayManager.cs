@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -97,16 +98,7 @@ namespace DisplayService.Services
 
         private async Task UpdateDisplayAsync(IReadOnlyCollection<IRenderAction> renderActions)
         {
-            try
-            {
-                // Send render actions to rendering service
-                // in order to draw on canvas
-                this.RunRenderActions(renderActions);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(ex, "UpdateDisplayAsync failed with exception");
-            }
+            this.RunRenderActions(renderActions);
 
             await this.UpdateDisplayAsync();
         }
@@ -131,7 +123,8 @@ namespace DisplayService.Services
 
             if (exceptions.Any())
             {
-                this.logger.LogError(new AggregateException(exceptions.Select(e => e.Exception)), $"Rendering failed with exception: {string.Join(", ", exceptions.Select(e => e.RenderActionType.Name))}");
+                var ex = new AggregateException($"Rendering failed with exception: {string.Join(", ", exceptions.Select(e => e.RenderActionType.Name))}", exceptions.Select(e => e.Exception));
+                this.logger.LogError(ex, "RunRenderActions failed with exception");
             }
         }
 
@@ -189,6 +182,11 @@ namespace DisplayService.Services
             catch (Exception ex)
             {
                 this.logger.LogError(ex, $"StartAsync failed with exception: {ex.Message}");
+
+                if (Debugger.IsAttached)
+                {
+                    throw ex;
+                }
             }
         }
 
