@@ -1,6 +1,5 @@
-﻿using System.Device.Gpio;
-using System.Device.I2c;
-using System.Gpio.Devices.Buttons;
+﻿using System.Device.Buttons;
+using System.Device.Gpio;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -30,8 +29,10 @@ namespace System.Gpio.Devices.Tests.Buttons
             var gpioControllerMock = new Mock<IGpioController>();
             var button = new GpioButton(5, gpioControllerMock.Object, shouldDispose: false, PinMode.InputPullUp);
 
-            EventHandler<ButtonHoldingEventArgs> eventHandler1 = (s, e) => { };
-            EventHandler<ButtonHoldingEventArgs> eventHandler2 = (s, e) => { };
+            static void eventHandler1(object s, ButtonHoldingEventArgs e)
+            { }
+            static void eventHandler2(object s, ButtonHoldingEventArgs e)
+            { }
 
             // Act
             button.Holding += eventHandler1;

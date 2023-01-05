@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NCrontab.Scheduler;
 using OpenWeatherMap;
+using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Services;
 using WeatherDisplay.Services.DeepL;
@@ -19,13 +20,13 @@ using WeatherDisplay.Services.Wiewarm;
 using IDateTime = DisplayService.Services.IDateTime;
 using SystemDateTime = DisplayService.Services.SystemDateTime;
 
-namespace WeatherDisplay.Extensions
+namespace Microsoft.Extensions.DependencyInjection
 {
     public static class ServiceCollectionExtensions
     {
         public static void AddWeatherDisplay(this IServiceCollection services, IConfiguration configuration)
         {
-            // Initialize app settings
+            // ====== App settings ======
             var appSettings = new AppSettings();
             var appSettingsSection = configuration.GetSection("AppSettings");
             appSettingsSection.Bind(appSettings);
@@ -47,7 +48,7 @@ namespace WeatherDisplay.Extensions
 
             var displayConfig = appSettings.Displays.First(); // Supports only one display at the time
 
-            // Initialize display
+            // ====== Display ======
             services.AddSingleton(x =>
             {
                 IDisplay display;
@@ -84,7 +85,7 @@ namespace WeatherDisplay.Extensions
             };
             renderSettings.Resize(displayConfig.Width, displayConfig.Height); // TODO: Refactor this
 
-            // Register services
+            // ====== Services ======
             services.AddSingleton<ICacheService, CacheService>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton<IDateTime, SystemDateTime>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton<ITimerServiceFactory, TimerServiceFactory>(); // TODO Move to separate ServiceCollectionExtensions
@@ -104,15 +105,13 @@ namespace WeatherDisplay.Extensions
             services.AddSingleton<IWiewarmService, WiewarmService>();
             services.AddSingleton<IQRCodeService, QRCodeService>();
 
+            services.AddSingleton<IScheduler>(x => new Scheduler(x.GetRequiredService<ILogger<Scheduler>>()));
+
+            // ====== Hardware access ======
+            services.AddGpioDevices();
+            services.AddIotDevices();
             services.AddSingleton<IButtonsAccessService, ButtonsAccessService>();
             services.AddSingleton<ISensorAccessService, SensorAccessService>();
-
-            services.AddSingleton<IScheduler>(x => new Scheduler(x.GetRequiredService<ILogger<Scheduler>>()));
-        }
-
-        public static CustomConfigurationBinder AddConfigurationBindings(this IServiceCollection services, IConfiguration configuration)
-        {
-            return new CustomConfigurationBinder(services, configuration);
         }
 
         public static void RegisterAllTypes<T>(this IServiceCollection services, Assembly[] assemblies = null, ServiceLifetime lifetime = ServiceLifetime.Transient)

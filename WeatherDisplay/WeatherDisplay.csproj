@@ -22,7 +22,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\DisplayService\DisplayService.csproj" />
-		<ProjectReference Include="..\System.Gpio.Devices\System.Gpio.Devices.csproj" />
+		<ProjectReference Include="..\Externals\Iot.Device.Abstractions\Iot.Device.Abstractions.csproj" />
 	</ItemGroup>
 
 </Project>

@@ -1,7 +1,6 @@
 ﻿using System;
+using System.Device.Buttons;
 using System.Device.Gpio;
-using System.Device.I2c;
-using System.Gpio.Devices.Buttons;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;

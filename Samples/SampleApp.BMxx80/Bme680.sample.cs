@@ -3,11 +3,11 @@
 
 using System;
 using System.Device.I2c;
-using System.Gpio.Devices.BMxx80;
-using System.Gpio.Devices.Extensions;
-using System.Gpio.Devices.Utils;
 using System.Threading;
 using System.Threading.Tasks;
+using Iot.Device.Bmxx80;
+using Iot.Device.Extensions;
+using SampleApp.BMxx80;
 using UnitsNet;
 
 internal static class Bme680Sample
@@ -19,7 +19,7 @@ internal static class Bme680Sample
         // The I2C bus ID on the Raspberry Pi 3.
         const int busId = 1;
         // set this to the current sea level pressure in the area for correct altitude readings
-        Pressure defaultSeaLevelPressure = WeatherHelper.MeanSeaLevel;
+        var defaultSeaLevelPressure = WeatherHelper.MeanSeaLevel;
 
         var i2cSettings = new I2cConnectionSettings(busId, Bme680.SecondaryI2cAddress);
         var i2cDevice = I2cDevice.Create(i2cSettings);
@@ -46,11 +46,11 @@ internal static class Bme680Sample
                 {
                     if (sensorValue is Temperature temperature)
                     {
-                        Console.WriteLine($"temperature: {temperature.Value:0.0} {temperature.ToString("a")}");
+                        Console.WriteLine($"temperature: {temperature.Value:0.0} {temperature:a}");
                     }
                     else
                     {
-                        Console.WriteLine($"sensorValue: {sensorValue.ToString()} --> {sensorValue.Value} {sensorValue.Unit}");
+                        Console.WriteLine($"sensorValue: {sensorValue} --> {sensorValue.Value} {sensorValue.Unit}");
                     }
                 }
 

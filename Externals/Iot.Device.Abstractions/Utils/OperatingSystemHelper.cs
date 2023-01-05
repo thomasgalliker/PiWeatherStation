@@ -1,6 +1,7 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 
-namespace System.Device.Utils
+namespace Iot.Device.Utils
 {
     internal static class OperatingSystemHelper
     {

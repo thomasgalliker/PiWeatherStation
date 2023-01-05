@@ -1,8 +1,5 @@
-﻿using System.Gpio.Devices;
-using System.Gpio.Devices.Extensions;
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -87,7 +84,7 @@ namespace WeatherDisplay.Api
             {
                 opt.SerializerSettings.Converters.Add(new UnitsNetIQuantityJsonConverter());
                 opt.SerializerSettings.Converters.Add(new StringEnumConverter());
-                opt.SerializerSettings.DateFormatHandling= DateFormatHandling.IsoDateFormat;
+                opt.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
                 opt.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
                 opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
@@ -137,9 +134,6 @@ namespace WeatherDisplay.Api
             services.AddSingleton<ILocalVersionChecker, ProductVersionChecker>();
             services.AddSingleton<IRemoteVersionChecker, GithubVersionChecker>();
             services.AddSingleton<IAutoUpdateService, AutoUpdateService>();
-
-            // ====== Hardware access ======
-            services.AddGpioDevices();
 
             services.AddSingleton<IWeatherDisplayServiceConfigurator, WeatherDisplayServiceConfigurator>();
 

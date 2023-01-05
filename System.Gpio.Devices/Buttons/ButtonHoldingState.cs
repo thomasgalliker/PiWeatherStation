@@ -1,4 +1,4 @@
-﻿namespace System.Gpio.Devices.Buttons
+﻿namespace System.Device.Buttons
 {
     /// <summary>
     /// The different states of a button that is being held.

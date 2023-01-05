@@ -26,13 +26,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Tests", "Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Api.Updater", "WeatherDisplay.Api.Updater\WeatherDisplay.Api.Updater.csproj", "{D6872635-D71F-4A3E-A16A-13CD173FC0F5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Gpio.Devices", "System.Gpio.Devices\System.Gpio.Devices.csproj", "{AB09B92D-8284-4339-A7A6-86F4654B3508}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Device.Gpio.Abstractions", "System.Gpio.Devices\System.Device.Gpio.Abstractions.csproj", "{AB09B92D-8284-4339-A7A6-86F4654B3508}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Gpio.Devices.Tests", "Tests\System.Gpio.Devices.Tests\System.Gpio.Devices.Tests.csproj", "{210BABA9-5E8D-4F3F-8792-DC431CA90730}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{EDB08A6F-4288-416E-9A52-3D1C3FF22919}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp.BMxx80", "Samples\SampleApp.BMxx80\SampleApp.BMxx80.csproj", "{B66C3786-0F86-48C3-9886-CF0AC65C8365}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externals", "Externals", "{3BAEE795-ED77-4336-953B-1092E40723F7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iot.Device.Abstractions", "Externals\Iot.Device.Abstractions\Iot.Device.Abstractions.csproj", "{A23F80E2-1436-4195-A768-229003B27573}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -80,6 +84,10 @@ Global
 		{B66C3786-0F86-48C3-9886-CF0AC65C8365}.Debug|anycpu.Build.0 = Debug|Any CPU
 		{B66C3786-0F86-48C3-9886-CF0AC65C8365}.Release|anycpu.ActiveCfg = Release|Any CPU
 		{B66C3786-0F86-48C3-9886-CF0AC65C8365}.Release|anycpu.Build.0 = Release|Any CPU
+		{A23F80E2-1436-4195-A768-229003B27573}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{A23F80E2-1436-4195-A768-229003B27573}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{A23F80E2-1436-4195-A768-229003B27573}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{A23F80E2-1436-4195-A768-229003B27573}.Release|anycpu.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,8 +95,10 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{D529340B-CA55-4627-8AD7-637A562BF6B9} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
 		{6C143F7B-29EA-483F-A453-04849AC0BC72} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
+		{AB09B92D-8284-4339-A7A6-86F4654B3508} = {3BAEE795-ED77-4336-953B-1092E40723F7}
 		{210BABA9-5E8D-4F3F-8792-DC431CA90730} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
 		{B66C3786-0F86-48C3-9886-CF0AC65C8365} = {EDB08A6F-4288-416E-9A52-3D1C3FF22919}
+		{A23F80E2-1436-4195-A768-229003B27573} = {3BAEE795-ED77-4336-953B-1092E40723F7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1503D0DA-AA89-4AE5-8FE8-8167624E7A30}

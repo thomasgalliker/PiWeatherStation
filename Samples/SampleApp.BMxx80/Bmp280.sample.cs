@@ -3,11 +3,11 @@
 
 using System;
 using System.Device.I2c;
-using System.Gpio.Devices.BMxx80;
-using System.Gpio.Devices.BMxx80.FilteringMode;
-using System.Gpio.Devices.Utils;
 using System.Threading;
 using System.Threading.Tasks;
+using Iot.Device.Bmxx80;
+using Iot.Device.Bmxx80.FilteringMode;
+using SampleApp.BMxx80;
 using UnitsNet;
 
 internal static class Bmp280Sample

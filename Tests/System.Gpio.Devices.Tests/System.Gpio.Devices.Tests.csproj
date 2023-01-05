@@ -21,6 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\System.Gpio.Devices\System.Gpio.Devices.csproj" />
+    <ProjectReference Include="..\..\System.Gpio.Devices\System.Device.Gpio.Abstractions.csproj" />
   </ItemGroup>
 </Project>

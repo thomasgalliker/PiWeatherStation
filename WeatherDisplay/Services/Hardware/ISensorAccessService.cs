@@ -1,4 +1,4 @@
-﻿using System.Device.Devices;
+﻿using Iot.Device.Bmxx80;
 
 namespace WeatherDisplay.Services.Hardware
 {

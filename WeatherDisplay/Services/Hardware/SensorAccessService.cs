@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Device.Devices;
 using System.Device.I2c;
-using System.Gpio.Devices.BMxx80;
+using Iot.Device.Bmxx80;
 using Microsoft.Extensions.Logging;
 using UnitsNet;
 
@@ -12,18 +11,18 @@ namespace WeatherDisplay.Services.Hardware
         private const int I2cBusId = 1;
 
         private readonly ILogger logger;
-        private readonly ISensorFactory sensorFactory;
+        private readonly IBme680Factory bme680Factory;
 
         private bool disposed;
         private bool initialized;
 
         public SensorAccessService(
             ILogger<SensorAccessService> logger,
-            ISensorFactory sensorFactory)
+            IBme680Factory bme680Factory)
         {
 
             this.logger = logger;
-            this.sensorFactory = sensorFactory;
+            this.bme680Factory = bme680Factory;
         }
 
         public void Initialize()
@@ -38,8 +37,8 @@ namespace WeatherDisplay.Services.Hardware
 
             try
             {
-                var i2cSettings = new I2cConnectionSettings(I2cBusId, System.Gpio.Devices.BMxx80.Bme680.SecondaryI2cAddress);
-                var bme680 = this.sensorFactory.CreateBme680(i2cSettings, Temperature.FromDegreesCelsius(20.0));
+                var i2cSettings = new I2cConnectionSettings(I2cBusId, Iot.Device.Bmxx80.Bme680.SecondaryI2cAddress);
+                var bme680 = this.bme680Factory.Create(i2cSettings, Temperature.FromDegreesCelsius(20.0));
                 bme680.Reset();
                 this.Bme680 = bme680;
             }

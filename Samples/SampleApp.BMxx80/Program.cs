@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Device.I2c;
+using System.Device.Gpio;
 using System.Globalization;
-using System.Gpio.Devices.Extensions;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;

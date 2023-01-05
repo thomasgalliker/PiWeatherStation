@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>System.Device</RootNamespace>
+	<LangVersion>latest</LangVersion>
+	<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="Iot.Device.Bindings" Version="2.2.0" />
+	<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+	<PackageReference Include="System.Device.Gpio" Version="2.2.0" />
+	<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[6.0.0,)" />
+	<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="[6.0.0,)" />
+	<PackageReference Include="UnitsNet" Version="4.149.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Devices\" />
+  </ItemGroup>
+
+</Project>

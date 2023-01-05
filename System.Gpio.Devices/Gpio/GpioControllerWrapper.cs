@@ -1,5 +1,4 @@
-﻿using System.Device.I2c;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 
 namespace System.Device.Gpio
 {

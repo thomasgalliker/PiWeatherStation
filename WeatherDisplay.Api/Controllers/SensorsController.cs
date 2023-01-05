@@ -1,5 +1,5 @@
-using System.Gpio.Devices.Extensions;
-using System.Gpio.Devices.Model;
+using Iot.Device.Extensions;
+using Iot.Device.Model;
 using Microsoft.AspNetCore.Mvc;
 using WeatherDisplay.Services.Hardware;
 
@@ -29,6 +29,5 @@ namespace WeatherDisplay.Api.Controllers
             var sensorData = readResult.ToSensorData();
             return sensorData;
         }
-
     }
 }
