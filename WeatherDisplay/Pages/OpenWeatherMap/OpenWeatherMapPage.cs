@@ -1,10 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Device.Devices;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using DisplayService.Model;
+using DisplayService.Resources;
 using DisplayService.Services;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NCrontab;
 using OpenWeatherMap;
@@ -13,35 +17,42 @@ using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Services.DeepL;
+using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
+using Temperature = OpenWeatherMap.Models.Temperature;
 
 namespace WeatherDisplay.Pages.OpenWeatherMap
 {
     public class OpenWeatherMapPage : INavigatedAware
     {
+        private readonly ILogger logger;
         private readonly IDisplayManager displayManager;
         private readonly IOpenWeatherMapService openWeatherMapService;
         private readonly ITranslationService translationService;
         private readonly IDateTime dateTime;
         private readonly IAppSettings appSettings;
         private readonly IOptionsMonitor<OpenWeatherMapPageOptions> options;
-
+        private readonly ISensorAccessService sensorAccessService;
         private Place currentPlace = null;
 
         public OpenWeatherMapPage(
+            ILogger<OpenWeatherMapPage> logger,
             IDisplayManager displayManager,
             IOpenWeatherMapService openWeatherMapService,
             ITranslationService translationService,
             IDateTime dateTime,
             IAppSettings appSettings,
-            IOptionsMonitor<OpenWeatherMapPageOptions> options)
+            IOptionsMonitor<OpenWeatherMapPageOptions> options,
+            ISensorAccessService sensorAccessService)
         {
+            this.logger = logger;
             this.displayManager = displayManager;
             this.openWeatherMapService = openWeatherMapService;
             this.translationService = translationService;
             this.dateTime = dateTime;
             this.appSettings = appSettings;
             this.options = options;
+            this.sensorAccessService = sensorAccessService;
         }
 
         public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
@@ -156,12 +167,12 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                         },
                     };
 
-                    var temperatureStackLayout = new RenderActions.StackLayout
+                    var outdoorTempStackLayout = new RenderActions.StackLayout
                     {
-                        Width = 200,
-                        Height = 70,
                         X = 140,
                         Y = 198,
+                        Width = 200,
+                        Height = 70,
                         Orientation = StackOrientation.Horizontal,
                         VerticalAlignment = VerticalAlignment.Center,
                         //BackgroundColor = Colors.Magenta,
@@ -185,32 +196,99 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Bottom,
                                 VerticalAlignment = VerticalAlignment.Center,
-                                Value =  currentWeatherInfo.Temperature.ToString("U"),
+                                Value = currentWeatherInfo.Temperature.ToString("U"),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 35,
+                                Bold = true,
+                            },
+                            new RenderActions.Text
+                            {
+                                Y = 60,
+                                X = -30,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Bottom,
+                                Value = $"/ {dailyForecastToday.Humidity} RF",
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 20,
+                                Bold = false,
                             }
                         }
                     };
-                    currentWeatherRenderActions.Add(temperatureStackLayout);
+                    currentWeatherRenderActions.Add(outdoorTempStackLayout);
 
-                    var weatherDescription = currentWeatherCondition.Description.Replace("ß", "ss");
-                    var isLongWeatherDescription = weatherDescription.Length > 16;
-                    var descriptionXPostion = isLongWeatherDescription ? 20 : 147;
-                    var descriptionYPostion = isLongWeatherDescription ? 260 : 240;
-
-                    currentWeatherRenderActions.Add(
-                        new RenderActions.Text
+                    // Display local temperature and humidity
+                    if (this.sensorAccessService.Bme680 is IBme680 bme680)
+                    {
+                        try
                         {
-                            X = descriptionXPostion,
-                            Y = descriptionYPostion,
-                            HorizontalTextAlignment = HorizontalAlignment.Left,
-                            VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = weatherDescription,
-                            ForegroundColor = "#000000",
-                            BackgroundColor = "#FFFFFF",
-                            FontSize = 20,
-                        });
+                            var bme680ReadResult = await bme680.ReadAsync();
+                            if (bme680ReadResult != null &&
+                                bme680ReadResult.Temperature is UnitsNet.Temperature localTemperature &&
+                                bme680ReadResult.Humidity is UnitsNet.RelativeHumidity localHumidity)
+                            {
+                                var indoorTempStackLayout = new RenderActions.StackLayout
+                                {
+                                    X = 140 - 24 - 6,
+                                    Y = 240,
+                                    Width = 200,
+                                    Height = 35,
+                                    Orientation = StackOrientation.Horizontal,
+                                    VerticalAlignment = VerticalAlignment.Top,
+                                    //BackgroundColor = Colors.Cyan,
+                                    Spacing = 6,
+                                    Children = new List<IRenderAction>
+                                    {
+                                        new RenderActions.StreamImage
+                                        {
+                                            X = 0,
+                                            Y = 0,
+                                            Image = Icons.TemperatureIndoor(),
+                                            Width = 24,
+                                            Height = 24,
+                                            HorizontalAlignment = HorizontalAlignment.Left,
+                                            VerticalAlignment = VerticalAlignment.Top,
+                                        },
+                                        new RenderActions.Text
+                                        {
+                                            X = 0,
+                                            Y = 5,
+                                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                                            VerticalTextAlignment = VerticalAlignment.Top,
+                                            Value = $"{localTemperature.Value:0.#}{localTemperature:A}",
+                                            ForegroundColor = "#000000",
+                                            BackgroundColor = "#FFFFFF",
+                                            FontSize = 20,
+                                            Bold = true,
+                                        },
+                                        new RenderActions.Text
+                                        {
+                                            X = 0,
+                                            Y = 5,
+                                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                                            VerticalTextAlignment = VerticalAlignment.Top,
+                                            Value = $"/ {localHumidity.Value:0}% RF",
+                                            ForegroundColor = "#000000",
+                                            BackgroundColor = "#FFFFFF",
+                                            FontSize = 20,
+                                            Bold = false,
+                                        }
+                                    }
+                                };
+
+                                currentWeatherRenderActions.Add(indoorTempStackLayout);
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            this.logger.LogError(ex, "Failed to read temperature/humidity from BME680");
+                        }
+                    }
+                    else
+                    {
+                        this.logger.LogWarning("BME680 is not present");
+                    }
 
                     // Weather alerts (if exists)
                     if (oneCallWeatherInfo.Alerts.Any())
@@ -267,12 +345,24 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                     }
                     else
                     {
-                        // If there are no weather alerst and the air pollution is not good,
-                        // we display some air pollution information.
+                        // If there are no weather alerts
+                        // we display the weather description as well as the air pollution information.
+
+                        currentWeatherRenderActions.Add(
+                            new RenderActions.Text
+                            {
+                                X = 20,
+                                Y = 300,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = currentWeatherCondition.Description.Replace("ß", "ss"),
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 20,
+                            });
 
                         var airPollutionInfo = await this.openWeatherMapService.GetAirPollutionAsync(place.Latitude, place.Longitude);
-                        if (airPollutionInfo.Items.FirstOrDefault() is AirPollutionInfoItem airPollutionInfoItem /*&&
-                            airPollutionInfoItem.Main.AirQuality > AirQuality.Good*/)
+                        if (airPollutionInfo.Items.FirstOrDefault() is AirPollutionInfoItem airPollutionInfoItem)
                         {
                             var airPollutionInfoText = $"Air Quality: {airPollutionInfoItem.Main.AirQuality:N}";
 

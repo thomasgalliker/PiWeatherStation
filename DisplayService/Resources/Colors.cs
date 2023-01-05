@@ -14,7 +14,7 @@
 
         public static string Blue { get; } = "#0000FF";
 
-        public static string Cyan { get; } = "##00FFFF";
+        public static string Cyan { get; } = "#00FFFF";
 
         public static string Magenta { get; } = "#FF00FF";
 
