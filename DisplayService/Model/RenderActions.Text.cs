@@ -10,7 +10,7 @@ namespace DisplayService.Model
         /// <summary>
         /// Places text on the screen
         /// </summary>
-        public class Text : IRenderAction, IAlignable
+        public class Text : IRenderAction, IAlignable, ICoordinates
         {
             private float fontSize = 32;
             private string value;
@@ -28,9 +28,8 @@ namespace DisplayService.Model
             public int Y { get; set; }
 
             /// <summary>
-            /// Text value to place
+            /// Text value.
             /// </summary>
-            /// <example>Welcome Home</example>
             public string Value
             {
                 get => this.value;
