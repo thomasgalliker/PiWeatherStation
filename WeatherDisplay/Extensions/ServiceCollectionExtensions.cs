@@ -9,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NCrontab.Scheduler;
 using OpenWeatherMap;
-using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Services;
 using WeatherDisplay.Services.DeepL;
