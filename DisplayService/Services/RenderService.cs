@@ -36,9 +36,12 @@ namespace DisplayService.Services
             this.canvas.Clear(SKColor.Parse(this.renderSettings.BackgroundColor));
         }
 
-        public void Add(IRenderAction renderAction)
+        public void Render(params IRenderAction[] renderActions)
         {
-            renderAction.Render(this);
+            foreach (var renderAction in renderActions)
+            {
+                renderAction.Render(this);
+            }
         }
 
         public void Image(RenderActions.Image image)

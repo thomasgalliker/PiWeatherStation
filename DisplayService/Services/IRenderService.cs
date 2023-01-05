@@ -10,6 +10,8 @@ namespace DisplayService.Services
 
         void Clear();
 
+        void Render(params IRenderAction[] renderActions);
+
         void Image(RenderActions.Image image);
 
         void Graphic(RenderActions.Graphic graphic);
