@@ -16,8 +16,4 @@
 		<PackageReference Include="UnitsNet" Version="4.149.0" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <ProjectReference Include="..\..\System.Gpio.Devices\System.Device.Gpio.Abstractions.csproj" />
-	</ItemGroup>
-
 </Project>
