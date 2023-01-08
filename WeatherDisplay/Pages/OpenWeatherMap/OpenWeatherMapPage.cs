@@ -57,7 +57,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
         public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
             var places = this.options.CurrentValue.Places.ToList();
-            var place = this.currentPlace = places.GetNextElement(this.currentPlace, defaultValue: places.First());
+            this.currentPlace = places.GetNextElement(this.currentPlace, defaultValue: places.First());
 
             var weatherIconMapping = new HighContrastWeatherIconMapping();
 
@@ -122,7 +122,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                         IncludeHourlyForecasts = true,
                     };
 
-                    var oneCallWeatherInfo = await this.openWeatherMapService.GetWeatherOneCallAsync(place.Latitude, place.Longitude, oneCallOptions);
+                    var oneCallWeatherInfo = await this.openWeatherMapService.GetWeatherOneCallAsync(this.currentPlace.Latitude, this.currentPlace.Longitude, oneCallOptions);
 
                     var dailyForecasts = oneCallWeatherInfo.DailyForecasts.ToList();
                     var dailyForecastToday = dailyForecasts.OrderBy(f => f.DateTime).First();
@@ -150,7 +150,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{place.Name}, um {dateTimeNow:t} Uhr",
+                            Value = $"{this.currentPlace.Name}, um {dateTimeNow:t} Uhr",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
@@ -217,8 +217,9 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                     };
                     currentWeatherRenderActions.Add(outdoorTempStackLayout);
 
-                    // Display local temperature and humidity
-                    if (this.sensorAccessService.Bme680 is IBme680 bme680)
+                    // Display local temperature and humidity if the selected place is current place
+                    // and the temperature sensor is present
+                    if (this.currentPlace.IsCurrentPlace && this.sensorAccessService.Bme680 is IBme680 bme680)
                     {
                         try
                         {
@@ -344,8 +345,8 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                     }
                     else
                     {
-                        // If there are no weather alerts
-                        // we display the weather description as well as the air pollution information.
+                        // If there are no weather alerts we display the weather description
+                        // as well as air pollution information.
 
                         currentWeatherRenderActions.Add(
                             new RenderActions.Text
@@ -360,7 +361,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 FontSize = 20,
                             });
 
-                        var airPollutionInfo = await this.openWeatherMapService.GetAirPollutionAsync(place.Latitude, place.Longitude);
+                        var airPollutionInfo = await this.openWeatherMapService.GetAirPollutionAsync(this.currentPlace.Latitude, this.currentPlace.Longitude);
                         if (airPollutionInfo.Items.FirstOrDefault() is AirPollutionInfoItem airPollutionInfoItem)
                         {
                             var airPollutionInfoText = $"Air Quality: {airPollutionInfoItem.Main.AirQuality:N}";
@@ -427,7 +428,6 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 }
                             });
                         }
-
                     }
 
                     currentWeatherRenderActions.AddRange(new IRenderAction[]

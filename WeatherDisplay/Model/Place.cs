@@ -21,5 +21,7 @@ namespace WeatherDisplay.Model
         public double Latitude { get; set; }
 
         public double Longitude { get; set; }
+        
+        public bool IsCurrentPlace { get; set; }
     }
 }
