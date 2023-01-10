@@ -648,7 +648,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 HorizontalTextAlignment = HorizontalAlignment.Right,
                                 VerticalTextAlignment = VerticalAlignment.Center,
                                 Value = $"{Translations.CarbonDioxideAbbreviation}",
-                                ForegroundColor = Colors.Black, 
+                                ForegroundColor = Colors.Black,
                                 FontSize = 10,
                                 Bold = true,
                             },
@@ -691,20 +691,18 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
 
                     if (this.appSettings.IsDebug)
                     {
-                        currentWeatherRenderActions.AddRange(new[]
-                        {
-                                new RenderActions.Text
-                                {
-                                    X = 20,
-                                    Y = 160 + 48,
-                                    HorizontalTextAlignment = HorizontalAlignment.Left,
-                                    VerticalTextAlignment = VerticalAlignment.Center,
-                                    Value = $"{currentWeatherCondition.Id} / {currentWeatherCondition.IconId}",
-                                    ForegroundColor = "#000000",
-                                    BackgroundColor = "#FFFFFF",
-                                    FontSize = 12,
-                                    Bold= true,
-                                },
+                        currentWeatherRenderActions.Add(
+                            new RenderActions.Text
+                            {
+                                X = 20,
+                                Y = 160 + 48,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Center,
+                                Value = $"{currentWeatherCondition.Id} / {currentWeatherCondition.IconId}",
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 12,
+                                Bold = true,
                             });
                     }
 
