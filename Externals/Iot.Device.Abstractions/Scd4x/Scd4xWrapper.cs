@@ -23,5 +23,10 @@ namespace Iot.Device.Scd4x
         {
             this.scd4x.Reset();
         }
+
+        public void Dispose()
+        {
+            this.scd4x.Dispose();
+        }
     }
 }

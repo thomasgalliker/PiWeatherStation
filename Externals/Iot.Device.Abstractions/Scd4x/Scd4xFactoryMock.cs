@@ -1,14 +1,13 @@
 ﻿using System.Device.I2c;
 using Microsoft.Extensions.Logging;
-using UnitsNet;
 
 namespace Iot.Device.Scd4x
 {
-    public class Scd41FactoryMock : IScd4xFactory
+    public class Scd4xFactoryMock : IScd4xFactory
     {
         private readonly ILogger logger;
 
-        public Scd41FactoryMock(ILogger<Scd41FactoryMock> logger)
+        public Scd4xFactoryMock(ILogger<Scd4xFactoryMock> logger)
         {
             this.logger = logger;
         }

@@ -1,8 +1,9 @@
-﻿using UnitsNet;
+﻿using System;
+using UnitsNet;
 
 namespace Iot.Device.Scd4x
 {
-    public interface IScd4x
+    public interface IScd4x : IDisposable
     {
         Temperature Temperature { get; }
 
