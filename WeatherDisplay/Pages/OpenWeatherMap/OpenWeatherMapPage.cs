@@ -5,8 +5,10 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using DisplayService.Model;
+using DisplayService.Resources;
 using DisplayService.Services;
 using Iot.Device.Bmxx80;
+using Iot.Device.Scd4x;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NCrontab;
@@ -15,6 +17,7 @@ using OpenWeatherMap.Models;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Resources;
+using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.DeepL;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
@@ -207,7 +210,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 X = -30,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Bottom,
-                                Value = $"/ {dailyForecastToday.Humidity} RF",
+                                Value = $"/ {dailyForecastToday.Humidity} {Translations.RelativeHumiditySuffix}",
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -219,75 +222,97 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
 
                     // Display local temperature and humidity if the selected place is current place
                     // and the temperature sensor is present
-                    if (this.currentPlace.IsCurrentPlace && this.sensorAccessService.Bme680 is IBme680 bme680)
-                    {
-                        try
-                        {
-                            var bme680ReadResult = await bme680.ReadAsync();
-                            if (bme680ReadResult != null &&
-                                bme680ReadResult.Temperature is UnitsNet.Temperature localTemperature &&
-                                bme680ReadResult.Humidity is UnitsNet.RelativeHumidity localHumidity)
-                            {
-                                var indoorTempStackLayout = new RenderActions.StackLayout
-                                {
-                                    X = 140 - 24 - 6,
-                                    Y = 240,
-                                    Width = 200,
-                                    Height = 35,
-                                    Orientation = StackOrientation.Horizontal,
-                                    VerticalAlignment = VerticalAlignment.Top,
-                                    //BackgroundColor = Colors.Cyan,
-                                    Spacing = 6,
-                                    Children = new List<IRenderAction>
-                                    {
-                                        new RenderActions.StreamImage
-                                        {
-                                            X = 0,
-                                            Y = 0,
-                                            Image = Icons.TemperatureIndoor(),
-                                            Width = 24,
-                                            Height = 24,
-                                            HorizontalAlignment = HorizontalAlignment.Left,
-                                            VerticalAlignment = VerticalAlignment.Top,
-                                        },
-                                        new RenderActions.Text
-                                        {
-                                            X = 0,
-                                            Y = 5,
-                                            HorizontalTextAlignment = HorizontalAlignment.Left,
-                                            VerticalTextAlignment = VerticalAlignment.Top,
-                                            Value = $"{localTemperature.Value:0.#}{localTemperature:A}",
-                                            ForegroundColor = "#000000",
-                                            BackgroundColor = "#FFFFFF",
-                                            FontSize = 20,
-                                            Bold = true,
-                                        },
-                                        new RenderActions.Text
-                                        {
-                                            X = 0,
-                                            Y = 5,
-                                            HorizontalTextAlignment = HorizontalAlignment.Left,
-                                            VerticalTextAlignment = VerticalAlignment.Top,
-                                            Value = $"/ {localHumidity.Value:0}% RF",
-                                            ForegroundColor = "#000000",
-                                            BackgroundColor = "#FFFFFF",
-                                            FontSize = 20,
-                                            Bold = false,
-                                        }
-                                    }
-                                };
 
-                                currentWeatherRenderActions.Add(indoorTempStackLayout);
+                    UnitsNet.Temperature localTemperature = default;
+                    UnitsNet.RelativeHumidity localHumidity = default;
+                    UnitsNet.VolumeConcentration co2 = default;
+
+                    if (this.currentPlace.IsCurrentPlace)
+                    {
+                        if (this.sensorAccessService.Scd41 is IScd4x scd41)
+                        {
+                            localTemperature = scd41.Temperature;
+                            localHumidity = scd41.RelativeHumidity;
+                            co2 = scd41.Co2;
+                        }
+                        else if (this.sensorAccessService.Bme680 is IBme680 bme680)
+                        {
+                            try
+                            {
+                                var bme680ReadResult = await bme680.ReadAsync();
+
+                                if (bme680ReadResult != null &&
+                                    bme680ReadResult.Temperature != null &&
+                                    bme680ReadResult.Humidity != null)
+                                {
+
+                                    localTemperature = bme680ReadResult.Temperature.Value;
+                                    localHumidity = bme680ReadResult.Humidity.Value;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                this.logger.LogError(ex, "Failed to read temperature/humidity from BME680");
                             }
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            this.logger.LogError(ex, "Failed to read temperature/humidity from BME680");
+                            this.logger.LogWarning("No local temp/humidity/co2 sensor present");
                         }
-                    }
-                    else
-                    {
-                        this.logger.LogWarning("BME680 is not present");
+
+                        if (localTemperature != default & localHumidity != default)
+                        {
+                            var indoorTempStackLayout = new RenderActions.StackLayout
+                            {
+                                X = 140 - 24 - 6,
+                                Y = 240,
+                                Width = 200,
+                                Height = 35,
+                                Orientation = StackOrientation.Horizontal,
+                                VerticalAlignment = VerticalAlignment.Top,
+                                //BackgroundColor = Colors.Cyan,
+                                Spacing = 6,
+                                Children = new List<IRenderAction>
+                                {
+                                    new RenderActions.StreamImage
+                                    {
+                                        X = 0,
+                                        Y = 0,
+                                        Image = Icons.TemperatureIndoor(),
+                                        Width = 24,
+                                        Height = 24,
+                                        HorizontalAlignment = HorizontalAlignment.Left,
+                                        VerticalAlignment = VerticalAlignment.Top,
+                                    },
+                                    new RenderActions.Text
+                                    {
+                                        X = 0,
+                                        Y = 5,
+                                        HorizontalTextAlignment = HorizontalAlignment.Left,
+                                        VerticalTextAlignment = VerticalAlignment.Top,
+                                        Value = $"{localTemperature.Value:0.#}{localTemperature:A}",
+                                        ForegroundColor = "#000000",
+                                        BackgroundColor = "#FFFFFF",
+                                        FontSize = 20,
+                                        Bold = true,
+                                    },
+                                    new RenderActions.Text
+                                    {
+                                        X = 0,
+                                        Y = 5,
+                                        HorizontalTextAlignment = HorizontalAlignment.Left,
+                                        VerticalTextAlignment = VerticalAlignment.Top,
+                                        Value = $"/ {localHumidity.Value:0}% {Translations.RelativeHumiditySuffix}",
+                                        ForegroundColor = "#000000",
+                                        BackgroundColor = "#FFFFFF",
+                                        FontSize = 20,
+                                        Bold = false,
+                                    }
+                                }
+                            };
+
+                            currentWeatherRenderActions.Add(indoorTempStackLayout);
+                        }
                     }
 
                     // Weather alerts (if exists)
@@ -374,7 +399,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                     Y = 300,
                                     HorizontalTextAlignment = HorizontalAlignment.Center,
                                     VerticalTextAlignment = VerticalAlignment.Top,
-                                    Value = "UV",
+                                    Value = $"{Translations.UltraViolettAbbreviation}",
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 14,
@@ -407,7 +432,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 new RenderActions.StreamImage
                                 {
                                     X = 500,
-                                    Y = 300,
+                                    Y = 260,
                                     Image = Icons.Earth(),
                                     Width = 24,
                                     Height = 24,
@@ -417,7 +442,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 new RenderActions.Text
                                 {
                                     X = 540,
-                                    Y = 300 + 5,
+                                    Y = 260 + 5,
                                     AdjustsFontSizeToFitWidth = true,
                                     HorizontalTextAlignment = HorizontalAlignment.Left,
                                     VerticalTextAlignment = VerticalAlignment.Top,
@@ -576,12 +601,12 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             Bold = false,
                         },
 
-                        // Humidity
+                        // Atmospheric pressure
                         new RenderActions.StreamImage
                         {
                             X = 500,
                             Y = 220,
-                            Image = Icons.Humidity(),
+                            Image = Icons.AtmosphericPressure(),
                             Width = 24,
                             Height = 24,
                             HorizontalAlignment = HorizontalAlignment.Left,
@@ -593,30 +618,6 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             Y = 220 + 5,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{dailyForecastToday.Humidity} ({dailyForecastToday.Humidity.Range:N})",
-                            ForegroundColor = "#000000",
-                            BackgroundColor = "#FFFFFF",
-                            FontSize = 20,
-                            Bold = false,
-                        },
-
-                        // Atmospheric pressure
-                        new RenderActions.StreamImage
-                        {
-                            X = 500,
-                            Y = 260,
-                            Image = Icons.AtmosphericPressure(),
-                            Width = 24,
-                            Height = 24,
-                            HorizontalAlignment = HorizontalAlignment.Left,
-                            VerticalAlignment = VerticalAlignment.Top,
-                        },
-                        new RenderActions.Text
-                        {
-                            X = 540,
-                            Y = 260 + 5,
-                            HorizontalTextAlignment = HorizontalAlignment.Left,
-                            VerticalTextAlignment = VerticalAlignment.Top,
                             Value = $"{dailyForecastToday.Pressure} ({dailyForecastToday.Pressure.Range:N})",
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
@@ -624,6 +625,47 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             Bold = false,
                         }
                     });
+
+                    if (co2 != default)
+                    {
+                        currentWeatherRenderActions.AddRange(new IRenderAction[]
+                        {
+                            // CO2
+                            new RenderActions.StreamImage
+                            {
+                                X = 500,
+                                Y = 300,
+                                Image = Icons.IndoorEmpty(),
+                                Width = 24,
+                                Height = 24,
+                                HorizontalAlignment = HorizontalAlignment.Left,
+                                VerticalAlignment = VerticalAlignment.Top,
+                            },
+                            new RenderActions.Text
+                            {
+                                X = 500 + 24,
+                                Y = 300 + 14,
+                                HorizontalTextAlignment = HorizontalAlignment.Right,
+                                VerticalTextAlignment = VerticalAlignment.Center,
+                                Value = $"{Translations.CarbonDioxideAbbreviation}",
+                                ForegroundColor = Colors.Black, 
+                                FontSize = 10,
+                                Bold = true,
+                            },
+                            new RenderActions.Text
+                            {
+                                X = 540,
+                                Y = 300 + 5,
+                                AdjustsFontSizeToFitWidth = true,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = $"{co2}",
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 20,
+                            }
+                        });
+                    }
 
                     currentWeatherRenderActions.AddRange(new[]
                     {
