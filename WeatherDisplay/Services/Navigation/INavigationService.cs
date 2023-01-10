@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace WeatherDisplay.Pages
+namespace WeatherDisplay.Services.Navigation
 {
     public interface INavigationService
     {

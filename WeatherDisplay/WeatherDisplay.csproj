@@ -1,34 +1,68 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <NeutralLanguage>sv</NeutralLanguage>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MeteoSwissApi" Version="1.1.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
+    <PackageReference Include="ObjectDumper.NET" Version="3.5.3-pre" />
+    <PackageReference Include="OpenWeatherMap.API" Version="1.1.9-pre" />
+    <PackageReference Include="RaspberryPi.NET" Version="1.0.35-pre" />
+    <PackageReference Include="ResourceLoader" Version="3.2.4" />
+    <PackageReference Include="QRCoder" Version="1.4.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DisplayService\DisplayService.csproj" />
+    <ProjectReference Include="..\Externals\Iot.Device.Abstractions\Iot.Device.Abstractions.csproj" />
+    <ProjectReference Include="..\System.Gpio.Devices\System.Device.Gpio.Abstractions.csproj" />
+  </ItemGroup>
 
-	<PropertyGroup>
-		<TargetFramework>netstandard2.0</TargetFramework>
-	</PropertyGroup>
-
-	<ItemGroup>
-	  <None Remove="Resources\*.png" />
-	</ItemGroup>
-	<ItemGroup>
-	  <EmbeddedResource Include="Resources\*.png" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<PackageReference Include="MeteoSwissApi" Version="1.0.28-pre" />
-		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
-		<PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
-		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
-		<PackageReference Include="ObjectDumper.NET" Version="3.5.3-pre" />
-		<PackageReference Include="OpenWeatherMap.API" Version="1.0.20-pre" />
-		<PackageReference Include="RaspberryPi.NET" Version="1.0.35-pre" />
-		<PackageReference Include="ResourceLoader" Version="3.2.4" />
-		<PackageReference Include="QRCoder" Version="1.4.1" />
-	</ItemGroup>
-
-	<ItemGroup>
-		<ProjectReference Include="..\DisplayService\DisplayService.csproj" />
-	</ItemGroup>
-
+  <PropertyGroup Label="MultilingualAppToolkit">
+  	<MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
+  	<MultilingualFallbackLanguage>sv</MultilingualFallbackLanguage>
+  	<TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
+  	<SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.ResxResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.ResxResources.targets')" />
+  <Target Name="MATPrerequisite" BeforeTargets="PrepareForBuild" Condition="!Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.ResxResources.targets')" Label="MultilingualAppToolkit">
+  	<Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
+  </Target>
+  <ItemGroup>
+  	<None Remove="MultilingualResources\WeatherDisplay.de.xlf" />
+  	<None Remove="MultilingualResources\WeatherDisplay.en.xlf" />
+  </ItemGroup>
+  <ItemGroup>
+    <XliffResource Include="MultilingualResources\WeatherDisplay.de.xlf" />
+    <XliffResource Include="MultilingualResources\WeatherDisplay.en.xlf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Resources\Strings\IndoorAirQualityStrings.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>IndoorAirQualityStrings.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Strings\Translations.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Translations.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Strings\IndoorAirQualityStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>IndoorAirQualityStrings.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Strings\Translations.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Translations.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
 </Project>

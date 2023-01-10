@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading;
 
-namespace System.Gpio.Devices.Buttons
+namespace System.Device.Buttons
 {
     /// <summary>
     /// Base implementation of Button logic.

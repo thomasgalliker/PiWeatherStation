@@ -36,19 +36,22 @@ namespace DisplayService.Services
             this.canvas.Clear(SKColor.Parse(this.renderSettings.BackgroundColor));
         }
 
-        public void Add(IRenderAction renderAction)
+        public void Render(params IRenderAction[] renderActions)
         {
-            renderAction.Render(this);
+            foreach (var renderAction in renderActions)
+            {
+                renderAction.Render(this);
+            }
         }
 
         public void Image(RenderActions.Image image)
         {
-            this.AddImage(image);
+            this.Image(this.canvas, image);
         }
 
         public void Graphic(RenderActions.Graphic graphic)
         {
-            this.AddGraphic(graphic);
+            this.Graphic(this.canvas, graphic);
         }
 
         public void Text(RenderActions.Text text)
@@ -178,7 +181,7 @@ namespace DisplayService.Services
             this.Rectangle(this.canvas, rectangle);
         }
 
-        private void Rectangle(SKCanvas canvas, RenderActions.Rectangle rectangle)
+        private SKRect Rectangle(SKCanvas canvas, RenderActions.Rectangle rectangle)
         {
             try
             {
@@ -206,27 +209,32 @@ namespace DisplayService.Services
                 }
 
                 paint.Dispose();
+
+                return rect;
             }
             catch (Exception ex)
             {
                 throw new Exception($"DrawRect failed with exception: {ex.Message}", ex);
             }
         }
-
         public void StackLayout(RenderActions.StackLayout stackLayout)
+        {
+            this.StackLayout(this.canvas, stackLayout);
+        }
+
+        private SKRect StackLayout(SKCanvas canvas, RenderActions.StackLayout stackLayout)
         {
             try
             {
                 var x = CalculateX(stackLayout);
                 var y = CalculateY(stackLayout);
 
-
                 this.logger.LogDebug($"DrawRect(x: {x}, y: {y}, width: {stackLayout.Width}, height: {stackLayout.Height})");
-                var rect = SKRect.Create(x, y, width: stackLayout.Width, height: stackLayout.Height);
+                var stackLayoutRect = SKRect.Create(x, y, width: stackLayout.Width, height: stackLayout.Height);
 
                 using (var stackLayoutImage = new SKBitmap(stackLayout.Width, stackLayout.Height, isOpaque: false))
                 {
-                    using (var canvas = new SKCanvas(stackLayoutImage))
+                    using (var innerCanvas = new SKCanvas(stackLayoutImage))
                     {
                         // Draw background color
                         var backgroundRect = SKRect.Create(x: 0, y: 0, width: stackLayout.Width, height: stackLayout.Height);
@@ -236,7 +244,7 @@ namespace DisplayService.Services
                             Color = SKColor.Parse(stackLayout.BackgroundColor),
                         })
                         {
-                            canvas.DrawRect(backgroundRect, backgroundPaint);
+                            innerCanvas.DrawRect(backgroundRect, backgroundPaint);
                         }
 
                         if (stackLayout.Children != null)
@@ -244,27 +252,48 @@ namespace DisplayService.Services
                             var childOffset = 0;
                             foreach (var renderAction in stackLayout.Children)
                             {
-                                if (renderAction is RenderActions.Text text)
+                                SKRect? renderedRect = null;
+
+                                if (renderAction is ICoordinates coordinates)
                                 {
                                     if (stackLayout.Orientation == StackOrientation.Horizontal)
                                     {
-                                        text.X += childOffset;
+                                        coordinates.X += childOffset;
                                     }
                                     else
                                     {
-                                        text.Y += childOffset;
+                                        coordinates.Y += childOffset;
                                     }
-
-                                    var textRect = this.Text(canvas, text);
-                                    childOffset += stackLayout.Orientation == StackOrientation.Horizontal ? (int)textRect.Width : (int)textRect.Height;
                                 }
-                                //else if (renderAction is RenderActions.Rectangle rectangle)
-                                //{
-                                //    this.Rectangle(canvas, rectangle);
-                                //}
+
+                                if (renderAction is RenderActions.Text text)
+                                {
+                                    renderedRect = this.Text(innerCanvas, text);
+                                }
+                                else if (renderAction is RenderActions.StackLayout innerStackLayout)
+                                {
+                                    renderedRect = this.StackLayout(innerCanvas, innerStackLayout);
+                                }
+                                else if (renderAction is RenderActions.Graphic graphic)
+                                {
+                                    renderedRect = this.Graphic(innerCanvas, graphic);
+                                }
+                                else if (renderAction is RenderActions.Image image)
+                                {
+                                    renderedRect = this.Image(innerCanvas, image);
+                                }
+                                else if (renderAction is RenderActions.Rectangle rectangle)
+                                {
+                                    renderedRect = this.Rectangle(innerCanvas, rectangle);
+                                }
                                 else
                                 {
-                                    throw new NotSupportedException();
+                                    throw new NotSupportedException($"Render action '{renderAction.GetType().Name}' is currently not supported");
+                                }
+
+                                if (renderedRect is SKRect r)
+                                {
+                                    childOffset += stackLayout.Orientation == StackOrientation.Horizontal ? (int)r.Width : (int)r.Height;
                                 }
 
                                 childOffset += stackLayout.Spacing;
@@ -273,7 +302,9 @@ namespace DisplayService.Services
 
                     }
 
-                    this.canvas.DrawBitmap(stackLayoutImage, rect);
+                    canvas.DrawBitmap(stackLayoutImage, stackLayoutRect);
+
+                    return stackLayoutRect;
                 }
             }
             catch (Exception ex)
@@ -376,7 +407,7 @@ namespace DisplayService.Services
             return memoryStream;
         }
 
-        private void AddImage(RenderActions.Image image)
+        private SKRect Image(SKCanvas canvas, RenderActions.Image image)
         {
             if (image is null)
             {
@@ -411,6 +442,8 @@ namespace DisplayService.Services
             var x = CalculateX(image);
             var y = CalculateY(image);
 
+            var rect = SKRect.Create(x, y, image.Width, image.Height);
+
             if (skBitmap != null)
             {
                 // Draw image background
@@ -418,7 +451,7 @@ namespace DisplayService.Services
                 {
                     using (var backgroundPaint = new SKPaint { Color = SKColor.Parse(image.BackgroundColor) })
                     {
-                        this.canvas.DrawRect(x, y, w: image.Width, h: image.Height, backgroundPaint);
+                        canvas.DrawRect(rect, backgroundPaint);
                     }
                 }
 
@@ -430,19 +463,21 @@ namespace DisplayService.Services
                         using (var skBitmapResized = skBitmap.Resize(new SKImageInfo(image.Width, image.Height), SKFilterQuality.High))
                         {
                             this.logger.LogDebug($"DrawBitmap(img.ByteCount=\"{skBitmapResized.ByteCount}\", x={x}, y={y})");
-                            this.canvas.DrawBitmap(skBitmapResized, x, y);
+                            canvas.DrawBitmap(skBitmapResized, x, y);
                         }
                     }
                     else
                     {
                         this.logger.LogDebug($"DrawBitmap(img.ByteCount=\"{skBitmap.ByteCount}\", x={x}, y={y})");
-                        this.canvas.DrawBitmap(skBitmap, x, y);
+                        canvas.DrawBitmap(skBitmap, x, y);
                     }
                 }
             }
+
+            return rect;
         }
 
-        private void AddGraphic(RenderActions.Graphic graphic)
+        private SKRect Graphic(SKCanvas canvas, RenderActions.Graphic graphic)
         {
             if (graphic.X < 0 || graphic.X >= this.renderSettings.Width)
             {
@@ -454,15 +489,13 @@ namespace DisplayService.Services
                 throw new ArgumentOutOfRangeException(nameof(graphic.Y), graphic.Y, "Y coordinate is not within the screen");
             }
 
-            var width = 0;
-            var height = 0;
             try
             {
                 using var img = SKBitmap.Decode(graphic.Data);
                 this.logger.LogDebug($"DrawBitmap(img.ByteCount=\"{img.ByteCount}\", graphic.X={graphic.X}, graphic.Y={graphic.Y})");
-                this.canvas.DrawBitmap(img, graphic.X, graphic.Y);
-                width = img.Width;
-                height = img.Height;
+                canvas.DrawBitmap(img, graphic.X, graphic.Y);
+
+                return new SKRect(graphic.X, graphic.Y, img.Width, img.Height);
             }
             catch (ArgumentException)
             {

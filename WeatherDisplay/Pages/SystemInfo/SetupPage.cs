@@ -8,6 +8,7 @@ using WeatherDisplay.Model;
 using WeatherDisplay.Services;
 using WeatherDisplay.Services.QR;
 using System.Threading.Tasks;
+using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {

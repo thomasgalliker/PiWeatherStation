@@ -12,6 +12,7 @@ using OpenWeatherMap.Models;
 using SkiaSharp;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
+using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages
 {
@@ -21,6 +22,8 @@ namespace WeatherDisplay.Pages
         private readonly IOpenWeatherMapService openWeatherMapService;
         private readonly IDateTime dateTime;
         private readonly IOptionsMonitor<TemperatureDiagramPageOptions> options;
+
+        private Place currentPlace = null;
 
         public TemperatureDiagramPage(
             IDisplayManager displayManager,
@@ -36,6 +39,9 @@ namespace WeatherDisplay.Pages
 
         public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
+            var places = this.options.CurrentValue.Places.ToList();
+            var place = this.currentPlace = places.GetNextElement(this.currentPlace, defaultValue: places.First());
+
             // Date header
             this.displayManager.AddRenderActions(
                 () =>
@@ -89,8 +95,6 @@ namespace WeatherDisplay.Pages
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var place = this.options.CurrentValue.Places.First();
-
                     // Get current weather & daily forecasts
                     var oneCallOptions = new OneCallOptions
                     {

@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {

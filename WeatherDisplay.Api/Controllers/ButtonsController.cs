@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using WeatherDisplay.Api.Services.Hardware;
+using WeatherDisplay.Services.Hardware;
 
 namespace WeatherDisplay.Api.Controllers
 {

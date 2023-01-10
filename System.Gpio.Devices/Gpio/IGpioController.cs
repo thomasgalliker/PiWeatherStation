@@ -1,6 +1,4 @@
-﻿using System.Device.Gpio;
-
-namespace System.Gpio.Devices
+﻿namespace System.Device.Gpio
 {
     public interface IGpioController : IDisposable
     {

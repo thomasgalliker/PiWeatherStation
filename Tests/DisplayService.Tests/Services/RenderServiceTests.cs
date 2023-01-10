@@ -1,11 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using DisplayService.Model;
 using DisplayService.Resources;
 using DisplayService.Services;
 using DisplayService.Settings;
 using FluentAssertions;
 using Moq.AutoMock;
-using SkiaSharp;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -27,7 +28,7 @@ namespace DisplayService.Tests.Services
             renderSettingsMock.SetupGet(r => r.Width)
                 .Returns(800);
             renderSettingsMock.SetupGet(r => r.BackgroundColor)
-                .Returns(SKColors.White.ToString());
+                .Returns(Colors.White);
         }
 
         [Fact]
@@ -59,7 +60,7 @@ namespace DisplayService.Tests.Services
                 VerticalTextAlignment = VerticalAlignment.Top,
                 HorizontalTextAlignment = HorizontalAlignment.Left,
                 Value = $"TL",
-                ForegroundColor = SKColors.Black.ToString(),
+                ForegroundColor = Colors.Black,
                 FontSize = fontSize,
             };
             renderService.Text(textTopLeft);
@@ -71,7 +72,7 @@ namespace DisplayService.Tests.Services
                 VerticalTextAlignment = VerticalAlignment.Top,
                 HorizontalTextAlignment = HorizontalAlignment.Center,
                 Value = $"TC",
-                ForegroundColor = SKColors.Black.ToString(),
+                ForegroundColor = Colors.Black,
                 FontSize = fontSize,
             };
             renderService.Text(textTopCenter);
@@ -83,7 +84,7 @@ namespace DisplayService.Tests.Services
                 VerticalTextAlignment = VerticalAlignment.Top,
                 HorizontalTextAlignment = HorizontalAlignment.Right,
                 Value = $"TR",
-                ForegroundColor = SKColors.Black.ToString(),
+                ForegroundColor = Colors.Black,
                 FontSize = fontSize,
             };
             renderService.Text(textTopRight);
@@ -95,7 +96,7 @@ namespace DisplayService.Tests.Services
                 VerticalTextAlignment = VerticalAlignment.Center,
                 HorizontalTextAlignment = HorizontalAlignment.Left,
                 Value = $"CL",
-                ForegroundColor = SKColors.Black.ToString(),
+                ForegroundColor = Colors.Black,
                 FontSize = fontSize,
             };
             renderService.Text(textCenterLeft);
@@ -107,7 +108,7 @@ namespace DisplayService.Tests.Services
                 VerticalTextAlignment = VerticalAlignment.Center,
                 HorizontalTextAlignment = HorizontalAlignment.Center,
                 Value = $"CC",
-                ForegroundColor = SKColors.Black.ToString(),
+                ForegroundColor = Colors.Black,
                 FontSize = fontSize,
             };
             renderService.Text(textCenterCenter);
@@ -119,7 +120,7 @@ namespace DisplayService.Tests.Services
                 VerticalTextAlignment = VerticalAlignment.Center,
                 HorizontalTextAlignment = HorizontalAlignment.Right,
                 Value = $"CR",
-                ForegroundColor = SKColors.Black.ToString(),
+                ForegroundColor = Colors.Black,
                 FontSize = fontSize,
             };
             renderService.Text(textCenterRight);
@@ -131,7 +132,7 @@ namespace DisplayService.Tests.Services
                 VerticalTextAlignment = VerticalAlignment.Bottom,
                 HorizontalTextAlignment = HorizontalAlignment.Left,
                 Value = $"BL",
-                ForegroundColor = SKColors.Black.ToString(),
+                ForegroundColor = Colors.Black,
                 FontSize = fontSize,
             };
             renderService.Text(textBottomLeft);
@@ -143,7 +144,7 @@ namespace DisplayService.Tests.Services
                 VerticalTextAlignment = VerticalAlignment.Bottom,
                 HorizontalTextAlignment = HorizontalAlignment.Center,
                 Value = $"BC",
-                ForegroundColor = SKColors.Black.ToString(),
+                ForegroundColor = Colors.Black,
                 FontSize = fontSize,
             };
             renderService.Text(textBottomCenter);
@@ -155,7 +156,7 @@ namespace DisplayService.Tests.Services
                 VerticalTextAlignment = VerticalAlignment.Bottom,
                 HorizontalTextAlignment = HorizontalAlignment.Right,
                 Value = $"BR",
-                ForegroundColor = SKColors.Black.ToString(),
+                ForegroundColor = Colors.Black,
                 FontSize = fontSize,
             };
             renderService.Text(textBottomRight);
@@ -194,6 +195,61 @@ namespace DisplayService.Tests.Services
         }
 
         [Fact]
+        public void ShouldGetScreen_Text3()
+        {
+            // Arrange
+            IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
+
+            var dateTime = new DateTime(2022, 12, 31, 12, 00, 00, DateTimeKind.Local);
+
+            var renderActions = new List<IRenderAction>
+            {
+                new RenderActions.Rectangle
+                {
+                    X = 0,
+                    Y = 0,
+                    Height = 100,
+                    Width = 800,
+                    BackgroundColor = "#000000",
+                },
+                new RenderActions.Text
+                {
+                    X = 20,
+                    Y = 50,
+                    HorizontalTextAlignment = HorizontalAlignment.Left,
+                    VerticalTextAlignment = VerticalAlignment.Center,
+                    Value = dateTime.ToString("dddd, d. MMMM"),
+                    ForegroundColor = "#FFFFFF",
+                    FontSize = 70,
+                    AdjustsFontSizeToFitWidth = true,
+                    AdjustsFontSizeToFitHeight = true,
+                    Bold = true,
+                },
+                new RenderActions.Text
+                {
+                    X = 798,
+                    Y = 88,
+                    HorizontalTextAlignment = HorizontalAlignment.Right,
+                    VerticalTextAlignment = VerticalAlignment.Top,
+                    Value = $"v1.2.3-pre",
+                    ForegroundColor = "#FFFFFF",
+                    BackgroundColor = "#000000",
+                    FontSize = 12,
+                    Bold = false,
+                },
+            }.ToArray();
+
+            renderService.Render(renderActions);
+
+            // Act
+            var bitmapStream = renderService.GetScreen();
+
+            // Assert
+            bitmapStream.Should().NotBeNull();
+            this.testHelper.WriteFile(bitmapStream);
+        }
+
+        [Fact]
         public void ShouldGetScreen_Text_AdjustsFontSizeToFitWidth()
         {
             // Arrange
@@ -209,8 +265,8 @@ namespace DisplayService.Tests.Services
                 VerticalTextAlignment = VerticalAlignment.Top,
                 HorizontalTextAlignment = HorizontalAlignment.Left,
                 Value = string.Join("_", Enumerable.Range(1, numberOfValues)),
-                ForegroundColor = SKColors.Black.ToString(),
-                BackgroundColor = SKColors.LightGray.ToString(),
+                ForegroundColor = Colors.Black,
+                BackgroundColor = Colors.LightGray,
                 FontSize = fontSize,
                 AdjustsFontSizeToFitWidth = true,
             };
@@ -223,8 +279,8 @@ namespace DisplayService.Tests.Services
                 VerticalTextAlignment = VerticalAlignment.Top,
                 HorizontalTextAlignment = HorizontalAlignment.Left,
                 Value = string.Join("_", Enumerable.Range(1, numberOfValues)),
-                ForegroundColor = SKColors.Black.ToString(),
-                BackgroundColor = SKColors.LightGray.ToString(),
+                ForegroundColor = Colors.Black,
+                BackgroundColor = Colors.LightGray,
                 FontSize = fontSize,
                 AdjustsFontSizeToFitWidth = false,
             };
@@ -255,8 +311,8 @@ namespace DisplayService.Tests.Services
                 VerticalTextAlignment = VerticalAlignment.Top,
                 HorizontalTextAlignment = HorizontalAlignment.Left,
                 Value = string.Join("_", Enumerable.Range(startAt, numberOfValues)),
-                ForegroundColor = SKColors.Black.ToString(),
-                BackgroundColor = SKColors.LightGray.ToString(),
+                ForegroundColor = Colors.Black,
+                BackgroundColor = Colors.LightGray,
                 FontSize = fontSize,
                 AdjustsFontSizeToFitHeight = true,
                 AdjustsFontSizeToFitWidth = false,
@@ -288,8 +344,8 @@ namespace DisplayService.Tests.Services
                 VerticalTextAlignment = VerticalAlignment.Top,
                 HorizontalTextAlignment = HorizontalAlignment.Left,
                 Value = string.Join("_", Enumerable.Range(startAt, numberOfValues)),
-                ForegroundColor = SKColors.Black.ToString(),
-                BackgroundColor = SKColors.LightGray.ToString(),
+                ForegroundColor = Colors.Black,
+                BackgroundColor = Colors.LightGray,
                 FontSize = fontSize,
                 AdjustsFontSizeToFitHeight = true,
                 AdjustsFontSizeToFitWidth = true,
@@ -318,7 +374,7 @@ namespace DisplayService.Tests.Services
                 Width = 200,
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Left,
-                BackgroundColor = SKColors.Red.ToString(),
+                BackgroundColor = Colors.Red,
             };
             renderService.Rectangle(rectangleTopLeft);
 
@@ -330,7 +386,7 @@ namespace DisplayService.Tests.Services
                 Width = 200,
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Center,
-                BackgroundColor = SKColors.Red.ToString(),
+                BackgroundColor = Colors.Red,
             };
             renderService.Rectangle(rectangleTopCenter);
 
@@ -342,7 +398,7 @@ namespace DisplayService.Tests.Services
                 Width = 200,
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Right,
-                BackgroundColor = SKColors.Red.ToString(),
+                BackgroundColor = Colors.Red,
             };
             renderService.Rectangle(rectangleTopRight);
 
@@ -354,7 +410,7 @@ namespace DisplayService.Tests.Services
                 Width = 200,
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Left,
-                BackgroundColor = SKColors.Blue.ToString(),
+                BackgroundColor = Colors.Blue,
             };
             renderService.Rectangle(rectangleCenterLeft);
 
@@ -366,7 +422,7 @@ namespace DisplayService.Tests.Services
                 Width = 200,
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Center,
-                BackgroundColor = SKColors.Blue.ToString(),
+                BackgroundColor = Colors.Blue,
             };
             renderService.Rectangle(rectangleCenterCenter);
 
@@ -378,7 +434,7 @@ namespace DisplayService.Tests.Services
                 Width = 200,
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Right,
-                BackgroundColor = SKColors.Blue.ToString(),
+                BackgroundColor = Colors.Blue,
             };
             renderService.Rectangle(rectangleCenterRight);
 
@@ -390,7 +446,7 @@ namespace DisplayService.Tests.Services
                 Width = 200,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 HorizontalAlignment = HorizontalAlignment.Left,
-                BackgroundColor = SKColors.Green.ToString(),
+                BackgroundColor = Colors.Green,
             };
             renderService.Rectangle(rectangleBottomLeft);
 
@@ -402,7 +458,7 @@ namespace DisplayService.Tests.Services
                 Width = 200,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 HorizontalAlignment = HorizontalAlignment.Center,
-                BackgroundColor = SKColors.Green.ToString(),
+                BackgroundColor = Colors.Green,
             };
             renderService.Rectangle(rectangleBottomCenter);
 
@@ -414,7 +470,7 @@ namespace DisplayService.Tests.Services
                 Width = 200,
                 VerticalAlignment = VerticalAlignment.Bottom,
                 HorizontalAlignment = HorizontalAlignment.Right,
-                BackgroundColor = SKColors.Green.ToString(),
+                BackgroundColor = Colors.Green,
             };
             renderService.Rectangle(rectangleBottomRight);
 

@@ -19,6 +19,7 @@
   <ItemGroup>
 	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
 	<PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.9" />
+	<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.12" />
 	<PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="6.0.0" />
 	<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
 	<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.23.1" />
@@ -26,11 +27,13 @@
 	<PackageReference Include="NLog.Web.AspNetCore" Version="5.1.4" />
 	<PackageReference Include="RaspberryPi.NET" Version="1.0.35-pre" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
+    <PackageReference Include="UnitsNet.Serialization.JsonNet" Version="4.6.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\System.Gpio.Devices\System.Gpio.Devices.csproj" />
+    <ProjectReference Include="..\Externals\Iot.Device.Abstractions\Iot.Device.Abstractions.csproj" />
     <ProjectReference Include="..\WeatherDisplay.Api.Updater\WeatherDisplay.Api.Updater.csproj" />
     <ProjectReference Include="..\WeatherDisplay\WeatherDisplay.csproj" />
   </ItemGroup>
@@ -43,6 +46,10 @@
 
   <ItemGroup>
     <None Include="wwwroot\swagger-ui\SwaggerStyle.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Services\Hardware\" />
   </ItemGroup>
 
 </Project>

@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Device.I2c;
 using System.Threading.Tasks;
 using DisplayService.Services;
 using DisplayService.Settings;
 using DisplayService.Tests.Services;
 using FluentAssertions;
+using Iot.Device.Bmxx80;
+using Iot.Device.Bmxx80.ReadResult;
 using Microsoft.Extensions.Options;
 using Moq;
 using Moq.AutoMock;
@@ -13,9 +16,10 @@ using OpenWeatherMap;
 using OpenWeatherMap.Models;
 using SkiaSharp;
 using WeatherDisplay.Model;
-using WeatherDisplay.Pages;
 using WeatherDisplay.Pages.OpenWeatherMap;
 using WeatherDisplay.Resources;
+using WeatherDisplay.Services.Hardware;
+using WeatherDisplay.Services.Navigation;
 using WeatherDisplay.Tests.Extensions;
 using WeatherDisplay.Tests.Testdata;
 using Xunit;
@@ -77,6 +81,14 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
                 .ReturnsAsync(OneCallWeatherInfos.GetTestWeatherInfo());
             this.openWeatherMapServiceMock.Setup(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()))
                 .ReturnsAsync(Icons.Sun);
+
+            var bme680Mock = this.autoMocker.GetMock<IBme680>();
+            bme680Mock.Setup(b => b.ReadAsync())
+                .ReturnsAsync(new Bme680ReadResult(UnitsNet.Temperature.FromDegreesCelsius(20), null, UnitsNet.RelativeHumidity.FromPercent(50), null));
+
+            var sensorAccessServiceMock = this.autoMocker.GetMock<ISensorAccessService>();
+            sensorAccessServiceMock.SetupGet(f => f.Bme680)
+                .Returns(bme680Mock.Object);
 
             this.autoMocker.Use<IRenderService>(this.autoMocker.CreateInstance<RenderService>());
             this.autoMocker.Use<IDisplayManager>(this.autoMocker.CreateInstance<DisplayManager>());

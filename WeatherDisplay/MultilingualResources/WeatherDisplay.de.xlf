@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xliff:document:1.2 xliff-core-1.2-transitional.xsd">
+  <file datatype="xml" source-language="sv" target-language="de" original="WEATHERDISPLAY/RESOURCES/STRINGS/TRANSLATIONS.RESX" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="0.0.0.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="WEATHERDISPLAY/RESOURCES/STRINGS/TRANSLATIONS.RESX" datatype="resx">
+        <trans-unit id="RelativeHumiditySuffix" translate="yes" xml:space="preserve">
+          <source>RH</source>
+          <target state="final">RF</target>
+        </trans-unit>
+        <trans-unit id="UltraViolettAbbreviation" translate="yes" xml:space="preserve">
+          <source>UV</source>
+          <target state="new">UV</target>
+        </trans-unit>
+        <trans-unit id="CarbonDioxideAbbreviation" translate="yes" xml:space="preserve">
+          <source>CO2</source>
+          <target state="new">CO2</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+  <file datatype="xml" source-language="sv" target-language="de" original="WEATHERDISPLAY/RESOURCES/STRINGS/INDOORAIRQUALITYSTRINGS.RESX" tool-id="MultilingualAppToolkit" product-name="n/a" product-version="n/a" build-num="n/a">
+    <header>
+      <tool tool-id="MultilingualAppToolkit" tool-name="Multilingual App Toolkit" tool-version="0.0.0.0" tool-company="Microsoft" />
+    </header>
+    <body>
+      <group id="WEATHERDISPLAY/RESOURCES/STRINGS/INDOORAIRQUALITYSTRINGS.RESX" datatype="resx">
+        <trans-unit id="Good" translate="yes" xml:space="preserve">
+          <source>Good</source>
+          <target state="final">Gut</target>
+        </trans-unit>
+        <trans-unit id="Hazardous" translate="yes" xml:space="preserve">
+          <source>Hazardous</source>
+          <target state="final">Gefährlich</target>
+        </trans-unit>
+        <trans-unit id="Moderate" translate="yes" xml:space="preserve">
+          <source>Moderate</source>
+          <target state="final">Mässig</target>
+        </trans-unit>
+        <trans-unit id="Unhealthy" translate="yes" xml:space="preserve">
+          <source>Unhealthy</source>
+          <target state="final">Ungesund</target>
+        </trans-unit>
+        <trans-unit id="UnhealthyForSensitiveGroups" translate="yes" xml:space="preserve">
+          <source>Unhealthy for Sensitive Groups</source>
+          <target state="final">Ungesund für sensible Gruppen</target>
+        </trans-unit>
+        <trans-unit id="VeryUnhealthy" translate="yes" xml:space="preserve">
+          <source>Very Unhealthy</source>
+          <target state="final">Sehr ungesund</target>
+        </trans-unit>
+      </group>
+    </body>
+  </file>
+</xliff>

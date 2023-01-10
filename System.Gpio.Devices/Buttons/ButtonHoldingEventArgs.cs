@@ -1,4 +1,4 @@
-﻿namespace System.Gpio.Devices.Buttons
+﻿namespace System.Device.Buttons
 {
     /// <summary>
     /// Button holding event arguments.

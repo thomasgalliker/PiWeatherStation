@@ -1,6 +1,6 @@
 ﻿using System.Device.Gpio;
 
-namespace System.Gpio.Devices.Buttons
+namespace System.Device.Buttons
 {
     /// <summary>
     /// GPIO implementation of Button.

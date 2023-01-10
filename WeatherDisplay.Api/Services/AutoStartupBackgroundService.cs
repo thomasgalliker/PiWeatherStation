@@ -2,12 +2,12 @@
 using NCrontab;
 using NCrontab.Scheduler;
 using NLog;
-using WeatherDisplay.Api.Services.Hardware;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
-using WeatherDisplay.Pages;
 using WeatherDisplay.Pages.SystemInfo;
+using WeatherDisplay.Services.Hardware;
+using WeatherDisplay.Services.Navigation;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 
 namespace WeatherDisplay.Api.Services
@@ -19,6 +19,7 @@ namespace WeatherDisplay.Api.Services
         private readonly IAutoUpdateService autoUpdateService;
         private readonly INavigationService navigationService;
         private readonly IButtonsAccessService buttonsAccessService;
+        private readonly ISensorAccessService sensorAccessService;
         private readonly IScheduler scheduler;
         private readonly IDisplayManager displayManager;
 
@@ -28,6 +29,7 @@ namespace WeatherDisplay.Api.Services
             IAutoUpdateService autoUpdateService,
             INavigationService navigationService,
             IButtonsAccessService buttonsAccessService,
+            ISensorAccessService sensorAccessService,
             IScheduler scheduler,
             IDisplayManager displayManager)
         {
@@ -36,6 +38,7 @@ namespace WeatherDisplay.Api.Services
             this.autoUpdateService = autoUpdateService;
             this.navigationService = navigationService;
             this.buttonsAccessService = buttonsAccessService;
+            this.sensorAccessService = sensorAccessService;
             this.scheduler = scheduler;
             this.displayManager = displayManager;
         }
@@ -46,7 +49,8 @@ namespace WeatherDisplay.Api.Services
 
             try
             {
-                this.buttonsAccessService.InitializeButtons();
+                this.buttonsAccessService.Initialize();
+                this.sensorAccessService.Initialize();
 
                 var runSetup = this.appSettings.RunSetup;
                 if (runSetup)

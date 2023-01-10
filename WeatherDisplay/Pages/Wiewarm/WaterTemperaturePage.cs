@@ -7,6 +7,7 @@ using DisplayService.Services;
 using Microsoft.Extensions.Options;
 using NCrontab;
 using OpenWeatherMap;
+using WeatherDisplay.Services.Navigation;
 using WeatherDisplay.Services.Wiewarm;
 
 namespace WeatherDisplay.Pages.Wiewarm
