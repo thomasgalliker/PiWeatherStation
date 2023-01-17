@@ -82,13 +82,15 @@ namespace DisplayService.Services
 
         private async void OnNextSchedule(object sender, ScheduledEventArgs e)
         {
-            this.logger.LogDebug($"OnNextSchedule with {string.Join(", ", e.TaskIds.Select(t => $"{t:B}"))}");
+            this.logger.LogDebug($"OnNextSchedule with TaskIds=[{string.Join(", ", e.TaskIds.Select(t => $"{t:B}"))}]");
 
             try
             {
-                var scheduledTaskIds = e.TaskIds.ToList();
-                var renderActions = await this.GetRenderActionsAsync(scheduledTaskIds);
-                await this.UpdateDisplayAsync(renderActions);
+                var renderActions = await this.GetRenderActionsAsync(e.TaskIds);
+                if (renderActions.Any())
+                {
+                    await this.UpdateDisplayAsync(renderActions);
+                }
             }
             catch (Exception ex)
             {
