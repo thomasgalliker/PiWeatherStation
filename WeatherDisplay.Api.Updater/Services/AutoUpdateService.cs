@@ -14,10 +14,6 @@ namespace WeatherDisplay.Api.Updater.Services
     public class AutoUpdateService : IAutoUpdateService
     {
         private static readonly SemanticVersion LocalDebugVersion = new SemanticVersion(1, 0, 0);
-        private static readonly JsonSerializerSettings JsonSerializerSettings = new JsonSerializerSettings
-        {
-            Formatting = Formatting.Indented
-        };
 
         private readonly ILogger logger;
         private readonly AutoUpdateOptions options;
@@ -168,13 +164,5 @@ namespace WeatherDisplay.Api.Updater.Services
                 File.Copy(sourceFile.FullName, destinationFile, overwrite: true);
             });
         }
-
-
-        private static async Task UpdateInstalledVersionAsync(string installedVersionFile, GithubVersionDto githubLatestVersionDto)
-        {
-            var jsonContent = JsonConvert.SerializeObject(githubLatestVersionDto, JsonSerializerSettings);
-            await File.WriteAllTextAsync(installedVersionFile, jsonContent);
-        }
-
     }
 }
