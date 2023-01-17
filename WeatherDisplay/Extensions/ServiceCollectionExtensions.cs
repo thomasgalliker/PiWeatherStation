@@ -11,6 +11,7 @@ using NCrontab.Scheduler;
 using OpenWeatherMap;
 using WeatherDisplay.Model;
 using WeatherDisplay.Services;
+using WeatherDisplay.Services.Astronomy;
 using WeatherDisplay.Services.DeepL;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
@@ -95,6 +96,8 @@ namespace Microsoft.Extensions.DependencyInjection
 
             services.AddSingleton<IMeteoSwissWeatherServiceConfiguration, MeteoSwissWeatherServiceConfiguration>();
             services.AddSingleton<IMeteoSwissWeatherService, MeteoSwissWeatherService>();
+
+            services.AddSingleton<ISpaceWeatherService, SpaceWeatherService>();
 
             services.AddSingleton<INetworkManager, NetworkManager>();
             services.AddSingleton<ITranslationService, DeepLTranslationService>();
