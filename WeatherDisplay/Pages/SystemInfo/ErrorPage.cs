@@ -10,7 +10,7 @@ using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {
-    public class ErrorPage : INavigatedAware
+    public class ErrorPage : INavigatedTo
     {
         private readonly IDisplayManager displayManager;
         private readonly IDateTime dateTime;

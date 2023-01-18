@@ -3,7 +3,7 @@ using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {
-    public class SystemInfoPage : INavigatedAware
+    public class SystemInfoPage : INavigatedTo
     {
         public Task OnNavigatedToAsync(INavigationParameters parameters)
         {

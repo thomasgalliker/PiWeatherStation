@@ -3,7 +3,7 @@ using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages.Astronomy
 {
-    public class SpaceWeatherConditionsPage : INavigatedAware
+    public class SpaceWeatherConditionsPage : INavigatedTo
     {
         public Task OnNavigatedToAsync(INavigationParameters parameters)
         {

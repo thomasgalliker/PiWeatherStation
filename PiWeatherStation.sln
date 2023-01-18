@@ -12,6 +12,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{10005A69-FC73-46A6-9389-BC406332812F}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.gitignore = .gitignore
 		azure-pipelines.yml = azure-pipelines.yml
 		README.md = README.md
 	EndProjectSection
@@ -32,11 +33,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "System.Gpio.Devices.Tests",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{EDB08A6F-4288-416E-9A52-3D1C3FF22919}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleApp.BMxx80", "Samples\SampleApp.BMxx80\SampleApp.BMxx80.csproj", "{B66C3786-0F86-48C3-9886-CF0AC65C8365}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleApp.BMxx80", "Samples\SampleApp.BMxx80\SampleApp.BMxx80.csproj", "{B66C3786-0F86-48C3-9886-CF0AC65C8365}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externals", "Externals", "{3BAEE795-ED77-4336-953B-1092E40723F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iot.Device.Abstractions", "Externals\Iot.Device.Abstractions\Iot.Device.Abstractions.csproj", "{A23F80E2-1436-4195-A768-229003B27573}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iot.Device.Abstractions", "Externals\Iot.Device.Abstractions\Iot.Device.Abstractions.csproj", "{A23F80E2-1436-4195-A768-229003B27573}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

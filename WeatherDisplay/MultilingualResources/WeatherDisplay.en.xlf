@@ -18,6 +18,14 @@
           <source>CO2</source>
           <target state="new">CO2</target>
         </trans-unit>
+        <trans-unit id="OpenWeatherMapPageErrorMissingPlacesConfigurationLine1" translate="yes" xml:space="preserve">
+          <source>Error: Missing places configuration.</source>
+          <target state="new">Error: Missing places configuration.</target>
+        </trans-unit>
+        <trans-unit id="OpenWeatherMapPageErrorMissingPlacesConfigurationLine2" translate="yes" xml:space="preserve">
+          <source>appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places</source>
+          <target state="new">appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places</target>
+        </trans-unit>
       </group>
     </body>
   </file>
