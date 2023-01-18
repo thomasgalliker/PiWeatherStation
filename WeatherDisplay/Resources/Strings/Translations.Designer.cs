@@ -70,6 +70,24 @@ namespace WeatherDisplay.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error: Missing places configuration..
+        /// </summary>
+        internal static string OpenWeatherMapPageErrorMissingPlacesConfigurationLine1 {
+            get {
+                return ResourceManager.GetString("OpenWeatherMapPageErrorMissingPlacesConfigurationLine1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places.
+        /// </summary>
+        internal static string OpenWeatherMapPageErrorMissingPlacesConfigurationLine2 {
+            get {
+                return ResourceManager.GetString("OpenWeatherMapPageErrorMissingPlacesConfigurationLine2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to RH.
         /// </summary>
         internal static string RelativeHumiditySuffix {

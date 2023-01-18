@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
+using WeatherDisplay.Pages.SystemInfo;
 using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Services.Hardware
@@ -88,33 +89,44 @@ namespace WeatherDisplay.Services.Hardware
         {
             this.logger.LogDebug($"HandleButtonPress: buttonId={buttonId}");
 
-            var currentPage = this.navigationService.GetCurrentPage();
-            if (App.Pages.IsSystemPage(currentPage))
+            try
             {
-                if (buttonId == 4)
+
+                var currentPage = this.navigationService.GetCurrentPage();
+                if (App.Pages.IsSystemPage(currentPage))
                 {
-                    var nextPage = App.Pages.GetNextSystemPage(currentPage);
-                    await this.navigationService.NavigateAsync(nextPage);
+                    if (buttonId == 4)
+                    {
+                        var nextPage = App.Pages.GetNextSystemPage(currentPage);
+                        await this.navigationService.NavigateAsync(nextPage);
+                    }
+                }
+                else
+                {
+                    var buttonMappings = this.appSettings.ButtonMappings.Where(b => b.ButtonId == buttonId);
+                    var buttonMappingsCount = buttonMappings.Count();
+                    if (buttonMappingsCount == 0)
+                    {
+                        throw new NotSupportedException($"Button with buttonId={buttonId} is currently not supported.");
+                    }
+
+                    if (buttonMappingsCount > 1)
+                    {
+                        throw new NotSupportedException(
+                            $"Button with buttonId={buttonId} has multiple assignments:{Environment.NewLine}" +
+                            $"{string.Join(Environment.NewLine, buttonMappings.Select(b => $"- {b.Page}"))}");
+                    }
+
+                    var buttonMapping = buttonMappings.Single();
+                    await this.navigationService.NavigateAsync(buttonMapping.Page);
                 }
             }
-            else
+            catch (Exception ex)
             {
-                var buttonMappings = this.appSettings.ButtonMappings.Where(b => b.ButtonId == buttonId);
-                var buttonMappingsCount = buttonMappings.Count();
-                if (buttonMappingsCount == 0)
-                {
-                    throw new NotSupportedException($"Button with buttonId={buttonId} is currently not supported.");
-                }
+                this.logger.LogError(ex, $"HandleButtonPress for buttonId={buttonId} failed with exception");
 
-                if (buttonMappingsCount > 1)
-                {
-                    throw new NotSupportedException(
-                        $"Button with buttonId={buttonId} has multiple assignments:{Environment.NewLine}" +
-                        $"{string.Join(Environment.NewLine, buttonMappings.Select(b => $"- {b.Page}"))}");
-                }
-
-                var buttonMapping = buttonMappings.Single();
-                await this.navigationService.NavigateAsync(buttonMapping.Page);
+                //var navigationParameters = new ErrorPage.NavigationParameters { Exception = ex };
+                //await this.navigationService.NavigateAsync(App.Pages.ErrorPage, navigationParameters);
             }
         }
 
@@ -122,18 +134,28 @@ namespace WeatherDisplay.Services.Hardware
         {
             this.logger.LogDebug($"HandleButtonHold: buttonId={buttonId}");
 
-            if (buttonId == 4)
+            try
             {
-                var currentPage = this.navigationService.GetCurrentPage();
-                if (App.Pages.IsSystemPage(currentPage))
+                if (buttonId == 4)
                 {
-                    var defaultButton = this.appSettings.ButtonMappings.GetDefaultButtonMapping();
-                    await this.navigationService.NavigateAsync(defaultButton.Page);
+                    var currentPage = this.navigationService.GetCurrentPage();
+                    if (App.Pages.IsSystemPage(currentPage))
+                    {
+                        var defaultButton = this.appSettings.ButtonMappings.GetDefaultButtonMapping();
+                        await this.navigationService.NavigateAsync(defaultButton.Page);
+                    }
+                    else
+                    {
+                        await this.navigationService.NavigateAsync(App.Pages.SetupPage);
+                    }
                 }
-                else
-                {
-                    await this.navigationService.NavigateAsync(App.Pages.SetupPage);
-                }
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex, $"HandleButtonHolding for buttonId={buttonId} failed with exception");
+
+                //var navigationParameters = new ErrorPage.NavigationParameters { Exception = ex };
+                //await this.navigationService.NavigateAsync(App.Pages.ErrorPage, navigationParameters);
             }
         }
 

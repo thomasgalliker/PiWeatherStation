@@ -1,0 +1,67 @@
+{
+  "OpenWeatherMapPageOptions": {
+    "Places": [
+      {
+        "Name": "Cham",
+        "Latitude": "47.1823761",
+        "Longitude": "8.4611036",
+        "IsCurrentPlace": true
+      },
+      {
+        "Name": "Laax",
+        "Latitude": "46.806412",
+        "Longitude": "9.2581267"
+      },
+      {
+        "Name": "Geiss",
+        "Latitude": "47.0907124",
+        "Longitude": "8.0559381"
+      }
+    ]
+  },
+  "AppSettings": {
+    "RunSetup": false
+  },
+  "TemperatureDiagramPageOptions": {
+    "Places": [
+      {
+        "Name": "Cham",
+        "Latitude": "47.1823761",
+        "Longitude": "8.4611036"
+      },
+      {
+        "Name": "Laax",
+        "Latitude": "46.806412",
+        "Longitude": "9.2581267"
+      },
+      {
+        "Name": "Geiss",
+        "Latitude": "47.0907124",
+        "Longitude": "8.0559381"
+      }
+    ]
+  },
+  "MeteoSwissWeatherPageOptions": {
+    "Places": [
+      {
+        "Name": "Cham",
+        "Plz": 6330
+      },
+      {
+        "Name": "Laax",
+        "Plz": 7031
+      },
+      {
+        "Name": "Geiss",
+        "Plz": 6130
+      }
+    ]
+  },
+  "WaterTemperaturePageOptions": {
+    "Places": [
+      "Luzern",
+      "Bern",
+      "Zug"
+    ]
+  }
+}

@@ -15,4 +15,7 @@
   <data name="RelativeHumiditySuffix" xml:space="preserve">
     <value>RF</value>
   </data>
+  <data name="OpenWeatherMapPageErrorMissingPlacesConfigurationLine1" xml:space="preserve">
+    <value>Fehler: Keine "Places" konfiguriert.</value>
+  </data>
 </root>
