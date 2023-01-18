@@ -103,7 +103,7 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                 Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
-            INavigatedAware page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
+            INavigatedTo page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
             await page.OnNavigatedToAsync(parameters: null);
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
@@ -134,7 +134,7 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                 Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
-            INavigatedAware page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
+            INavigatedTo page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
             await page.OnNavigatedToAsync(parameters: null);
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
@@ -177,7 +177,7 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                 Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
-            INavigatedAware page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
+            INavigatedTo page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
             await page.OnNavigatedToAsync(parameters: null);
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
@@ -215,7 +215,7 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                  Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
-            INavigatedAware page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
+            INavigatedTo page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
             await page.OnNavigatedToAsync(parameters: null);
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();
@@ -257,7 +257,7 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
             schedulerMock.Setup(s => s.AddTask(It.IsAny<IScheduledTask>())).
                   Callback<IScheduledTask>(t => { taskIds.Add(t.Id); });
 
-            INavigatedAware page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
+            INavigatedTo page = this.autoMocker.CreateInstance<OpenWeatherMapPage>();
             await page.OnNavigatedToAsync(parameters: null);
 
             IDisplayManager displayManager = this.autoMocker.CreateInstance<DisplayManager>();

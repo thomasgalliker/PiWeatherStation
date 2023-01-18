@@ -7,7 +7,6 @@ using DisplayService.Services;
 using MeteoSwissApi;
 using Microsoft.Extensions.Options;
 using NCrontab;
-using OpenWeatherMap.Models;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Resources;
@@ -15,7 +14,7 @@ using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages.MeteoSwiss
 {
-    public class MeteoSwissWeatherPage : INavigatedAware
+    public class MeteoSwissWeatherPage : INavigatedTo
     {
         private readonly IDisplayManager displayManager;
         private readonly IMeteoSwissWeatherService meteoSwissWeatherService;
@@ -509,26 +508,6 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                 CrontabSchedule.Parse("*/15 * * * *")); // Update every 15mins
 
             return Task.CompletedTask;
-        }
-
-        private static string FormatRain(double rain)
-        {
-            return rain > 0d && rain < 1d ? $"{rain:F1}mm" : $"{rain:0}mm";
-        }
-
-        private static string FormatTemperature(Temperature temperature)
-        {
-            string formattedTemperature;
-            //if (temperature.Value < 1d && temperature.Value > -1)
-            //{
-            //    formattedTemperature = temperature.ToString("0.#");
-            //}
-            //else
-            {
-                formattedTemperature = temperature.ToString("0");
-            }
-
-            return formattedTemperature;
         }
     }
 }

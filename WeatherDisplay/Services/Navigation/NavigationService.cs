@@ -54,7 +54,7 @@ namespace WeatherDisplay.Services.Navigation
             {
                 this.logger.LogDebug($"NavigateAsync: name={name}, navigationParameters={navigationParameters?.ToString() ?? "null"}");
 
-                var interfaceType = typeof(INavigatedAware);
+                var interfaceType = typeof(INavigatedTo);
                 var typesToLookup = this.GetType().Assembly
                     .DefinedTypes.Where(t =>
                         t.DeclaringType == null &&
@@ -73,11 +73,12 @@ namespace WeatherDisplay.Services.Navigation
 
                 var typeToResolve = typesToLookup.First();
 
-                INavigatedAware selectedPage;
+                var previousPage = this.currentPage;
+                INavigatedTo selectedPage;
 
                 try
                 {
-                    selectedPage = this.serviceProvider.GetService(typeToResolve) as INavigatedAware;
+                    selectedPage = this.serviceProvider.GetService(typeToResolve) as INavigatedTo;
                     if (selectedPage == null)
                     {
                         throw new ArgumentException($"Unable to resolve target page of type {typeToResolve.FullName}", nameof(name));
@@ -90,6 +91,14 @@ namespace WeatherDisplay.Services.Navigation
                 }
 
                 this.displayManager.RemoveRenderingActions();
+
+                // In case a different page is selected and the previous page implements INavigatedFrom
+                // we inform the previous page that it is navigated from.
+                if (previousPage is INavigatedFrom previousPageNavigatedFrom &&
+                    previousPage != selectedPage)
+                {
+                    await previousPageNavigatedFrom.OnNavigatedFromAsync(navigationParameters);
+                }
 
                 await selectedPage.OnNavigatedToAsync(navigationParameters);
 

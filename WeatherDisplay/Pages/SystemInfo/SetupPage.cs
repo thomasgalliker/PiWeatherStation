@@ -12,7 +12,7 @@ using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {
-    public class SetupPage : INavigatedAware
+    public class SetupPage : INavigatedTo
     {
         private readonly IDisplayManager displayManager;
         private readonly IDateTime dateTime;
@@ -153,6 +153,11 @@ namespace WeatherDisplay.Pages.SystemInfo
 
                     return currentWeatherRenderActions;
                 });
+        }
+
+        public Task OnNavigatedFromAsync(INavigationParameters parameters)
+        {
+            return Task.CompletedTask;
         }
     }
 }

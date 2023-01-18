@@ -16,7 +16,7 @@ using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages
 {
-    public class TemperatureDiagramPage : INavigatedAware
+    public class TemperatureDiagramPage : INavigatedTo
     {
         private readonly IDisplayManager displayManager;
         private readonly IOpenWeatherMapService openWeatherMapService;

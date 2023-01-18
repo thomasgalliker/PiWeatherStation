@@ -102,7 +102,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<INetworkManager, NetworkManager>();
             services.AddSingleton<ITranslationService, DeepLTranslationService>();
             services.AddSingleton<INavigationService, NavigationService>();
-            services.RegisterAllTypesAsSelf<INavigatedAware>(lifetime: ServiceLifetime.Singleton);
+            services.RegisterAllTypesAsSelf<INavigatedTo>(lifetime: ServiceLifetime.Singleton);
 
             services.AddSingleton<IWiewarmService, WiewarmService>();
             services.AddSingleton<IQRCodeService, QRCodeService>();

@@ -25,7 +25,7 @@ using Temperature = OpenWeatherMap.Models.Temperature;
 
 namespace WeatherDisplay.Pages.OpenWeatherMap
 {
-    public class OpenWeatherMapPage : INavigatedAware
+    public class OpenWeatherMapPage : INavigatedTo, INavigatedFrom
     {
         private readonly ILogger logger;
         private readonly IDisplayManager displayManager;
@@ -827,6 +827,12 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                 });
             }
 
+            return Task.CompletedTask;
+        }
+
+        public Task OnNavigatedFromAsync(INavigationParameters parameters)
+        {
+            this.currentPlace = null;
             return Task.CompletedTask;
         }
 
