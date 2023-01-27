@@ -87,6 +87,11 @@ namespace WeatherDisplay.Services.Hardware
 
         public async Task HandleButtonPress(int buttonId)
         {
+            if (!this.initialized)
+            {
+                return;
+            }
+
             this.logger.LogDebug($"HandleButtonPress: buttonId={buttonId}");
 
             try
@@ -132,6 +137,11 @@ namespace WeatherDisplay.Services.Hardware
 
         public async Task HandleButtonHolding(int buttonId)
         {
+            if (!this.initialized)
+            {
+                return;
+            }
+
             this.logger.LogDebug($"HandleButtonHold: buttonId={buttonId}");
 
             try
@@ -190,18 +200,34 @@ namespace WeatherDisplay.Services.Hardware
             {
                 if (disposing)
                 {
-                    this.button1.Press -= this.OnButton1Pressed;
-                    this.button1.Dispose();
+                    if (this.button1 != null)
+                    {
+                        this.button1.Press -= this.OnButton1Pressed;
+                        this.button1.Dispose();
+                        this.button1 = null;
+                    }
 
-                    this.button2.Press -= this.OnButton2Pressed;
-                    this.button2.Dispose();
+                    if (this.button2 != null)
+                    {
+                        this.button2.Press -= this.OnButton2Pressed;
+                        this.button2.Dispose();
+                        this.button2 = null;
+                    }
 
-                    this.button3.Press -= this.OnButton3Pressed;
-                    this.button3.Dispose();
+                    if (this.button3 != null)
+                    {
+                        this.button3.Press -= this.OnButton3Pressed;
+                        this.button3.Dispose();
+                        this.button3 = null;
+                    }
 
-                    this.button4.Press -= this.OnButton4Pressed;
-                    this.button4.Holding -= this.OnButton4Holding;
-                    this.button4.Dispose();
+                    if (this.button4 != null)
+                    {
+                        this.button4.Press -= this.OnButton4Pressed;
+                        this.button4.Holding -= this.OnButton4Holding;
+                        this.button4.Dispose();
+                        this.button4 = null;
+                    }
 
                     this.initialized = false;
                 }
