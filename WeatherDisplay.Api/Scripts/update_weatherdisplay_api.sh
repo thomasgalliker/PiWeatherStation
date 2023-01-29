@@ -204,10 +204,13 @@ rm "$downloadFile"
 sudo chown pi -R $workingDirectory
 sudo chmod +x "$workingDirectory/$executable"
 
-if [ ! -f "$downloadFile" ] ; then
+if [ ! -f "$serviceFilePath" ] ; then
     echo "Creating service $serviceName..."
+else
+    echo "Updating service $serviceName..."
+fi
 
-    cat > "$serviceFilePath" <<EOF
+cat > "$serviceFilePath" <<EOF
 [Unit]
 Description=WeatherDisplay.Api
 After=network-online.target firewalld.service
@@ -235,7 +238,6 @@ Environment=DOTNET_ROOT=/home/pi/.dotnet
 [Install]
 WantedBy=multi-user.target
 EOF
-fi
 
 if [ "${serviceStatus}" != "active" ]; then
     echo "Starting service $serviceName..."
