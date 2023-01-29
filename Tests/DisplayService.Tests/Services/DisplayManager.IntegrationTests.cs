@@ -30,10 +30,15 @@ namespace DisplayService.Tests.Services
             renderServiceMock.Setup(r => r.GetScreen())
                 .Returns(new MemoryStream());
 
-            this.autoMocker.Use<IScheduler>(this.autoMocker.CreateInstance<Scheduler>(enablePrivate: true));
-
             this.autoMocker.Use<ILogger<Scheduler>>(new TestOutputHelperLogger<Scheduler>(testOutputHelper));
             this.autoMocker.Use<ILogger<DisplayManager>>(new TestOutputHelperLogger<DisplayManager>(testOutputHelper));
+
+            var scheduler = this.autoMocker.CreateInstance<Scheduler>(enablePrivate: true);
+            this.autoMocker.Use<IScheduler>(scheduler);
+
+            var schedulerFactoryMock = this.autoMocker.GetMock<ISchedulerFactory>();
+            schedulerFactoryMock.Setup(f => f.Create())
+                .Returns(scheduler);
         }
 
         [Fact]

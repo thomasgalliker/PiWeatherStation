@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Device.I2c;
 using System.Threading.Tasks;
 using DisplayService.Services;
 using DisplayService.Settings;
@@ -89,6 +88,12 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
             var sensorAccessServiceMock = this.autoMocker.GetMock<ISensorAccessService>();
             sensorAccessServiceMock.SetupGet(f => f.Bme680)
                 .Returns(bme680Mock.Object);
+
+            var schedulerMock = this.autoMocker.GetMock<IScheduler>();
+
+            var schedulerFactoryMock = this.autoMocker.GetMock<ISchedulerFactory>();
+            schedulerFactoryMock.Setup(f => f.Create())
+                .Returns(schedulerMock.Object);
 
             this.autoMocker.Use<IRenderService>(this.autoMocker.CreateInstance<RenderService>());
             this.autoMocker.Use<IDisplayManager>(this.autoMocker.CreateInstance<DisplayManager>());
