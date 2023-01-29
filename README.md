@@ -60,8 +60,7 @@ sudo timedatectl set-timezone Europe/Zurich
 - Go to Microsoft's [dotnet download page](https://dotnet.microsoft.com/en-us/download/dotnet/6.0) and download the appropriate version of .NET. I usually use the 32bit Version of Raspbian OS, so the appropriate .NET architecture should be ARM32.
 - The following dotnet-install.sh script simplifies the automated installation of dotnet on Linux:
 ```
-curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version 6.0.405 --install-dir /home/pi/.dotnet
-curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel Current
+curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 6.0 --install-dir /home/pi/.dotnet
 ```
 
 - Edit the bash profile and add following lines to the end of the file. If `export PATH` already exists, extend it instead of creating a new export. Use `sudo nano ~/.bashrc` to double check if everything is fine.
