@@ -151,12 +151,13 @@ sudo systemctl disable dnsmasq
 echo ""
 
 if [ -d $dotnetDirectory ]; then
-    echo "dotnet already exists"
+    echo "Updating dotnet..."
 else
     echo "Installing dotnet..."
-    curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 6.0 --install-dir $dotnetDirectory
-    echo ""
 fi
+
+curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 6.0 --install-dir $dotnetDirectory
+echo ""
 
 echo "Updating dotnet environment variables"
 if ! grep -q ".NET Core SDK tools" "/home/pi/.bashrc"; then
