@@ -30,7 +30,7 @@ namespace WeatherDisplay.Api.Services
             INavigationService navigationService,
             IButtonsAccessService buttonsAccessService,
             ISensorAccessService sensorAccessService,
-            IScheduler scheduler,
+            ISchedulerFactory schedulerFactory,
             IDisplayManager displayManager)
         {
             this.logger = logger;
@@ -39,7 +39,7 @@ namespace WeatherDisplay.Api.Services
             this.navigationService = navigationService;
             this.buttonsAccessService = buttonsAccessService;
             this.sensorAccessService = sensorAccessService;
-            this.scheduler = scheduler;
+            this.scheduler = schedulerFactory.Create();
             this.displayManager = displayManager;
         }
 

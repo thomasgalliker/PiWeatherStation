@@ -107,7 +107,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IWiewarmService, WiewarmService>();
             services.AddSingleton<IQRCodeService, QRCodeService>();
 
-            services.AddSingleton<IScheduler>(x => new Scheduler(x.GetRequiredService<ILogger<Scheduler>>()));
+            services.AddScheduler();
 
             // ====== Hardware access ======
             services.AddGpioDevices();
