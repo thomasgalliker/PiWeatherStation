@@ -1,4 +1,5 @@
-﻿using UnitsNet;
+﻿using System.Threading.Tasks;
+using UnitsNet;
 
 namespace Iot.Device.Scd4x
 {
@@ -8,7 +9,12 @@ namespace Iot.Device.Scd4x
 
         public RelativeHumidity RelativeHumidity => RelativeHumidity.FromPercent(60d);
 
-        public VolumeConcentration Co2 => VolumeConcentration.FromPartsPerMillion(1.5d);
+        public VolumeConcentration Co2 => VolumeConcentration.FromPartsPerMillion(1500d);
+
+        public Task<Scd41ReadResult> ReadAsync()
+        {
+            return Task.FromResult(new Scd41ReadResult(this.Temperature, this.RelativeHumidity, this.Co2));
+        }
 
         public void Reset()
         {
