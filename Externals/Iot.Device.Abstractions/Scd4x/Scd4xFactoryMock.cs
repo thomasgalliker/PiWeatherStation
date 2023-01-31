@@ -15,7 +15,7 @@ namespace Iot.Device.Scd4x
         public IScd4x Create(I2cConnectionSettings i2cSettings)
         {
             this.logger.LogDebug("Create");
-            return new Scd41Mock();
+            return new Scd4xMock();
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Iot.Device.Scd4x
 {
-    internal class Scd41Mock : IScd4x
+    internal class Scd4xMock : IScd4x
     {
         public Temperature Temperature => Temperature.FromDegreesCelsius(20d);
 
