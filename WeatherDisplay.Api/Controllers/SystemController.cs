@@ -35,6 +35,13 @@ namespace WeatherDisplay.Api.Controllers
             this.autoUpdateService = autoUpdateService;
         }
 
+        [HttpGet("sudo")]
+        public bool HaveSudoPrivileges()
+        {
+            var haveSudoPrivileges = this.processRunner.HaveSudoPrivileges();
+            return haveSudoPrivileges;
+        }
+        
         [HttpGet("cpuinfo")]
         public async Task<CpuInfo> GetSystemInfoAsync()
         {
