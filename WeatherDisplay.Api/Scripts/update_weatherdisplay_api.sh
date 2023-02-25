@@ -217,13 +217,14 @@ After=network-online.target firewalld.service
 Wants=network-online.target
 
 [Service]
-Type=notify
+Type=simple
 WorkingDirectory=$workingDirectory
-ExecStart=$workingDirectory/$executable
+ExecStart=/usr/bin/sudo $dotnetDirectory/dotnet $workingDirectory/$executable.dll
 ExecStop=/bin/kill \$MAINPID
 KillSignal=SIGTERM
 KillMode=process
 SyslogIdentifier=$executable
+TimeoutStartSec=60
 TimeoutStopSec=20
 
 User=pi

@@ -151,37 +151,27 @@ sudo nano /etc/systemd/system/weatherdisplay.api.service
 ```
 [Unit]
 Description=WeatherDisplay.Api
-
-# When this service should be started up
 After=network-online.target firewalld.service
-
-# Is dependent on this target
 Wants=network-online.target
 
 [Service]
-Type=notify
+Type=simple
 WorkingDirectory=/home/pi/WeatherDisplay.Api
-ExecStart=/home/pi/WeatherDisplay.Api/WeatherDisplay.Api
+ExecStart=sudo /home/pi/.dotnet/dotnet /home/pi/WeatherDisplay.Api/WeatherDisplay.Api.dll
 ExecStop=/bin/kill $MAINPID
 KillSignal=SIGTERM
 KillMode=process
 SyslogIdentifier=WeatherDisplay.Api
+TimeoutStartSec=60
+TimeoutStopSec=20
 
-# Use your username to keep things simple, for production scenario's I recommend a dedicated user/group.
-# If you pick a different user, make sure dotnet and all permissions are set correctly to run the app.
-# To update permissions, use 'chown pi -R /home/pi/WeatherDisplay.Api' to take ownership of the folder and files,
-#       Use 'chmod +x /home/pi/WeatherDisplay.Api/WeatherDisplay.Api' to allow execution of the executable file.
 User=pi
 Group=pi
 
 Restart=no
 
-# ASP.NET environment variable
 Environment=ASPNETCORE_ENVIRONMENT=Production
 Environment=DOTNET_PRINT_TELEMETRY_MESSAGE=false
-
-# This environment variable is necessary when dotnet isn't loaded for the specified user.
-# To figure out this value, run 'env | grep DOTNET_ROOT' when dotnet has been loaded into your shell.
 Environment=DOTNET_ROOT=/home/pi/.dotnet
 
 [Install]
