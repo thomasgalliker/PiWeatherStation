@@ -30,6 +30,14 @@ namespace WeatherDisplay.Api
 
         private static void Main(string[] args)
         {
+            var cancellationSource = new CancellationTokenSource();
+
+            Console.CancelKeyPress += (_, eventArgs) =>
+            {
+                eventArgs.Cancel = true;
+                cancellationSource.Cancel();
+            };
+
             Console.WriteLine(
                 $"WeatherStation version {typeof(Program).Assembly.GetName().Version} {Environment.NewLine}" +
                 $"Copyright(C) superdev GmbH. All rights reserved.{Environment.NewLine}");
@@ -41,6 +49,7 @@ namespace WeatherDisplay.Api
             var builder = WebApplication.CreateBuilder(args);
             builder.WebHost.UseKestrel(o =>
             {
+                o.UseSystemd();
                 o.ConfigureHttpsDefaults(httpsOptions =>
                 {
                     var (Private, Public) = CreateSelfSignedCertificate(privateKeyFile, publicKeyFile, httpsEndpoint);
@@ -208,7 +217,9 @@ namespace WeatherDisplay.Api
 
             app.UseStaticFiles();
 
-            app.Run();
+            _ = app.RunAsync(cancellationSource.Token);
+            
+            app.WaitForShutdown();
         }
 
         private static (X509Certificate2 Private, X509Certificate2 Public) CreateSelfSignedCertificate(string privateKeyFile, string publicKeyFile, IPAddress httpsEndpoint)

@@ -25,11 +25,17 @@ namespace WeatherDisplay.Api.Services
 
             return new IExecutorStep[]
             {
-               downloadHttpFileStep,
+                downloadHttpFileStep,
                 new ProcessStartExecutorStep
                 {
                     FileName = "sudo",
                     Arguments = "systemctl stop weatherdisplay.api.service",
+                    CreateNoWindow = true,
+                },
+                new ProcessStartExecutorStep
+                {
+                    FileName = "sudo",
+                    Arguments = "curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 6.0 --install-dir /home/pi/.dotnet",
                     CreateNoWindow = true,
                 },
                 new ExtractZipStep

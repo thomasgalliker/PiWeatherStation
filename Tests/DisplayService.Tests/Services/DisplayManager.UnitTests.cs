@@ -6,6 +6,7 @@ using DisplayService.Tests.Logging;
 using Microsoft.Extensions.Logging;
 using Moq;
 using Moq.AutoMock;
+using NCrontab.Scheduler;
 using Xunit;
 using Xunit.Abstractions;
 
@@ -22,6 +23,12 @@ namespace DisplayService.Tests.Services
             var renderServiceMock = this.autoMocker.GetMock<IRenderService>();
             renderServiceMock.Setup(r => r.GetScreen())
                 .Returns(new MemoryStream());
+
+            var schedulerMock = this.autoMocker.GetMock<IScheduler>();
+
+            var schedulerFactoryMock = this.autoMocker.GetMock<ISchedulerFactory>();
+            schedulerFactoryMock.Setup(f => f.Create())
+                .Returns(schedulerMock.Object);
 
             this.autoMocker.Use<ILogger<DisplayManager>>(new TestOutputHelperLogger<DisplayManager>(testOutputHelper));
         }

@@ -88,7 +88,6 @@ namespace Microsoft.Extensions.DependencyInjection
             // ====== Services ======
             services.AddSingleton<ICacheService, CacheService>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton<IDateTime, SystemDateTime>(); // TODO Move to separate ServiceCollectionExtensions
-            services.AddSingleton<ITimerServiceFactory, TimerServiceFactory>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton<IRenderService, RenderService>(); // TODO Move to separate ServiceCollectionExtensions
             services.AddSingleton(renderSettings);
             services.AddSingleton<IDisplayManager, DisplayManager>();
@@ -107,7 +106,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<IWiewarmService, WiewarmService>();
             services.AddSingleton<IQRCodeService, QRCodeService>();
 
-            services.AddSingleton<IScheduler>(x => new Scheduler(x.GetRequiredService<ILogger<Scheduler>>()));
+            services.AddScheduler();
 
             // ====== Hardware access ======
             services.AddGpioDevices();

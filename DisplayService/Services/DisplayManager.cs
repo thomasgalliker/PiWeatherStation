@@ -25,13 +25,13 @@ namespace DisplayService.Services
             ILogger<DisplayManager> logger,
             IRenderService renderService,
             IDisplay display,
-            IScheduler scheduler,
+            ISchedulerFactory schedulerFactory,
             ICacheService cacheService)
         {
             this.logger = logger;
             this.renderService = renderService;
             this.display = display;
-            this.scheduler = scheduler;
+            this.scheduler = schedulerFactory.Create();
             this.cacheService = cacheService;
 
             this.scheduler.Next += this.OnNextSchedule;

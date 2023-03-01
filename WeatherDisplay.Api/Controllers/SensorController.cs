@@ -7,11 +7,11 @@ namespace WeatherDisplay.Api.Controllers
 {
     [ApiController]
     [Route("api/sensor")]
-    public class SensorsController : ControllerBase
+    public class SensorController : ControllerBase
     {
         private readonly ISensorAccessService sensorsAccessService;
 
-        public SensorsController(ISensorAccessService sensorsAccessService)
+        public SensorController(ISensorAccessService sensorsAccessService)
         {
             this.sensorsAccessService = sensorsAccessService;
         }
@@ -26,6 +26,20 @@ namespace WeatherDisplay.Api.Controllers
             }
 
             var readResult = await bme680.ReadAsync();
+            var sensorData = readResult.ToSensorData();
+            return sensorData;
+        }
+
+        [HttpGet("scd41")]
+        public async Task<SensorData> Scd41()
+        {
+            var scd41 = this.sensorsAccessService.Scd41;
+            if (scd41 == null)
+            {
+                return null;
+            }
+
+            var readResult = await scd41.ReadAsync();
             var sensorData = readResult.ToSensorData();
             return sensorData;
         }

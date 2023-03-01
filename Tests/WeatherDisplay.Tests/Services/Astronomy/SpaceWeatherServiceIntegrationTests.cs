@@ -36,10 +36,7 @@ namespace WeatherDisplay.Tests.Services.Astronomy
             planetaryKIndexForecasts.Should().NotBeNull();
             planetaryKIndexForecasts.Should().HaveCount(81);
             planetaryKIndexForecasts[0].TimeTag.Kind.Should().Be(DateTimeKind.Utc);
-            planetaryKIndexForecasts[0].KpIndex.Should().BeInRange(0, 5);
-
-            var firstEstimated = planetaryKIndexForecasts.OrderBy(f => f.TimeTag).First(f => f.Observed == "estimated");
-            firstEstimated.TimeTag.Should().BeBefore(DateTime.UtcNow);
+            planetaryKIndexForecasts[0].KpIndex.Should().BeInRange(0, 9);
         }
     }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Device.I2c;
+using System.Linq;
 using Iot.Device.Bmxx80;
 using Iot.Device.Scd4x;
 using Microsoft.Extensions.Logging;
@@ -38,6 +40,8 @@ namespace WeatherDisplay.Services.Hardware
 
             this.logger.LogDebug($"Initialize");
 
+            var exceptions = new List<Exception>();
+
             try
             {
                 var i2cSettings = new I2cConnectionSettings(I2cBusId, Iot.Device.Bmxx80.Bme680.SecondaryI2cAddress);
@@ -47,26 +51,33 @@ namespace WeatherDisplay.Services.Hardware
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, $"Failed to initialize Bme680");
+                exceptions.Add(ex);
             }
-            
+
             try
             {
-                var i2cSettings = new I2cConnectionSettings(I2cBusId, Iot.Device.Scd4x.Scd4x.DefaultI2cAddress);
+                var i2cSettings = new I2cConnectionSettings(I2cBusId, Scd4x.DefaultI2cAddress);
                 var scd41 = this.scd4xFactory.Create(i2cSettings);
                 scd41.Reset();
                 this.Scd41 = scd41;
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex, $"Failed to initialize Scd41");
+                exceptions.Add(ex);
+            }
+
+            // At least one sensor should be available.
+            // If not, log error.
+            if (exceptions.Count > 1)
+            {
+                this.logger.LogError($"Failed to initialize sensors", new AggregateException(exceptions));
             }
 
             this.initialized = true;
         }
 
         public IBme680 Bme680 { get; private set; }
-        
+
         public IScd4x Scd41 { get; private set; }
 
         protected virtual void Dispose(bool disposing)
@@ -77,7 +88,7 @@ namespace WeatherDisplay.Services.Hardware
                 {
                     this.Bme680?.Dispose();
                     this.Bme680 = null;
-                    
+
                     this.Scd41?.Dispose();
                     this.Scd41 = null;
 

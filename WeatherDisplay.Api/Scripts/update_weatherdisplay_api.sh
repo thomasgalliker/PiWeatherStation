@@ -151,12 +151,13 @@ sudo systemctl disable dnsmasq
 echo ""
 
 if [ -d $dotnetDirectory ]; then
-    echo "dotnet already exists"
+    echo "Updating dotnet..."
 else
     echo "Installing dotnet..."
-    sudo curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --install-dir $dotnetDirectory --channel Current
-    echo ""
 fi
+
+curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 6.0 --install-dir $dotnetDirectory
+echo ""
 
 echo "Updating dotnet environment variables"
 if ! grep -q ".NET Core SDK tools" "/home/pi/.bashrc"; then
@@ -203,23 +204,27 @@ rm "$downloadFile"
 sudo chown pi -R $workingDirectory
 sudo chmod +x "$workingDirectory/$executable"
 
-if [ ! -f "$downloadFile" ] ; then
+if [ ! -f "$serviceFilePath" ] ; then
     echo "Creating service $serviceName..."
+else
+    echo "Updating service $serviceName..."
+fi
 
-    cat > "$serviceFilePath" <<EOF
+cat > "$serviceFilePath" <<EOF
 [Unit]
 Description=WeatherDisplay.Api
 After=network-online.target firewalld.service
 Wants=network-online.target
 
 [Service]
-Type=notify
+Type=simple
 WorkingDirectory=$workingDirectory
-ExecStart=$workingDirectory/$executable
+ExecStart=sudo $dotnetDirectory/dotnet $workingDirectory/$executable.dll
 ExecStop=/bin/kill \$MAINPID
 KillSignal=SIGTERM
 KillMode=process
 SyslogIdentifier=$executable
+TimeoutStartSec=60
 TimeoutStopSec=20
 
 User=pi
@@ -234,7 +239,6 @@ Environment=DOTNET_ROOT=/home/pi/.dotnet
 [Install]
 WantedBy=multi-user.target
 EOF
-fi
 
 if [ "${serviceStatus}" != "active" ]; then
     echo "Starting service $serviceName..."
