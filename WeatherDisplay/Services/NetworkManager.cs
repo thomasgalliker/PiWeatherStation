@@ -12,7 +12,6 @@ namespace WeatherDisplay.Services
 {
     public class NetworkManager : INetworkManager
     {
-        private const string SSID = "testssid";
         private const string DefaultIPAddress = "192.168.99.1";
         private const int Channel = 6;
         private const string WlanNetworkName = "wlan0";
@@ -20,15 +19,18 @@ namespace WeatherDisplay.Services
         private readonly INetworkInterfaceService networkInterfaceService;
         private readonly RaspberryPi.Network.INetworkManager networkManager;
         private readonly IWPA wpa;
+        private readonly ISystemInfoService systemInfoService;
 
         public NetworkManager(
             INetworkInterfaceService networkInterfaceService,
             RaspberryPi.Network.INetworkManager networkManager,
-            IWPA wpa)
+            IWPA wpa,
+            ISystemInfoService systemInfoService)
         {
             this.networkInterfaceService = networkInterfaceService;
             this.networkManager = networkManager;
             this.wpa = wpa;
+            this.systemInfoService = systemInfoService;
         }
 
         public IEnumerable<string> ScanAsync()
@@ -56,7 +58,8 @@ namespace WeatherDisplay.Services
 
         public async Task<(string SSID, string PSK)> SetupAccessPoint()
         {
-            var ssid = SSID;
+            var cpuInfo = await this.systemInfoService.GetCpuInfoAsync();
+            var ssid = $"PiWeatherDisplay_{cpuInfo.Serial.Substring(cpuInfo.Serial.Length - 4).ToUpperInvariant()}";
             var psk = Guid.NewGuid().ToString("N").Substring(0, 8);
             var wlan0 = this.GetWlanNetworkInterface();
             var parsedIPAddress = IPAddress.Parse(DefaultIPAddress);
