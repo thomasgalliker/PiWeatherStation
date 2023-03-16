@@ -12,19 +12,31 @@
         </trans-unit>
         <trans-unit id="UltraViolettAbbreviation" translate="yes" xml:space="preserve">
           <source>UV</source>
-          <target state="new">UV</target>
+          <target state="final">UV</target>
         </trans-unit>
         <trans-unit id="CarbonDioxideAbbreviation" translate="yes" xml:space="preserve">
           <source>CO2</source>
-          <target state="new">CO2</target>
+          <target state="final">CO2</target>
         </trans-unit>
-        <trans-unit id="OpenWeatherMapPageErrorMissingPlacesConfigurationLine1" translate="yes" xml:space="preserve">
+        <trans-unit id="OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine1" translate="yes" xml:space="preserve">
           <source>Error: Missing places configuration.</source>
-          <target state="new">Error: Missing places configuration.</target>
+          <target state="final">Error: Missing places configuration.</target>
         </trans-unit>
-        <trans-unit id="OpenWeatherMapPageErrorMissingPlacesConfigurationLine2" translate="yes" xml:space="preserve">
+        <trans-unit id="OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine2" translate="yes" xml:space="preserve">
           <source>appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places</source>
-          <target state="new">appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places</target>
+          <target state="final">appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places</target>
+        </trans-unit>
+        <trans-unit id="MeteoSwissWeatherPage_SourceName" translate="yes" xml:space="preserve">
+          <source>Source: MeteoSwiss</source>
+          <target state="new">Source: MeteoSwiss</target>
+        </trans-unit>
+        <trans-unit id="OpenWeatherMapPage_SourceName" translate="yes" xml:space="preserve">
+          <source>Source: OpenWeatherMap</source>
+          <target state="new">Source: OpenWeatherMap</target>
+        </trans-unit>
+        <trans-unit id="WaterTemperaturePage_SourceName" translate="yes" xml:space="preserve">
+          <source>Source: wiewarm.ch</source>
+          <target state="new">Source: wiewarm.ch</target>
         </trans-unit>
       </group>
     </body>

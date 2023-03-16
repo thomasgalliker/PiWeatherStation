@@ -7,6 +7,7 @@ using DisplayService.Services;
 using Microsoft.Extensions.Options;
 using NCrontab;
 using OpenWeatherMap;
+using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Navigation;
 using WeatherDisplay.Services.Wiewarm;
 
@@ -71,7 +72,7 @@ namespace WeatherDisplay.Pages.Wiewarm
                             Y = 88,
                             HorizontalTextAlignment = HorizontalAlignment.Right,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"v{fvi.ProductVersion}",
+                            Value = $"{Translations.WaterTemperaturePage_SourceName} / v{fvi.ProductVersion}",
                             ForegroundColor = "#FFFFFF",
                             BackgroundColor = "#000000",
                             FontSize = 12,

@@ -15,4 +15,16 @@
   <data name="RelativeHumiditySuffix" xml:space="preserve">
     <value>RH</value>
   </data>
+  <data name="UltraViolettAbbreviation" xml:space="preserve">
+    <value>UV</value>
+  </data>
+  <data name="CarbonDioxideAbbreviation" xml:space="preserve">
+    <value>CO2</value>
+  </data>
+  <data name="OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine1" xml:space="preserve">
+    <value>Error: Missing places configuration.</value>
+  </data>
+  <data name="OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine2" xml:space="preserve">
+    <value>appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places</value>
+  </data>
 </root>

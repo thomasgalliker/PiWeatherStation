@@ -12,6 +12,7 @@ using OpenWeatherMap.Models;
 using SkiaSharp;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
+using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages
@@ -80,7 +81,7 @@ namespace WeatherDisplay.Pages
                             Y = 88,
                             HorizontalTextAlignment = HorizontalAlignment.Right,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"v{fvi.ProductVersion}",
+                            Value = $"{Translations.MeteoSwissWeatherPage_SourceName} / v{fvi.ProductVersion}",
                             ForegroundColor = "#FFFFFF",
                             BackgroundColor = "#000000",
                             FontSize = 12,

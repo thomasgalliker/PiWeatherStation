@@ -15,7 +15,25 @@
   <data name="RelativeHumiditySuffix" xml:space="preserve">
     <value>RF</value>
   </data>
-  <data name="OpenWeatherMapPageErrorMissingPlacesConfigurationLine1" xml:space="preserve">
-    <value>Fehler: Keine "Places" konfiguriert.</value>
+  <data name="UltraViolettAbbreviation" xml:space="preserve">
+    <value>UV</value>
+  </data>
+  <data name="CarbonDioxideAbbreviation" xml:space="preserve">
+    <value>CO2</value>
+  </data>
+  <data name="OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine1" xml:space="preserve">
+    <value>Fehler: Keine Ortschaften (Places) konfiguriert.</value>
+  </data>
+  <data name="OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine2" xml:space="preserve">
+    <value>appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places</value>
+  </data>
+  <data name="MeteoSwissWeatherPage_SourceName" xml:space="preserve">
+    <value>Quelle: MeteoSwiss</value>
+  </data>
+  <data name="OpenWeatherMapPage_SourceName" xml:space="preserve">
+    <value>Quelle: OpenWeatherMap</value>
+  </data>
+  <data name="WaterTemperaturePage_SourceName" xml:space="preserve">
+    <value>Quelle: wiewarm.ch</value>
   </data>
 </root>

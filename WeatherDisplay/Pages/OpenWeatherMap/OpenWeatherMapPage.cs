@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using NCrontab;
 using OpenWeatherMap;
 using OpenWeatherMap.Models;
+using RaspberryPi;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Resources;
@@ -107,7 +108,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             Y = 88,
                             HorizontalTextAlignment = HorizontalAlignment.Right,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"v{fvi.ProductVersion}",
+                            Value = $"{Translations.OpenWeatherMapPage_SourceName} / v{fvi.ProductVersion}",
                             ForegroundColor = "#FFFFFF",
                             BackgroundColor = "#000000",
                             FontSize = 12,
@@ -790,6 +791,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             xOffset = xOffset + spacing + widthPerDailyForecast;
 
                         }
+
                         return currentWeatherRenderActions;
                     },
                     CrontabSchedule.Parse("*/15 * * * *")); // Update every 15mins
@@ -807,7 +809,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = Translations.OpenWeatherMapPageErrorMissingPlacesConfigurationLine1,
+                            Value = Translations.OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine1,
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
@@ -818,7 +820,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             Y = 140,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = Translations.OpenWeatherMapPageErrorMissingPlacesConfigurationLine2,
+                            Value = Translations.OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine2,
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,

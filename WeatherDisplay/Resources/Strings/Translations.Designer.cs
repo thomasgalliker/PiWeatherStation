@@ -70,20 +70,38 @@ namespace WeatherDisplay.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Source: MeteoSwiss.
+        /// </summary>
+        internal static string MeteoSwissWeatherPage_SourceName {
+            get {
+                return ResourceManager.GetString("MeteoSwissWeatherPage_SourceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error: Missing places configuration..
         /// </summary>
-        internal static string OpenWeatherMapPageErrorMissingPlacesConfigurationLine1 {
+        internal static string OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine1 {
             get {
-                return ResourceManager.GetString("OpenWeatherMapPageErrorMissingPlacesConfigurationLine1", resourceCulture);
+                return ResourceManager.GetString("OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine1", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places.
         /// </summary>
-        internal static string OpenWeatherMapPageErrorMissingPlacesConfigurationLine2 {
+        internal static string OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine2 {
             get {
-                return ResourceManager.GetString("OpenWeatherMapPageErrorMissingPlacesConfigurationLine2", resourceCulture);
+                return ResourceManager.GetString("OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source: OpenWeatherMap.
+        /// </summary>
+        internal static string OpenWeatherMapPage_SourceName {
+            get {
+                return ResourceManager.GetString("OpenWeatherMapPage_SourceName", resourceCulture);
             }
         }
         
@@ -102,6 +120,15 @@ namespace WeatherDisplay.Resources.Strings {
         internal static string UltraViolettAbbreviation {
             get {
                 return ResourceManager.GetString("UltraViolettAbbreviation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Source: wiewarm.ch.
+        /// </summary>
+        internal static string WaterTemperaturePage_SourceName {
+            get {
+                return ResourceManager.GetString("WaterTemperaturePage_SourceName", resourceCulture);
             }
         }
     }

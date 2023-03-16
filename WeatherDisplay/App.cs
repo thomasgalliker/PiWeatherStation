@@ -25,6 +25,7 @@ namespace WeatherDisplay
             public const string SystemInfoPage = nameof(WeatherDisplay.Pages.SystemInfo.SystemInfoPage);
             public const string ErrorPage = nameof(WeatherDisplay.Pages.SystemInfo.ErrorPage);
             
+            public const string OpenWeatherMapPage = nameof(WeatherDisplay.Pages.OpenWeatherMap.OpenWeatherMapPage);
             public const string MeteoSwissWeatherPage = nameof(WeatherDisplay.Pages.MeteoSwiss.MeteoSwissWeatherPage);
 
         }
