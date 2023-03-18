@@ -20,6 +20,8 @@ namespace DisplayService.Services
 
         void Rectangle(RenderActions.Rectangle rectangle);
         
+        void Canvas(RenderActions.Canvas canvas);
+
         void StackLayout(RenderActions.StackLayout stackLayout);
     }
 }

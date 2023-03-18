@@ -23,6 +23,8 @@ namespace DisplayService.Model
             public string StrokeColor { get; set; } = "#FF000000";
 
             public float StrokeWidth { get; set; }
+            
+            public float CornerRadius { get; set; }
 
             public string BackgroundColor { get; set; } = "#00000000";
 

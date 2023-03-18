@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -7,10 +8,8 @@ using DisplayService.Resources;
 using DisplayService.Services;
 using NCrontab;
 using RaspberryPi;
-using RaspberryPi.Network;
 using WeatherDisplay.Model;
 using WeatherDisplay.Resources;
-using WeatherDisplay.Services;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
 
@@ -75,25 +74,45 @@ namespace WeatherDisplay.Pages.SystemInfo
                 {
                     var renderActions = new List<IRenderAction>
                     {
-                        // Raspberry Pi Infos
-                        new RenderActions.StreamImage
-                        {
-                            X = 0,
-                            Y = 0,
-                            Image = Images.GetSystemInfoPageBackground(),
-                            Width = 800,
-                            Height = 480,
-                            HorizontalAlignment = HorizontalAlignment.Left,
-                            VerticalAlignment = VerticalAlignment.Top,
-                        },
+                        //new RenderActions.StreamImage
+                        //{
+                        //    X = 0,
+                        //    Y = 0,
+                        //    Image = Images.GetSystemInfoPageBackground(),
+                        //    Width = 800,
+                        //    Height = 480,
+                        //    HorizontalAlignment = HorizontalAlignment.Left,
+                        //    VerticalAlignment = VerticalAlignment.Top,
+                        //},
                         new RenderActions.Rectangle
                         {
                             X = 1,
                             Y = 1,
                             Height = 480 - 2,
                             Width = 800 - 2,
-                            StrokeColor = Colors.LightGray,
+                            StrokeColor = Colors.DarkGray,
                             StrokeWidth = 2,
+                        }
+                    };
+
+                    renderActions.AddRange(new IRenderAction[]
+                    {
+                        // Raspberry Pi Infos
+                        new RaspberryPiBreakout
+                        {
+                            X = 400 - 5,
+                            Y = 4,
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            VerticalAlignment = VerticalAlignment.Top,
+                            StrokeColor = Colors.Black,
+                        },
+                        new RaspberryPiBreakout
+                        {
+                            X = 400 + 5,
+                            Y = 4,
+                            HorizontalAlignment = HorizontalAlignment.Left,
+                            VerticalAlignment = VerticalAlignment.Top,
+                            StrokeColor = Colors.Black,
                         },
                         new RenderActions.Text
                         {
@@ -194,15 +213,42 @@ namespace WeatherDisplay.Pages.SystemInfo
                             Bold = true,
                         },
 
+                        // Button Infos
+                        new RenderActions.Rectangle
+                        {
+                            X = 800 - 1,
+                            Y = 1,
+                            Height = 260 - 2,
+                            Width = 70 - 2,
+                            VerticalAlignment = VerticalAlignment.Top,
+                            HorizontalAlignment = HorizontalAlignment.Right,
+                            StrokeColor = Colors.DarkGray,
+                            StrokeWidth = 2,
+                        },
+                        new RenderActions.Text
+                        {
+                            X = 800 - 70 + 10,
+                            Y = 15,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"Buttons",
+                            ForegroundColor = Colors.DarkGray,
+                            BackgroundColor = Colors.White,
+                            FontSize = 12,
+                            Bold = true,
+                        },
+                        // TODO: Show buttons mapping here
+                        
                         // SCD41 Infos
                         new RenderActions.Rectangle
                         {
                             X = 1,
                             Y = 201,
-                            Height = 110 - 2,
-                            Width = 110 - 2,
+                            Height = 140 - 2,
+                            Width = 140 - 2,
                             StrokeColor = Colors.Black,
                             StrokeWidth = 2,
+                            CornerRadius = 8,
                         },
                         new RenderActions.Text
                         {
@@ -257,16 +303,17 @@ namespace WeatherDisplay.Pages.SystemInfo
                         new RenderActions.Rectangle
                         {
                             X = 1,
-                            Y = 313,
-                            Height = 176 - 2,
+                            Y = 343,
+                            Height = 137 - 2,
                             Width = 70 - 2,
                             StrokeColor = Colors.Black,
                             StrokeWidth = 2,
+                            CornerRadius = 8,
                         },
                         new RenderActions.Text
                         {
                             X = 10,
-                            Y = 313 + 15,
+                            Y = 343 + 15,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
                             Value = $"Input",
@@ -278,7 +325,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                         new RenderActions.Text
                         {
                             X = 10,
-                            Y = 313 + 30,
+                            Y = 343 + 30,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
                             Value = $"voltage:",
@@ -290,7 +337,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                         new RenderActions.Text
                         {
                             X = 10,
-                            Y = 313 + 45,
+                            Y = 343 + 45,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
                             Value = $"{cpuSensorsStatus.Voltage}",
@@ -299,14 +346,14 @@ namespace WeatherDisplay.Pages.SystemInfo
                             FontSize = 12,
                             Bold = true,
                         },
-                    };
+                    });
 
                     if (cpuSensorsStatus.UnderVoltageDetected)
                     {
                         renderActions.Add(new RenderActions.StreamImage
                         {
                             X = 10,
-                            Y = 313 + 60,
+                            Y = 343 + 60,
                             Image = Icons.Alert(),
                             Width = 24,
                             Height = 24,
@@ -318,6 +365,113 @@ namespace WeatherDisplay.Pages.SystemInfo
                     return renderActions;
                 },
                 CrontabSchedule.Parse("0 0 * * *")); // Update every day at 00:00
+        }
+
+        internal class RaspberryPiBreakout : RenderActions.Canvas
+        {
+            private string strokeColor = Colors.Black;
+
+            public RaspberryPiBreakout()
+            {
+                var width = 300;
+                var height = 138;
+                var strokeWidth = 2;
+                var strokeWidthHalf = strokeWidth / 2;
+
+                this.Height = height;
+                this.Width = width;
+                this.HorizontalAlignment = HorizontalAlignment.Left;
+                this.VerticalAlignment = VerticalAlignment.Top;
+
+                this.Add(new RenderActions.Rectangle
+                {
+                    X = strokeWidthHalf,
+                    Y = strokeWidthHalf,
+                    Height = height - strokeWidth,
+                    Width = width - strokeWidth,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    StrokeColor = StrokeColor,
+                    StrokeWidth = strokeWidth,
+                    CornerRadius = 16,
+                });
+
+                var distanceFromBorder = 8;
+                var drillHoleDiameter = 16;
+
+                // Top/Left
+                this.Add(new RenderActions.Rectangle
+                {
+                    X = distanceFromBorder + strokeWidthHalf,
+                    Y = distanceFromBorder + strokeWidthHalf,
+                    Height = drillHoleDiameter - strokeWidth,
+                    Width = drillHoleDiameter - strokeWidth,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    StrokeColor = Colors.DarkGray,
+                    StrokeWidth = strokeWidth,
+                    CornerRadius = drillHoleDiameter / 2,
+                });
+
+                // Top/Right
+                this.Add(new RenderActions.Rectangle
+                {
+                    X = width - distanceFromBorder - strokeWidthHalf,
+                    Y = distanceFromBorder - strokeWidthHalf,
+                    Height = drillHoleDiameter - strokeWidth,
+                    Width = drillHoleDiameter - strokeWidth,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Top,
+                    StrokeColor = Colors.DarkGray,
+                    StrokeWidth = strokeWidth,
+                    CornerRadius = drillHoleDiameter / 2,
+                });
+
+                // Bottom/Left
+                this.Add(new RenderActions.Rectangle
+                {
+                    X = distanceFromBorder + strokeWidthHalf,
+                    Y = height - distanceFromBorder - strokeWidthHalf,
+                    Height = drillHoleDiameter - strokeWidth,
+                    Width = drillHoleDiameter - strokeWidth,
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    VerticalAlignment = VerticalAlignment.Bottom,
+                    StrokeColor = Colors.DarkGray,
+                    StrokeWidth = strokeWidth,
+                    CornerRadius = drillHoleDiameter / 2,
+                });
+
+                // Bottom/Right
+                this.Add(new RenderActions.Rectangle
+                {
+                    X = width - distanceFromBorder - strokeWidthHalf,
+                    Y = height - distanceFromBorder - strokeWidthHalf,
+                    Height = drillHoleDiameter - strokeWidth,
+                    Width = drillHoleDiameter - strokeWidth,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Bottom,
+                    StrokeColor = Colors.DarkGray,
+                    StrokeWidth = strokeWidth,
+                    CornerRadius = drillHoleDiameter / 2,
+                });
+            }
+
+            public string StrokeColor
+            {
+                get => this.strokeColor;
+                set
+                {
+                    if (this.strokeColor != value)
+                    {
+                        this.strokeColor = value;
+
+                        foreach (var rectangle in this.OfType<RenderActions.Rectangle>())
+                        {
+                            rectangle.StrokeColor = value;
+                        }
+                    }
+                }
+            }
         }
     }
 }

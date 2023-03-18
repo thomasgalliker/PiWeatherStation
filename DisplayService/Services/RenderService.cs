@@ -132,7 +132,7 @@ namespace DisplayService.Services
             }
             catch (Exception ex)
             {
-                throw new Exception($"DrawText failed with exception: {ex.Message}", ex);
+                throw new Exception($"Text failed with exception: {ex.Message}", ex);
             }
         }
 
@@ -205,7 +205,15 @@ namespace DisplayService.Services
                     paint.Style = SKPaintStyle.Stroke;
                     paint.Color = SKColor.Parse(rectangle.StrokeColor);
                     paint.StrokeWidth = rectangle.StrokeWidth;
-                    canvas.DrawRect(rect, paint);
+
+                    if (rectangle.CornerRadius > 0f)
+                    {
+                        canvas.DrawRoundRect(rect, rectangle.CornerRadius, rectangle.CornerRadius, paint);
+                    }
+                    else
+                    {
+                        canvas.DrawRect(rect, paint);
+                    }
                 }
 
                 paint.Dispose();
@@ -214,9 +222,87 @@ namespace DisplayService.Services
             }
             catch (Exception ex)
             {
-                throw new Exception($"DrawRect failed with exception: {ex.Message}", ex);
+                throw new Exception($"Rectangle failed with exception: {ex.Message}", ex);
             }
         }
+
+        public void Canvas(RenderActions.Canvas canvasObj)
+        {
+            this.Canvas(this.canvas, canvasObj);
+        }
+
+        private SKRect Canvas(SKCanvas canvas, RenderActions.Canvas canvasObj)
+        {
+            try
+            {
+                var x = CalculateX(canvasObj);
+                var y = CalculateY(canvasObj);
+
+                this.logger.LogDebug($"DrawRect(x: {x}, y: {y}, width: {canvasObj.Width}, height: {canvasObj.Height})");
+                var canvasRect = SKRect.Create(x, y, width: canvasObj.Width, height: canvasObj.Height);
+
+                using (var canvasImage = new SKBitmap(canvasObj.Width, canvasObj.Height, isOpaque: false))
+                {
+                    using (var innerCanvas = new SKCanvas(canvasImage))
+                    {
+                        // Draw background color
+                        if (SKColor.TryParse(canvasObj.BackgroundColor, out var backgroundColor) && backgroundColor != SKColor.Empty)
+                        {
+                            var backgroundRect = SKRect.Create(x: 0, y: 0, width: canvasObj.Width, height: canvasObj.Height);
+                            using (var backgroundPaint = new SKPaint
+                            {
+                                Style = SKPaintStyle.Fill,
+                                Color = backgroundColor,
+                            })
+                            {
+                                innerCanvas.DrawRect(backgroundRect, backgroundPaint);
+                            }
+                        }
+
+                        {
+                            foreach (var renderAction in canvasObj)
+                            {
+                                SKRect? renderedRect = null;
+
+                                if (renderAction is RenderActions.Text text)
+                                {
+                                    renderedRect = this.Text(innerCanvas, text);
+                                }
+                                else if (renderAction is RenderActions.StackLayout innerStackLayout)
+                                {
+                                    renderedRect = this.StackLayout(innerCanvas, innerStackLayout);
+                                }
+                                else if (renderAction is RenderActions.Graphic graphic)
+                                {
+                                    renderedRect = this.Graphic(innerCanvas, graphic);
+                                }
+                                else if (renderAction is RenderActions.Image image)
+                                {
+                                    renderedRect = this.Image(innerCanvas, image);
+                                }
+                                else if (renderAction is RenderActions.Rectangle rectangle)
+                                {
+                                    renderedRect = this.Rectangle(innerCanvas, rectangle);
+                                }
+                                else
+                                {
+                                    throw new NotSupportedException($"Render action '{renderAction.GetType().Name}' is currently not supported");
+                                }
+                            }
+                        }
+                    }
+
+                    canvas.DrawBitmap(canvasImage, canvasRect);
+
+                    return canvasRect;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Canvas failed with exception: {ex.Message}", ex);
+            }
+        }
+
         public void StackLayout(RenderActions.StackLayout stackLayout)
         {
             this.StackLayout(this.canvas, stackLayout);
@@ -237,14 +323,17 @@ namespace DisplayService.Services
                     using (var innerCanvas = new SKCanvas(stackLayoutImage))
                     {
                         // Draw background color
-                        var backgroundRect = SKRect.Create(x: 0, y: 0, width: stackLayout.Width, height: stackLayout.Height);
-                        using (var backgroundPaint = new SKPaint
+                        if (SKColor.TryParse(stackLayout.BackgroundColor, out var backgroundColor) && backgroundColor != SKColor.Empty)
                         {
-                            Style = SKPaintStyle.Fill,
-                            Color = SKColor.Parse(stackLayout.BackgroundColor),
-                        })
-                        {
-                            innerCanvas.DrawRect(backgroundRect, backgroundPaint);
+                            var backgroundRect = SKRect.Create(x: 0, y: 0, width: stackLayout.Width, height: stackLayout.Height);
+                            using (var backgroundPaint = new SKPaint
+                            {
+                                Style = SKPaintStyle.Fill,
+                                Color = backgroundColor,
+                            })
+                            {
+                                innerCanvas.DrawRect(backgroundRect, backgroundPaint);
+                            }
                         }
 
                         if (stackLayout.Children != null)
@@ -309,7 +398,7 @@ namespace DisplayService.Services
             }
             catch (Exception ex)
             {
-                throw new Exception($"DrawRect failed with exception: {ex.Message}", ex);
+                throw new Exception($"StackLayout failed with exception: {ex.Message}", ex);
             }
         }
 

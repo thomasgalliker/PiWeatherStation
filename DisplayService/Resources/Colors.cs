@@ -7,6 +7,8 @@
         public static string White { get; } = "#FFFFFF";
         
         public static string LightGray { get; } = "#FFD3D3D3";
+        
+        public static string DarkGray { get; } = "#FFA9A9A9";
 
         public static string Red { get; } = "#FF0000";
 
