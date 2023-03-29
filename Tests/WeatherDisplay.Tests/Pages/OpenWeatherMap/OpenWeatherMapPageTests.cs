@@ -14,7 +14,7 @@ using NCrontab.Scheduler;
 using OpenWeatherMap;
 using OpenWeatherMap.Models;
 using SkiaSharp;
-using WeatherDisplay.Model;
+using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Pages.OpenWeatherMap;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Services.Hardware;

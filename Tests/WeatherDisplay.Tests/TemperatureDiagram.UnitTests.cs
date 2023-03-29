@@ -10,7 +10,7 @@ using OpenWeatherMap;
 using OpenWeatherMap.Models;
 using SkiaSharp;
 using WeatherDisplay.Extensions;
-using WeatherDisplay.Model;
+using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Pages.Wiewarm;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Services.DeepL;

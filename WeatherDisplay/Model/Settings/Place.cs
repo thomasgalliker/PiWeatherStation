@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace WeatherDisplay.Model
+namespace WeatherDisplay.Model.Settings
 {
     [DebuggerDisplay("{this.Name}")]
     public class Place
@@ -21,7 +21,7 @@ namespace WeatherDisplay.Model
         public double Latitude { get; set; }
 
         public double Longitude { get; set; }
-        
+
         public bool IsCurrentPlace { get; set; }
     }
 }

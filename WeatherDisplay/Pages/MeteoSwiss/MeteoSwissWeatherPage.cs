@@ -8,7 +8,7 @@ using MeteoSwissApi;
 using Microsoft.Extensions.Options;
 using NCrontab;
 using WeatherDisplay.Extensions;
-using WeatherDisplay.Model;
+using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Navigation;

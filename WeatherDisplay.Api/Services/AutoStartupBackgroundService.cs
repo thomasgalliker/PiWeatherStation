@@ -2,9 +2,10 @@
 using NCrontab;
 using NCrontab.Scheduler;
 using NLog;
+using WeatherDisplay.Api.Services.Configuration;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Extensions;
-using WeatherDisplay.Model;
+using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Pages.SystemInfo;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
@@ -16,31 +17,37 @@ namespace WeatherDisplay.Api.Services
     {
         private readonly ILogger logger;
         private readonly IAppSettings appSettings;
+        private readonly IWritableOptions<AppSettings> writableAppSettings;
         private readonly IAutoUpdateService autoUpdateService;
         private readonly INavigationService navigationService;
         private readonly IButtonsAccessService buttonsAccessService;
         private readonly ISensorAccessService sensorAccessService;
         private readonly IScheduler scheduler;
         private readonly IDisplayManager displayManager;
+        private readonly IWebHostEnvironment webHostEnvironment;
 
         public AutoStartupBackgroundService(
             ILogger<AutoStartupBackgroundService> logger,
             IAppSettings appSettings,
+            IWritableOptions<AppSettings> writableAppSettings,
             IAutoUpdateService autoUpdateService,
             INavigationService navigationService,
             IButtonsAccessService buttonsAccessService,
             ISensorAccessService sensorAccessService,
             ISchedulerFactory schedulerFactory,
-            IDisplayManager displayManager)
+            IDisplayManager displayManager,
+            IWebHostEnvironment webHostEnvironment)
         {
             this.logger = logger;
             this.appSettings = appSettings;
+            this.writableAppSettings = writableAppSettings;
             this.autoUpdateService = autoUpdateService;
             this.navigationService = navigationService;
             this.buttonsAccessService = buttonsAccessService;
             this.sensorAccessService = sensorAccessService;
             this.scheduler = schedulerFactory.Create();
             this.displayManager = displayManager;
+            this.webHostEnvironment = webHostEnvironment;
         }
 
         public async Task StartAsync(CancellationToken cancellationToken)
@@ -49,6 +56,28 @@ namespace WeatherDisplay.Api.Services
 
             try
             {
+                // Check if a new accesspoint configuration file is present
+                // and merge it into appSettings.User.json (if it exists)
+                var accessPointConfigFile = new FileInfo(Path.Combine(this.webHostEnvironment.ContentRootPath, "accesspoint@wlan0.json"));
+                if (accessPointConfigFile.Exists)
+                {
+                    var accessPointConfigurationRoot = new ConfigurationBuilder()
+                       .AddJsonFile(accessPointConfigFile.FullName, optional: true)
+                       .Build();
+
+                    var accessPointSection = accessPointConfigurationRoot.GetSection("AccessPoint");
+                    if (accessPointSection.Exists())
+                    {
+                        var accessPointSettings = new AccessPointSettings();
+                        ConfigurationBinder.Bind(accessPointSection, accessPointSettings);
+
+                        this.logger.LogDebug($"Merging AccessPoint config file {accessPointConfigFile.Name} into appSettings.User.json");
+                        this.writableAppSettings.UpdateProperty(a => a.AccessPoint, accessPointSettings);
+
+                        accessPointConfigFile.Delete();
+                    }
+                }
+
                 this.buttonsAccessService.Initialize();
                 this.sensorAccessService.Initialize();
 

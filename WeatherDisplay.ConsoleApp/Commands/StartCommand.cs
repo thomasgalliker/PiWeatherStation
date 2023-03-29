@@ -3,7 +3,7 @@ using System.CommandLine.Invocation;
 using System.Threading.Tasks;
 using DisplayService.Services;
 using OpenWeatherMap;
-using WeatherDisplay.Model;
+using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Services.DeepL;
 using WeatherDisplay.Services.Navigation;
 

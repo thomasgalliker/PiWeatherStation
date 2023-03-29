@@ -28,15 +28,27 @@
         </trans-unit>
         <trans-unit id="MeteoSwissWeatherPage_SourceName" translate="yes" xml:space="preserve">
           <source>Source: MeteoSwiss</source>
-          <target state="new">Source: MeteoSwiss</target>
+          <target state="final">Source: MeteoSwiss</target>
         </trans-unit>
         <trans-unit id="OpenWeatherMapPage_SourceName" translate="yes" xml:space="preserve">
           <source>Source: OpenWeatherMap</source>
-          <target state="new">Source: OpenWeatherMap</target>
+          <target state="final">Source: OpenWeatherMap</target>
         </trans-unit>
         <trans-unit id="WaterTemperaturePage_SourceName" translate="yes" xml:space="preserve">
           <source>Source: wiewarm.ch</source>
-          <target state="new">Source: wiewarm.ch</target>
+          <target state="final">Source: wiewarm.ch</target>
+        </trans-unit>
+        <trans-unit id="WifiPSKLabelText" translate="yes" xml:space="preserve">
+          <source>Password</source>
+          <target state="final">Password</target>
+        </trans-unit>
+        <trans-unit id="WifiSSIDLabelText" translate="yes" xml:space="preserve">
+          <source>SSID</source>
+          <target state="final">SSID</target>
+        </trans-unit>
+        <trans-unit id="WifiSetupIntroLabelText" translate="yes" xml:space="preserve">
+          <source>Connect to following wifi network:</source>
+          <target state="final">Connect to following wifi network:</target>
         </trans-unit>
       </group>
     </body>

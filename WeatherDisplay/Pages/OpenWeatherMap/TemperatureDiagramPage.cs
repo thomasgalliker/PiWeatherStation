@@ -12,6 +12,7 @@ using OpenWeatherMap.Models;
 using SkiaSharp;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
+using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Navigation;
 

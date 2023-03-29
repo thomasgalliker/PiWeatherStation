@@ -8,7 +8,7 @@ using DisplayService.Resources;
 using DisplayService.Services;
 using NCrontab;
 using RaspberryPi;
-using WeatherDisplay.Model;
+using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;

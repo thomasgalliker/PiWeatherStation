@@ -5,8 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using WeatherDisplay.Extensions;
-using WeatherDisplay.Model;
-using WeatherDisplay.Pages.SystemInfo;
+using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Services.Hardware

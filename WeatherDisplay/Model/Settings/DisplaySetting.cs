@@ -1,4 +1,4 @@
-﻿namespace WeatherDisplay.Model
+﻿namespace WeatherDisplay.Model.Settings
 {
     public class DisplaySetting
     {

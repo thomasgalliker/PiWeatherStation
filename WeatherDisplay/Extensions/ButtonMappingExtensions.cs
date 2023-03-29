@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using WeatherDisplay.Model;
+using WeatherDisplay.Model.Settings;
 
 namespace WeatherDisplay.Extensions
 {
