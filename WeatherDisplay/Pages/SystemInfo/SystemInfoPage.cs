@@ -174,8 +174,11 @@ namespace WeatherDisplay.Pages.SystemInfo
                             FontSize = 12,
                             Bold = true,
                         },
+                    });
 
-                        // WaveShare Display Info
+                    // WaveShare Display Info
+                    renderActions.AddRange(new IRenderAction[]
+                    {
                         new RenderActions.Text
                         {
                             X = 442,
@@ -212,8 +215,11 @@ namespace WeatherDisplay.Pages.SystemInfo
                             FontSize = 12,
                             Bold = true,
                         },
+                    });
 
-                        // Button Infos
+                    // Button Infos
+                    renderActions.AddRange(new IRenderAction[]
+                    {
                         new RenderActions.Rectangle
                         {
                             X = 800 - 1,
@@ -239,7 +245,11 @@ namespace WeatherDisplay.Pages.SystemInfo
                         },
                         // TODO: Show buttons mapping here
                         
-                        // SCD41 Infos
+                    });
+
+                    // SCD41 Infos
+                    renderActions.AddRange(new IRenderAction[]
+                    {
                         new RenderActions.Rectangle
                         {
                             X = 1,
@@ -299,7 +309,11 @@ namespace WeatherDisplay.Pages.SystemInfo
                             Bold = true,
                         },
 
-                        // Power Info
+                    });
+
+                    // Power Info
+                    renderActions.AddRange(new IRenderAction[]
+                    {
                         new RenderActions.Rectangle
                         {
                             X = 1,
