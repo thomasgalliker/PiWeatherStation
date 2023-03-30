@@ -71,7 +71,7 @@ namespace WeatherDisplay.Api.Services
                         var accessPointSettings = new AccessPointSettings();
                         ConfigurationBinder.Bind(accessPointSection, accessPointSettings);
 
-                        this.logger.LogDebug($"Merging AccessPoint config file {accessPointConfigFile.Name} into appSettings.User.json");
+                        this.logger.LogDebug($"Merging access point config file {accessPointConfigFile.Name} into appSettings.User.json");
                         this.writableAppSettings.UpdateProperty(a => a.AccessPoint, accessPointSettings);
 
                         accessPointConfigFile.Delete();

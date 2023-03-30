@@ -55,11 +55,6 @@ namespace WeatherDisplay.Pages.SystemInfo
             var connectedClients = this.GetConnectedClients(wlan0);
             var connectedSSIDs = this.GetConnectedSSIDs(wlan0);
 
-            if (!(this.appSettings.CurrentValue.AccessPoint is AccessPointSettings accessPointSettings))
-            {
-                throw new Exception("AccessPoint not configured properly");
-            }
-
             // Date header
             this.displayManager.AddRenderActions(
                 () =>
@@ -108,13 +103,12 @@ namespace WeatherDisplay.Pages.SystemInfo
                 },
                 CrontabSchedule.Parse("0 0 * * *")); // Update every day at 00:00
 
-            // Setup info
-            this.displayManager.AddRenderActions(
-                () =>
-                {
-                    var qrCodeBitmap = this.qrCodeService.GenerateWifiQRCode(accessPointSettings.SSID, accessPointSettings.PSK);
 
-                    var renderActions = new List<IRenderAction>
+            if (!(this.appSettings.CurrentValue.AccessPoint is AccessPointSettings accessPointSettings))
+            {
+                this.displayManager.AddRenderActions(() =>
+                {
+                    return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
                         {
@@ -130,36 +124,66 @@ namespace WeatherDisplay.Pages.SystemInfo
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = Translations.WifiSetupIntroLabelText,
+                            Value = "Access point configuration could not be found",
                             FontSize = 20,
                         },
-                        new RenderActions.Text
-                        {
-                            X = 20,
-                            Y = 140,
-                            HorizontalTextAlignment = HorizontalAlignment.Left,
-                            VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{Translations.WifiSSIDLabelText}: {accessPointSettings.SSID}",
-                            FontSize = 20,
-                        },
-                        new RenderActions.Text
-                        {
-                            X = 20,
-                            Y = 160,
-                            HorizontalTextAlignment = HorizontalAlignment.Left,
-                            VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{Translations.WifiPSKLabelText}: {accessPointSettings.PSK}",
-                            FontSize = 20,
-                        },
-                        new RenderActions.StreamImage
-                        {
-                            X = 780,
-                            Y = 120,
-                            Image = qrCodeBitmap.ToStream(),
-                            Width= 340,
-                            Height= 340,
-                            HorizontalAlignment = HorizontalAlignment.Right
-                        },
+                    };
+                });
+            }
+            else
+            {
+                // Setup info
+                this.displayManager.AddRenderActions(
+                () =>
+                {
+                    var qrCodeBitmap = this.qrCodeService.GenerateWifiQRCode(accessPointSettings.SSID, accessPointSettings.PSK);
+
+                    var renderActions = new List<IRenderAction>
+                    {
+                            new RenderActions.Rectangle
+                            {
+                                X = 0,
+                                Y = 100,
+                                Width = 800,
+                                Height = 380,
+                                BackgroundColor = Colors.White,
+                            },
+                            new RenderActions.Text
+                            {
+                                X = 20,
+                                Y = 120,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = Translations.WifiSetupIntroLabelText,
+                                FontSize = 20,
+                            },
+                            new RenderActions.Text
+                            {
+                                X = 20,
+                                Y = 140,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = $"{Translations.WifiSSIDLabelText}: {accessPointSettings.SSID}",
+                                FontSize = 20,
+                            },
+                            new RenderActions.Text
+                            {
+                                X = 20,
+                                Y = 160,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = $"{Translations.WifiPSKLabelText}: {accessPointSettings.PSK}",
+                                FontSize = 20,
+                            },
+                            new RenderActions.StreamImage
+                            {
+                                X = 780,
+                                Y = 120,
+                                Image = qrCodeBitmap.ToStream(),
+                                Width= 340,
+                                Height= 340,
+                                HorizontalAlignment = HorizontalAlignment.Right
+                            },
                     };
 
                     if (this.appSettings.CurrentValue.IsDebug)
@@ -227,6 +251,7 @@ namespace WeatherDisplay.Pages.SystemInfo
 
                     return renderActions;
                 });
+            }
         }
 
         private static string PhysicalAddressFormat(PhysicalAddress physicalAddress)
