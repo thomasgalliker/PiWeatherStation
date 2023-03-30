@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net.NetworkInformation;
+using System.Net.Sockets;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
@@ -8,6 +10,7 @@ using DisplayService.Resources;
 using DisplayService.Services;
 using NCrontab;
 using RaspberryPi;
+using RaspberryPi.Network;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Services.Hardware;
@@ -19,21 +22,27 @@ namespace WeatherDisplay.Pages.SystemInfo
     {
         private readonly IDisplayManager displayManager;
         private readonly IDateTime dateTime;
+        private readonly IWPA wpa;
         private readonly IAppSettings appSettings;
         private readonly ISystemInfoService systemInfoService;
+        private readonly INetworkInterfaceService networkInterfaceService;
         private readonly ISensorAccessService sensorAccessService;
 
         public SystemInfoPage(
             IDisplayManager displayManager,
             IDateTime dateTime,
+            IWPA wpa,
             IAppSettings appSettings,
             ISystemInfoService systemInfoService,
+            INetworkInterfaceService networkInterfaceService,
             ISensorAccessService sensorAccessService)
         {
             this.displayManager = displayManager;
             this.dateTime = dateTime;
+            this.wpa = wpa;
             this.appSettings = appSettings;
             this.systemInfoService = systemInfoService;
+            this.networkInterfaceService = networkInterfaceService;
             this.sensorAccessService = sensorAccessService;
         }
 
@@ -66,6 +75,14 @@ namespace WeatherDisplay.Pages.SystemInfo
                 };
             }
             //#endif
+
+            var wlan0 = this.GetWifiNetworkInterface();
+            var connectedSSIDs = this.GetConnectedSSIDs(wlan0);
+            var interfaces = new[] { wlan0 };
+            //var interfaces = this.networkInterfaceService.GetAll();
+            var networkInterfaces = interfaces.Select(i => (InterfaceName: i.Name, IPAddress: i.GetIPProperties().UnicastAddresses
+                                                                                                .Where(u => u.Address.AddressFamily == AddressFamily.InterNetwork)
+                                                                                                .Select(n => n.Address).FirstOrDefault())).ToList();
 
             var scd41 = this.sensorAccessService.Scd41;
 
@@ -150,22 +167,84 @@ namespace WeatherDisplay.Pages.SystemInfo
                             FontSize = 12,
                             Bold = true,
                         },
-                        new RenderActions.Text
+                    });
+
+                    if (connectedSSIDs.Any())
+                    {
+                        var yOffset = 65;
+                        renderActions.Add(new RenderActions.Text
                         {
                             X = 128,
-                            Y = 65,
+                            Y = yOffset,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"Wifi: ???",
+                            Value = $"Wifi:",
                             ForegroundColor = Colors.Black,
                             BackgroundColor = Colors.White,
                             FontSize = 12,
                             Bold = true,
-                        },
+                        });
+
+                        foreach (var connectedSSID in connectedSSIDs)
+                        {
+                            renderActions.Add(new RenderActions.Text
+                            {
+                                X = 228,
+                                Y = yOffset,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = connectedSSID,
+                                ForegroundColor = Colors.Black,
+                                BackgroundColor = Colors.White,
+                                FontSize = 12,
+                                Bold = true,
+                            });
+
+                            yOffset += 15;
+                        }
+                    }
+
+                    if (networkInterfaces.Any())
+                    {
+                        var yOffset = 80;
+                        renderActions.Add(new RenderActions.Text
+                        {
+                            X = 128,
+                            Y = yOffset,
+                            HorizontalTextAlignment = HorizontalAlignment.Left,
+                            VerticalTextAlignment = VerticalAlignment.Top,
+                            Value = $"IP addresses:",
+                            ForegroundColor = Colors.Black,
+                            BackgroundColor = Colors.White,
+                            FontSize = 12,
+                            Bold = true,
+                        });
+
+                        foreach (var networkInterface in networkInterfaces)
+                        {
+                            renderActions.Add(new RenderActions.Text
+                            {
+                                X = 228,
+                                Y = yOffset,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = $"{networkInterface.InterfaceName} {networkInterface.IPAddress}",
+                                ForegroundColor = Colors.Black,
+                                BackgroundColor = Colors.White,
+                                FontSize = 12,
+                                Bold = true,
+                            });
+
+                            yOffset += 15;
+                        }
+                    }
+
+                    renderActions.AddRange(new IRenderAction[]
+                    {
                         new RenderActions.Text
                         {
                             X = 128,
-                            Y = 80,
+                            Y = 95,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
                             Value = $"PiWeatherDisplay Version: v{fvi.ProductVersion}",
@@ -173,7 +252,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                             BackgroundColor = Colors.White,
                             FontSize = 12,
                             Bold = true,
-                        },
+                        }
                     });
 
                     // WaveShare Display Info
@@ -379,6 +458,40 @@ namespace WeatherDisplay.Pages.SystemInfo
                     return renderActions;
                 },
                 CrontabSchedule.Parse("0 0 * * *")); // Update every day at 00:00
+        }
+
+        private IEnumerable<string> GetConnectedSSIDs(INetworkInterface wlan0)
+        {
+            IEnumerable<string> connectedSSIDs;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                connectedSSIDs = new List<string>
+                {
+                    "testssid",
+                };
+            }
+            else
+            {
+                connectedSSIDs = this.wpa.GetConnectedSSIDs(wlan0);
+            }
+
+            return connectedSSIDs;
+        }
+
+        private INetworkInterface GetWifiNetworkInterface()
+        {
+            INetworkInterface iface;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            {
+                iface = this.networkInterfaceService.GetAll()
+                    .FirstOrDefault(i => i.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 && i.OperationalStatus == OperationalStatus.Up);
+            }
+            else
+            {
+                iface = this.networkInterfaceService.GetByName("wlan0");
+            }
+
+            return iface;
         }
 
         internal class RaspberryPiBreakout : RenderActions.Canvas
