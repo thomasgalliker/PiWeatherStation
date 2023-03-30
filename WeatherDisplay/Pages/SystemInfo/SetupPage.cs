@@ -1,23 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-using DisplayService.Model;
-using DisplayService.Services;
-using NCrontab;
-using WeatherDisplay.Extensions;
-using WeatherDisplay.Services;
-using WeatherDisplay.Services.QR;
-using System.Threading.Tasks;
-using WeatherDisplay.Services.Navigation;
-using WeatherDisplay.Resources.Strings;
-using DisplayService.Resources;
-using RaspberryPi.Network;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Net.NetworkInformation;
-using WeatherDisplay.Model.Settings;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
+using DisplayService.Model;
+using DisplayService.Resources;
+using DisplayService.Services;
 using Microsoft.Extensions.Options;
-using WeatherDisplay.Pages.OpenWeatherMap;
+using NCrontab;
+using RaspberryPi.Network;
+using WeatherDisplay.Extensions;
+using WeatherDisplay.Model.Settings;
+using WeatherDisplay.Resources.Strings;
+using WeatherDisplay.Services.Navigation;
+using WeatherDisplay.Services.QR;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {
@@ -288,17 +286,11 @@ namespace WeatherDisplay.Pages.SystemInfo
             {
                 connectedSSIDs = new List<string>
                 {
-                    "testssid1",
-                    "testssid2",
+                    "testssid",
                 };
             }
             else
             {
-                connectedSSIDs = new List<string>
-                {
-                    "testssid1",
-                    "testssid2",
-                };
                 connectedSSIDs = this.wpa.GetConnectedSSIDs(wlan0);
             }
 
