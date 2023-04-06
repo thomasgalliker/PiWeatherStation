@@ -141,4 +141,13 @@
   <data name="WaterTemperaturePage_SourceName" xml:space="preserve">
     <value>Source: wiewarm.ch</value>
   </data>
+  <data name="WifiPSKLabelText" xml:space="preserve">
+    <value>Password</value>
+  </data>
+  <data name="WifiSetupIntroLabelText" xml:space="preserve">
+    <value>Connect to following wifi network:</value>
+  </data>
+  <data name="WifiSSIDLabelText" xml:space="preserve">
+    <value>SSID</value>
+  </data>
 </root>

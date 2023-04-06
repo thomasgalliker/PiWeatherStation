@@ -38,6 +38,18 @@
           <source>Source: wiewarm.ch</source>
           <target state="final">Quelle: wiewarm.ch</target>
         </trans-unit>
+        <trans-unit id="WifiPSKLabelText" translate="yes" xml:space="preserve">
+          <source>Password</source>
+          <target state="final">Passwort</target>
+        </trans-unit>
+        <trans-unit id="WifiSSIDLabelText" translate="yes" xml:space="preserve">
+          <source>SSID</source>
+          <target state="final">SSID</target>
+        </trans-unit>
+        <trans-unit id="WifiSetupIntroLabelText" translate="yes" xml:space="preserve">
+          <source>Connect to following wifi network:</source>
+          <target state="final">Verbinden Sie sich mit folgendem WiFi Netzwerk:</target>
+        </trans-unit>
       </group>
     </body>
   </file>

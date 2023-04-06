@@ -9,7 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NCrontab.Scheduler;
 using OpenWeatherMap;
-using WeatherDisplay.Model;
+using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Services;
 using WeatherDisplay.Services.Astronomy;
 using WeatherDisplay.Services.DeepL;
@@ -45,6 +45,11 @@ namespace Microsoft.Extensions.DependencyInjection
             var deepLTranslationSection = configuration.GetSection("DeepL");
             deepLTranslationSection.Bind(deepLTranslationConfiguration);
             services.AddSingleton<IDeepLTranslationConfiguration>(deepLTranslationConfiguration);
+            
+            var accessPointSettings = new AccessPointSettings();
+            var accessPointSection = configuration.GetSection("AccessPoint");
+            accessPointSection.Bind(accessPointSettings);
+            services.AddSingleton<AccessPointSettings>(accessPointSettings);
 
             var displayConfig = appSettings.Displays.First(); // Supports only one display at the time
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Device.I2c;
-using System.Linq;
 using Iot.Device.Bmxx80;
 using Iot.Device.Scd4x;
 using Microsoft.Extensions.Logging;
@@ -18,6 +17,8 @@ namespace WeatherDisplay.Services.Hardware
         private readonly IScd4xFactory scd4xFactory;
         private bool disposed;
         private bool initialized;
+        private IScd4x scd41;
+        private IBme680 bme680;
 
         public SensorAccessService(
             ILogger<SensorAccessService> logger,
@@ -76,9 +77,33 @@ namespace WeatherDisplay.Services.Hardware
             this.initialized = true;
         }
 
-        public IBme680 Bme680 { get; private set; }
+        public IBme680 Bme680
+        {
+            get
+            {
+                this.EnsureInitialized();
+                return this.bme680;
+            }
+            private set => this.bme680 = value;
+        }
 
-        public IScd4x Scd41 { get; private set; }
+        public IScd4x Scd41
+        {
+            get
+            {
+                this.EnsureInitialized();
+                return this.scd41;
+            }
+            private set => this.scd41 = value;
+        }
+
+        private void EnsureInitialized()
+        {
+            if (!this.initialized)
+            {
+                throw new InvalidOperationException($"Use {this.GetType().Name}.{nameof(Initialize)} to initialize sensors.");
+            }
+        }
 
         protected virtual void Dispose(bool disposing)
         {

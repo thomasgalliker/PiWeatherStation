@@ -18,6 +18,7 @@ using WeatherDisplay.Api.Services.Configuration;
 using WeatherDisplay.Api.Services.Security;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Model;
+using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Pages.MeteoSwiss;
 using WeatherDisplay.Pages.OpenWeatherMap;
 using WeatherDisplay.Pages.Wiewarm;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Globalization;
 
-namespace WeatherDisplay.Model
+namespace WeatherDisplay.Model.Settings
 {
     public class AppSettings : IAppSettings
     {
@@ -32,6 +32,8 @@ namespace WeatherDisplay.Model
         public bool RunSetup { get; set; }
 
         public bool IsDebug { get; set; }
+
+        public AccessPointSettings AccessPoint { get; set; }
 
         public ICollection<DisplaySetting> Displays { get; set; }
 

@@ -25,7 +25,7 @@
 	<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.23.1" />
 	<PackageReference Include="NCrontab.Scheduler.AspNetCore" Version="1.1.17" />
 	<PackageReference Include="NLog.Web.AspNetCore" Version="5.1.4" />
-	<PackageReference Include="RaspberryPi.NET" Version="1.0.38-pre" />
+	<PackageReference Include="RaspberryPi.NET" Version="1.0.39-pre" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.4.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />

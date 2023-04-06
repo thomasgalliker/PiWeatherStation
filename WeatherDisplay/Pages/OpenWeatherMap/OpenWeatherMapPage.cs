@@ -16,7 +16,7 @@ using OpenWeatherMap;
 using OpenWeatherMap.Models;
 using RaspberryPi;
 using WeatherDisplay.Extensions;
-using WeatherDisplay.Model;
+using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Resources;
 using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.DeepL;

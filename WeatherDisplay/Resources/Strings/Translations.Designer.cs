@@ -131,5 +131,32 @@ namespace WeatherDisplay.Resources.Strings {
                 return ResourceManager.GetString("WaterTemperaturePage_SourceName", resourceCulture);
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password.
+        /// </summary>
+        internal static string WifiPSKLabelText {
+            get {
+                return ResourceManager.GetString("WifiPSKLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Connect to following wifi network:.
+        /// </summary>
+        internal static string WifiSetupIntroLabelText {
+            get {
+                return ResourceManager.GetString("WifiSetupIntroLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SSID.
+        /// </summary>
+        internal static string WifiSSIDLabelText {
+            get {
+                return ResourceManager.GetString("WifiSSIDLabelText", resourceCulture);
+            }
+        }
     }
 }

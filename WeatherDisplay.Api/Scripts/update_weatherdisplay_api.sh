@@ -1,6 +1,55 @@
 #!/bin/bash
+# set -exv
 
-echo "
+#set -o errexit
+#set -o pipefail
+#set -o nounset
+
+# Logging
+DEFAULT='\033[0;39m'
+WHITE='\033[0;02m'
+GREEN='\033[1;32m'
+RED='\033[1;31m'
+
+logDebug() {
+    echo -e "${DEFAULT}${1}${DEFAULT}"
+}
+
+logSuccess() {
+    echo -e "${GREEN}${1}${DEFAULT}"
+}
+
+logError() {
+    echo -e "${RED}${1}${DEFAULT}"
+}
+
+showHelp() {
+    cat 1>&2 <<EOF
+USAGE:
+    # Configures the Raspberry Pi with the latest stable version of PiWeatherStation
+    sudo bash setup_weatherdisplay.sh
+    
+    # Configures the Raspberry Pi with the latest pre-release version of PiWeatherStation
+    sudo bash setup_weatherdisplay.sh --pre
+
+PARAMETERS:
+    -h, --host          Sets the hostname of the system.
+    -t, --timezone      Sets the timezone.
+    -l, --locale        Sets the locale.
+    -k, --keyboard      Sets the keyboard locale.
+    -s, --systemDir     Sets the path to the system deamon directory (default: /etc/systemd/system).
+
+FLAGS:
+    -p, --pre           Downloads the latest pre-release of PiWeatherStation.
+    -d, --debug         Prints verbose debug log messages.
+    -n, --no-reboot     Does not reboot the system when the script ends.
+    -h, --help          Show this help.
+
+EOF
+    exit 0
+}
+
+logDebug "
 =====================================================
 PiWeatherStation Setup Script [Version 1.0.0]
 (c) superdev gmbh. All rights reserved.
@@ -13,7 +62,7 @@ preRelease=false
 reboot=true
 
 usage_error () {
-    echo >&2 "$(basename $0):  $1"; exit 2;
+    logError >&2 "$(basename $0):  $1"; exit 2;
 }
 
 assert_argument () {
@@ -35,6 +84,7 @@ if [ "$#" != 0 ]; then
       -p|--pre) preRelease=true;;
       -v|--debug) debug=true;;
       -n|--no-reboot) reboot=false;;
+      -?|--help) showHelp; shift;;
       -s|--systemDir) assert_argument "$1" "$opt"; systemDir="$1"; shift;;
 
       # Arguments processing. You may remove any unneeded line after the 1st.
@@ -51,7 +101,7 @@ if [ "$#" != 0 ]; then
 fi
 
 if [ $(id -u) != 0 ]; then
-    echo "You need to be root to run this script! Please run 'sudo bash $0'"
+    logError "You need to be root to run this script! Please run 'sudo bash $0'"
     exit 1
 fi
 
@@ -62,16 +112,26 @@ executable="WeatherDisplay.Api"
 serviceName="weatherdisplay.api"
 downloadFile="$workingDirectory/WeatherDisplay.Api.zip"
 
-if [ -z "$systemDir" ]
-then
+if ! test -v systemDir; then
     systemDir="/etc/systemd/system"
 fi
 
-if [ -z "$host" ]
-then
-    serialNumber=$( cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2 )
-    host="raspi$serialNumber"
+serialNumber=$( cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2 )
+
+if ! test -v host; then
+
+    host="raspi$(echo $serialNumber)"
 fi
+
+# Generate wifi SSID and pre-shared key
+# - The SSID should be constant therefore we use the serial number as part of it.
+# - The PSK is a random number with a length of 8 characters. Some characters are explicitly filtered to avoid confusion (like O with 0).
+ap_ssid="PiWeatherDisplay_$(echo $serialNumber | tail -c 7 | tr '[:lower:]' '[:upper:]')"
+ap_psk=$(< /dev/urandom tr -dc A-Z-a-z-0-9_$ | tr -d oO0 | head -c 8)
+ap_wifi_mode="g"
+ap_country_code="CH"
+ap_ip="192.168.10.1"
+ap_ip_begin=$(echo "${ap_ip}" | sed -e 's/\.[0-9]\{1,3\}$//g')
 
 serviceFilePath="$systemDir"/"$serviceName.service"
 
@@ -89,7 +149,12 @@ executable: $executable
 serviceName: $serviceName
 serviceFilePath: $serviceFilePath
 downloadFile: $downloadFile
+serialNumber: $serialNumber
 host: $host
+ap_ssid: $ap_ssid
+ap_psk: $ap_psk
+ap_ip: $ap_ip
+ap_ip_begin: $ap_ip_begin
 timezone: $timezone
 locale: $locale
 keyboard: $keyboard
@@ -101,13 +166,14 @@ fi
 #exit 1
 
 if [ ! -d $workingDirectory ]; then
-     echo "Creating directory $workingDirectory"
-     mkdir $workingDirectory
+    logDebug "Creating directory $workingDirectory"
+    echo ""
+    mkdir $workingDirectory
 fi
 
 cd $workingDirectory
 
-echo "Setting up raspberry pi@${host}.local..."
+logSuccess "Setting up raspberry pi@${host}..."
 sudo raspi-config nonint do_boot_wait 0                     # Turn on waiting for network before booting
 sudo raspi-config nonint do_boot_splash 0                   # Disable the splash screen
 sudo raspi-config nonint do_spi 0                           # Enable SPI support
@@ -132,34 +198,140 @@ EOF"
 fi
 echo ""
 
-echo "Updating packages..."
+logSuccess "Updating packages..."
 sudo apt-get update && sudo apt-get -y upgrade
 echo ""
 
-echo "Installing packages..."
-sudo apt-get install -y libgdiplus
-sudo apt-get install -y hostapd
-sudo apt-get install -y dnsmasq
+logSuccess "Installing packages..."
+if [[ $(dpkg -l | grep -c libgdiplus) == 0 ]]; then
+    logDebug "Installing libgdiplus..."
+    sudo apt-get install -y libgdiplus
+fi
 
-sudo systemctl stop hostapd
-sudo systemctl unmask hostapd
-sudo systemctl disable hostapd
+if [[ $(dpkg -l | grep -c dhcpcd) == 0 ]]; then
+    logDebug "Installing dhcpcd..."
+    sudo apt-get install -y dhcpcd
+fi
 
-sudo systemctl stop dnsmasq
-sudo systemctl unmask dnsmasq
-sudo systemctl disable dnsmasq
+if [[ $(dpkg -l | grep -c hostapd) == 0 ]]; then
+    logDebug "Installing hostapd..."
+    sudo apt-get install -y hostapd
+fi
+
+if [[ $(dpkg -l | grep -c dnsmasq) == 0 ]]; then
+    logDebug "Installing dnsmasq..."
+    sudo apt-get install -y dnsmasq
+fi
 echo ""
 
+
+logSuccess "Setting up access point..."
+
+# Exclude ap0 from `/etc/dhcpcd.conf`
+sudo bash -c 'cat >> /etc/dhcpcd.conf' << EOF
+# This sets a static address for ap@wlan0 and disables wpa_supplicant for this interface
+interface ap@wlan0
+    static ip_address=${ap_ip}/24
+    ipv4only
+    nohook wpa_supplicant
+EOF
+
+# Populate `/etc/dnsmasq.conf`
+logDebug "Populate /etc/dnsmasq.conf"
+sudo bash -c 'cat > /etc/dnsmasq.conf' << EOF
+interface=lo,ap@wlan0
+no-dhcp-interface=lo,wlan0
+bind-dynamic
+server=1.1.1.1
+domain-needed
+bogus-priv
+dhcp-range=${ap_ip_begin}.50,${ap_ip_begin}.150,240h
+dhcp-option=3,${ap_ip}
+EOF
+
+# Populate hostapd.conf
+logDebug "Populate /etc/hostapd/hostapd.conf"
+sudo bash -c 'cat > /etc/hostapd/hostapd.conf' << EOF
+ctrl_interface=/var/run/hostapd
+ctrl_interface_group=0
+interface=ap@wlan0
+driver=nl80211
+ieee80211n=1
+ssid=${ap_ssid}
+hw_mode=${ap_wifi_mode}
+channel=11
+wmm_enabled=1
+macaddr_acl=0
+auth_algs=1
+wpa=2
+$([ $ap_psk ] && echo "wpa_passphrase=${ap_psk}")
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=TKIP
+rsn_pairwise=CCMP
+EOF
+
+sudo chmod 600 /etc/hostapd/hostapd.conf
+
+sudo bash -c 'SYSTEMD_EDITOR=tee systemctl edit --force --full accesspoint@.service' << EOF
+[Unit]
+Description=IEEE 802.11 ap@%i AP on %i with hostapd
+Wants=wpa_supplicant@%i.service
+[Service]
+Type=forking
+PIDFile=/run/hostapd.pid
+Restart=on-failure
+RestartSec=2
+Environment=DAEMON_CONF=/etc/hostapd/hostapd.conf
+EnvironmentFile=-/etc/default/hostapd
+ExecStartPre=/sbin/iw dev %i interface add ap@%i type __ap
+ExecStart=/usr/sbin/hostapd -i ap@%i -P /run/hostapd.pid -B /etc/hostapd/hostapd.conf
+ExecStopPost=-/sbin/iw dev ap@%i del
+[Install]
+WantedBy=sys-subsystem-net-devices-%i.device
+EOF
+
+# wpa_supplicant is no longer used, as the agent is hooked by dhcpcd
+sudo systemctl disable wpa_supplicant.service
+
+logDebug "enable dnsmasq.service / disable hostapd.service"
+systemctl unmask dnsmasq.service
+systemctl enable dnsmasq.service
+sudo systemctl stop hostapd # if the default hostapd service was active before
+sudo systemctl disable hostapd # if the default hostapd service was enabled before
+sudo systemctl enable accesspoint@wlan0.service
+sudo rfkill unblock wlan
+sudo systemctl daemon-reload
+
+logDebug "Create access point config"
+sudo bash -c "cat > $workingDirectory/accesspoint@wlan0.json" << EOF
+{
+  "AccessPoint": {
+    "SSID": "$ap_ssid",
+    "PSK": "$ap_psk"
+  }
+}
+EOF
+
+logDebug "Create log folder"
+mkdir -p /var/log/ap_sta_wifi
+touch /var/log/ap_sta_wifi/ap0_mgnt.log
+touch /var/log/ap_sta_wifi/on_boot.log
+
+logDebug "Turn power management off for wlan0"
+grep 'iw dev wlan0 set power_save off' /etc/rc.local || sudo sed -i 's:^exit 0:iw dev wlan0 set power_save off\n\nexit 0:' /etc/rc.local
+echo ""
+
+
 if [ -d $dotnetDirectory ]; then
-    echo "Updating dotnet..."
+    logSuccess "Updating dotnet..."
 else
-    echo "Installing dotnet..."
+    logSuccess "Installing dotnet..."
 fi
 
 curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 6.0 --install-dir $dotnetDirectory
 echo ""
 
-echo "Updating dotnet environment variables"
+logDebug "Updating dotnet environment variables"
 if ! grep -q ".NET Core SDK tools" "/home/pi/.bashrc"; then
     cat << \EOF >> "/home/pi/.bashrc"
 # .NET Core SDK tools
@@ -176,6 +348,7 @@ export DOTNET_ROOT=/home/pi/.dotnet
 sudo -s source /etc/bash.bashrc
 echo ""
 
+logSuccess "Downloading WeatherDisplay.Api..."
 if [ -f "$downloadFile" ] ; then
     rm "$downloadFile"
 fi
@@ -186,18 +359,17 @@ else
   downloadUrl=$(curl -s https://api.github.com/repos/thomasgalliker/PiWeatherStation/releases/latest | grep browser_download_url | cut -d '"' -f 4)
 fi
 
-echo "Downloading WeatherDisplay.Api..."
 echo "$downloadUrl"
 curl -L --output "$downloadFile" --progress-bar $downloadUrl
 echo ""
 
 serviceStatus="$(systemctl is-active $serviceName)"
 if [ "${serviceStatus}" = "active" ]; then
-    echo "Stopping $serviceName..."
+    logDebug "Stopping $serviceName..."
     sudo systemctl stop $serviceName
 fi
 
-echo "Installing WeatherDisplay.Api..."
+logDebug "Installing WeatherDisplay.Api..."
 unzip -q -o "$downloadFile" -d $workingDirectory
 rm "$downloadFile"
 
@@ -205,9 +377,9 @@ sudo chown pi -R $workingDirectory
 sudo chmod +x "$workingDirectory/$executable"
 
 if [ ! -f "$serviceFilePath" ] ; then
-    echo "Creating service $serviceName..."
+    logDebug "Creating service $serviceName..."
 else
-    echo "Updating service $serviceName..."
+    logDebug "Updating service $serviceName..."
 fi
 
 cat > "$serviceFilePath" <<EOF
@@ -241,40 +413,44 @@ WantedBy=multi-user.target
 EOF
 
 if [ "${serviceStatus}" != "active" ]; then
-    echo "Starting service $serviceName..."
+    logDebug "Starting service $serviceName..."
     sudo systemctl daemon-reload
     sudo systemctl enable $serviceName
     #sudo systemctl start $serviceName
 fi
 
 if [ ! -z "$timezone" ]; then
-    echo "Updating timezone $timezone..."
+    logDebug "Updating timezone $timezone..."
     sudo raspi-config nonint do_change_timezone $timezone
 fi
 
 if [ ! -z "$locale" ]; then
-    echo "Updating locale $locale..."
+    logDebug "Updating locale $locale..."
     sudo raspi-config nonint do_change_locale $locale
 fi
 
 if [ ! -z "$keyboard" ]; then
-    echo "Updating keyboard layout $keyboard..."
+    logDebug "Updating keyboard layout $keyboard..."
     sudo raspi-config nonint do_configure_keyboard $keyboard
 fi
 
-echo "Updating hostname..."
+logDebug "Updating hostname..."
 currentHostname=`cat /etc/hostname | tr -d " \t\n\r"`
 sudo raspi-config nonint do_hostname $host
 echo $host > /etc/hostname
 sed -i "s/127.0.1.1.*$currentHostname/127.0.1.1\t$host/g" /etc/hosts
 
-echo "
+logSuccess "
 =====================================================
 Installation is completed
 =====================================================
 
-pi@${host}.local will be ready
+pi@${host} will be ready
 after the reboot.
+
+Wifi SSID:      ${ap_ssid}
+Wifi password:  ${ap_psk}
+Wifi AP IP:     ${ap_ip}
 
 " >&2
 

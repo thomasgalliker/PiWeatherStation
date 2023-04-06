@@ -258,3 +258,5 @@ paket-files/
 /WeatherDisplay.Api/Cache
 internal-nlog.txt
 **/_installedVersion.json
+/WeatherDisplay.Api/accesspoint@wlan0.json
+/WeatherDisplay.Api/appsettings.User.json
