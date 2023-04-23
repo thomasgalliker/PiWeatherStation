@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using WeatherDisplay.Api.Contracts;
 using WeatherDisplay.Api.Models;
 using WeatherDisplay.Api.Services;
 

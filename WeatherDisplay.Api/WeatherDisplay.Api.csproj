@@ -34,6 +34,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Externals\Iot.Device.Abstractions\Iot.Device.Abstractions.csproj" />
+    <ProjectReference Include="..\WeatherDisplay.Api.Contracts\WeatherDisplay.Api.Contracts.csproj" />
     <ProjectReference Include="..\WeatherDisplay.Api.Updater\WeatherDisplay.Api.Updater.csproj" />
     <ProjectReference Include="..\WeatherDisplay\WeatherDisplay.csproj" />
   </ItemGroup>

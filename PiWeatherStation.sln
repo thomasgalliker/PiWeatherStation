@@ -39,6 +39,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externals", "Externals", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iot.Device.Abstractions", "Externals\Iot.Device.Abstractions\Iot.Device.Abstractions.csproj", "{A23F80E2-1436-4195-A768-229003B27573}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDisplay.Api.Contracts", "WeatherDisplay.Api.Contracts\WeatherDisplay.Api.Contracts.csproj", "{45D9B663-EBA2-45B1-94D9-DBDBDB0464E6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|anycpu = Debug|anycpu
@@ -89,6 +91,10 @@ Global
 		{A23F80E2-1436-4195-A768-229003B27573}.Debug|anycpu.Build.0 = Debug|Any CPU
 		{A23F80E2-1436-4195-A768-229003B27573}.Release|anycpu.ActiveCfg = Release|Any CPU
 		{A23F80E2-1436-4195-A768-229003B27573}.Release|anycpu.Build.0 = Release|Any CPU
+		{45D9B663-EBA2-45B1-94D9-DBDBDB0464E6}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{45D9B663-EBA2-45B1-94D9-DBDBDB0464E6}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{45D9B663-EBA2-45B1-94D9-DBDBDB0464E6}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{45D9B663-EBA2-45B1-94D9-DBDBDB0464E6}.Release|anycpu.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

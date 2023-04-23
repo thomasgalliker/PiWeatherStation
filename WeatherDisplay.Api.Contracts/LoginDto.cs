@@ -1,4 +1,4 @@
-﻿namespace WeatherDisplay.Api.Models
+﻿namespace WeatherDisplay.Api.Contracts
 {
     public class LoginDto
     {
