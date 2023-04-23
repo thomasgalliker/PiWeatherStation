@@ -9,7 +9,7 @@ namespace WeatherDisplay.Api.Controllers
     [Route("api/system/network")]
     public class NetworkController : ControllerBase
     {
-        private const string DefaultIPAddress = "192.168.99.1";
+        private const string DefaultIPAddress = "192.168.10.1";
         private readonly INetworkInterfaceService networkInterfaceService;
         private readonly INetworkManager networkManager;
         private readonly IWPA wpa;

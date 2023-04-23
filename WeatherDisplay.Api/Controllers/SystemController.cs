@@ -43,7 +43,7 @@ namespace WeatherDisplay.Api.Controllers
         }
         
         [HttpGet("cpuinfo")]
-        public async Task<CpuInfo> GetSystemInfoAsync()
+        public async Task<CpuInfo> GetCpuInfoAsync()
         {
             var cpuInfo = await this.systemInfoService.GetCpuInfoAsync();
             return cpuInfo;
