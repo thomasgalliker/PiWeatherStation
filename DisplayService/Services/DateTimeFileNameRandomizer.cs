@@ -5,7 +5,7 @@
     /// </summary>
     public class DateTimeFileNameRandomizer : FileNameRandomizer
     {
-        private const string DateTimePattern = "yyyy-dd-MM-HH-mm-ss-fff";
+        private const string DateTimePattern = "yyyy-MM-dd-HH-mm-ss-fff";
 
         private readonly IDateTime dateTime;
 

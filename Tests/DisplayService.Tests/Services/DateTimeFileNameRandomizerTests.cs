@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using DisplayService.Services;
 using FluentAssertions;
 using Moq.AutoMock;
@@ -17,7 +16,7 @@ namespace DisplayService.Tests.Services
 
             var dateTimeMock = this.autoMocker.GetMock<IDateTime>();
             dateTimeMock.SetupGet(r => r.UtcNow)
-                .Returns(new DateTime(2000, 1, 1, 11, 12, 14, 567, DateTimeKind.Utc));
+                .Returns(new DateTime(2001, 2, 3, 11, 12, 14, 567, DateTimeKind.Utc));
         }
 
         [Theory]
@@ -37,9 +36,9 @@ namespace DisplayService.Tests.Services
         }
 
         [Theory]
-        [InlineData("filename", "filename-2000-01-01-11-12-14-567")]
-        [InlineData("filename.jpg", "filename-2000-01-01-11-12-14-567.jpg")]
-        [InlineData(@"\some\path\to\filename.jpg", @"\some\path\to\filename-2000-01-01-11-12-14-567.jpg")]
+        [InlineData("filename", "filename-2001-02-03-11-12-14-567")]
+        [InlineData("filename.jpg", "filename-2001-02-03-11-12-14-567.jpg")]
+        [InlineData(@"\some\path\to\filename.jpg", @"\some\path\to\filename-2001-02-03-11-12-14-567.jpg")]
         public void ShouldGetNextFileName(string path, string expectedPath)
         {
             // Arrange
