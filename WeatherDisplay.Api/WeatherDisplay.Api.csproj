@@ -23,7 +23,7 @@
 	<PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="6.0.0" />
 	<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="6.0.0" />
 	<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.23.1" />
-	<PackageReference Include="NCrontab.Scheduler.AspNetCore" Version="1.1.17" />
+	<PackageReference Include="NCrontab.Scheduler.AspNetCore" Version="1.2.3-pre" />
 	<PackageReference Include="NLog.Web.AspNetCore" Version="5.1.4" />
 	<PackageReference Include="RaspberryPi.NET" Version="1.0.39-pre" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
