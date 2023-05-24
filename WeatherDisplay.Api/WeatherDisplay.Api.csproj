@@ -26,10 +26,10 @@
 	<PackageReference Include="NCrontab.Scheduler.AspNetCore" Version="1.2.3-pre" />
 	<PackageReference Include="NLog.Web.AspNetCore" Version="5.2.3" />
 	<PackageReference Include="RaspberryPi.NET" Version="1.0.39-pre" />
-    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.4.0" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.23.1" />
-    <PackageReference Include="UnitsNet.Serialization.JsonNet" Version="4.6.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.30.1" />
+    <PackageReference Include="UnitsNet.Serialization.JsonNet" Version="5.5.0" />
   </ItemGroup>
 
   <ItemGroup>

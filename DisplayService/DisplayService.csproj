@@ -24,9 +24,9 @@
     <PackageReference Include="ncrontab" Version="3.3.1" />
     <PackageReference Include="NCrontab.Scheduler" Version="1.2.3-pre" />
     <PackageReference Include="ResourceLoader" Version="3.2.4" />
-    <PackageReference Include="SkiaSharp" Version="2.88.2" />
+    <PackageReference Include="SkiaSharp" Version="2.88.3" />
     <PackageReference Include="eXoCooLd.Waveshare.EPaperDisplay" Version="1.0.4" />
-    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.2" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.3" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Utils\" />
