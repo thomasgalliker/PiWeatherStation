@@ -61,6 +61,15 @@ namespace WeatherDisplay.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Air Quality.
+        /// </summary>
+        internal static string AirQualityLabelText {
+            get {
+                return ResourceManager.GetString("AirQualityLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CO2.
         /// </summary>
         internal static string CarbonDioxideAbbreviation {
@@ -102,6 +111,15 @@ namespace WeatherDisplay.Resources.Strings {
         internal static string OpenWeatherMapPage_SourceName {
             get {
                 return ResourceManager.GetString("OpenWeatherMapPage_SourceName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}, at {1}.
+        /// </summary>
+        internal static string PlaceAndDateTime {
+            get {
+                return ResourceManager.GetString("PlaceAndDateTime", resourceCulture);
             }
         }
         

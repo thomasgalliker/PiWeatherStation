@@ -45,4 +45,10 @@
   <data name="WifiSetupIntroLabelText" xml:space="preserve">
     <value>Verbinden Sie sich mit folgendem WiFi Netzwerk:</value>
   </data>
+  <data name="PlaceAndDateTime" xml:space="preserve">
+    <value>{0}, um {1} Uhr</value>
+  </data>
+  <data name="AirQualityLabelText" xml:space="preserve">
+    <value>Luftqualität</value>
+  </data>
 </root>

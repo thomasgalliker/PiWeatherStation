@@ -161,7 +161,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 Y = 120,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{this.currentPlace.Name}, um {dateTimeNow:t} Uhr",
+                                Value = string.Format(Translations.PlaceAndDateTime, this.currentPlace.Name, $"{dateTimeNow:t}"),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -397,7 +397,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             var airPollutionInfo = await this.openWeatherMapService.GetAirPollutionAsync(this.currentPlace.Latitude, this.currentPlace.Longitude);
                             if (airPollutionInfo.Items.FirstOrDefault() is AirPollutionInfoItem airPollutionInfoItem)
                             {
-                                var airPollutionInfoText = $"Air Quality: {airPollutionInfoItem.Main.AirQuality:N}";
+                                var airPollutionInfoText = $"{Translations.AirQualityLabelText}: {airPollutionInfoItem.Main.AirQuality:N}";
 
                                 currentWeatherRenderActions.AddRange(new IRenderAction[]
                                 {
@@ -407,7 +407,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                         Y = 300,
                                         HorizontalTextAlignment = HorizontalAlignment.Center,
                                         VerticalTextAlignment = VerticalAlignment.Top,
-                                        Value = $"{Translations.UltraViolettAbbreviation}",
+                                        Value = Translations.UltraViolettAbbreviation,
                                         ForegroundColor = "#000000",
                                         BackgroundColor = "#FFFFFF",
                                         FontSize = 14,
@@ -602,7 +602,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 Y = 180 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{dailyForecastToday.WindSpeed:0}m/s ({dailyForecastToday.WindDirection})",
+                                Value = $"{dailyForecastToday.WindSpeed:0}m/s ({dailyForecastToday.WindDirection.GetSecondaryIntercardinalWindDirection().ToString("A")})",
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
