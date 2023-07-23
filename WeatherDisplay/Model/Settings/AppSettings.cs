@@ -13,8 +13,6 @@ namespace WeatherDisplay.Model.Settings
             this.ButtonMappings = new List<ButtonMapping>();
         }
 
-        public string Title { get; set; }
-
         public CultureInfo CultureInfo
         {
             get => this.cultureInfo;

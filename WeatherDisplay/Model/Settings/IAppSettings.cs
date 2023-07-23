@@ -5,8 +5,6 @@ namespace WeatherDisplay.Model.Settings
 {
     public interface IAppSettings
     {
-        string Title { get; set; }
-
         CultureInfo CultureInfo { get; set; }
 
         bool RunSetup { get; set; }
