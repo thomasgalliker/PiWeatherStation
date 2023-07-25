@@ -41,7 +41,7 @@ namespace WeatherDisplay.Tests.Testdata
                     Clouds = 73,
                     Visibility = 10000,
                     WindSpeed = 0d,
-                    WindDirectionDegrees = 0,
+                    WindDirection = 0,
                     WindGust = 0d,
                     Weather = new List<WeatherCondition>
                     {
@@ -376,7 +376,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 73,
                       Visibility = 10000,
                       WindSpeed = 1.2d,
-                      WindDirectionDegrees = 142,
+                      WindDirection = 142,
                       WindGust = 1.33d,
                       Weather = new List<WeatherCondition>
                       {
@@ -402,7 +402,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 70,
                       Visibility = 10000,
                       WindSpeed = 1.29d,
-                      WindDirectionDegrees = 160,
+                      WindDirection = 160,
                       WindGust = 1.35d,
                       Weather = new List<WeatherCondition>
                       {
@@ -428,7 +428,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 61,
                       Visibility = 10000,
                       WindSpeed = 1.38d,
-                      WindDirectionDegrees = 167,
+                      WindDirection = 167,
                       WindGust = 1.34d,
                       Weather = new List<WeatherCondition>
                       {
@@ -454,7 +454,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 50,
                       Visibility = 10000,
                       WindSpeed = 1.45d,
-                      WindDirectionDegrees = 176,
+                      WindDirection = 176,
                       WindGust = 1.34d,
                       Weather = new List<WeatherCondition>
                       {
@@ -480,7 +480,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 38,
                       Visibility = 10000,
                       WindSpeed = 1.52d,
-                      WindDirectionDegrees = 198,
+                      WindDirection = 198,
                       WindGust = 1.36d,
                       Weather = new List<WeatherCondition>
                       {
@@ -506,7 +506,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 17,
                       Visibility = 10000,
                       WindSpeed = 1.75d,
-                      WindDirectionDegrees = 196,
+                      WindDirection = 196,
                       WindGust = 1.58d,
                       Weather = new List<WeatherCondition>
                       {
@@ -532,7 +532,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 11,
                       Visibility = 10000,
                       WindSpeed = 1.9d,
-                      WindDirectionDegrees = 189,
+                      WindDirection = 189,
                       WindGust = 1.7d,
                       Weather = new List<WeatherCondition>
                       {
@@ -558,7 +558,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 8,
                       Visibility = 10000,
                       WindSpeed = 1.72d,
-                      WindDirectionDegrees = 179,
+                      WindDirection = 179,
                       WindGust = 1.47d,
                       Weather = new List<WeatherCondition>
                       {
@@ -584,7 +584,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 6,
                       Visibility = 10000,
                       WindSpeed = 1.51d,
-                      WindDirectionDegrees = 190,
+                      WindDirection = 190,
                       WindGust = 1.4d,
                       Weather = new List<WeatherCondition>
                       {
@@ -610,7 +610,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 6,
                       Visibility = 10000,
                       WindSpeed = 1.27d,
-                      WindDirectionDegrees = 199,
+                      WindDirection = 199,
                       WindGust = 1.29d,
                       Weather = new List<WeatherCondition>
                       {
@@ -636,7 +636,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 6,
                       Visibility = 10000,
                       WindSpeed = 0.73d,
-                      WindDirectionDegrees = 216,
+                      WindDirection = 216,
                       WindGust = 1.17d,
                       Weather = new List<WeatherCondition>
                       {
@@ -662,7 +662,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 19,
                       Visibility = 10000,
                       WindSpeed = 0.88d,
-                      WindDirectionDegrees = 286,
+                      WindDirection = 286,
                       WindGust = 1.46d,
                       Weather = new List<WeatherCondition>
                       {
@@ -688,7 +688,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 26,
                       Visibility = 10000,
                       WindSpeed = 0.98d,
-                      WindDirectionDegrees = 289,
+                      WindDirection = 289,
                       WindGust = 3.1d,
                       Weather = new List<WeatherCondition>
                       {
@@ -714,7 +714,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 29,
                       Visibility = 10000,
                       WindSpeed = 1.07d,
-                      WindDirectionDegrees = 299,
+                      WindDirection = 299,
                       WindGust = 3.32d,
                       Weather = new List<WeatherCondition>
                       {
@@ -740,7 +740,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 22,
                       Visibility = 10000,
                       WindSpeed = 1.6d,
-                      WindDirectionDegrees = 292,
+                      WindDirection = 292,
                       WindGust = 4.76d,
                       Weather = new List<WeatherCondition>
                       {
@@ -766,7 +766,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 20,
                       Visibility = 10000,
                       WindSpeed = 2.36d,
-                      WindDirectionDegrees = 284,
+                      WindDirection = 284,
                       WindGust = 5.7d,
                       Weather = new List<WeatherCondition>
                       {
@@ -792,7 +792,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 25,
                       Visibility = 10000,
                       WindSpeed = 3.2d,
-                      WindDirectionDegrees = 280,
+                      WindDirection = 280,
                       WindGust = 6.55d,
                       Weather = new List<WeatherCondition>
                       {
@@ -818,7 +818,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 44,
                       Visibility = 10000,
                       WindSpeed = 3.76d,
-                      WindDirectionDegrees = 272,
+                      WindDirection = 272,
                       WindGust = 6.65d,
                       Weather = new List<WeatherCondition>
                       {
@@ -844,7 +844,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 51,
                       Visibility = 10000,
                       WindSpeed = 3.74d,
-                      WindDirectionDegrees = 268,
+                      WindDirection = 268,
                       WindGust = 6.72d,
                       Weather = new List<WeatherCondition>
                       {
@@ -870,7 +870,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 37,
                       Visibility = 10000,
                       WindSpeed = 3.24d,
-                      WindDirectionDegrees = 285,
+                      WindDirection = 285,
                       WindGust = 5.8d,
                       Weather = new List<WeatherCondition>
                       {
@@ -896,7 +896,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 30,
                       Visibility = 10000,
                       WindSpeed = 2.98d,
-                      WindDirectionDegrees = 315,
+                      WindDirection = 315,
                       WindGust = 4.65d,
                       Weather = new List<WeatherCondition>
                       {
@@ -922,7 +922,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 25,
                       Visibility = 10000,
                       WindSpeed = 2.3d,
-                      WindDirectionDegrees = 342,
+                      WindDirection = 342,
                       WindGust = 4.49d,
                       Weather = new List<WeatherCondition>
                       {
@@ -948,7 +948,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 28,
                       Visibility = 10000,
                       WindSpeed = 1.24d,
-                      WindDirectionDegrees = 17,
+                      WindDirection = 17,
                       WindGust = 1.6d,
                       Weather = new List<WeatherCondition>
                       {
@@ -974,7 +974,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 10,
                       Visibility = 10000,
                       WindSpeed = 1.42d,
-                      WindDirectionDegrees = 176,
+                      WindDirection = 176,
                       WindGust = 1.46d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1000,7 +1000,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 18,
                       Visibility = 10000,
                       WindSpeed = 2.88d,
-                      WindDirectionDegrees = 194,
+                      WindDirection = 194,
                       WindGust = 4.2d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1026,7 +1026,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 39,
                       Visibility = 10000,
                       WindSpeed = 2.94d,
-                      WindDirectionDegrees = 201,
+                      WindDirection = 201,
                       WindGust = 4.93d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1052,7 +1052,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 31,
                       Visibility = 7351,
                       WindSpeed = 2.94d,
-                      WindDirectionDegrees = 161,
+                      WindDirection = 161,
                       WindGust = 4.55d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1078,7 +1078,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 26,
                       Visibility = 10000,
                       WindSpeed = 2.7d,
-                      WindDirectionDegrees = 179,
+                      WindDirection = 179,
                       WindGust = 2.96d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1104,7 +1104,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 23,
                       Visibility = 10000,
                       WindSpeed = 2.63d,
-                      WindDirectionDegrees = 197,
+                      WindDirection = 197,
                       WindGust = 2.87d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1130,7 +1130,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 9,
                       Visibility = 10000,
                       WindSpeed = 2.52d,
-                      WindDirectionDegrees = 202,
+                      WindDirection = 202,
                       WindGust = 2.25d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1156,7 +1156,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 18,
                       Visibility = 10000,
                       WindSpeed = 2.44d,
-                      WindDirectionDegrees = 201,
+                      WindDirection = 201,
                       WindGust = 2.5d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1182,7 +1182,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 14,
                       Visibility = 10000,
                       WindSpeed = 1.99d,
-                      WindDirectionDegrees = 203,
+                      WindDirection = 203,
                       WindGust = 1.89d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1208,7 +1208,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 13,
                       Visibility = 10000,
                       WindSpeed = 1.8d,
-                      WindDirectionDegrees = 203,
+                      WindDirection = 203,
                       WindGust = 1.62d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1234,7 +1234,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 14,
                       Visibility = 10000,
                       WindSpeed = 1.74d,
-                      WindDirectionDegrees = 213,
+                      WindDirection = 213,
                       WindGust = 1.82d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1260,7 +1260,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 13,
                       Visibility = 10000,
                       WindSpeed = 1.2d,
-                      WindDirectionDegrees = 218,
+                      WindDirection = 218,
                       WindGust = 2.03d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1286,7 +1286,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 2,
                       Visibility = 10000,
                       WindSpeed = 1.26d,
-                      WindDirectionDegrees = 274,
+                      WindDirection = 274,
                       WindGust = 3.46d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1312,7 +1312,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 7,
                       Visibility = 10000,
                       WindSpeed = 1.71d,
-                      WindDirectionDegrees = 286,
+                      WindDirection = 286,
                       WindGust = 3.79d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1338,7 +1338,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 7,
                       Visibility = 10000,
                       WindSpeed = 1.76d,
-                      WindDirectionDegrees = 286,
+                      WindDirection = 286,
                       WindGust = 4.1d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1364,7 +1364,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 8,
                       Visibility = 10000,
                       WindSpeed = 2.12d,
-                      WindDirectionDegrees = 286,
+                      WindDirection = 286,
                       WindGust = 4.34d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1390,7 +1390,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 24,
                       Visibility = 10000,
                       WindSpeed = 2.4d,
-                      WindDirectionDegrees = 294,
+                      WindDirection = 294,
                       WindGust = 4.9d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1416,7 +1416,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 37,
                       Visibility = 10000,
                       WindSpeed = 2.81d,
-                      WindDirectionDegrees = 302,
+                      WindDirection = 302,
                       WindGust = 5.14d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1442,7 +1442,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 100,
                       Visibility = 10000,
                       WindSpeed = 3.25d,
-                      WindDirectionDegrees = 313,
+                      WindDirection = 313,
                       WindGust = 4.88d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1468,7 +1468,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 97,
                       Visibility = 10000,
                       WindSpeed = 3.58d,
-                      WindDirectionDegrees = 328,
+                      WindDirection = 328,
                       WindGust = 4.29d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1494,7 +1494,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 87,
                       Visibility = 10000,
                       WindSpeed = 1.98d,
-                      WindDirectionDegrees = 338,
+                      WindDirection = 338,
                       WindGust = 3.32d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1520,7 +1520,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 74,
                       Visibility = 10000,
                       WindSpeed = 2.2d,
-                      WindDirectionDegrees = 340,
+                      WindDirection = 340,
                       WindGust = 2.63d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1546,7 +1546,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 65,
                       Visibility = 10000,
                       WindSpeed = 1.84d,
-                      WindDirectionDegrees = 338,
+                      WindDirection = 338,
                       WindGust = 3.38d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1572,7 +1572,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 62,
                       Visibility = 10000,
                       WindSpeed = 1.29d,
-                      WindDirectionDegrees = 335,
+                      WindDirection = 335,
                       WindGust = 1.56d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1598,7 +1598,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 97,
                       Visibility = 10000,
                       WindSpeed = 0.39d,
-                      WindDirectionDegrees = 327,
+                      WindDirection = 327,
                       WindGust = 0.66d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1646,7 +1646,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 0,
                       Visibility = 0,
                       WindSpeed = 2.95d,
-                      WindDirectionDegrees = 48,
+                      WindDirection = 48,
                       WindGust = 3.51d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1693,7 +1693,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 20,
                       Visibility = 0,
                       WindSpeed = 3.76d,
-                      WindDirectionDegrees = 272,
+                      WindDirection = 272,
                       WindGust = 6.72d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1740,7 +1740,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 24,
                       Visibility = 0,
                       WindSpeed = 3.58d,
-                      WindDirectionDegrees = 328,
+                      WindDirection = 328,
                       WindGust = 5.14d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1787,7 +1787,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 74,
                       Visibility = 0,
                       WindSpeed = 2.43d,
-                      WindDirectionDegrees = 8,
+                      WindDirection = 8,
                       WindGust = 2.34d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1834,7 +1834,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 1,
                       Visibility = 0,
                       WindSpeed = 3.19d,
-                      WindDirectionDegrees = 51,
+                      WindDirection = 51,
                       WindGust = 4.24d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1881,7 +1881,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 0,
                       Visibility = 0,
                       WindSpeed = 3.47d,
-                      WindDirectionDegrees = 149,
+                      WindDirection = 149,
                       WindGust = 7.32d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1928,7 +1928,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 76,
                       Visibility = 0,
                       WindSpeed = 3.32d,
-                      WindDirectionDegrees = 359,
+                      WindDirection = 359,
                       WindGust = 7.06d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1975,7 +1975,7 @@ namespace WeatherDisplay.Tests.Testdata
                       Clouds = 100,
                       Visibility = 0,
                       WindSpeed = 3.7d,
-                      WindDirectionDegrees = 211,
+                      WindDirection = 211,
                       WindGust = 8.22d,
                       Weather = new List<WeatherCondition>
                       {
@@ -2046,7 +2046,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Humidity = 63,
                         DewPoint = new Temperature(7.7d, TemperatureUnit.Celsius),
                         WindSpeed = 3.85d,
-                        WindDirectionDegrees = 42,
+                        WindDirection = 42,
                         WindGust = 7.82d,
                         Weather = new List<WeatherCondition>
                         {
@@ -2091,7 +2091,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Humidity = 77,
                         DewPoint = new Temperature(3.45d, TemperatureUnit.Celsius),
                         WindSpeed = 5.02d,
-                        WindDirectionDegrees = 60,
+                        WindDirection = 60,
                         WindGust = 9.32d,
                         Weather = new List<WeatherCondition>
                         {
@@ -2135,7 +2135,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Humidity = 59,
                         DewPoint = new Temperature(1.55d, TemperatureUnit.Celsius),
                         WindSpeed = 3.58d,
-                        WindDirectionDegrees = 61,
+                        WindDirection = 61,
                         WindGust = 7.48d,
                         Weather = new List<WeatherCondition>
                         {
@@ -2179,7 +2179,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Humidity = 34,
                         DewPoint = new Temperature(-2.23d, TemperatureUnit.Celsius),
                         WindSpeed = 2.38d,
-                        WindDirectionDegrees = 155,
+                        WindDirection = 155,
                         WindGust = 3.04d,
                         Weather = new List<WeatherCondition>
                         {
@@ -2223,7 +2223,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Humidity = 35,
                         DewPoint = new Temperature(-1.93d, TemperatureUnit.Celsius),
                         WindSpeed = 2.11d,
-                        WindDirectionDegrees = 158,
+                        WindDirection = 158,
                         WindGust = 2.51d,
                         Weather = new List<WeatherCondition>
                         {
@@ -2267,7 +2267,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Humidity = 41,
                         DewPoint = new Temperature(-0.3d, TemperatureUnit.Celsius),
                         WindSpeed = 2d,
-                        WindDirectionDegrees = 163,
+                        WindDirection = 163,
                         WindGust = 1.92d,
                         Weather = new List<WeatherCondition>
                         {
@@ -2311,7 +2311,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Humidity = 30,
                         DewPoint = new Temperature(-3.29d, TemperatureUnit.Celsius),
                         WindSpeed = 1.9d,
-                        WindDirectionDegrees = 163,
+                        WindDirection = 163,
                         WindGust = 1.85d,
                         Weather = new List<WeatherCondition>
                         {
@@ -2355,7 +2355,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Humidity = 37,
                         DewPoint = new Temperature(0.06d, TemperatureUnit.Celsius),
                         WindSpeed = 1.81d,
-                        WindDirectionDegrees = 173,
+                        WindDirection = 173,
                         WindGust = 1.62d,
                         Weather = new List<WeatherCondition>
                         {

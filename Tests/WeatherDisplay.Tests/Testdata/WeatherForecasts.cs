@@ -47,7 +47,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "04n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 160d,
                         Speed = 1.29d
@@ -83,7 +83,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "03n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 198d,
                         Speed = 1.52d
@@ -119,7 +119,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "03n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 179d,
                         Speed = 1.72d
@@ -155,7 +155,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "01d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 216d,
                         Speed = 0.73d
@@ -195,7 +195,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "10d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 299d,
                         Speed = 1.07d
@@ -231,7 +231,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "03d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 280d,
                         Speed = 3.2d
@@ -267,7 +267,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "03d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 285d,
                         Speed = 3.24d
@@ -307,7 +307,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "10d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 17d,
                         Speed = 1.24d
@@ -347,7 +347,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "10n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 201d,
                         Speed = 2.94d
@@ -387,7 +387,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "10n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 197d,
                         Speed = 2.63d
@@ -423,7 +423,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "02n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 203d,
                         Speed = 1.99d
@@ -463,7 +463,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "10d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 218d,
                         Speed = 1.2d
@@ -503,7 +503,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "10d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 286d,
                         Speed = 1.76d
@@ -543,7 +543,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "10d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 302d,
                         Speed = 2.81d
@@ -579,7 +579,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "04d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 338d,
                         Speed = 1.98d
@@ -615,7 +615,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "04d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 335d,
                         Speed = 1.29d
@@ -651,7 +651,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "04n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 179d,
                         Speed = 1.25d
@@ -687,7 +687,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "04n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 168d,
                         Speed = 1.22d
@@ -723,7 +723,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "03n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 173d,
                         Speed = 1.53d
@@ -759,7 +759,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "04d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 91d,
                         Speed = 0.41d
@@ -795,7 +795,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "04d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 41d,
                         Speed = 1.29d
@@ -831,7 +831,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "04d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 8d,
                         Speed = 2.43d
@@ -867,7 +867,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "04d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 28d,
                         Speed = 1.81d
@@ -903,7 +903,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "04d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 96d,
                         Speed = 0.77d
@@ -939,7 +939,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "04n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 171d,
                         Speed = 1.6d
@@ -975,7 +975,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "04n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 162d,
                         Speed = 1.59d
@@ -1011,7 +1011,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "03n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 157d,
                         Speed = 1.74d
@@ -1047,7 +1047,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "02d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 108d,
                         Speed = 0.95d
@@ -1083,7 +1083,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "01d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 53d,
                         Speed = 2.06d
@@ -1119,7 +1119,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "01d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 56d,
                         Speed = 3.13d
@@ -1155,7 +1155,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "01d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 51d,
                         Speed = 3.19d
@@ -1191,7 +1191,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "01d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 59d,
                         Speed = 0.32d
@@ -1227,7 +1227,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "01n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 184d,
                         Speed = 2.14d
@@ -1263,7 +1263,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "01n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 178d,
                         Speed = 2.32d
@@ -1299,7 +1299,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "01n"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 187d,
                         Speed = 2.32d
@@ -1335,7 +1335,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "01d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 183d,
                         Speed = 1.17d
@@ -1371,7 +1371,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "01d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 306d,
                         Speed = 1.19d
@@ -1407,7 +1407,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "01d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 315d,
                         Speed = 2.03d
@@ -1447,7 +1447,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "10d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 203d,
                         Speed = 1.63d
@@ -1487,7 +1487,7 @@ namespace WeatherDisplay.Tests.Testdata
                             IconId = "10d"
                         }
                         },
-                        Wind = new WindInformation
+                        Wind = new WindInfo
                         {
                         Direction = 149d,
                         Speed = 3.47d
@@ -1554,7 +1554,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 167d,
                             Speed = 1.38d
@@ -1590,7 +1590,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 176d,
                             Speed = 1.45d
@@ -1626,7 +1626,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 198d,
                             Speed = 1.52d
@@ -1662,7 +1662,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 196d,
                             Speed = 1.75d
@@ -1698,7 +1698,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "02n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 189d,
                             Speed = 1.9d
@@ -1734,7 +1734,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 179d,
                             Speed = 1.72d
@@ -1770,7 +1770,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 190d,
                             Speed = 1.51d
@@ -1806,7 +1806,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 199d,
                             Speed = 1.27d
@@ -1842,7 +1842,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 216d,
                             Speed = 0.73d
@@ -1878,7 +1878,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "02d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 286d,
                             Speed = 0.88d
@@ -1918,7 +1918,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "10d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 289d,
                             Speed = 0.98d
@@ -1954,7 +1954,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 299d,
                             Speed = 1.07d
@@ -1990,7 +1990,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "02d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 292d,
                             Speed = 1.6d
@@ -2026,7 +2026,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "02d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 284d,
                             Speed = 2.36d
@@ -2062,7 +2062,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 280d,
                             Speed = 3.2d
@@ -2098,7 +2098,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 272d,
                             Speed = 3.76d
@@ -2134,7 +2134,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 268d,
                             Speed = 3.74d
@@ -2170,7 +2170,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 285d,
                             Speed = 3.24d
@@ -2206,7 +2206,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 315d,
                             Speed = 2.98d
@@ -2242,7 +2242,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 342d,
                             Speed = 2.3d
@@ -2282,7 +2282,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "10d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 17d,
                             Speed = 1.24d
@@ -2322,7 +2322,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "10d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 176d,
                             Speed = 1.42d
@@ -2362,7 +2362,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "10n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 194d,
                             Speed = 2.88d
@@ -2402,7 +2402,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "10n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 201d,
                             Speed = 2.94d
@@ -2442,7 +2442,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "10n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 161d,
                             Speed = 2.94d
@@ -2482,7 +2482,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "10n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 179d,
                             Speed = 2.7d
@@ -2522,7 +2522,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "10n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 197d,
                             Speed = 2.63d
@@ -2558,7 +2558,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 202d,
                             Speed = 2.52d
@@ -2594,7 +2594,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "02n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 201d,
                             Speed = 2.44d
@@ -2630,7 +2630,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "02n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 203d,
                             Speed = 1.99d
@@ -2666,7 +2666,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "02d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 203d,
                             Speed = 1.8d
@@ -2702,7 +2702,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "02d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 213d,
                             Speed = 1.74d
@@ -2742,7 +2742,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "10d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 218d,
                             Speed = 1.2d
@@ -2778,7 +2778,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 274d,
                             Speed = 1.26d
@@ -2818,7 +2818,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "10d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 286d,
                             Speed = 1.71d
@@ -2858,7 +2858,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "10d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 286d,
                             Speed = 1.76d
@@ -2898,7 +2898,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "10d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 286d,
                             Speed = 2.12d
@@ -2934,7 +2934,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "02d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 294d,
                             Speed = 2.4d
@@ -2970,7 +2970,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 302d,
                             Speed = 2.81d
@@ -3006,7 +3006,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 313d,
                             Speed = 3.25d
@@ -3042,7 +3042,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 328d,
                             Speed = 3.58d
@@ -3078,7 +3078,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 338d,
                             Speed = 1.98d
@@ -3114,7 +3114,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 340d,
                             Speed = 2.2d
@@ -3150,7 +3150,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 338d,
                             Speed = 1.84d
@@ -3186,7 +3186,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 335d,
                             Speed = 1.29d
@@ -3222,7 +3222,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 327d,
                             Speed = 0.39d
@@ -3258,7 +3258,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 187d,
                             Speed = 0.22d
@@ -3294,7 +3294,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 179d,
                             Speed = 1.25d
@@ -3330,7 +3330,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 192d,
                             Speed = 0.67d
@@ -3366,7 +3366,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 179d,
                             Speed = 0.9d
@@ -3402,7 +3402,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 168d,
                             Speed = 1.22d
@@ -3438,7 +3438,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 171d,
                             Speed = 1.05d
@@ -3474,7 +3474,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 180d,
                             Speed = 1.04d
@@ -3510,7 +3510,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 173d,
                             Speed = 1.53d
@@ -3546,7 +3546,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 179d,
                             Speed = 1.22d
@@ -3582,7 +3582,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 163d,
                             Speed = 0.95d
@@ -3618,7 +3618,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 91d,
                             Speed = 0.41d
@@ -3654,7 +3654,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 72d,
                             Speed = 0.79d
@@ -3690,7 +3690,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 39d,
                             Speed = 1.45d
@@ -3726,7 +3726,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 41d,
                             Speed = 1.29d
@@ -3762,7 +3762,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 27d,
                             Speed = 1.53d
@@ -3798,7 +3798,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 11d,
                             Speed = 2.24d
@@ -3834,7 +3834,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 8d,
                             Speed = 2.43d
@@ -3870,7 +3870,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 20d,
                             Speed = 1.94d
@@ -3906,7 +3906,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 24d,
                             Speed = 1.83d
@@ -3942,7 +3942,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 28d,
                             Speed = 1.81d
@@ -3978,7 +3978,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 29d,
                             Speed = 1.79d
@@ -4014,7 +4014,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 41d,
                             Speed = 1.42d
@@ -4050,7 +4050,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 96d,
                             Speed = 0.77d
@@ -4086,7 +4086,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 154d,
                             Speed = 0.93d
@@ -4122,7 +4122,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 164d,
                             Speed = 1.37d
@@ -4158,7 +4158,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 171d,
                             Speed = 1.6d
@@ -4194,7 +4194,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 173d,
                             Speed = 1.63d
@@ -4230,7 +4230,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 164d,
                             Speed = 1.62d
@@ -4266,7 +4266,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 162d,
                             Speed = 1.59d
@@ -4302,7 +4302,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "04n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 160d,
                             Speed = 1.52d
@@ -4338,7 +4338,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 161d,
                             Speed = 1.53d
@@ -4374,7 +4374,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 157d,
                             Speed = 1.74d
@@ -4410,7 +4410,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 151d,
                             Speed = 1.24d
@@ -4446,7 +4446,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "03d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 143d,
                             Speed = 1.61d
@@ -4482,7 +4482,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "02d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 108d,
                             Speed = 0.95d
@@ -4518,7 +4518,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 74d,
                             Speed = 1.09d
@@ -4554,7 +4554,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 51d,
                             Speed = 1.48d
@@ -4590,7 +4590,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 53d,
                             Speed = 2.06d
@@ -4626,7 +4626,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 60d,
                             Speed = 2.6d
@@ -4662,7 +4662,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 59d,
                             Speed = 2.85d
@@ -4698,7 +4698,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 56d,
                             Speed = 3.13d
@@ -4734,7 +4734,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 54d,
                             Speed = 3.25d
@@ -4770,7 +4770,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 55d,
                             Speed = 3.29d
@@ -4806,7 +4806,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 51d,
                             Speed = 3.19d
@@ -4842,7 +4842,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 46d,
                             Speed = 2.44d
@@ -4878,7 +4878,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 47d,
                             Speed = 1.49d
@@ -4914,7 +4914,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 59d,
                             Speed = 0.32d
@@ -4950,7 +4950,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01d"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 195d,
                             Speed = 1.38d
@@ -4986,7 +4986,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 193d,
                             Speed = 1.9d
@@ -5022,7 +5022,7 @@ namespace WeatherDisplay.Tests.Testdata
                               IconId = "01n"
                             }
                           },
-                          Wind = new WindInformation
+                          Wind = new WindInfo
                           {
                             Direction = 184d,
                             Speed = 2.14d
