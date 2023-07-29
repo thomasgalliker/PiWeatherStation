@@ -12,8 +12,8 @@ namespace WeatherDisplay.Services.Hardware
 {
     public class ButtonsAccessService : IButtonsAccessService, IDisposable
     {
-        private static readonly TimeSpan ButtonDebounceTime = TimeSpan.FromMilliseconds(10);
-        private static readonly PinMode ButtonPinMode = PinMode.InputPullUp;
+        private static readonly TimeSpan ButtonDebounceTime = TimeSpan.FromMilliseconds(50);
+        private static readonly bool ButtonPullUp = true;
 
         private readonly ILogger logger;
         private readonly IAppSettings appSettings;
@@ -55,28 +55,28 @@ namespace WeatherDisplay.Services.Hardware
             var buttonMapping1 = buttonMappings.SingleOrDefault(b => b.ButtonId == 1);
             if (buttonMapping1 != null)
             {
-                this.button1 = new GpioButton(buttonMapping1.GpioPin, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
+                this.button1 = new GpioButton(buttonMapping1.GpioPin, ButtonPullUp, gpio: this.gpioController, shouldDispose: false, debounceTime: ButtonDebounceTime);
                 this.button1.Press += this.OnButton1Pressed;
             }
 
             var buttonMapping2 = buttonMappings.SingleOrDefault(b => b.ButtonId == 2);
             if (buttonMapping2 != null)
             {
-                this.button2 = new GpioButton(buttonMapping2.GpioPin, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
+                this.button2 = new GpioButton(buttonMapping2.GpioPin, ButtonPullUp, gpio: this.gpioController, shouldDispose: false, debounceTime: ButtonDebounceTime);
                 this.button2.Press += this.OnButton2Pressed;
             }
 
             var buttonMapping3 = buttonMappings.SingleOrDefault(b => b.ButtonId == 3);
             if (buttonMapping3 != null)
             {
-                this.button3 = new GpioButton(buttonMapping3.GpioPin, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
+                this.button3 = new GpioButton(buttonMapping3.GpioPin, ButtonPullUp, gpio: this.gpioController, shouldDispose: false, debounceTime: ButtonDebounceTime);
                 this.button3.Press += this.OnButton3Pressed;
             }
 
             var buttonMapping4 = buttonMappings.SingleOrDefault(b => b.ButtonId == 4);
             if (buttonMapping4 != null)
             {
-                this.button4 = new GpioButton(buttonMapping4.GpioPin, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
+                this.button4 = new GpioButton(buttonMapping4.GpioPin, ButtonPullUp, gpio: this.gpioController, shouldDispose: false, debounceTime: ButtonDebounceTime);
                 this.button4.Press += this.OnButton4Pressed;
                 this.button4.Holding += this.OnButton4Holding;
             }
