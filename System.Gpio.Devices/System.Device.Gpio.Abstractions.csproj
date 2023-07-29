@@ -5,6 +5,7 @@
     <RootNamespace>System.Device</RootNamespace>
 	<LangVersion>latest</LangVersion>
 	<AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+	<Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
