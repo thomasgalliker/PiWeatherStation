@@ -8,12 +8,22 @@ namespace System.Gpio.Devices.Tests.Buttons
 {
     public class GpioButtonTests
     {
+        private const int ButtonPin = 5;
+
+        private readonly Mock<IGpioController> gpioControllerMock;
+
+        public GpioButtonTests()
+        {
+            this.gpioControllerMock = new Mock<IGpioController>();
+            this.gpioControllerMock.Setup(g => g.IsPinModeSupported(ButtonPin, PinMode.InputPullUp))
+                .Returns(true);
+        }
+
         [Fact]
         public void ShouldSetIsHoldingEnabled_IfHoldingEventSubscribed()
         {
             // Arrange
-            var gpioControllerMock = new Mock<IGpioController>();
-            var button = new GpioButton(5, gpioControllerMock.Object, shouldDispose: false, PinMode.InputPullUp);
+            var button = new GpioButton(ButtonPin, isPullUp: true, gpio: this.gpioControllerMock.Object);
 
             // Act
             button.Holding += (s, e) => { };
@@ -26,8 +36,7 @@ namespace System.Gpio.Devices.Tests.Buttons
         public void ShouldSetIsHoldingEnabled_IfHoldingEventUnsubscribed()
         {
             // Arrange
-            var gpioControllerMock = new Mock<IGpioController>();
-            var button = new GpioButton(5, gpioControllerMock.Object, shouldDispose: false, PinMode.InputPullUp);
+            var button = new GpioButton(ButtonPin, isPullUp: true, gpio: this.gpioControllerMock.Object);
 
             static void eventHandler1(object s, ButtonHoldingEventArgs e)
             { }
