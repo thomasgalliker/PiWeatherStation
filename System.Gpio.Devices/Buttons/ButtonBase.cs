@@ -17,7 +17,7 @@ namespace System.Device.Buttons
 
         private readonly long doublePressTicks;
         private readonly long holdingMs;
-        private readonly TimeSpan debounceTime;
+        private readonly long debounceTicks;
         private long debounceStartTicks;
 
         private ButtonHoldingState holdingState = ButtonHoldingState.Completed;
@@ -28,6 +28,7 @@ namespace System.Device.Buttons
         private readonly bool lastButtonState = false;   // the previous reading from the input pin
 
         private bool isHoldingEnabledAuto = false;
+        private bool? isHoldingEnabledInternal;
 
         /// <summary>
         /// Delegate for button up event.
@@ -59,10 +60,9 @@ namespace System.Device.Buttons
             {
                 this.HoldingInternal += value;
 
-                if (this.IsHoldingEnabled == false && GetEventSubscribers(this.HoldingInternal) > 0)
+                if (this.isHoldingEnabledInternal != true && GetEventSubscribers(this.HoldingInternal) > 0)
                 {
                     this.isHoldingEnabledAuto = true;
-                    this.IsHoldingEnabled = true;
                 }
             }
             remove
@@ -72,7 +72,6 @@ namespace System.Device.Buttons
                 if (this.isHoldingEnabledAuto && GetEventSubscribers(this.HoldingInternal) < 1)
                 {
                     this.isHoldingEnabledAuto = false;
-                    this.IsHoldingEnabled = false;
                 }
             }
         }
@@ -85,8 +84,11 @@ namespace System.Device.Buttons
         /// <summary>
         /// Define if holding event is enabled or disabled on the button.
         /// </summary>
-        public bool IsHoldingEnabled { get; set; } = false;
-
+        public bool IsHoldingEnabled
+        {
+            get => this.isHoldingEnabledInternal ?? this.isHoldingEnabledAuto;
+            set => this.isHoldingEnabledInternal = value;
+        }
         /// <summary>
         /// Define if double press event is enabled or disabled on the button.
         /// </summary>
@@ -120,7 +122,7 @@ namespace System.Device.Buttons
 
             this.doublePressTicks = doublePress.Ticks;
             this.holdingMs = (long)holding.TotalMilliseconds;
-            this.debounceTime = debounceTime;
+            this.debounceTicks = debounceTime.Ticks;
         }
 
         /// <summary>
@@ -128,7 +130,7 @@ namespace System.Device.Buttons
         /// </summary>
         protected void HandleButtonPressed()
         {
-            if (DateTime.UtcNow.Ticks - this.debounceStartTicks < this.debounceTime.Ticks)
+            if (DateTime.UtcNow.Ticks - this.debounceStartTicks < this.debounceTicks)
             {
                 return;
             }
@@ -153,7 +155,7 @@ namespace System.Device.Buttons
         /// </summary>
         protected void HandleButtonReleased()
         {
-            if (this.debounceTime.Ticks > 0 && !this.IsPressed)
+            if (this.debounceTicks > 0 && !this.IsPressed)
             {
                 return;
             }
@@ -167,11 +169,16 @@ namespace System.Device.Buttons
             ButtonUp?.Invoke(this, EventArgs.Empty);
             Press?.Invoke(this, EventArgs.Empty);
 
-            if (this.IsHoldingEnabled && this.holdingState == ButtonHoldingState.Started)
+            if (this.holdingState == ButtonHoldingState.Started)
             {
                 this.holdingState = ButtonHoldingState.Completed;
-                HoldingInternal?.Invoke(this, new ButtonHoldingEventArgs { HoldingState = ButtonHoldingState.Completed });
+
+                if (this.IsHoldingEnabled)
+                {
+                    HoldingInternal?.Invoke(this, new ButtonHoldingEventArgs { HoldingState = ButtonHoldingState.Completed });
+                }
             }
+
 
             if (this.IsDoublePressEnabled)
             {
