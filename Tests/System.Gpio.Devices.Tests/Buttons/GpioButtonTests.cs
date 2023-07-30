@@ -1,5 +1,6 @@
 ﻿using System.Device.Buttons;
 using System.Device.Gpio;
+using System.Threading;
 using FluentAssertions;
 using Moq;
 using Xunit;
@@ -16,6 +17,8 @@ namespace System.Gpio.Devices.Tests.Buttons
         {
             this.gpioControllerMock = new Mock<IGpioController>();
             this.gpioControllerMock.Setup(g => g.IsPinModeSupported(ButtonPin, PinMode.InputPullUp))
+                .Returns(true);
+            this.gpioControllerMock.Setup(g => g.IsPinModeSupported(ButtonPin, PinMode.InputPullDown))
                 .Returns(true);
         }
 
@@ -51,6 +54,40 @@ namespace System.Gpio.Devices.Tests.Buttons
 
             // Assert
             button.IsHoldingEnabled.Should().BeFalse();
+        }
+
+        [Theory]
+        [InlineData(true, PinEventTypes.Falling, 1, 0)]
+        [InlineData(true, PinEventTypes.Rising, 0, 1)]
+        [InlineData(false, PinEventTypes.Rising, 1, 0)]
+        [InlineData(false, PinEventTypes.Falling, 0, 1)]
+        public void ShouldHandlePinStateChanged(bool isPullUp, PinEventTypes pinEventTypes, int expectedButtonDownCounts, int expectedButtonUpCounts)
+        {
+            // Arrange
+            var buttonDownCounter = 0;
+            var buttonUpCounter = 0;
+
+            PinChangeEventHandler pinChangeEventHandler = null;
+            this.gpioControllerMock.Setup(c => c.RegisterCallbackForPinValueChangedEvent(ButtonPin, It.IsAny<PinEventTypes>(), It.IsAny<PinChangeEventHandler>()))
+                .Callback((int _, PinEventTypes _, PinChangeEventHandler eventHandler) => { pinChangeEventHandler = eventHandler; });
+
+            var button = new GpioButton(ButtonPin, isPullUp, gpio: this.gpioControllerMock.Object);
+
+            button.ButtonDown += (sender, e) =>
+            {
+                Interlocked.Increment(ref buttonDownCounter);
+            };
+            button.ButtonUp += (sender, e) =>
+            {
+                Interlocked.Increment(ref buttonUpCounter);
+            };
+
+            // Act
+            pinChangeEventHandler(button, new PinValueChangedEventArgs(pinEventTypes, ButtonPin));
+
+            // Assert
+            buttonDownCounter.Should().Be(expectedButtonDownCounts);
+            buttonUpCounter.Should().Be(expectedButtonUpCounts);
         }
     }
 }
