@@ -141,7 +141,7 @@ namespace WeatherDisplay.Services.Hardware
                 return;
             }
 
-            this.logger.LogDebug($"HandleButtonHold: buttonId={buttonId}");
+            this.logger.LogDebug($"HandleButtonHolding: buttonId={buttonId}");
 
             try
             {
@@ -173,11 +173,6 @@ namespace WeatherDisplay.Services.Hardware
             await this.HandleButtonPress(buttonId: 1);
         }
 
-        private async void OnButton4Holding(object sender, EventArgs e)
-        {
-            await this.HandleButtonHolding(buttonId: 4);
-        }
-
         private async void OnButton2Pressed(object sender, EventArgs e)
         {
             await this.HandleButtonPress(buttonId: 2);
@@ -191,6 +186,11 @@ namespace WeatherDisplay.Services.Hardware
         private async void OnButton4Pressed(object sender, EventArgs e)
         {
             await this.HandleButtonPress(buttonId: 4);
+        }
+
+        private async void OnButton4Holding(object sender, EventArgs e)
+        {
+            await this.HandleButtonHolding(buttonId: 4);
         }
 
         protected virtual void Dispose(bool disposing)
