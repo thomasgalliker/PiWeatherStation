@@ -7,7 +7,6 @@ using MeteoSwissApi;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using NCrontab.Scheduler;
 using OpenWeatherMap;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Services;
