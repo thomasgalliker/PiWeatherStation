@@ -9,11 +9,10 @@ namespace WeatherDisplay.Model.Settings
 
         public AppSettings()
         {
-            this.Displays = new List<DisplaySetting>();
             this.ButtonMappings = new List<ButtonMapping>();
         }
 
-        public CultureInfo CultureInfo
+        public virtual CultureInfo CultureInfo
         {
             get => this.cultureInfo;
             set
@@ -27,14 +26,12 @@ namespace WeatherDisplay.Model.Settings
             }
         }
 
-        public bool RunSetup { get; set; }
+        public virtual bool RunSetup { get; set; }
 
-        public bool IsDebug { get; set; }
+        public virtual bool IsDebug { get; set; }
 
-        public AccessPointSettings AccessPoint { get; set; }
+        public virtual AccessPointSettings AccessPoint { get; set; }
 
-        public ICollection<DisplaySetting> Displays { get; set; }
-
-        public ICollection<ButtonMapping> ButtonMappings { get; set; }
+        public virtual ICollection<ButtonMapping> ButtonMappings { get; set; }
     }
 }

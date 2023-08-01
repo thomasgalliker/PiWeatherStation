@@ -13,8 +13,6 @@ namespace WeatherDisplay.Model.Settings
 
         AccessPointSettings AccessPoint { get; set; }
 
-        ICollection<DisplaySetting> Displays { get; set; }
-
         ICollection<ButtonMapping> ButtonMappings { get; set; }
     }
 }

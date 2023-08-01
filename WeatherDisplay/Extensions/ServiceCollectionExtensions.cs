@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using DisplayService.Services;
-using DisplayService.Settings;
 using MeteoSwissApi;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using OpenWeatherMap;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Services;
@@ -16,8 +13,6 @@ using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
 using WeatherDisplay.Services.QR;
 using WeatherDisplay.Services.Wiewarm;
-using IDateTime = DisplayService.Services.IDateTime;
-using SystemDateTime = DisplayService.Services.SystemDateTime;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -50,51 +45,11 @@ namespace Microsoft.Extensions.DependencyInjection
             accessPointSection.Bind(accessPointSettings);
             services.AddSingleton<AccessPointSettings>(accessPointSettings);
 
-            var displayConfig = appSettings.Displays.First(); // Supports only one display at the time
-
             // ====== Display ======
-            services.AddSingleton(x =>
-            {
-                IDisplay display;
-                if (appSettings.IsDebug)
-                {
-                    display = new NullDisplayService(x.GetRequiredService<ILogger<NullDisplayService>>());
-                }
-                else
-                {
-                    try
-                    {
-                        switch (displayConfig.DriverType)
-                        {
-                            case "WaveShareDisplay":
-                                display = new WaveShareDisplay(displayConfig.Driver);
-                                break;
-                            default:
-                                throw new NotSupportedException($"DriverType '{displayConfig.DriverType}' is not supported");
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        display = new NullDisplayService(x.GetRequiredService<ILogger<NullDisplayService>>());
-                    }
-                }
-
-                return display;
-            });
-
-            // TODO: Load from appsettings
-            IRenderSettings renderSettings = new RenderSettings
-            {
-                BackgroundColor = "#FFFFFFFF",
-            };
-            renderSettings.Resize(displayConfig.Width, displayConfig.Height); // TODO: Refactor this
+            var displayOptionsConfiguration = configuration.GetSection("DisplayOptions");
+            services.AddDisplayService(displayOptionsConfiguration);
 
             // ====== Services ======
-            services.AddSingleton<ICacheService, CacheService>(); // TODO Move to separate ServiceCollectionExtensions
-            services.AddSingleton<IDateTime, SystemDateTime>(); // TODO Move to separate ServiceCollectionExtensions
-            services.AddSingleton<IRenderService, RenderService>(); // TODO Move to separate ServiceCollectionExtensions
-            services.AddSingleton(renderSettings);
-            services.AddSingleton<IDisplayManager, DisplayManager>();
             services.AddSingleton<IOpenWeatherMapService, OpenWeatherMapService>();
 
             services.AddSingleton<IMeteoSwissWeatherServiceConfiguration, MeteoSwissWeatherServiceConfiguration>();

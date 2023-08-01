@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using DisplayService.Devices;
 using DisplayService.Model;
 using DisplayService.Services;
 using DisplayService.Tests.Logging;

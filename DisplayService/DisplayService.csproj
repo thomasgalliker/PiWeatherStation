@@ -1,15 +1,10 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <LangVersion>latest</LangVersion>
-  </PropertyGroup>
   <ItemGroup>
     <None Remove="Resources\TestImage1.png" />
     <None Remove="Resources\TestImage2.png" />
@@ -27,8 +22,5 @@
     <PackageReference Include="SkiaSharp" Version="2.88.3" />
     <PackageReference Include="eXoCooLd.Waveshare.EPaperDisplay" Version="1.0.4" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Utils\" />
   </ItemGroup>
 </Project>

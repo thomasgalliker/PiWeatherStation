@@ -1,4 +1,4 @@
-﻿namespace DisplayService.Settings
+﻿namespace DisplayService
 {
     public interface IRenderSettings
     {
@@ -6,12 +6,8 @@
 
         int Height { get; }
 
-        bool IsPortrait { get; }
-
-        int Rotation { get; }
+        DeviceRotation Rotation { get; }
 
         string BackgroundColor { get; }
-
-        void Resize(int width, int height);
     }
 }

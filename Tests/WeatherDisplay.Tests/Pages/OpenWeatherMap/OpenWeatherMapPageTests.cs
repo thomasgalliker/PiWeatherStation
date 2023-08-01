@@ -1,8 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DisplayService;
+using DisplayService.Devices;
 using DisplayService.Services;
-using DisplayService.Settings;
 using DisplayService.Tests.Services;
 using FluentAssertions;
 using Iot.Device.Bmxx80;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace DisplayService.Services
+namespace DisplayService.Devices
 {
     public interface IDisplay : IDisposable
     {
