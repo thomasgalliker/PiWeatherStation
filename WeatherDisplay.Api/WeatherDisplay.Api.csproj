@@ -4,28 +4,19 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-	<ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
+    <ValidateExecutableReferencesMatchSelfContained>false</ValidateExecutableReferencesMatchSelfContained>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="IoTDisplayScreen.png" />
-    <None Remove="Properties\PublishProfiles\Publish_Readme.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="Properties\Publish_Readme.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
-	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
-	<PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.9" />
-	<PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.12" />
-	<PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="7.0.0" />
-	<PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.1" />
-	<PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.32.1" />
-	<PackageReference Include="NCrontab.Scheduler.AspNetCore" Version="1.2.10" />
-	<PackageReference Include="NLog.Web.AspNetCore" Version="5.3.2" />
-	<PackageReference Include="RaspberryPi.NET" Version="1.0.39-pre" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authorization" Version="6.0.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.12" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="7.0.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="6.32.1" />
+    <PackageReference Include="NCrontab.Scheduler.AspNetCore" Version="1.2.10" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.2" />
+    <PackageReference Include="RaspberryPi.NET" Version="1.0.39-pre" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.1" />
@@ -40,20 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Scripts\setup_sudo_vsdbg.sh">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Scripts\update_weatherdisplay_api.sh">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <None Include="wwwroot\swagger-ui\SwaggerStyle.css" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Services\Hardware\" />
-  </ItemGroup>
-
 </Project>
