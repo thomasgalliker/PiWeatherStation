@@ -445,9 +445,7 @@ logSuccess "
 Installation is completed
 =====================================================
 
-pi@${host} will be ready
-after the reboot.
-
+Hostname:       ${host}
 Wifi SSID:      ${ap_ssid}
 Wifi password:  ${ap_psk}
 Wifi AP IP:     ${ap_ip}
