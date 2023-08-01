@@ -10,14 +10,14 @@ namespace DisplayService.Internals
     {
         private readonly ConcurrentQueue<TaskCompletionSource<object>> requestQueue = new ConcurrentQueue<TaskCompletionSource<object>>();
 
-        private const int NotRunning = 0;
-        private const int Running = 1;
-        private int currentState;
+        private const long NotRunning = 0;
+        private const long Running = 1;
+        private long currentState;
 
         /// <summary>
         /// Indicates if the current instance of <seealso cref="SyncHelper"/> is currently running.
         /// </summary>
-        public bool IsRunning => Interlocked.CompareExchange(ref this.currentState, NotRunning, NotRunning) != NotRunning;
+        public bool IsRunning => Interlocked.Read(ref this.currentState) == Running;
 
         /// <summary>
         /// Runs the given <paramref name="action"/> only once at a time.
@@ -77,10 +77,10 @@ namespace DisplayService.Internals
             // are just returned immediately.
         }
 
-        /// <summary>
+        /// <summary> 
         /// Runs the given <paramref name="function"/> only once at a time.
         /// </summary>
-        /// <param name="task">The synchronous function which returns a result of type <typeparamref name="T"/>.</param>
+        /// <param name="function">The synchronous function which returns a result of type <typeparamref name="T"/>.</param>
         public T RunOnce<T>(Func<T> function)
         {
             if (Interlocked.CompareExchange(ref this.currentState, Running, NotRunning) == NotRunning)
