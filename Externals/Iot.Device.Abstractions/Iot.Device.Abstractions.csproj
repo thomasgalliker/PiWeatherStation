@@ -10,10 +10,7 @@
 	<ItemGroup>
 		<PackageReference Include="Iot.Device.Bindings" Version="3.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="System.Device.Gpio" Version="3.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
-		<PackageReference Include="UnitsNet" Version="5.29.0" />
 	</ItemGroup>
 
 </Project>
