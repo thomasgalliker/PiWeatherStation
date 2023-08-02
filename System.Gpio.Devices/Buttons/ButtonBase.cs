@@ -22,7 +22,7 @@ namespace System.Device.Buttons
 
         private ButtonHoldingState holdingState = ButtonHoldingState.Completed;
 
-        private long lastPress = DateTime.MinValue.Ticks;
+        private long lastPressTicks = DateTime.MinValue.Ticks;
         private Timer holdingTimer;
         private readonly bool buttonState;             // the current reading from the input pin
         private readonly bool lastButtonState = false;   // the previous reading from the input pin
@@ -182,18 +182,18 @@ namespace System.Device.Buttons
 
             if (this.IsDoublePressEnabled)
             {
-                if (this.lastPress == DateTime.MinValue.Ticks)
+                if (this.lastPressTicks == DateTime.MinValue.Ticks)
                 {
-                    this.lastPress = DateTime.UtcNow.Ticks;
+                    this.lastPressTicks = DateTime.UtcNow.Ticks;
                 }
                 else
                 {
-                    if (DateTime.UtcNow.Ticks - this.lastPress <= this.doublePressTicks)
+                    if (DateTime.UtcNow.Ticks - this.lastPressTicks <= this.doublePressTicks)
                     {
                         DoublePress?.Invoke(this, EventArgs.Empty);
                     }
 
-                    this.lastPress = DateTime.MinValue.Ticks;
+                    this.lastPressTicks = DateTime.MinValue.Ticks;
                 }
             }
         }
