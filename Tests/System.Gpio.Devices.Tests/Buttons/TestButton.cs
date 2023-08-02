@@ -10,7 +10,12 @@ namespace System.Gpio.Devices.Tests.Buttons
         }
 
         public TestButton(TimeSpan debounceTime)
-            : base(TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(2000), debounceTime)
+            : this(TimeSpan.FromSeconds(5), TimeSpan.FromMilliseconds(2000), debounceTime)
+        {
+        }
+        
+        public TestButton(TimeSpan doublePressTime, TimeSpan holdingTime, TimeSpan debounceTime)
+            : base(doublePressTime, holdingTime, debounceTime)
         {
         }
 
