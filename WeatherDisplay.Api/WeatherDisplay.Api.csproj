@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -32,5 +32,11 @@
 
   <ItemGroup>
     <None Include="wwwroot\swagger-ui\SwaggerStyle.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AssemblyAttribute Include="WeatherDisplay.Api.Properties.BuildDateTime">
+      <_Parameter1>$([System.DateTime]::UtcNow.ToString("O"))</_Parameter1>
+    </AssemblyAttribute>
   </ItemGroup>
 </Project>

@@ -233,7 +233,7 @@ sudo systemctl restart weatherdisplay.api
 
 #### Check Service Log
 ```
-journalctl -u weatherdisplay.api.service -f -n 40 -o short-iso-precise
+journalctl -u weatherdisplay.api.service -f -n 100 -o short-iso-precise
 ```
 
 #### Check Listening Network Ports

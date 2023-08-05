@@ -1,4 +1,7 @@
 ﻿using System.Device.Gpio;
+using System.Diagnostics;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 namespace System.Device.Buttons
 {
@@ -8,9 +11,9 @@ namespace System.Device.Buttons
     /// </summary>
     public class GpioButton : ButtonBase
     {
+        private readonly ILogger logger;
         private IGpioController gpioController;
         private readonly PinMode eventPinMode;
-
         private readonly int buttonPin;
         private readonly bool shouldDispose;
 
@@ -31,8 +34,9 @@ namespace System.Device.Buttons
         /// <param name="shouldDispose">True to dispose the GpioController.</param>
         /// <param name="debounceTime">The amount of time during which the transitions are ignored, or zero</param>
         public GpioButton(int buttonPin, bool isPullUp = true, bool hasExternalResistor = false,
-            IGpioController gpio = null, bool shouldDispose = true, TimeSpan debounceTime = default)
-            : this(buttonPin, DefaultDoublePressDuration, DefaultHoldingDuration, isPullUp, hasExternalResistor, gpio, shouldDispose, debounceTime)
+            IGpioController gpio = null, bool shouldDispose = true, TimeSpan debounceTime = default,
+         ILogger<GpioButton> logger = null)
+            : this(buttonPin, DefaultDoublePressDuration, DefaultHoldingDuration, isPullUp, hasExternalResistor, gpio, shouldDispose, debounceTime, logger)
         {
         }
 
@@ -47,16 +51,19 @@ namespace System.Device.Buttons
         /// <param name="gpio">Gpio Controller.</param>
         /// <param name="shouldDispose">True to dispose the GpioController.</param>
         /// <param name="debounceTime">The amount of time during which the transitions are ignored, or zero</param>
-        public GpioButton(int buttonPin,
+        public GpioButton(
+            int buttonPin,
             TimeSpan doublePress,
             TimeSpan holding,
             bool isPullUp = true,
             bool hasExternalResistor = false,
             IGpioController gpio = null,
             bool shouldDispose = true,
-            TimeSpan debounceTime = default)
+            TimeSpan debounceTime = default,
+            ILogger logger = null)
             : base(doublePress, holding, debounceTime)
         {
+            this.logger = logger ?? new NullLogger<GpioButton>();
             this.gpioController = gpio ?? new GpioControllerWrapper();
             this.shouldDispose = gpio == null ? true : shouldDispose;
             this.buttonPin = buttonPin;
@@ -80,6 +87,10 @@ namespace System.Device.Buttons
             try
             {
                 this.gpioController.OpenPin(this.buttonPin, gpioPinMode);
+
+                var waitResult = this.gpioController.WaitForEvent(this.buttonPin, PinEventTypes.Falling | PinEventTypes.Rising, TimeSpan.FromMilliseconds(500));
+                this.logger.LogDebug($"{this.buttonPin}|WaitForEvent: TimedOut={waitResult.TimedOut}, EventTypes={waitResult.EventTypes}");
+
                 this.gpioController.RegisterCallbackForPinValueChangedEvent(
                     this.buttonPin,
                     PinEventTypes.Falling | PinEventTypes.Rising,
@@ -100,18 +111,20 @@ namespace System.Device.Buttons
         /// Handles changes in GPIO pin, based on whether the system is pullup or pulldown.
         /// </summary>
         /// <param name="sender">The sender object.</param>
-        /// <param name="pinValueChangedEventArgs">The pin argument changes.</param>
-        private void PinStateChanged(object sender, PinValueChangedEventArgs pinValueChangedEventArgs)
+        /// <param name="args">The pin argument changes.</param>
+        private void PinStateChanged(object sender, PinValueChangedEventArgs args)
         {
-            switch (pinValueChangedEventArgs.ChangeType)
+            switch (args.ChangeType)
             {
                 case PinEventTypes.Falling:
                     if (this.eventPinMode == PinMode.InputPullUp)
                     {
+                        this.logger.LogDebug($"{this.buttonPin}|PinStateChanged: PinNumber={args.PinNumber}, ChangeType={args.ChangeType} --> HandleButtonPressed");
                         this.HandleButtonPressed();
                     }
                     else
                     {
+                        this.logger.LogDebug($"{this.buttonPin}|PinStateChanged: PinNumber={args.PinNumber}, ChangeType={args.ChangeType} --> HandleButtonReleased");
                         this.HandleButtonReleased();
                     }
 
@@ -119,10 +132,12 @@ namespace System.Device.Buttons
                 case PinEventTypes.Rising:
                     if (this.eventPinMode == PinMode.InputPullUp)
                     {
+                        this.logger.LogDebug($"{this.buttonPin}|PinStateChanged: PinNumber={args.PinNumber}, ChangeType={args.ChangeType} --> HandleButtonReleased");
                         this.HandleButtonReleased();
                     }
                     else
                     {
+                        this.logger.LogDebug($"{this.buttonPin}|PinStateChanged: PinNumber={args.PinNumber}, ChangeType={args.ChangeType} --> HandleButtonPressed");
                         this.HandleButtonPressed();
                     }
 
