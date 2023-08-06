@@ -20,12 +20,14 @@ namespace System.Device.Buttons
         private readonly long debounceTicks;
         private long debounceStartTicks;
 
+        private const long Released = 0;
+        private const long Pressed = 1;
+        private long currentState;
+
         private ButtonHoldingState holdingState = ButtonHoldingState.Completed;
 
         private long lastPressTicks = DateTime.MinValue.Ticks;
         private Timer holdingTimer;
-        private readonly bool buttonState;             // the current reading from the input pin
-        private readonly bool lastButtonState = false;   // the previous reading from the input pin
 
         private bool isHoldingEnabledAuto = false;
         private bool? isHoldingEnabledInternal;
@@ -95,9 +97,9 @@ namespace System.Device.Buttons
         public bool IsDoublePressEnabled { get; set; } = false;
 
         /// <summary>
-        /// Define if single press event is enabled or disabled on the button.
+        /// Checks if the button is currently pressed.
         /// </summary>
-        public bool IsPressed { get; set; } = false;
+        public bool IsPressed => Interlocked.Read(ref this.currentState) == Pressed;
 
         /// <summary>
         /// Initialization of the button.
@@ -135,18 +137,18 @@ namespace System.Device.Buttons
                 return;
             }
 
-            if (this.IsPressed == true)
+            if (Interlocked.CompareExchange(ref this.currentState, Pressed, Released) == Released)
             {
-                return;
+                ButtonDown?.Invoke(this, EventArgs.Empty);
+
+                if (this.IsHoldingEnabled)
+                {
+                    this.holdingTimer = new Timer(this.StartHoldingHandler, null, this.holdingMs, Timeout.Infinite);
+                }
             }
-
-            this.IsPressed = true;
-
-            ButtonDown?.Invoke(this, EventArgs.Empty);
-
-            if (this.IsHoldingEnabled)
+            else
             {
-                this.holdingTimer = new Timer(this.StartHoldingHandler, null, this.holdingMs, Timeout.Infinite);
+
             }
         }
 
@@ -164,37 +166,42 @@ namespace System.Device.Buttons
             this.holdingTimer?.Dispose();
             this.holdingTimer = null;
 
-            this.IsPressed = false;
-
-            ButtonUp?.Invoke(this, EventArgs.Empty);
-            Press?.Invoke(this, EventArgs.Empty);
-
-            if (this.holdingState == ButtonHoldingState.Started)
+            try
             {
-                this.holdingState = ButtonHoldingState.Completed;
+                ButtonUp?.Invoke(this, EventArgs.Empty);
+                Press?.Invoke(this, EventArgs.Empty);
 
-                if (this.IsHoldingEnabled)
+                if (this.holdingState == ButtonHoldingState.Started)
                 {
-                    HoldingInternal?.Invoke(this, new ButtonHoldingEventArgs { HoldingState = ButtonHoldingState.Completed });
+                    this.holdingState = ButtonHoldingState.Completed;
+
+                    if (this.IsHoldingEnabled)
+                    {
+                        HoldingInternal?.Invoke(this, new ButtonHoldingEventArgs { HoldingState = ButtonHoldingState.Completed });
+                    }
+                }
+
+
+                if (this.IsDoublePressEnabled)
+                {
+                    if (this.lastPressTicks == DateTime.MinValue.Ticks)
+                    {
+                        this.lastPressTicks = DateTime.UtcNow.Ticks;
+                    }
+                    else
+                    {
+                        if (DateTime.UtcNow.Ticks - this.lastPressTicks <= this.doublePressTicks)
+                        {
+                            DoublePress?.Invoke(this, EventArgs.Empty);
+                        }
+
+                        this.lastPressTicks = DateTime.MinValue.Ticks;
+                    }
                 }
             }
-
-
-            if (this.IsDoublePressEnabled)
+            finally
             {
-                if (this.lastPressTicks == DateTime.MinValue.Ticks)
-                {
-                    this.lastPressTicks = DateTime.UtcNow.Ticks;
-                }
-                else
-                {
-                    if (DateTime.UtcNow.Ticks - this.lastPressTicks <= this.doublePressTicks)
-                    {
-                        DoublePress?.Invoke(this, EventArgs.Empty);
-                    }
-
-                    this.lastPressTicks = DateTime.MinValue.Ticks;
-                }
+                Interlocked.Exchange(ref this.currentState, Released);
             }
         }
 

@@ -1,5 +1,7 @@
-﻿using System.Threading;
+﻿using System.Diagnostics.Metrics;
+using System.Threading;
 using System.Threading.Tasks;
+using FluentAssertions;
 using Xunit;
 
 namespace System.Gpio.Devices.Tests.Buttons
@@ -300,9 +302,9 @@ namespace System.Gpio.Devices.Tests.Buttons
             button.ReleaseButton();
 
             // Assert
-            Assert.Equal(1, pressedCounter);
-            Assert.False(holding);
-            Assert.False(doublePressed);
+            pressedCounter.Should().Be(1);
+            holding.Should().BeFalse();
+            doublePressed.Should().BeFalse();
         }
 
         /// <summary>
@@ -372,6 +374,62 @@ namespace System.Gpio.Devices.Tests.Buttons
             Assert.True(pressedCounter == 1, "pressedCounter counter is wrong");
             Assert.True(holding, "holding");
             Assert.False(doublePressed, "doublePressed");
+        }
+
+        [Fact]
+        public async Task If_Button_Is_Pressed_Multiple_Times_Without_Release()
+        {
+            // Arrange
+            var buttonDownCounter = 0;
+            var buttonUpCounter = 0;
+
+            var button = new TestButton(TimeSpan.FromMilliseconds(50));
+
+            button.ButtonDown += (sender, e) =>
+            {
+                Interlocked.Increment(ref buttonDownCounter);
+            };
+            button.ButtonUp += (sender, e) =>
+            {
+                Interlocked.Increment(ref buttonUpCounter);
+            };
+
+            // Act
+            button.PressButton();
+            await Task.Delay(100);
+            button.PressButton();
+
+            // Assert
+            button.IsPressed.Should().BeTrue();
+            buttonDownCounter.Should().Be(1);
+            buttonUpCounter.Should().Be(0);
+        }
+
+        [Fact]
+        public void If_Button_Is_Released_Without_Being_Pressed()
+        {
+            // Arrange
+            var buttonDownCounter = 0;
+            var buttonUpCounter = 0;
+
+            var button = new TestButton(TimeSpan.FromMilliseconds(50));
+
+            button.ButtonDown += (sender, e) =>
+            {
+                Interlocked.Increment(ref buttonDownCounter);
+            };
+            button.ButtonUp += (sender, e) =>
+            {
+                Interlocked.Increment(ref buttonUpCounter);
+            };
+
+            // Act
+            button.ReleaseButton();
+
+            // Assert
+            button.IsPressed.Should().BeFalse();
+            buttonDownCounter.Should().Be(0);
+            buttonUpCounter.Should().Be(0);
         }
     }
 }
