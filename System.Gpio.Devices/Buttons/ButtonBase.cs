@@ -112,18 +112,18 @@ namespace System.Device.Buttons
         /// <summary>
         /// Initialization of the button.
         /// </summary>
-        /// <param name="doublePress">Max ticks between button presses to count as doublepress.</param>
-        /// <param name="holding">Min ms a button is pressed to count as holding.</param>
+        /// <param name="doublePressTime">Max ticks between button presses to count as doublepress.</param>
+        /// <param name="holdingTime">Min ms a button is pressed to count as holding.</param>
         /// <param name="debounceTime">The amount of time during which the transitions are ignored, or zero</param>
-        public ButtonBase(TimeSpan doublePress, TimeSpan holding, TimeSpan debounceTime = default)
+        public ButtonBase(TimeSpan doublePressTime, TimeSpan holdingTime, TimeSpan debounceTime = default)
         {
-            if (debounceTime.TotalMilliseconds * 3d > doublePress.TotalMilliseconds)
+            if (debounceTime.TotalMilliseconds * 3d > doublePressTime.TotalMilliseconds)
             {
-                throw new ArgumentException($"The parameter {nameof(doublePress)} should be at least three times {nameof(debounceTime)}");
+                throw new ArgumentException($"The parameter {nameof(doublePressTime)} should be at least three times {nameof(debounceTime)}");
             }
 
-            this.doublePressTicks = doublePress.Ticks;
-            this.holdingMs = (long)holding.TotalMilliseconds;
+            this.doublePressTicks = doublePressTime.Ticks;
+            this.holdingMs = (long)holdingTime.TotalMilliseconds;
             this.debounceTicks = debounceTime.Ticks;
         }
 
@@ -139,6 +139,8 @@ namespace System.Device.Buttons
 
             if (Interlocked.CompareExchange(ref this.currentState, Pressed, Released) == Released)
             {
+                this.debounceStartTicks = 0L;
+
                 ButtonDown?.Invoke(this, EventArgs.Empty);
 
                 if (this.IsHoldingEnabled)
@@ -157,11 +159,11 @@ namespace System.Device.Buttons
         /// </summary>
         protected void HandleButtonReleased()
         {
-            if (this.debounceTicks > 0 && !this.IsPressed)
+            if (!this.IsPressed)
             {
                 return;
             }
-
+            
             this.debounceStartTicks = DateTime.UtcNow.Ticks;
             this.holdingTimer?.Dispose();
             this.holdingTimer = null;

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics.Metrics;
+using System.Diagnostics.Tracing;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -131,101 +132,86 @@ namespace System.Gpio.Devices.Tests.Buttons
         public async Task If_Button_Is_Double_Pressed_DoublePress_Event_Fires()
         {
             // Arrange
-            var pressed = false;
-            var holding = false;
-            var doublePressed = false;
+            var pressedCounter = 0;
+            var holdingCounter = 0;
+            var doublePressCounter = 0;
 
             var button = new TestButton();
             button.IsDoublePressEnabled = true;
 
             button.Press += (sender, e) =>
             {
-                pressed = true;
+                Interlocked.Increment(ref pressedCounter);
             };
 
             button.Holding += (sender, e) =>
             {
-                holding = true;
+                Interlocked.Increment(ref holdingCounter);
             };
 
             button.DoublePress += (sender, e) =>
             {
-                doublePressed = true;
+                Interlocked.Increment(ref doublePressCounter);
             };
 
             // Act
             button.PressButton();
-
-            // Wait a little bit to mimic actual user behavior.
             await Task.Delay(100);
-
             button.ReleaseButton();
 
-            // Wait shorter than default double press threshold milliseconds, for the press to be recognized as a double press event.
             await Task.Delay(200);
 
             button.PressButton();
-
-            // Wait a little bit to mimic actual user behavior.
             await Task.Delay(100);
-
             button.ReleaseButton();
 
             // Assert
-            Assert.True(pressed);
-            Assert.False(holding);
-            Assert.True(doublePressed);
+            pressedCounter.Should().Be(2);
+            holdingCounter.Should().Be(0);
+            doublePressCounter.Should().Be(1);
         }
 
         [Fact]
         public async Task If_Button_Is_Pressed_Twice_DoublePress_Event_Does_Not_Fire()
         {
             // Arrange
-            var pressed = false;
-            var holding = false;
-            var doublePressed = false;
+            var pressedCounter = 0;
+            var holdingCounter = 0;
+            var doublePressCounter = 0;
 
             var button = new TestButton();
-
             button.IsDoublePressEnabled = true;
 
             button.Press += (sender, e) =>
             {
-                pressed = true;
+                Interlocked.Increment(ref pressedCounter);
             };
 
             button.Holding += (sender, e) =>
             {
-                holding = true;
+                Interlocked.Increment(ref holdingCounter);
             };
 
             button.DoublePress += (sender, e) =>
             {
-                doublePressed = true;
+                Interlocked.Increment(ref doublePressCounter);
             };
 
             // Act
             button.PressButton();
-
-            // Wait a little bit to mimic actual user behavior.
             await Task.Delay(100);
-
             button.ReleaseButton();
 
-            // Wait longer than default double press threshold milliseconds, for the press to be recognized as two separate presses.
             await Task.Delay(3000);
 
             button.PressButton();
-
-            // Wait a little bit to mimic actual user behavior.
             await Task.Delay(100);
-
             button.ReleaseButton();
 
             // Assert
-            Assert.True(pressed);
-            Assert.False(holding);
-            Assert.False(doublePressed);
+            pressedCounter.Should().Be(2);
+            holdingCounter.Should().Be(0);
+            doublePressCounter.Should().Be(0);
         }
 
         [Fact]
@@ -268,25 +254,40 @@ namespace System.Gpio.Devices.Tests.Buttons
         public void If_Button_Is_Pressed_Too_Fast_Debouncing_Removes_Events()
         {
             // Arrange
-            var holding = false;
-            var doublePressed = false;
+            var buttonDownCounter = 0;
+            var buttonUpCounter = 0;
             var pressedCounter = 0;
+            var holdingCounter = 0;
+            var doublePressCounter = 0;
 
-            var button = new TestButton(TimeSpan.FromMilliseconds(1000));
+            var button = new TestButton(
+                doublePressTime: TimeSpan.FromMilliseconds(30000), 
+                holdingTime: TimeSpan.FromMilliseconds(1000), 
+                debounceTime: TimeSpan.FromMilliseconds(10000));
 
+            button.ButtonDown += (sender, e) =>
+            {
+                Interlocked.Increment(ref buttonDownCounter);
+            };
+            
+            button.ButtonUp += (sender, e) =>
+            {
+                Interlocked.Increment(ref buttonUpCounter);
+            };
+            
             button.Press += (sender, e) =>
             {
-                pressedCounter++;
+                Interlocked.Increment(ref pressedCounter);
             };
 
             button.Holding += (sender, e) =>
             {
-                holding = true;
+                Interlocked.Increment(ref holdingCounter);
             };
 
             button.DoublePress += (sender, e) =>
             {
-                doublePressed = true;
+                Interlocked.Increment(ref doublePressCounter);
             };
 
             // Act
@@ -302,9 +303,11 @@ namespace System.Gpio.Devices.Tests.Buttons
             button.ReleaseButton();
 
             // Assert
+            buttonDownCounter.Should().Be(1);
+            buttonUpCounter.Should().Be(1);
             pressedCounter.Should().Be(1);
-            holding.Should().BeFalse();
-            doublePressed.Should().BeFalse();
+            holdingCounter.Should().Be(0);
+            doublePressCounter.Should().Be(0);
         }
 
         /// <summary>
@@ -330,17 +333,17 @@ namespace System.Gpio.Devices.Tests.Buttons
 
             button.Press += (sender, e) =>
             {
-                pressedCounter++;
+                Interlocked.Increment(ref pressedCounter);
             };
 
             button.ButtonDown += (sender, e) =>
             {
-                buttonDownCounter++;
+                Interlocked.Increment(ref buttonDownCounter);
             };
 
             button.ButtonUp += (sender, e) =>
             {
-                buttonUpCounter++;
+                Interlocked.Increment(ref buttonUpCounter);
             };
 
             button.Holding += (sender, e) =>
@@ -430,6 +433,74 @@ namespace System.Gpio.Devices.Tests.Buttons
             button.IsPressed.Should().BeFalse();
             buttonDownCounter.Should().Be(0);
             buttonUpCounter.Should().Be(0);
+        }
+
+        [Fact]
+        public void If_Button_Has_No_DebounceTime()
+        {
+            // Arrange
+            var buttonDownCounter = 0;
+            var buttonUpCounter = 0;
+
+            var button = new TestButton(debounceTime: TimeSpan.Zero);
+
+            button.ButtonDown += (sender, e) =>
+            {
+                Interlocked.Increment(ref buttonDownCounter);
+            };
+            button.ButtonUp += (sender, e) =>
+            {
+                Interlocked.Increment(ref buttonUpCounter);
+            };
+
+            // Act
+            button.PressButton();
+            button.ReleaseButton();
+            button.PressButton();
+            button.ReleaseButton();
+
+            // Assert
+            buttonDownCounter.Should().Be(2);
+            buttonUpCounter.Should().Be(2);
+        }
+
+        [Fact]
+        public async Task If_Button_Is_Disposed_HoldingTimer_Should_Be_Reset()
+        {
+            // Arrange
+            var buttonDownCount = 0;
+            var buttonUpCount = 0;
+            var holdingCounter = 0;
+
+            var button = new TestButton();
+            button.IsHoldingEnabled = true;
+
+            button.ButtonDown += (sender, e) =>
+            {
+                Interlocked.Increment(ref buttonDownCount);
+            };
+            
+            button.ButtonUp += (sender, e) =>
+            {
+                Interlocked.Increment(ref buttonUpCount);
+            };
+
+            button.Holding += (sender, e) =>
+            {
+                Interlocked.Increment(ref holdingCounter);
+            };
+
+            // Act
+            button.PressButton();
+            await Task.Delay(500);
+            button.Dispose();
+            await Task.Delay(1600);
+            button.ReleaseButton();
+
+            // Assert
+            buttonDownCount.Should().Be(1);
+            buttonUpCount.Should().Be(1);
+            holdingCounter.Should().Be(0);
         }
     }
 }
