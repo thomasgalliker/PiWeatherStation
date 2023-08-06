@@ -55,6 +55,12 @@ namespace System.Device.Gpio
             this.logger.LogDebug($"UnregisterCallbackForPinValueChangedEvent({pinNumber}, ...)");
         }
 
+        public PinValue Read(int pinNumber)
+        {
+            this.logger.LogDebug($"Read({pinNumber})");
+            return new PinValue();
+        }
+
         public void Write(int pinNumber, PinValue pinValue)
         {
             this.logger.LogDebug($"Write({pinNumber}, {pinValue})");
@@ -65,55 +71,55 @@ namespace System.Device.Gpio
             this.logger.LogDebug($"Dispose()");
         }
 
-
-        public PinValue Read(int pinNumber)
-        {
-            throw new NotImplementedException();
-        }
-
         public void SetPinMode(int pinNumber, PinMode mode)
         {
-            throw new NotImplementedException();
+            this.logger.LogDebug($"SetPinMode({pinNumber}, {mode})");
         }
 
         public PinMode GetPinMode(int pinNumber)
         {
-            throw new NotImplementedException();
+            this.logger.LogDebug($"GetPinMode({pinNumber})");
+            return PinMode.InputPullUp;
         }
 
         public bool IsPinOpen(int pinNumber)
         {
-            throw new NotImplementedException();
+            this.logger.LogDebug($"IsPinOpen({pinNumber})");
+            return true;
         }
 
         public WaitForEventResult WaitForEvent(int pinNumber, PinEventTypes eventTypes, TimeSpan timeout)
         {
-            throw new NotImplementedException();
+            this.logger.LogDebug($"WaitForEvent({pinNumber}, {eventTypes}, {timeout})");
+            return new WaitForEventResult();
         }
 
         public WaitForEventResult WaitForEvent(int pinNumber, PinEventTypes eventTypes, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            this.logger.LogDebug($"WaitForEvent({pinNumber}, {eventTypes}, CancellationToken)");
+            return new WaitForEventResult();
         }
 
         public ValueTask<WaitForEventResult> WaitForEventAsync(int pinNumber, PinEventTypes eventTypes, TimeSpan timeout)
         {
-            throw new NotImplementedException();
+            this.logger.LogDebug($"WaitForEventAsync({pinNumber}, {eventTypes}, {timeout})");
+            return new ValueTask<WaitForEventResult>(new WaitForEventResult());
         }
 
         public ValueTask<WaitForEventResult> WaitForEventAsync(int pinNumber, PinEventTypes eventTypes, CancellationToken token)
         {
-            throw new NotImplementedException();
+            this.logger.LogDebug($"WaitForEventAsync({pinNumber}, {eventTypes}, CancellationToken)");
+            return new ValueTask<WaitForEventResult>(new WaitForEventResult());
         }
 
         public void Read(Span<PinValuePair> pinValuePairs)
         {
-            throw new NotImplementedException();
+            this.logger.LogDebug($"Read(ReadOnlySpan<PinValuePair>)");
         }
 
         public void Write(ReadOnlySpan<PinValuePair> pinValuePairs)
         {
-            throw new NotImplementedException();
+            this.logger.LogDebug($"Write(ReadOnlySpan<PinValuePair>)");
         }
     }
 }
