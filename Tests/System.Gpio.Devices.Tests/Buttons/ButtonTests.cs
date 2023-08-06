@@ -9,6 +9,7 @@ namespace System.Gpio.Devices.Tests.Buttons
         [Fact]
         public async Task If_Button_Is_Once_Pressed_Press_Event_Fires()
         {
+            // Arrange
             var pressed = false;
             var holding = false;
             var doublePressed = false;
@@ -30,6 +31,7 @@ namespace System.Gpio.Devices.Tests.Buttons
                 doublePressed = true;
             };
 
+            // Act
             button.PressButton();
 
             // Wait a little bit to mimic actual user behavior.
@@ -37,6 +39,7 @@ namespace System.Gpio.Devices.Tests.Buttons
 
             button.ReleaseButton();
 
+            // Assert
             Assert.True(pressed);
             Assert.False(holding);
             Assert.False(doublePressed);
@@ -45,6 +48,7 @@ namespace System.Gpio.Devices.Tests.Buttons
         [Fact]
         public async Task If_Button_Is_Held_Holding_Event_Fires()
         {
+            // Arrange
             var pressed = false;
             var holding = false;
             var doublePressed = false;
@@ -67,6 +71,7 @@ namespace System.Gpio.Devices.Tests.Buttons
                 doublePressed = true;
             };
 
+            // Act
             button.PressButton();
 
             // Wait longer than default holding threshold milliseconds, for the click to be recognized as a holding event.
@@ -74,6 +79,7 @@ namespace System.Gpio.Devices.Tests.Buttons
 
             button.ReleaseButton();
 
+            // Assert
             Assert.True(holding, "holding");
             Assert.True(pressed, "pressed");
             Assert.False(doublePressed, "doublePressed");
@@ -82,6 +88,7 @@ namespace System.Gpio.Devices.Tests.Buttons
         [Fact]
         public async Task If_Button_Is_Held_And_Holding_Is_Disabled_Holding_Event_Does_Not_Fire()
         {
+            // Arrange
             var pressed = false;
             var holding = false;
             var doublePressed = false;
@@ -104,6 +111,7 @@ namespace System.Gpio.Devices.Tests.Buttons
                 doublePressed = true;
             };
 
+            // Act
             button.PressButton();
 
             // Wait longer than default holding threshold milliseconds, for the press to be recognized as a holding event.
@@ -111,6 +119,7 @@ namespace System.Gpio.Devices.Tests.Buttons
 
             button.ReleaseButton();
 
+            // Assert
             Assert.True(pressed);
             Assert.False(holding);
             Assert.False(doublePressed);
@@ -119,6 +128,7 @@ namespace System.Gpio.Devices.Tests.Buttons
         [Fact]
         public async Task If_Button_Is_Double_Pressed_DoublePress_Event_Fires()
         {
+            // Arrange
             var pressed = false;
             var holding = false;
             var doublePressed = false;
@@ -141,6 +151,7 @@ namespace System.Gpio.Devices.Tests.Buttons
                 doublePressed = true;
             };
 
+            // Act
             button.PressButton();
 
             // Wait a little bit to mimic actual user behavior.
@@ -158,6 +169,7 @@ namespace System.Gpio.Devices.Tests.Buttons
 
             button.ReleaseButton();
 
+            // Assert
             Assert.True(pressed);
             Assert.False(holding);
             Assert.True(doublePressed);
@@ -166,6 +178,7 @@ namespace System.Gpio.Devices.Tests.Buttons
         [Fact]
         public async Task If_Button_Is_Pressed_Twice_DoublePress_Event_Does_Not_Fire()
         {
+            // Arrange
             var pressed = false;
             var holding = false;
             var doublePressed = false;
@@ -189,6 +202,7 @@ namespace System.Gpio.Devices.Tests.Buttons
                 doublePressed = true;
             };
 
+            // Act
             button.PressButton();
 
             // Wait a little bit to mimic actual user behavior.
@@ -206,6 +220,7 @@ namespace System.Gpio.Devices.Tests.Buttons
 
             button.ReleaseButton();
 
+            // Assert
             Assert.True(pressed);
             Assert.False(holding);
             Assert.False(doublePressed);
@@ -214,6 +229,7 @@ namespace System.Gpio.Devices.Tests.Buttons
         [Fact]
         public async Task If_Button_Is_Double_Pressed_And_DoublePress_Is_Disabled_DoublePress_Event_Does_Not_Fire()
         {
+            // Arrange
             var pressed = false;
 
             var button = new TestButton();
@@ -224,6 +240,7 @@ namespace System.Gpio.Devices.Tests.Buttons
                 pressed = true;
             };
 
+            // Act
             button.PressButton();
 
             // Wait a little bit to mimic actual user behavior.
@@ -241,12 +258,14 @@ namespace System.Gpio.Devices.Tests.Buttons
 
             button.ReleaseButton();
 
+            // Assert
             Assert.False(pressed);
         }
 
         [Fact]
         public void If_Button_Is_Pressed_Too_Fast_Debouncing_Removes_Events()
         {
+            // Arrange
             var holding = false;
             var doublePressed = false;
             var pressedCounter = 0;
@@ -268,6 +287,7 @@ namespace System.Gpio.Devices.Tests.Buttons
                 doublePressed = true;
             };
 
+            // Act
             button.PressButton();
             button.ReleaseButton();
             button.PressButton();
@@ -279,6 +299,7 @@ namespace System.Gpio.Devices.Tests.Buttons
             button.PressButton();
             button.ReleaseButton();
 
+            // Assert
             Assert.Equal(1, pressedCounter);
             Assert.False(holding);
             Assert.False(doublePressed);
@@ -294,6 +315,7 @@ namespace System.Gpio.Devices.Tests.Buttons
         [Fact]
         public async Task If_Button_Is_Held_Down_Longer_Than_Debouncing()
         {
+            // Arrange
             var holding = false;
             var doublePressed = false;
             var buttonDownCounter = 0;
@@ -329,6 +351,7 @@ namespace System.Gpio.Devices.Tests.Buttons
                 doublePressed = true;
             };
 
+            // Act
             // pushing the button. This will trigger the buttonDown event
             button.PressButton();
             await Task.Delay(2200);
@@ -343,6 +366,7 @@ namespace System.Gpio.Devices.Tests.Buttons
             button.PressButton();
             button.ReleaseButton();
 
+            // Assert
             Assert.True(buttonDownCounter == 1, "ButtonDown counter is wrong");
             Assert.True(buttonUpCounter == 1, "ButtonUp counter is wrong");
             Assert.True(pressedCounter == 1, "pressedCounter counter is wrong");
