@@ -18,13 +18,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 services.AddSingleton<IBme680Factory, Bme680Factory>();
                 services.AddSingleton<IScd4xFactory, Scd4xFactory>();
             }
-            //#if DEBUG
             else if (osplatform == OSPlatform.Windows)
             {
                 services.AddSingleton<IBme680Factory, Bme680FactoryMock>();
                 services.AddSingleton<IScd4xFactory, Scd4xFactoryMock>();
             }
-            //#endif
         }
     }
 }

@@ -2,15 +2,15 @@
 using DisplayService.Internals;
 using Microsoft.Extensions.Logging;
 
-namespace DisplayService.Services
+namespace DisplayService.Devices
 {
-    public class NullDisplayService : IDisplay
+    public class NullDisplay : IDisplay
     {
-        private readonly ILogger<NullDisplayService> logger;
+        private readonly ILogger logger;
 
         private readonly SyncHelper syncHelper = new SyncHelper();
 
-        public NullDisplayService(ILogger<NullDisplayService> logger)
+        public NullDisplay(ILogger<NullDisplay> logger)
         {
             this.logger = logger;
         }

@@ -50,6 +50,14 @@
           <source>Connect to following wifi network:</source>
           <target state="final">Connect to following wifi network:</target>
         </trans-unit>
+        <trans-unit id="PlaceAndDateTime" translate="yes" xml:space="preserve">
+          <source>{0}, at {1}</source>
+          <target state="final">{0}, at {1}</target>
+        </trans-unit>
+        <trans-unit id="AirQualityLabelText" translate="yes" xml:space="preserve">
+          <source>Air Quality</source>
+          <target state="final">Air Quality</target>
+        </trans-unit>
       </group>
     </body>
   </file>

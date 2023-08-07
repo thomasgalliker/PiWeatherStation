@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using DisplayService.Model;
-using DisplayService.Settings;
 using Microsoft.Extensions.Logging;
 using SkiaSharp;
 
@@ -13,14 +12,16 @@ namespace DisplayService.Services
     /// </summary>
     public class RenderService : IRenderService
     {
-        private readonly ILogger<RenderService> logger;
-        private readonly IRenderSettings renderSettings = null;
+        private readonly ILogger logger;
+        private readonly IRenderSettings renderSettings;
         private readonly SKBitmap screen;
         private readonly SKCanvas canvas;
 
         private bool disposed = false;
 
-        public RenderService(ILogger<RenderService> logger, IRenderSettings renderSettings)
+        public RenderService(
+            ILogger<RenderService> logger,
+            IRenderSettings renderSettings)
         {
             this.logger = logger;
             this.renderSettings = renderSettings;
@@ -464,27 +465,35 @@ namespace DisplayService.Services
             var memoryStream = new MemoryStream();
             using (var wStream = new SKManagedWStream(memoryStream))
             {
-                if (this.renderSettings.Rotation == 0)
+                if (this.renderSettings.Rotation == DeviceRotation.Rotation0)
                 {
                     this.screen.Encode(wStream, SKEncodedImageFormat.Png, 100);
                 }
                 else
                 {
-                    var newWidth = this.renderSettings.Width;
-                    var newHeight = this.renderSettings.Height;
 
-                    if (this.renderSettings.IsPortrait)
+                    int newWidth;
+                    int newHeight;
+
+                    if (this.renderSettings.Rotation is DeviceRotation.Rotation90 or DeviceRotation.Rotation270)
                     {
                         newWidth = this.renderSettings.Height;
                         newHeight = this.renderSettings.Width;
                     }
+                    else
+                    {
+                        newWidth = this.renderSettings.Width;
+                        newHeight = this.renderSettings.Height;
+                    }
+
+                    var rotationDegrees = (float)this.renderSettings.Rotation;
 
                     using (var image = new SKBitmap(newWidth, newHeight, this.screen.ColorType, this.screen.AlphaType, this.screen.ColorSpace))
                     {
                         using (var surface = new SKCanvas(image))
                         {
                             surface.Translate(newWidth, 0);
-                            surface.RotateDegrees(this.renderSettings.Rotation);
+                            surface.RotateDegrees(rotationDegrees);
                             surface.DrawBitmap(this.screen, 0, 0);
                             image.Encode(wStream, SKEncodedImageFormat.Png, 100);
                         }
@@ -592,9 +601,7 @@ namespace DisplayService.Services
             }
             catch (Exception ex)
             {
-#pragma warning disable CA2208 // Instantiate argument exceptions correctly
                 throw new ArgumentException("An exception occurred trying to add graphical image to the canvas: " + ex.Message, nameof(graphic.Data), ex);
-#pragma warning restore CA2208 // Instantiate argument exceptions correctly
             }
         }
 

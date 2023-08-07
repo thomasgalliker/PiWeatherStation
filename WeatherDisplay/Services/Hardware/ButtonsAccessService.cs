@@ -2,6 +2,7 @@
 using System.Device.Buttons;
 using System.Device.Gpio;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using WeatherDisplay.Extensions;
@@ -12,10 +13,11 @@ namespace WeatherDisplay.Services.Hardware
 {
     public class ButtonsAccessService : IButtonsAccessService, IDisposable
     {
-        private static readonly TimeSpan ButtonDebounceTime = TimeSpan.FromMilliseconds(10);
-        private static readonly PinMode ButtonPinMode = PinMode.InputPullUp;
+        private static readonly TimeSpan ButtonDebounceTime = TimeSpan.FromMilliseconds(50);
+        private static readonly bool ButtonPullUp = true;
 
         private readonly ILogger logger;
+        private readonly ILoggerFactory loggerFactory;
         private readonly IAppSettings appSettings;
         private readonly IGpioController gpioController;
         private readonly INavigationService navigationService;
@@ -30,11 +32,13 @@ namespace WeatherDisplay.Services.Hardware
 
         public ButtonsAccessService(
             ILogger<ButtonsAccessService> logger,
+            ILoggerFactory loggerFactory,
             IAppSettings appSettings,
             IGpioController gpioController,
             INavigationService navigationService)
         {
             this.logger = logger;
+            this.loggerFactory = loggerFactory;
             this.appSettings = appSettings;
             this.gpioController = gpioController;
             this.navigationService = navigationService;
@@ -50,33 +54,35 @@ namespace WeatherDisplay.Services.Hardware
 
             this.logger.LogDebug($"Initialize");
 
+            var gpioButtonLogger = this.loggerFactory.CreateLogger<GpioButton>();
+
             var buttonMappings = this.appSettings.ButtonMappings;
 
             var buttonMapping1 = buttonMappings.SingleOrDefault(b => b.ButtonId == 1);
             if (buttonMapping1 != null)
             {
-                this.button1 = new GpioButton(buttonMapping1.GpioPin, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
+                this.button1 = new GpioButton(buttonMapping1.GpioPin, ButtonPullUp, gpio: this.gpioController, shouldDispose: true, debounceTime: ButtonDebounceTime, logger: gpioButtonLogger);
                 this.button1.Press += this.OnButton1Pressed;
             }
 
             var buttonMapping2 = buttonMappings.SingleOrDefault(b => b.ButtonId == 2);
             if (buttonMapping2 != null)
             {
-                this.button2 = new GpioButton(buttonMapping2.GpioPin, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
+                this.button2 = new GpioButton(buttonMapping2.GpioPin, ButtonPullUp, gpio: this.gpioController, shouldDispose: true, debounceTime: ButtonDebounceTime, logger: gpioButtonLogger);
                 this.button2.Press += this.OnButton2Pressed;
             }
 
             var buttonMapping3 = buttonMappings.SingleOrDefault(b => b.ButtonId == 3);
             if (buttonMapping3 != null)
             {
-                this.button3 = new GpioButton(buttonMapping3.GpioPin, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
+                this.button3 = new GpioButton(buttonMapping3.GpioPin, ButtonPullUp, gpio: this.gpioController, shouldDispose: true, debounceTime: ButtonDebounceTime, logger: gpioButtonLogger);
                 this.button3.Press += this.OnButton3Pressed;
             }
 
             var buttonMapping4 = buttonMappings.SingleOrDefault(b => b.ButtonId == 4);
             if (buttonMapping4 != null)
             {
-                this.button4 = new GpioButton(buttonMapping4.GpioPin, this.gpioController, shouldDispose: false, ButtonPinMode, ButtonDebounceTime);
+                this.button4 = new GpioButton(buttonMapping4.GpioPin, ButtonPullUp, gpio: this.gpioController, shouldDispose: true, debounceTime: ButtonDebounceTime, logger: gpioButtonLogger);
                 this.button4.Press += this.OnButton4Pressed;
                 this.button4.Holding += this.OnButton4Holding;
             }
@@ -141,7 +147,7 @@ namespace WeatherDisplay.Services.Hardware
                 return;
             }
 
-            this.logger.LogDebug($"HandleButtonHold: buttonId={buttonId}");
+            this.logger.LogDebug($"HandleButtonHolding: buttonId={buttonId}");
 
             try
             {
@@ -173,11 +179,6 @@ namespace WeatherDisplay.Services.Hardware
             await this.HandleButtonPress(buttonId: 1);
         }
 
-        private async void OnButton4Holding(object sender, EventArgs e)
-        {
-            await this.HandleButtonHolding(buttonId: 4);
-        }
-
         private async void OnButton2Pressed(object sender, EventArgs e)
         {
             await this.HandleButtonPress(buttonId: 2);
@@ -191,6 +192,11 @@ namespace WeatherDisplay.Services.Hardware
         private async void OnButton4Pressed(object sender, EventArgs e)
         {
             await this.HandleButtonPress(buttonId: 4);
+        }
+
+        private async void OnButton4Holding(object sender, EventArgs e)
+        {
+            await this.HandleButtonHolding(buttonId: 4);
         }
 
         protected virtual void Dispose(bool disposing)

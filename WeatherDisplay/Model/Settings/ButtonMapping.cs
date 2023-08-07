@@ -2,7 +2,7 @@
 
 namespace WeatherDisplay.Model.Settings
 {
-    [DebuggerDisplay("ButtonMapping: Page {this.Page} <-> Button {this.ButtonId}")]
+    [DebuggerDisplay("Button {this.ButtonId}: Page {this.Page}")]
     public class ButtonMapping
     {
         public string Page { get; set; }

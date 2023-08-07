@@ -81,15 +81,15 @@ namespace WeatherDisplay.Api.Services
                 this.buttonsAccessService.Initialize();
                 this.sensorAccessService.Initialize();
 
-                var runSetup = this.appSettings.RunSetup;
-                if (runSetup)
+                var updateInProgress = await this.TryInstallUpdateAsync();
+                if (!updateInProgress)
                 {
-                    await this.navigationService.NavigateAsync(App.Pages.SetupPage);
-                }
-                else
-                {
-                    var updateInProgress = await this.TryInstallUpdateAsync();
-                    if (!updateInProgress)
+                    var runSetup = this.appSettings.RunSetup;
+                    if (runSetup)
+                    {
+                        await this.navigationService.NavigateAsync(App.Pages.SetupPage);
+                    }
+                    else
                     {
                         // Schedule automatic update check for "Daily, 4:50 at night"
                         // this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });

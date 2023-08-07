@@ -5,17 +5,17 @@
     <NeutralLanguage>sv</NeutralLanguage>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MeteoSwissApi" Version="1.2.1-pre" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="6.0.2" />
-    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="6.0.0" />
-    <PackageReference Include="NCrontab.Scheduler" Version="1.2.3-pre" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="6.0.0" />
-    <PackageReference Include="ObjectDumper.NET" Version="4.0.6" />
-    <PackageReference Include="OpenWeatherMap.API" Version="1.1.24" />
+    <PackageReference Include="MeteoSwissApi" Version="2.0.5-pre" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="7.0.0" />
+    <PackageReference Include="NCrontab.Scheduler" Version="1.2.10" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
+    <PackageReference Include="ObjectDumper.NET" Version="4.1.3" />
+    <PackageReference Include="OpenWeatherMap.API" Version="1.2.2-pre" />
     <PackageReference Include="RaspberryPi.NET" Version="1.0.39-pre" />
     <PackageReference Include="ResourceLoader" Version="3.2.4" />
     <PackageReference Include="QRCoder" Version="1.4.1" />
@@ -27,19 +27,19 @@
   </ItemGroup>
 
   <PropertyGroup Label="MultilingualAppToolkit">
-  	<MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
-  	<MultilingualFallbackLanguage>sv</MultilingualFallbackLanguage>
-  	<TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
-  	<SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
+    <MultilingualAppToolkitVersion>4.0</MultilingualAppToolkitVersion>
+    <MultilingualFallbackLanguage>sv</MultilingualFallbackLanguage>
+    <TranslationReport Condition="'$(Configuration)' == 'Release'">true</TranslationReport>
+    <SuppressPseudoWarning Condition="'$(Configuration)' == 'Debug'">true</SuppressPseudoWarning>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.ResxResources.targets" Label="MultilingualAppToolkit" Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\v$(MultilingualAppToolkitVersion)\Microsoft.Multilingual.ResxResources.targets')" />
   <Target Name="MATPrerequisite" BeforeTargets="PrepareForBuild" Condition="!Exists('$(MSBuildExtensionsPath)\Microsoft\Multilingual App Toolkit\Microsoft.Multilingual.ResxResources.targets')" Label="MultilingualAppToolkit">
-  	<Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
+    <Warning Text="$(MSBuildProjectFile) is Multilingual build enabled, but the Multilingual App Toolkit is unavailable during the build. If building with Visual Studio, please check to ensure that toolkit is properly installed." />
   </Target>
   <ItemGroup>
-  	<None Remove="MultilingualResources\WeatherDisplay.de.xlf" />
-  	<None Remove="MultilingualResources\WeatherDisplay.en.xlf" />
-  	<None Remove="Resources\Images\SystemInfoPageBackground.png" />
+    <None Remove="MultilingualResources\WeatherDisplay.de.xlf" />
+    <None Remove="MultilingualResources\WeatherDisplay.en.xlf" />
+    <None Remove="Resources\Images\SystemInfoPageBackground.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Images\SystemInfoPageBackground.png" />

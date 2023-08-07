@@ -1,8 +1,7 @@
 ﻿using System.IO;
-using DisplayService.Services;
 using DisplayService.Extensions;
 
-namespace WeatherDisplay.Tests
+namespace DisplayService.Devices
 {
     public class TestDisplay : IDisplay
     {

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using DisplayService.Devices;
 using DisplayService.Model;
 using Microsoft.Extensions.Logging;
 using NCrontab;
@@ -19,6 +20,7 @@ namespace DisplayService.Services
         private readonly IDisplay display;
         private readonly IScheduler scheduler;
         private readonly ICacheService cacheService;
+
         private bool disposed;
 
         public DisplayManager(

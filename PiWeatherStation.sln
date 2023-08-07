@@ -39,7 +39,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Externals", "Externals", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Iot.Device.Abstractions", "Externals\Iot.Device.Abstractions\Iot.Device.Abstractions.csproj", "{A23F80E2-1436-4195-A768-229003B27573}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherDisplay.Api.Contracts", "WeatherDisplay.Api.Contracts\WeatherDisplay.Api.Contracts.csproj", "{45D9B663-EBA2-45B1-94D9-DBDBDB0464E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherDisplay.Api.Contracts", "WeatherDisplay.Api.Contracts\WeatherDisplay.Api.Contracts.csproj", "{45D9B663-EBA2-45B1-94D9-DBDBDB0464E6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DisplayService.SampleApp", "Samples\DisplayService.SampleApp\DisplayService.SampleApp.csproj", "{5719183F-2113-4138-B43D-A2E2ADCA32FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,6 +97,10 @@ Global
 		{45D9B663-EBA2-45B1-94D9-DBDBDB0464E6}.Debug|anycpu.Build.0 = Debug|Any CPU
 		{45D9B663-EBA2-45B1-94D9-DBDBDB0464E6}.Release|anycpu.ActiveCfg = Release|Any CPU
 		{45D9B663-EBA2-45B1-94D9-DBDBDB0464E6}.Release|anycpu.Build.0 = Release|Any CPU
+		{5719183F-2113-4138-B43D-A2E2ADCA32FF}.Debug|anycpu.ActiveCfg = Debug|Any CPU
+		{5719183F-2113-4138-B43D-A2E2ADCA32FF}.Debug|anycpu.Build.0 = Debug|Any CPU
+		{5719183F-2113-4138-B43D-A2E2ADCA32FF}.Release|anycpu.ActiveCfg = Release|Any CPU
+		{5719183F-2113-4138-B43D-A2E2ADCA32FF}.Release|anycpu.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -106,6 +112,7 @@ Global
 		{210BABA9-5E8D-4F3F-8792-DC431CA90730} = {2C44AC89-A2E6-4B5D-8457-BB627D5A5A80}
 		{B66C3786-0F86-48C3-9886-CF0AC65C8365} = {EDB08A6F-4288-416E-9A52-3D1C3FF22919}
 		{A23F80E2-1436-4195-A768-229003B27573} = {3BAEE795-ED77-4336-953B-1092E40723F7}
+		{5719183F-2113-4138-B43D-A2E2ADCA32FF} = {EDB08A6F-4288-416E-9A52-3D1C3FF22919}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {1503D0DA-AA89-4AE5-8FE8-8167624E7A30}

@@ -4,7 +4,6 @@ using System.Linq;
 using DisplayService.Model;
 using DisplayService.Resources;
 using DisplayService.Services;
-using DisplayService.Settings;
 using FluentAssertions;
 using Moq.AutoMock;
 using Xunit;

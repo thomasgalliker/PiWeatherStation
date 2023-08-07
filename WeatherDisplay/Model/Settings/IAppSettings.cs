@@ -5,8 +5,6 @@ namespace WeatherDisplay.Model.Settings
 {
     public interface IAppSettings
     {
-        string Title { get; set; }
-
         CultureInfo CultureInfo { get; set; }
 
         bool RunSetup { get; set; }
@@ -14,8 +12,6 @@ namespace WeatherDisplay.Model.Settings
         bool IsDebug { get; set; }
 
         AccessPointSettings AccessPoint { get; set; }
-
-        ICollection<DisplaySetting> Displays { get; set; }
 
         ICollection<ButtonMapping> ButtonMappings { get; set; }
     }

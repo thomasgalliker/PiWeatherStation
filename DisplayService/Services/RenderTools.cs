@@ -3,7 +3,6 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using DisplayService.Model;
-using DisplayService.Settings;
 using SkiaSharp;
 
 namespace DisplayService.Services
@@ -20,8 +19,8 @@ namespace DisplayService.Services
         /// <returns>Returns a cleaned up file name</returns>
         public static string CleanFileName(string name)
         {
-            string invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
-            string invalidRegStr = string.Format(@"([{0}]*\/\\\.+$)|([{0}]+)", invalidChars);
+            var invalidChars = Regex.Escape(new string(Path.GetInvalidFileNameChars()));
+            var invalidRegStr = string.Format(@"([{0}]*\/\\\.+$)|([{0}]+)", invalidChars);
 
             return Regex.Replace(name, invalidRegStr, "_");
         }
@@ -103,10 +102,7 @@ namespace DisplayService.Services
             }
             catch (Exception ex)
             {
-                if (skBitmap != null)
-                {
-                    skBitmap.Dispose();
-                }
+                skBitmap?.Dispose();
 
                 throw new ArgumentException("An exception occurred trying to load image: " + ex.Message, nameof(filename), ex);
             }
@@ -139,10 +135,7 @@ namespace DisplayService.Services
             }
             catch (Exception ex)
             {
-                if (skBitmap != null)
-                {
-                    skBitmap.Dispose();
-                }
+                skBitmap?.Dispose();
 
                 throw new ArgumentException("An exception occurred trying to load image: " + ex.Message, nameof(imageStream), ex);
             }
@@ -179,7 +172,7 @@ namespace DisplayService.Services
                 throw new ArgumentOutOfRangeException(nameof(fontWidth), fontWidth, "Font width must be between 1 and to 9");
             }
 
-            
+
             var paint = new SKPaint()
             {
                 TextSize = fontSize,
@@ -219,9 +212,9 @@ namespace DisplayService.Services
             var width = paint.MeasureText(text, ref rect);
             var height = rect.Height;
 
-            (float horizontalOffset, float left) = CalculateHorizontalBounds(x, horizontalTextAlignment, rect, width);
+            (var horizontalOffset, var left) = CalculateHorizontalBounds(x, horizontalTextAlignment, rect, width);
 
-            (float verticalOffset, float top) = CalculateVerticalBounds(y, verticalTextAlignment, rect);
+            (var verticalOffset, var top) = CalculateVerticalBounds(y, verticalTextAlignment, rect);
 
             return ((int)Math.Round(width), (int)Math.Round(height), (int)Math.Round(horizontalOffset), (int)Math.Round(verticalOffset), (int)Math.Round(left), (int)Math.Round(top));
         }

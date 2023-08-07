@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
+using DisplayService.Devices;
 using DisplayService.Model;
 using DisplayService.Services;
 using DisplayService.Tests.Extensions;

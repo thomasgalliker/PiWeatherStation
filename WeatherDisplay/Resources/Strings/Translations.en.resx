@@ -45,4 +45,10 @@
   <data name="WifiSetupIntroLabelText" xml:space="preserve">
     <value>Connect to following wifi network:</value>
   </data>
+  <data name="PlaceAndDateTime" xml:space="preserve">
+    <value>{0}, at {1}</value>
+  </data>
+  <data name="AirQualityLabelText" xml:space="preserve">
+    <value>Air Quality</value>
+  </data>
 </root>

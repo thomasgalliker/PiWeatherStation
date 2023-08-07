@@ -1,5 +1,6 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Net;
+using System.Reflection;
 using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
@@ -13,6 +14,7 @@ using NLog;
 using NLog.Extensions.Logging;
 using RaspberryPi.Extensions;
 using UnitsNet.Serialization.JsonNet;
+using WeatherDisplay.Api.Properties;
 using WeatherDisplay.Api.Services;
 using WeatherDisplay.Api.Services.Configuration;
 using WeatherDisplay.Api.Services.Security;
@@ -39,8 +41,11 @@ namespace WeatherDisplay.Api
                 cancellationSource.Cancel();
             };
 
+            var assembly = Assembly.GetExecutingAssembly();
+            var buildTime = assembly.GetBuildTime();
+
             Console.WriteLine(
-                $"WeatherStation version {typeof(Program).Assembly.GetName().Version} {Environment.NewLine}" +
+                $"WeatherStation version {assembly.GetName().Version} {(buildTime != null ? $"[{buildTime.Value:u}]{Environment.NewLine}" : "")}" +
                 $"Copyright(C) superdev GmbH. All rights reserved.{Environment.NewLine}");
 
             var privateKeyFile = "localhost.pfx";
@@ -219,7 +224,7 @@ namespace WeatherDisplay.Api
             app.UseStaticFiles();
 
             _ = app.RunAsync(cancellationSource.Token);
-            
+
             app.WaitForShutdown();
         }
 
