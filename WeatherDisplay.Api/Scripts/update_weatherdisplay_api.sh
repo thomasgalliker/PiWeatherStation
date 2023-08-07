@@ -436,9 +436,10 @@ fi
 
 logDebug "Updating hostname..."
 currentHostname=`cat /etc/hostname | tr -d " \t\n\r"`
+echo "$currentHostname -> $host"
 sudo raspi-config nonint do_hostname $host
 echo $host > /etc/hostname
-sed -i "s/127.0.1.1.*$currentHostname/127.0.1.1\t$host/g" /etc/hosts
+sudo sed -i -E 's/(127\.0\.1\.1\s+)[^ ]+/\1'"$host"'/g' /etc/hosts
 
 logSuccess "
 =====================================================
