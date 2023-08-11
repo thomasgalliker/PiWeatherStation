@@ -443,7 +443,7 @@ namespace WeatherDisplay.Pages.SystemInfo
 
                     if (cpuSensorsStatus.UnderVoltageDetected)
                     {
-                        renderActions.Add(new RenderActions.StreamImage
+                        renderActions.Add(new RenderActions.BitmapImage
                         {
                             X = 10,
                             Y = 343 + 60,

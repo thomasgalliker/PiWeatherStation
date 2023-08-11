@@ -173,7 +173,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                                 Value = $"{Translations.WifiPSKLabelText}: {accessPointSettings.PSK}",
                                 FontSize = 20,
                             },
-                            new RenderActions.StreamImage
+                            new RenderActions.BitmapImage
                             {
                                 X = 780,
                                 Y = 120,

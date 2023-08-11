@@ -22,7 +22,7 @@ namespace WeatherDisplay.Resources.Strings {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Translations {
+    public class Translations {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
@@ -36,7 +36,7 @@ namespace WeatherDisplay.Resources.Strings {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("WeatherDisplay.Resources.Strings.Translations", typeof(Translations).Assembly);
@@ -51,7 +51,7 @@ namespace WeatherDisplay.Resources.Strings {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace WeatherDisplay.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to Air Quality.
         /// </summary>
-        internal static string AirQualityLabelText {
+        public static string AirQualityLabelText {
             get {
                 return ResourceManager.GetString("AirQualityLabelText", resourceCulture);
             }
@@ -72,7 +72,7 @@ namespace WeatherDisplay.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to CO2.
         /// </summary>
-        internal static string CarbonDioxideAbbreviation {
+        public static string CarbonDioxideAbbreviation {
             get {
                 return ResourceManager.GetString("CarbonDioxideAbbreviation", resourceCulture);
             }
@@ -81,7 +81,7 @@ namespace WeatherDisplay.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to Source: MeteoSwiss.
         /// </summary>
-        internal static string MeteoSwissWeatherPage_SourceName {
+        public static string MeteoSwissWeatherPage_SourceName {
             get {
                 return ResourceManager.GetString("MeteoSwissWeatherPage_SourceName", resourceCulture);
             }
@@ -90,7 +90,7 @@ namespace WeatherDisplay.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to Error: Missing places configuration..
         /// </summary>
-        internal static string OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine1 {
+        public static string OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine1 {
             get {
                 return ResourceManager.GetString("OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine1", resourceCulture);
             }
@@ -99,7 +99,7 @@ namespace WeatherDisplay.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places.
         /// </summary>
-        internal static string OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine2 {
+        public static string OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine2 {
             get {
                 return ResourceManager.GetString("OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine2", resourceCulture);
             }
@@ -108,7 +108,7 @@ namespace WeatherDisplay.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to Source: OpenWeatherMap.
         /// </summary>
-        internal static string OpenWeatherMapPage_SourceName {
+        public static string OpenWeatherMapPage_SourceName {
             get {
                 return ResourceManager.GetString("OpenWeatherMapPage_SourceName", resourceCulture);
             }
@@ -117,7 +117,7 @@ namespace WeatherDisplay.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to {0}, at {1}.
         /// </summary>
-        internal static string PlaceAndDateTime {
+        public static string PlaceAndDateTime {
             get {
                 return ResourceManager.GetString("PlaceAndDateTime", resourceCulture);
             }
@@ -126,7 +126,7 @@ namespace WeatherDisplay.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to RH.
         /// </summary>
-        internal static string RelativeHumiditySuffix {
+        public static string RelativeHumiditySuffix {
             get {
                 return ResourceManager.GetString("RelativeHumiditySuffix", resourceCulture);
             }
@@ -135,7 +135,7 @@ namespace WeatherDisplay.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to UV.
         /// </summary>
-        internal static string UltraViolettAbbreviation {
+        public static string UltraViolettAbbreviation {
             get {
                 return ResourceManager.GetString("UltraViolettAbbreviation", resourceCulture);
             }
@@ -144,7 +144,7 @@ namespace WeatherDisplay.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to Source: wiewarm.ch.
         /// </summary>
-        internal static string WaterTemperaturePage_SourceName {
+        public static string WaterTemperaturePage_SourceName {
             get {
                 return ResourceManager.GetString("WaterTemperaturePage_SourceName", resourceCulture);
             }
@@ -153,7 +153,7 @@ namespace WeatherDisplay.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to Password.
         /// </summary>
-        internal static string WifiPSKLabelText {
+        public static string WifiPSKLabelText {
             get {
                 return ResourceManager.GetString("WifiPSKLabelText", resourceCulture);
             }
@@ -162,7 +162,7 @@ namespace WeatherDisplay.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to Connect to following wifi network:.
         /// </summary>
-        internal static string WifiSetupIntroLabelText {
+        public static string WifiSetupIntroLabelText {
             get {
                 return ResourceManager.GetString("WifiSetupIntroLabelText", resourceCulture);
             }
@@ -171,7 +171,7 @@ namespace WeatherDisplay.Resources.Strings {
         /// <summary>
         ///   Looks up a localized string similar to SSID.
         /// </summary>
-        internal static string WifiSSIDLabelText {
+        public static string WifiSSIDLabelText {
             get {
                 return ResourceManager.GetString("WifiSSIDLabelText", resourceCulture);
             }

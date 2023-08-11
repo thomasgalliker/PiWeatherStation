@@ -166,7 +166,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
                             },
-                            new RenderActions.StreamImage
+                            new RenderActions.BitmapImage
                             {
                                 X = 20,
                                 Y = 198,
@@ -282,7 +282,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                     Spacing = 6,
                                     Children = new List<IRenderAction>
                                     {
-                                        new RenderActions.StreamImage
+                                        new RenderActions.BitmapImage
                                         {
                                             X = 0,
                                             Y = 0,
@@ -352,7 +352,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
 
                             currentWeatherRenderActions.AddRange(new IRenderAction[]
                             {
-                                new RenderActions.StreamImage
+                                new RenderActions.BitmapImage
                                 {
                                     X = 20,
                                     Y = 300,
@@ -437,7 +437,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                         BackgroundColor = "#FFFFFF",
                                         FontSize = 20,
                                     },
-                                    new RenderActions.StreamImage
+                                    new RenderActions.BitmapImage
                                     {
                                         X = 500,
                                         Y = 260,
@@ -466,7 +466,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                         currentWeatherRenderActions.AddRange(new IRenderAction[]
                         {
                             // Sunrise
-                            new RenderActions.StreamImage
+                            new RenderActions.BitmapImage
                             {
                                 X = 360,
                                 Y = 140,
@@ -490,7 +490,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             },
 
                             // Sunset
-                            new RenderActions.StreamImage
+                            new RenderActions.BitmapImage
                             {
                                 X = 360,
                                 Y = 180,
@@ -514,7 +514,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             },
 
                             // Minimum temperature
-                            new RenderActions.StreamImage
+                            new RenderActions.BitmapImage
                             {
                                 X = 360,
                                 Y = 220,
@@ -538,7 +538,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             },
 
                             // Maximum temperature
-                            new RenderActions.StreamImage
+                            new RenderActions.BitmapImage
                             {
                                 X = 360,
                                 Y = 260,
@@ -562,7 +562,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             },
 
                             // Daily amount of rain
-                            new RenderActions.StreamImage
+                            new RenderActions.BitmapImage
                             {
                                 X = 500,
                                 Y = 140,
@@ -586,7 +586,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             },
 
                             // Wind
-                            new RenderActions.StreamImage
+                            new RenderActions.BitmapImage
                             {
                                 X = 500,
                                 Y = 180,
@@ -610,7 +610,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             },
 
                             // Atmospheric pressure
-                            new RenderActions.StreamImage
+                            new RenderActions.BitmapImage
                             {
                                 X = 500,
                                 Y = 220,
@@ -639,7 +639,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             currentWeatherRenderActions.AddRange(new IRenderAction[]
                             {
                                 // CO2
-                                new RenderActions.StreamImage
+                                new RenderActions.BitmapImage
                                 {
                                     X = 500,
                                     Y = 300,
@@ -743,7 +743,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                     FontSize = 20,
                                     Bold = true,
                                 },
-                                new RenderActions.StreamImage
+                                new RenderActions.BitmapImage
                                 {
                                     X = xCenter,
                                     Y = 390,

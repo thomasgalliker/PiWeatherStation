@@ -218,7 +218,7 @@ namespace WeatherDisplay.Pages
 
                     var bitmapStream = screen.ToStream();
 
-                    currentWeatherRenderActions.Add(new RenderActions.StreamImage
+                    currentWeatherRenderActions.Add(new RenderActions.BitmapImage
                     {
                         X = 0,
                         Y = 140,
