@@ -8,6 +8,8 @@ namespace DisplayService.Model
         [DebuggerDisplay("StreamImage: X={X}, Y={Y}")]
         public abstract class Image : IRenderAction, ISurface
         {
+            public object Tag { get; set; }
+
             /// <summary>
             /// X coordinate to place the image.
             /// </summary>
@@ -30,10 +32,7 @@ namespace DisplayService.Model
 
             public string BackgroundColor { get; set; }
 
-            public void Render(IRenderService renderService)
-            {
-                renderService.Image(this);
-            }
+            public abstract void Render(IRenderService renderService);
         }
     }
 }

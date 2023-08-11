@@ -482,16 +482,16 @@ namespace DisplayService.Tests.Services
         }
 
         [Fact]
-        public void ShouldGetScreen_TestImage1()
+        public void ShouldGetScreen_BitmapImage_TestImage1()
         {
             // Arrange
             IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
 
-            var image = new RenderActions.StreamImage
+            var image = new RenderActions.BitmapImage
             {
                 X = 0,
                 Y = 0,
-                Image = TestImages.GetTestImage1(),
+                Image = BitmapImages.GetTestImage1(),
             };
             renderService.Image(image);
 
@@ -504,18 +504,65 @@ namespace DisplayService.Tests.Services
         }
 
         [Fact]
-        public void ShouldGetScreen_TestImage2()
+        public void ShouldGetScreen_BitmapImage_TestImage2()
         {
             // Arrange
             IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
 
-            var image = new RenderActions.StreamImage
+            var image = new RenderActions.BitmapImage
             {
                 X = 0,
                 Y = 0,
-                Image = TestImages.GetTestImage2(),
+                Image = BitmapImages.GetTestImage2(),
             };
             renderService.Image(image);
+
+            // Act
+            var bitmapStream = renderService.GetScreen();
+
+            // Assert
+            bitmapStream.Should().NotBeNull();
+            this.testHelper.WriteFile(bitmapStream);
+        }
+
+        [Fact]
+        public void ShouldGetScreen_SvgImage_SvgImage1()
+        {
+            // Arrange
+            IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
+
+            var image = new RenderActions.SvgImage
+            {
+                X = 0,
+                Y = 0,
+                Image = SvgImages.GetSvgImage1(),
+            };
+            renderService.SvgImage(image);
+
+            // Act
+            var bitmapStream = renderService.GetScreen();
+
+            // Assert
+            bitmapStream.Should().NotBeNull();
+            this.testHelper.WriteFile(bitmapStream);
+        }
+        
+        [Fact]
+        public void ShouldGetScreen_SvgImage_SvgImage2()
+        {
+            // Arrange
+            IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
+
+            var image = new RenderActions.SvgImage
+            {
+                X = 100,
+                Y = 100,
+                Width = 100,
+                Height = 100,
+                Image = SvgImages.GetSvgImage1(),
+                BackgroundColor = "00EE00"
+            };
+            renderService.SvgImage(image);
 
             // Act
             var bitmapStream = renderService.GetScreen();

@@ -3,9 +3,9 @@ using System.Reflection;
 
 namespace DisplayService.Resources
 {
-    public static class TestImages
+    public static class BitmapImages
     {
-        private static readonly Assembly Assembly = typeof(TestImages).Assembly;
+        private static readonly Assembly Assembly = typeof(BitmapImages).Assembly;
 
         public static Stream GetTestImage1()
         {

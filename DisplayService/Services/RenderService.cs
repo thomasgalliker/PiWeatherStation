@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Diagnostics.Contracts;
+using System.Drawing;
 using System.IO;
+using System.Runtime.InteropServices.ComTypes;
 using DisplayService.Model;
 using Microsoft.Extensions.Logging;
 using SkiaSharp;
+using SkiaSharp.Extended.Svg;
 
 namespace DisplayService.Services
 {
@@ -50,9 +54,9 @@ namespace DisplayService.Services
             this.Image(this.canvas, image);
         }
 
-        public void Graphic(RenderActions.Graphic graphic)
+        public void SvgImage(RenderActions.SvgImage svgImage)
         {
-            this.Graphic(this.canvas, graphic);
+            this.SvgImage(this.canvas, svgImage);
         }
 
         public void Text(RenderActions.Text text)
@@ -273,9 +277,9 @@ namespace DisplayService.Services
                                 {
                                     renderedRect = this.StackLayout(innerCanvas, innerStackLayout);
                                 }
-                                else if (renderAction is RenderActions.Graphic graphic)
+                                else if (renderAction is RenderActions.SvgImage svgImage)
                                 {
-                                    renderedRect = this.Graphic(innerCanvas, graphic);
+                                    renderedRect = this.SvgImage(innerCanvas, svgImage);
                                 }
                                 else if (renderAction is RenderActions.Image image)
                                 {
@@ -364,9 +368,9 @@ namespace DisplayService.Services
                                 {
                                     renderedRect = this.StackLayout(innerCanvas, innerStackLayout);
                                 }
-                                else if (renderAction is RenderActions.Graphic graphic)
+                                else if (renderAction is RenderActions.SvgImage svgImage)
                                 {
-                                    renderedRect = this.Graphic(innerCanvas, graphic);
+                                    renderedRect = this.SvgImage(innerCanvas, svgImage);
                                 }
                                 else if (renderAction is RenderActions.Image image)
                                 {
@@ -518,9 +522,9 @@ namespace DisplayService.Services
             {
                 skBitmap = RenderTools.GetImage(this.renderSettings, image.X, image.Y, fileImage.Filename);
             }
-            else if (image is RenderActions.StreamImage embeddedResourceImage)
+            else if (image is RenderActions.StreamImage streamImage)
             {
-                skBitmap = RenderTools.GetImage(this.renderSettings, image.X, image.Y, embeddedResourceImage.Image);
+                skBitmap = RenderTools.GetImage(this.renderSettings, image.X, image.Y, streamImage.Image);
             }
             else
             {
@@ -575,34 +579,96 @@ namespace DisplayService.Services
             return rect;
         }
 
-        private SKRect Graphic(SKCanvas canvas, RenderActions.Graphic graphic)
+        private SKRect SvgImage(SKCanvas canvas, RenderActions.SvgImage image)
         {
-            if (graphic.X < 0 || graphic.X >= this.renderSettings.Width)
+            if (image is null)
             {
-                throw new ArgumentOutOfRangeException(nameof(graphic.X), graphic.X, "X coordinate is not within the screen");
+                throw new ArgumentNullException(nameof(image));
             }
 
-            if (graphic.Y < 0 || graphic.Y >= this.renderSettings.Height)
+
+            var skSvg = new SkiaSharp.Extended.Svg.SKSvg();
+            var skPicture = skSvg.Load(image.Image);
+
+            var skRect = skSvg.ViewBox;
+
+            if (image.Width == -1)
             {
-                throw new ArgumentOutOfRangeException(nameof(graphic.Y), graphic.Y, "Y coordinate is not within the screen");
+                image.Width = (int)skRect.Width;
             }
 
-            try
+            if (image.Height == -1)
             {
-                using var img = SKBitmap.Decode(graphic.Data);
-                this.logger.LogDebug($"DrawBitmap(img.ByteCount=\"{img.ByteCount}\", graphic.X={graphic.X}, graphic.Y={graphic.Y})");
-                canvas.DrawBitmap(img, graphic.X, graphic.Y);
+                image.Height = (int)skRect.Height;
+            }
 
-                return new SKRect(graphic.X, graphic.Y, img.Width, img.Height);
-            }
-            catch (ArgumentException)
+            float xRatio = image.Width / skRect.Width;
+            float yRatio = image.Height / skRect.Height;
+
+            float ratio = Math.Min(xRatio, yRatio);
+
+            //canvas.Scale(ratio);
+            //canvas.Translate(-skRect.MidX, -skRect.MidY);
+
+
+
+            var x = CalculateX(image);
+            var y = CalculateY(image);
+
+            var rect = SKRect.Create(x, y, image.Width, image.Height);
+
+
+            SKMatrix scaleMatrix = default;
+            if (skSvg.Picture?.CullRect is { } cullRect)
             {
-                throw;
+                scaleMatrix = SKMatrix.CreateScaleTranslation(xRatio, yRatio, x, y);
+
             }
-            catch (Exception ex)
+
+            if (skPicture != null)
             {
-                throw new ArgumentException("An exception occurred trying to add graphical image to the canvas: " + ex.Message, nameof(graphic.Data), ex);
+                // Draw image background
+                if (image.BackgroundColor != null)
+                {
+                    using (var backgroundPaint = new SKPaint { Color = SKColor.Parse(image.BackgroundColor) })
+                    {
+                        canvas.DrawRect(rect, backgroundPaint);
+                    }
+                }
+
+                // Draw image
+
+
+                using (skPicture)
+                {
+                    using (var paint = new SKPaint())
+                    {
+                        var contrast = 0.01f;
+                        var cf = SKColorFilter.CreateHighContrast(true, SKHighContrastConfigInvertStyle.InvertBrightness, contrast);
+                        paint.FilterQuality = SKFilterQuality.High;
+                        paint.ColorFilter = cf;
+
+                        this.logger.LogDebug($"DrawPicture(SKPicture, x={x}, y={y})");
+                        canvas.DrawPicture(skPicture, ref scaleMatrix, paint);
+                    }
+
+                    //if (skPicture.Width != image.Width || skPicture.Height != image.Height)
+                    //{
+                    //    using (var skBitmapResized = skPicture.Resize(new SKImageInfo(image.Width, image.Height), SKFilterQuality.High))
+                    //    {
+                    //        this.logger.LogDebug($"DrawBitmap(img.ByteCount=\"{skBitmapResized.ByteCount}\", x={x}, y={y})");
+                    //        canvas.DrawBitmap(skBitmapResized, x, y);
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //    this.logger.LogDebug($"DrawBitmap(img.ByteCount=\"{skPicture.ByteCount}\", x={x}, y={y})");
+                    //    canvas.DrawBitmap(skPicture, x, y);
+                    //}
+                }
             }
+
+            return rect;
         }
 
         protected virtual void Dispose(bool disposing)

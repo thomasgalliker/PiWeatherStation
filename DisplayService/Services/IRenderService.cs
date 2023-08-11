@@ -13,8 +13,10 @@ namespace DisplayService.Services
         void Render(params IRenderAction[] renderActions);
 
         void Image(RenderActions.Image image);
+        //void Bitmap(RenderActions.BitmapImage image);
+        //void Bitmap(RenderActions.FileImage image);
 
-        void Graphic(RenderActions.Graphic graphic);
+        void SvgImage(RenderActions.SvgImage svgImage);
 
         void Text(RenderActions.Text text);
 

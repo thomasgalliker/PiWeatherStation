@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using DisplayService.Services;
 
 namespace DisplayService.Model
 {
@@ -12,6 +13,11 @@ namespace DisplayService.Model
             /// </summary>
             /// <example>/home/pi/welcome.png</example>
             public string Filename { get; set; }
+
+            public override void Render(IRenderService renderService)
+            {
+                renderService.Image(this);
+            }
         }
     }
 }
