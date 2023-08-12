@@ -189,7 +189,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                     HorizontalTextAlignment = HorizontalAlignment.Left,
                                     VerticalTextAlignment = VerticalAlignment.Center,
                                     VerticalAlignment = VerticalAlignment.Center,
-                                    Value = currentWeatherInfo.Temperature.Value.ToString("N0"),
+                                    Value = $"{currentWeatherInfo.Temperature.Value:N0}",
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 70,
@@ -214,7 +214,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                     X = -30,
                                     HorizontalTextAlignment = HorizontalAlignment.Left,
                                     VerticalTextAlignment = VerticalAlignment.Bottom,
-                                    Value = $"/ {latestMeasurement.RelativeAirHumidity.Value.Value:N0} {latestMeasurement.RelativeAirHumidity.Value:A}",
+                                    Value = $"/ {latestMeasurement.RelativeAirHumidity.Value.Value:0}% {Translations.RelativeHumiditySuffix}",
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 20,
@@ -227,9 +227,9 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                         // Display local temperature and humidity if the selected place is current place
                         // and the temperature sensor is present
 
-                        UnitsNet.Temperature localTemperature = default;
-                        UnitsNet.RelativeHumidity localHumidity = default;
-                        UnitsNet.VolumeConcentration co2 = default;
+                        Temperature localTemperature = default;
+                        RelativeHumidity localHumidity = default;
+                        VolumeConcentration co2 = default;
 
                         if (this.currentPlace.IsCurrentPlace)
                         {
@@ -475,7 +475,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 Y = 140 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{dailyForecastToday.Precipitation.Value:N0} {dailyForecastToday.Precipitation:A}",
+                                Value = $"{FormatPrecipitation(dailyForecastToday.Precipitation)}",
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -523,7 +523,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 Y = 220 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{latestMeasurement.PressureQFE}", // ({latestMeasurement.Pressure.Range:N})",
+                                Value = $"{latestMeasurement.PressureQFE.Value.ToString("N0")}", // ({latestMeasurement.Pressure.Range:N})",
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -656,7 +656,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                     Y = 450,
                                     HorizontalTextAlignment = HorizontalAlignment.Center,
                                     VerticalTextAlignment = VerticalAlignment.Top,
-                                    Value = $"{dailyWeatherForecast.TemperatureMin.Value:F0}/{dailyWeatherForecast.TemperatureMax.Value:F0}{dailyWeatherForecast.TemperatureMax:A0}",
+                                    Value = $"{dailyWeatherForecast.TemperatureMin.Value:N0}/{dailyWeatherForecast.TemperatureMax.Value:N0}{dailyWeatherForecast.TemperatureMax:A0}",
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 20,
@@ -735,9 +735,10 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             return Task.CompletedTask;
         }
 
-        private static string FormatRain(double rain)
+        private static string FormatPrecipitation(Length precipitation)
         {
-            return rain > 0d && rain < 1d ? $"{rain:F1}mm" : $"{rain:0}mm";
+            var prefix = precipitation.Value > 0d && precipitation.Value < 1d ? "< " : "";
+            return $"{prefix}{precipitation:N0}";
         }
 
         private static string FormatTemperature(Temperature temperature)
