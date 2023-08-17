@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using OpenWeatherMap.Models;
+using UnitsNet;
+using UnitsNet.Units;
 
 namespace WeatherDisplay.Tests.Testdata
 {
@@ -28,14 +30,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(16.92, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(16.47, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(69),
-                        MaximumTemperature = new Temperature(16.92, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(14.56, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1018),
-                        GroundLevel = new Pressure(947),
-                        SeaLevel = new Pressure(1018)
+                        Temperature = new Temperature(16.92, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(16.47, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(69, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(16.92, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(14.56, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1018, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -49,7 +51,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 160d,
+                        Direction = new Angle(160, AngleUnit.Degree),
                         Speed = 1.29d
                         }
                     },
@@ -64,14 +66,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(15.89, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(15.44, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(73),
-                        MaximumTemperature = new Temperature(15.89, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(13.82, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1018),
-                        GroundLevel = new Pressure(947),
-                        SeaLevel = new Pressure(1018)
+                        Temperature = new Temperature(15.89, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(15.44, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(73, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(15.89, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(13.82, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1018, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -85,7 +87,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 198d,
+                        Direction = new Angle(198, AngleUnit.Degree),
                         Speed = 1.52d
                         }
                     },
@@ -100,14 +102,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(14.82, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(14.32, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(75),
-                        MaximumTemperature = new Temperature(14.82, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(13.77, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1019),
-                        GroundLevel = new Pressure(947),
-                        SeaLevel = new Pressure(1019)
+                        Temperature = new Temperature(14.82, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(14.32, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(75, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(14.82, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(13.77, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1019, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1019, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -121,7 +123,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 179d,
+                        Direction = new Angle(179, AngleUnit.Degree),
                         Speed = 1.72d
                         }
                     },
@@ -136,14 +138,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(19.04, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(18.75, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(67),
-                        MaximumTemperature = new Temperature(19.04, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(19.04, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1018),
-                        GroundLevel = new Pressure(948),
-                        SeaLevel = new Pressure(1018)
+                        Temperature = new Temperature(19.04, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(18.75, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(67, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(19.04, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(19.04, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1018, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -157,7 +159,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 216d,
+                        Direction = new Angle(216, AngleUnit.Degree),
                         Speed = 0.73d
                         }
                     },
@@ -176,14 +178,14 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(25.57, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(25.36, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(45),
-                        MaximumTemperature = new Temperature(25.57, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(25.57, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1018),
-                        GroundLevel = new Pressure(949),
-                        SeaLevel = new Pressure(1018)
+                        Temperature = new Temperature(25.57, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(25.36, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(45, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(25.57, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(25.57, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1018, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -197,7 +199,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 299d,
+                        Direction = new Angle(299, AngleUnit.Degree),
                         Speed = 1.07d
                         }
                     },
@@ -212,14 +214,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(29, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(28.27, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(36),
-                        MaximumTemperature = new Temperature(29, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(29, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1016),
-                        GroundLevel = new Pressure(949),
-                        SeaLevel = new Pressure(1016)
+                        Temperature = new Temperature(29, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(28.27, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(36, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(29, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(29, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1016, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -233,7 +235,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 280d,
+                        Direction = new Angle(280, AngleUnit.Degree),
                         Speed = 3.2d
                         }
                     },
@@ -248,14 +250,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(29.38, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(28.64, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(36),
-                        MaximumTemperature = new Temperature(29.38, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(29.38, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1016),
-                        GroundLevel = new Pressure(948),
-                        SeaLevel = new Pressure(1016)
+                        Temperature = new Temperature(29.38, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(28.64, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(36, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(29.38, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(29.38, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1016, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -269,7 +271,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 285d,
+                        Direction = new Angle(285, AngleUnit.Degree),
                         Speed = 3.24d
                         }
                     },
@@ -288,14 +290,14 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(23.48, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(23.82, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(74),
-                        MaximumTemperature = new Temperature(23.48, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(23.48, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1016),
-                        GroundLevel = new Pressure(947),
-                        SeaLevel = new Pressure(1016)
+                        Temperature = new Temperature(23.48, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(23.82, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(74, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(23.48, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(23.48, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1016, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -309,7 +311,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 17d,
+                        Direction = new Angle(17, AngleUnit.Degree),
                         Speed = 1.24d
                         }
                     },
@@ -328,14 +330,14 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(16.64, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(16.76, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(92),
-                        MaximumTemperature = new Temperature(16.64, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(16.64, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1019),
-                        GroundLevel = new Pressure(948),
-                        SeaLevel = new Pressure(1019)
+                        Temperature = new Temperature(16.64, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(16.76, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(92, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(16.64, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(16.64, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1019, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1019, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -349,7 +351,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 201d,
+                        Direction = new Angle(201, AngleUnit.Degree),
                         Speed = 2.94d
                         }
                     },
@@ -368,14 +370,14 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(13.87, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(13.69, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(91),
-                        MaximumTemperature = new Temperature(13.87, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(13.87, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1020),
-                        GroundLevel = new Pressure(949),
-                        SeaLevel = new Pressure(1020)
+                        Temperature = new Temperature(13.87, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(13.69, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(91, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(13.87, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(13.87, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -389,7 +391,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 197d,
+                        Direction = new Angle(197, AngleUnit.Degree),
                         Speed = 2.63d
                         }
                     },
@@ -404,14 +406,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(14.29, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(14.15, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(91),
-                        MaximumTemperature = new Temperature(14.29, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(14.29, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1020),
-                        GroundLevel = new Pressure(949),
-                        SeaLevel = new Pressure(1020)
+                        Temperature = new Temperature(14.29, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(14.15, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(91, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(14.29, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(14.29, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -425,7 +427,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 203d,
+                        Direction = new Angle(203, AngleUnit.Degree),
                         Speed = 1.99d
                         }
                     },
@@ -444,14 +446,14 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(18.79, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(18.89, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(83),
-                        MaximumTemperature = new Temperature(18.79, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(18.79, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1020),
-                        GroundLevel = new Pressure(950),
-                        SeaLevel = new Pressure(1020)
+                        Temperature = new Temperature(18.79, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(18.89, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(83, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(18.79, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(18.79, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(950, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -465,7 +467,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 218d,
+                        Direction = new Angle(218, AngleUnit.Degree),
                         Speed = 1.2d
                         }
                     },
@@ -484,14 +486,14 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(23.13, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(23.3, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(69),
-                        MaximumTemperature = new Temperature(23.13, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(23.13, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1021),
-                        GroundLevel = new Pressure(951),
-                        SeaLevel = new Pressure(1021)
+                        Temperature = new Temperature(23.13, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(23.3, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(69, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(23.13, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(23.13, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -505,7 +507,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 286d,
+                        Direction = new Angle(286, AngleUnit.Degree),
                         Speed = 1.76d
                         }
                     },
@@ -524,14 +526,14 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(26.88, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(26.92, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(43),
-                        MaximumTemperature = new Temperature(26.88, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(26.88, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1020),
-                        GroundLevel = new Pressure(952),
-                        SeaLevel = new Pressure(1020)
+                        Temperature = new Temperature(26.88, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(26.92, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(43, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(26.88, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(26.88, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -545,7 +547,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 302d,
+                        Direction = new Angle(302, AngleUnit.Degree),
                         Speed = 2.81d
                         }
                     },
@@ -560,14 +562,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(24.58, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(24.53, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(55),
-                        MaximumTemperature = new Temperature(24.58, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(24.58, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1021),
-                        GroundLevel = new Pressure(952),
-                        SeaLevel = new Pressure(1021)
+                        Temperature = new Temperature(24.58, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(24.53, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(55, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(24.58, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(24.58, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -581,7 +583,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 338d,
+                        Direction = new Angle(338, AngleUnit.Degree),
                         Speed = 1.98d
                         }
                     },
@@ -596,14 +598,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(22.4, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(22.5, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(69),
-                        MaximumTemperature = new Temperature(22.4, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(22.4, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1021),
-                        GroundLevel = new Pressure(952),
-                        SeaLevel = new Pressure(1021)
+                        Temperature = new Temperature(22.4, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(22.5, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(69, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(22.4, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(22.4, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -617,7 +619,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 335d,
+                        Direction = new Angle(335, AngleUnit.Degree),
                         Speed = 1.29d
                         }
                     },
@@ -632,14 +634,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(17.66, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(17.49, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(77),
-                        MaximumTemperature = new Temperature(17.66, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(17.66, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1023),
-                        GroundLevel = new Pressure(953),
-                        SeaLevel = new Pressure(1023)
+                        Temperature = new Temperature(17.66, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(17.49, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(77, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(17.66, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(17.66, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -653,7 +655,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 179d,
+                        Direction = new Angle(179, AngleUnit.Degree),
                         Speed = 1.25d
                         }
                     },
@@ -668,14 +670,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(15.49, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(15.31, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(85),
-                        MaximumTemperature = new Temperature(15.49, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(15.49, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1023),
-                        GroundLevel = new Pressure(952),
-                        SeaLevel = new Pressure(1023)
+                        Temperature = new Temperature(15.49, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(15.31, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(85, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(15.49, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(15.49, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -689,7 +691,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 168d,
+                        Direction = new Angle(168, AngleUnit.Degree),
                         Speed = 1.22d
                         }
                     },
@@ -704,14 +706,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(14.59, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(14.38, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(87),
-                        MaximumTemperature = new Temperature(14.59, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(14.59, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1023),
-                        GroundLevel = new Pressure(952),
-                        SeaLevel = new Pressure(1023)
+                        Temperature = new Temperature(14.59, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(14.38, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(87, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(14.59, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(14.59, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -725,7 +727,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 173d,
+                        Direction = new Angle(173, AngleUnit.Degree),
                         Speed = 1.53d
                         }
                     },
@@ -740,14 +742,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(19.06, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(18.9, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(72),
-                        MaximumTemperature = new Temperature(19.06, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(19.06, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1024),
-                        GroundLevel = new Pressure(953),
-                        SeaLevel = new Pressure(1024)
+                        Temperature = new Temperature(19.06, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(18.9, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(72, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(19.06, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(19.06, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1024, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1024, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -761,7 +763,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 91d,
+                        Direction = new Angle(91, AngleUnit.Degree),
                         Speed = 0.41d
                         }
                     },
@@ -776,14 +778,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(24.75, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(24.64, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(52),
-                        MaximumTemperature = new Temperature(24.75, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(24.75, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1023),
-                        GroundLevel = new Pressure(953),
-                        SeaLevel = new Pressure(1023)
+                        Temperature = new Temperature(24.75, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(24.64, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(52, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(24.75, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(24.75, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -797,7 +799,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 41d,
+                        Direction = new Angle(41, AngleUnit.Degree),
                         Speed = 1.29d
                         }
                     },
@@ -812,14 +814,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(28.03, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(27.5, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(37),
-                        MaximumTemperature = new Temperature(28.03, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(28.03, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1022),
-                        GroundLevel = new Pressure(954),
-                        SeaLevel = new Pressure(1022)
+                        Temperature = new Temperature(28.03, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(27.5, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(37, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(28.03, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(28.03, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(954, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1022, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -833,7 +835,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 8d,
+                        Direction = new Angle(8, AngleUnit.Degree),
                         Speed = 2.43d
                         }
                     },
@@ -848,14 +850,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(28.3, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(27.72, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(37),
-                        MaximumTemperature = new Temperature(28.3, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(28.3, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1021),
-                        GroundLevel = new Pressure(953),
-                        SeaLevel = new Pressure(1021)
+                        Temperature = new Temperature(28.3, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(27.72, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(37, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(28.3, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(28.3, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -869,7 +871,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 28d,
+                        Direction = new Angle(28, AngleUnit.Degree),
                         Speed = 1.81d
                         }
                     },
@@ -884,14 +886,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(23.73, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(23.91, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(67),
-                        MaximumTemperature = new Temperature(23.73, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(23.73, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1022),
-                        GroundLevel = new Pressure(952),
-                        SeaLevel = new Pressure(1022)
+                        Temperature = new Temperature(23.73, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(23.91, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(67, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(23.73, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(23.73, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1022, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -905,7 +907,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 96d,
+                        Direction = new Angle(96, AngleUnit.Degree),
                         Speed = 0.77d
                         }
                     },
@@ -920,14 +922,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(18.61, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(18.43, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(73),
-                        MaximumTemperature = new Temperature(18.61, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(18.61, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1023),
-                        GroundLevel = new Pressure(953),
-                        SeaLevel = new Pressure(1023)
+                        Temperature = new Temperature(18.61, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(18.43, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(73, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(18.61, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(18.61, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -941,7 +943,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 171d,
+                        Direction = new Angle(171, AngleUnit.Degree),
                         Speed = 1.6d
                         }
                     },
@@ -956,14 +958,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(17.25, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(17.01, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(76),
-                        MaximumTemperature = new Temperature(17.25, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(17.25, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1023),
-                        GroundLevel = new Pressure(952),
-                        SeaLevel = new Pressure(1023)
+                        Temperature = new Temperature(17.25, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(17.01, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(76, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(17.25, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(17.25, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -977,7 +979,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 162d,
+                        Direction = new Angle(162, AngleUnit.Degree),
                         Speed = 1.59d
                         }
                     },
@@ -992,14 +994,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(16.34, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(15.99, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(75),
-                        MaximumTemperature = new Temperature(16.34, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(16.34, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1022),
-                        GroundLevel = new Pressure(951),
-                        SeaLevel = new Pressure(1022)
+                        Temperature = new Temperature(16.34, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(15.99, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(75, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(16.34, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(16.34, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1022, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -1013,7 +1015,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 157d,
+                        Direction = new Angle(157, AngleUnit.Degree),
                         Speed = 1.74d
                         }
                     },
@@ -1028,14 +1030,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(20.74, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(20.57, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(65),
-                        MaximumTemperature = new Temperature(20.74, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(20.74, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1021),
-                        GroundLevel = new Pressure(951),
-                        SeaLevel = new Pressure(1021)
+                        Temperature = new Temperature(20.74, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(20.57, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(65, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(20.74, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(20.74, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -1049,7 +1051,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 108d,
+                        Direction = new Angle(108, AngleUnit.Degree),
                         Speed = 0.95d
                         }
                     },
@@ -1064,14 +1066,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(27.2, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(27.18, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(43),
-                        MaximumTemperature = new Temperature(27.2, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(27.2, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1020),
-                        GroundLevel = new Pressure(951),
-                        SeaLevel = new Pressure(1020)
+                        Temperature = new Temperature(27.2, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(27.18, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(43, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(27.2, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(27.2, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -1085,7 +1087,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 53d,
+                        Direction = new Angle(53, AngleUnit.Degree),
                         Speed = 2.06d
                         }
                     },
@@ -1100,14 +1102,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(30.82, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(29.84, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(33),
-                        MaximumTemperature = new Temperature(30.82, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(30.82, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1017),
-                        GroundLevel = new Pressure(949),
-                        SeaLevel = new Pressure(1017)
+                        Temperature = new Temperature(30.82, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(29.84, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(33, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(30.82, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(30.82, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1017, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1017, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -1121,7 +1123,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 56d,
+                        Direction = new Angle(56, AngleUnit.Degree),
                         Speed = 3.13d
                         }
                     },
@@ -1136,14 +1138,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(31.58, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(30.69, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(33),
-                        MaximumTemperature = new Temperature(31.58, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(31.58, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1015),
-                        GroundLevel = new Pressure(948),
-                        SeaLevel = new Pressure(1015)
+                        Temperature = new Temperature(31.58, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(30.69, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(33, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(31.58, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(31.58, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1015, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1015, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -1157,7 +1159,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 51d,
+                        Direction = new Angle(51, AngleUnit.Degree),
                         Speed = 3.19d
                         }
                     },
@@ -1172,14 +1174,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(25.86, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(26.17, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(64),
-                        MaximumTemperature = new Temperature(25.86, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(25.86, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1014),
-                        GroundLevel = new Pressure(946),
-                        SeaLevel = new Pressure(1014)
+                        Temperature = new Temperature(25.86, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(26.17, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(64, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(25.86, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(25.86, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1014, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(946, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1014, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -1193,7 +1195,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 59d,
+                        Direction = new Angle(59, AngleUnit.Degree),
                         Speed = 0.32d
                         }
                     },
@@ -1208,14 +1210,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(21.31, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(21.3, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(69),
-                        MaximumTemperature = new Temperature(21.31, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(21.31, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1015),
-                        GroundLevel = new Pressure(945),
-                        SeaLevel = new Pressure(1015)
+                        Temperature = new Temperature(21.31, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(21.3, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(69, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(21.31, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(21.31, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1015, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(945, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1015, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -1229,7 +1231,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 184d,
+                        Direction = new Angle(184, AngleUnit.Degree),
                         Speed = 2.14d
                         }
                     },
@@ -1244,14 +1246,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(19.56, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(19.43, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(71),
-                        MaximumTemperature = new Temperature(19.56, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(19.56, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1013),
-                        GroundLevel = new Pressure(944),
-                        SeaLevel = new Pressure(1013)
+                        Temperature = new Temperature(19.56, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(19.43, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(71, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(19.56, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(19.56, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1013, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(944, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1013, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -1265,7 +1267,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 178d,
+                        Direction = new Angle(178, AngleUnit.Degree),
                         Speed = 2.32d
                         }
                     },
@@ -1280,14 +1282,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(18.01, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(17.67, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(69),
-                        MaximumTemperature = new Temperature(18.01, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(18.01, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1013),
-                        GroundLevel = new Pressure(943),
-                        SeaLevel = new Pressure(1013)
+                        Temperature = new Temperature(18.01, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(17.67, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(69, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(18.01, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(18.01, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1013, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(943, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1013, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -1301,7 +1303,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 187d,
+                        Direction = new Angle(187, AngleUnit.Degree),
                         Speed = 2.32d
                         }
                     },
@@ -1316,14 +1318,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(21.82, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(21.75, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(65),
-                        MaximumTemperature = new Temperature(21.82, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(21.82, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1012),
-                        GroundLevel = new Pressure(943),
-                        SeaLevel = new Pressure(1012)
+                        Temperature = new Temperature(21.82, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(21.75, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(65, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(21.82, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(21.82, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1012, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(943, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1012, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -1337,7 +1339,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 183d,
+                        Direction = new Angle(183, AngleUnit.Degree),
                         Speed = 1.17d
                         }
                     },
@@ -1352,14 +1354,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(28.8, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(28.49, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(41),
-                        MaximumTemperature = new Temperature(28.8, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(28.8, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1011),
-                        GroundLevel = new Pressure(944),
-                        SeaLevel = new Pressure(1011)
+                        Temperature = new Temperature(28.8, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(28.49, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(41, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(28.8, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(28.8, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1011, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(944, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1011, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -1373,7 +1375,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 306d,
+                        Direction = new Angle(306, AngleUnit.Degree),
                         Speed = 1.19d
                         }
                     },
@@ -1388,14 +1390,14 @@ namespace WeatherDisplay.Tests.Testdata
                         Rain = null,
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(31.74, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(31.01, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(34),
-                        MaximumTemperature = new Temperature(31.74, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(31.74, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1010),
-                        GroundLevel = new Pressure(943),
-                        SeaLevel = new Pressure(1010)
+                        Temperature = new Temperature(31.74, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(31.01, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(34, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(31.74, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(31.74, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1010, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(943, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1010, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -1409,7 +1411,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 315d,
+                        Direction = new Angle(315, AngleUnit.Degree),
                         Speed = 2.03d
                         }
                     },
@@ -1428,14 +1430,14 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(23.93, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(24.36, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(76),
-                        MaximumTemperature = new Temperature(23.93, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(23.93, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1010),
-                        GroundLevel = new Pressure(942),
-                        SeaLevel = new Pressure(1010)
+                        Temperature = new Temperature(23.93, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(24.36, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(76, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(23.93, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(23.93, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1010, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(942, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1010, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -1449,7 +1451,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 203d,
+                        Direction = new Angle(203, AngleUnit.Degree),
                         Speed = 1.63d
                         }
                     },
@@ -1468,14 +1470,14 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Main = new TemperatureInfo
                         {
-                        Temperature = new Temperature(20.36, TemperatureUnit.Celsius),
-                        FeelsLike = new Temperature(20.8, TemperatureUnit.Celsius),
-                        Humidity = new Humidity(90),
-                        MaximumTemperature = new Temperature(20.36, TemperatureUnit.Celsius),
-                        MinimumTemperature = new Temperature(20.36, TemperatureUnit.Celsius),
-                        Pressure = new Pressure(1013),
-                        GroundLevel = new Pressure(944),
-                        SeaLevel = new Pressure(1013)
+                        Temperature = new Temperature(20.36, TemperatureUnit.DegreeCelsius),
+                        FeelsLike = new Temperature(20.8, TemperatureUnit.DegreeCelsius),
+                        Humidity = new RelativeHumidity(90, RelativeHumidityUnit.Percent),
+                        MaximumTemperature = new Temperature(20.36, TemperatureUnit.DegreeCelsius),
+                        MinimumTemperature = new Temperature(20.36, TemperatureUnit.DegreeCelsius),
+                        Pressure = new Pressure(1013, PressureUnit.Hectopascal),
+                        GroundLevel = new Pressure(944, PressureUnit.Hectopascal),
+                        SeaLevel = new Pressure(1013, PressureUnit.Hectopascal)
                         },
                         WeatherConditions = new List<WeatherCondition>
                         {
@@ -1489,7 +1491,7 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Wind = new WindInfo
                         {
-                        Direction = 149d,
+                        Direction = new Angle(149, AngleUnit.Degree),
                         Speed = 3.47d
                         }
                     }
@@ -1535,14 +1537,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(16.16, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(15.76, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(74),
-                            MaximumTemperature = new Temperature(16.16, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(14.22, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1018),
-                            GroundLevel = new Pressure(947),
-                            SeaLevel = new Pressure(1018)
+                            Temperature = new Temperature(16.16, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(15.76, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(74, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(16.16, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(14.22, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1018, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -1556,7 +1558,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 167d,
+                            Direction = new Angle(167, AngleUnit.Degree),
                             Speed = 1.38d
                           }
                         },
@@ -1571,14 +1573,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(15.58, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(15.18, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(76),
-                            MaximumTemperature = new Temperature(15.58, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(14, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1018),
-                            GroundLevel = new Pressure(947),
-                            SeaLevel = new Pressure(1018)
+                            Temperature = new Temperature(15.58, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(15.18, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(76, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(15.58, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(14, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1018, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -1592,7 +1594,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 176d,
+                            Direction = new Angle(176, AngleUnit.Degree),
                             Speed = 1.45d
                           }
                         },
@@ -1607,14 +1609,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(14.95, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(14.51, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(77),
-                            MaximumTemperature = new Temperature(14.95, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(13.82, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1018),
-                            GroundLevel = new Pressure(947),
-                            SeaLevel = new Pressure(1018)
+                            Temperature = new Temperature(14.95, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(14.51, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(77, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(14.95, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(13.82, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1018, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -1628,7 +1630,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 198d,
+                            Direction = new Angle(198, AngleUnit.Degree),
                             Speed = 1.52d
                           }
                         },
@@ -1643,14 +1645,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(14.3, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(13.85, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(79),
-                            MaximumTemperature = new Temperature(14.3, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(13.71, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1019),
-                            GroundLevel = new Pressure(947),
-                            SeaLevel = new Pressure(1019)
+                            Temperature = new Temperature(14.3, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(13.85, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(79, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(14.3, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(13.71, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1019, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1019, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -1664,7 +1666,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 196d,
+                            Direction = new Angle(196, AngleUnit.Degree),
                             Speed = 1.75d
                           }
                         },
@@ -1679,14 +1681,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(13.7, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(13.19, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(79),
-                            MaximumTemperature = new Temperature(13.7, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(13.7, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1019),
-                            GroundLevel = new Pressure(947),
-                            SeaLevel = new Pressure(1019)
+                            Temperature = new Temperature(13.7, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(13.19, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(79, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(13.7, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(13.7, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1019, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1019, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -1700,7 +1702,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 189d,
+                            Direction = new Angle(189, AngleUnit.Degree),
                             Speed = 1.9d
                           }
                         },
@@ -1715,14 +1717,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(13.77, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(13.21, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(77),
-                            MaximumTemperature = new Temperature(13.77, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(13.77, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1019),
-                            GroundLevel = new Pressure(947),
-                            SeaLevel = new Pressure(1019)
+                            Temperature = new Temperature(13.77, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(13.21, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(77, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(13.77, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(13.77, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1019, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1019, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -1736,7 +1738,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 179d,
+                            Direction = new Angle(179, AngleUnit.Degree),
                             Speed = 1.72d
                           }
                         },
@@ -1751,14 +1753,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(13.96, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(13.42, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(77),
-                            MaximumTemperature = new Temperature(13.96, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(13.96, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1018),
-                            GroundLevel = new Pressure(947),
-                            SeaLevel = new Pressure(1018)
+                            Temperature = new Temperature(13.96, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(13.42, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(77, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(13.96, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(13.96, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1018, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -1772,7 +1774,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 190d,
+                            Direction = new Angle(190, AngleUnit.Degree),
                             Speed = 1.51d
                           }
                         },
@@ -1787,14 +1789,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(15.86, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(15.51, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(77),
-                            MaximumTemperature = new Temperature(15.86, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(15.86, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1018),
-                            GroundLevel = new Pressure(947),
-                            SeaLevel = new Pressure(1018)
+                            Temperature = new Temperature(15.86, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(15.51, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(77, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(15.86, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(15.86, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1018, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -1808,7 +1810,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 199d,
+                            Direction = new Angle(199, AngleUnit.Degree),
                             Speed = 1.27d
                           }
                         },
@@ -1823,14 +1825,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(19.04, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(18.75, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(67),
-                            MaximumTemperature = new Temperature(19.04, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(19.04, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1018),
-                            GroundLevel = new Pressure(948),
-                            SeaLevel = new Pressure(1018)
+                            Temperature = new Temperature(19.04, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(18.75, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(67, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(19.04, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(19.04, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1018, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -1844,7 +1846,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 216d,
+                            Direction = new Angle(216, AngleUnit.Degree),
                             Speed = 0.73d
                           }
                         },
@@ -1859,14 +1861,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(21.42, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(21.18, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(60),
-                            MaximumTemperature = new Temperature(21.42, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(21.42, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1018),
-                            GroundLevel = new Pressure(948),
-                            SeaLevel = new Pressure(1018)
+                            Temperature = new Temperature(21.42, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(21.18, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(60, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(21.42, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(21.42, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1018, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -1880,7 +1882,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 286d,
+                            Direction = new Angle(286, AngleUnit.Degree),
                             Speed = 0.88d
                           }
                         },
@@ -1899,14 +1901,14 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(23.33, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(23.13, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(54),
-                            MaximumTemperature = new Temperature(23.33, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(23.33, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1018),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1018)
+                            Temperature = new Temperature(23.33, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(23.13, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(54, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(23.33, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(23.33, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1018, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -1920,7 +1922,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 289d,
+                            Direction = new Angle(289, AngleUnit.Degree),
                             Speed = 0.98d
                           }
                         },
@@ -1935,14 +1937,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(25.57, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(25.36, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(45),
-                            MaximumTemperature = new Temperature(25.57, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(25.57, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1018),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1018)
+                            Temperature = new Temperature(25.57, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(25.36, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(45, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(25.57, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(25.57, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1018, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -1956,7 +1958,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 299d,
+                            Direction = new Angle(299, AngleUnit.Degree),
                             Speed = 1.07d
                           }
                         },
@@ -1971,14 +1973,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(27.13, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(26.96, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(40),
-                            MaximumTemperature = new Temperature(27.13, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(27.13, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1017),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1017)
+                            Temperature = new Temperature(27.13, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(26.96, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(40, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(27.13, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(27.13, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1017, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1017, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -1992,7 +1994,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 292d,
+                            Direction = new Angle(292, AngleUnit.Degree),
                             Speed = 1.6d
                           }
                         },
@@ -2007,14 +2009,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(28.26, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(27.69, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(37),
-                            MaximumTemperature = new Temperature(28.26, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(28.26, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1017),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1017)
+                            Temperature = new Temperature(28.26, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(27.69, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(37, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(28.26, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(28.26, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1017, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1017, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2028,7 +2030,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 284d,
+                            Direction = new Angle(284, AngleUnit.Degree),
                             Speed = 2.36d
                           }
                         },
@@ -2043,14 +2045,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(29, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(28.27, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(36),
-                            MaximumTemperature = new Temperature(29, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(29, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1016),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1016)
+                            Temperature = new Temperature(29, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(28.27, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(36, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(29, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(29, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1016, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2064,7 +2066,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 280d,
+                            Direction = new Angle(280, AngleUnit.Degree),
                             Speed = 3.2d
                           }
                         },
@@ -2079,14 +2081,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(29.44, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(28.61, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(35),
-                            MaximumTemperature = new Temperature(29.44, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(29.44, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1016),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1016)
+                            Temperature = new Temperature(29.44, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(28.61, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(35, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(29.44, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(29.44, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1016, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2100,7 +2102,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 272d,
+                            Direction = new Angle(272, AngleUnit.Degree),
                             Speed = 3.76d
                           }
                         },
@@ -2115,14 +2117,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(29.64, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(28.72, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(34),
-                            MaximumTemperature = new Temperature(29.64, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(29.64, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1016),
-                            GroundLevel = new Pressure(948),
-                            SeaLevel = new Pressure(1016)
+                            Temperature = new Temperature(29.64, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(28.72, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(34, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(29.64, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(29.64, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1016, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2136,7 +2138,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 268d,
+                            Direction = new Angle(268, AngleUnit.Degree),
                             Speed = 3.74d
                           }
                         },
@@ -2151,14 +2153,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(29.38, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(28.64, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(36),
-                            MaximumTemperature = new Temperature(29.38, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(29.38, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1016),
-                            GroundLevel = new Pressure(948),
-                            SeaLevel = new Pressure(1016)
+                            Temperature = new Temperature(29.38, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(28.64, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(36, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(29.38, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(29.38, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1016, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2172,7 +2174,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 285d,
+                            Direction = new Angle(285, AngleUnit.Degree),
                             Speed = 3.24d
                           }
                         },
@@ -2187,14 +2189,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(28.28, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(28.23, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(44),
-                            MaximumTemperature = new Temperature(28.28, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(28.28, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1016),
-                            GroundLevel = new Pressure(948),
-                            SeaLevel = new Pressure(1016)
+                            Temperature = new Temperature(28.28, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(28.23, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(44, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(28.28, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(28.28, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1016, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2208,7 +2210,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 315d,
+                            Direction = new Angle(315, AngleUnit.Degree),
                             Speed = 2.98d
                           }
                         },
@@ -2223,14 +2225,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(26.64, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(26.64, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(57),
-                            MaximumTemperature = new Temperature(26.64, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(26.64, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1016),
-                            GroundLevel = new Pressure(948),
-                            SeaLevel = new Pressure(1016)
+                            Temperature = new Temperature(26.64, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(26.64, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(57, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(26.64, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(26.64, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1016, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2244,7 +2246,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 342d,
+                            Direction = new Angle(342, AngleUnit.Degree),
                             Speed = 2.3d
                           }
                         },
@@ -2263,14 +2265,14 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(23.48, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(23.82, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(74),
-                            MaximumTemperature = new Temperature(23.48, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(23.48, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1016),
-                            GroundLevel = new Pressure(947),
-                            SeaLevel = new Pressure(1016)
+                            Temperature = new Temperature(23.48, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(23.82, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(74, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(23.48, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(23.48, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1016, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2284,7 +2286,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 17d,
+                            Direction = new Angle(17, AngleUnit.Degree),
                             Speed = 1.24d
                           }
                         },
@@ -2303,14 +2305,14 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(20.36, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(20.62, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(83),
-                            MaximumTemperature = new Temperature(20.36, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(20.36, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1017),
-                            GroundLevel = new Pressure(948),
-                            SeaLevel = new Pressure(1017)
+                            Temperature = new Temperature(20.36, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(20.62, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(83, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(20.36, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(20.36, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1017, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1017, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2324,7 +2326,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 176d,
+                            Direction = new Angle(176, AngleUnit.Degree),
                             Speed = 1.42d
                           }
                         },
@@ -2343,14 +2345,14 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(18.12, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(18.29, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(88),
-                            MaximumTemperature = new Temperature(18.12, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(18.12, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1019),
-                            GroundLevel = new Pressure(948),
-                            SeaLevel = new Pressure(1019)
+                            Temperature = new Temperature(18.12, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(18.29, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(88, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(18.12, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(18.12, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1019, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1019, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2364,7 +2366,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 194d,
+                            Direction = new Angle(194, AngleUnit.Degree),
                             Speed = 2.88d
                           }
                         },
@@ -2383,14 +2385,14 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(16.64, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(16.76, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(92),
-                            MaximumTemperature = new Temperature(16.64, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(16.64, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1019),
-                            GroundLevel = new Pressure(948),
-                            SeaLevel = new Pressure(1019)
+                            Temperature = new Temperature(16.64, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(16.76, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(92, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(16.64, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(16.64, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1019, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1019, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2404,7 +2406,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 201d,
+                            Direction = new Angle(201, AngleUnit.Degree),
                             Speed = 2.94d
                           }
                         },
@@ -2423,14 +2425,14 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(14.59, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(14.59, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(95),
-                            MaximumTemperature = new Temperature(14.59, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(14.59, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1021),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1021)
+                            Temperature = new Temperature(14.59, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(14.59, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(95, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(14.59, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(14.59, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2444,7 +2446,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 161d,
+                            Direction = new Angle(161, AngleUnit.Degree),
                             Speed = 2.94d
                           }
                         },
@@ -2463,14 +2465,14 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(14, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(13.88, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(93),
-                            MaximumTemperature = new Temperature(14, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(14, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1021),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1021)
+                            Temperature = new Temperature(14, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(13.88, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(93, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(14, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(14, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2484,7 +2486,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 179d,
+                            Direction = new Angle(179, AngleUnit.Degree),
                             Speed = 2.7d
                           }
                         },
@@ -2503,14 +2505,14 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(13.87, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(13.69, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(91),
-                            MaximumTemperature = new Temperature(13.87, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(13.87, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(13.87, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(13.69, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(91, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(13.87, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(13.87, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2524,7 +2526,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 197d,
+                            Direction = new Angle(197, AngleUnit.Degree),
                             Speed = 2.63d
                           }
                         },
@@ -2539,14 +2541,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(13.99, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(13.79, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(90),
-                            MaximumTemperature = new Temperature(13.99, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(13.99, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(13.99, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(13.79, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(90, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(13.99, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(13.99, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2560,7 +2562,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 202d,
+                            Direction = new Angle(202, AngleUnit.Degree),
                             Speed = 2.52d
                           }
                         },
@@ -2575,14 +2577,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(14.15, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(14, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(91),
-                            MaximumTemperature = new Temperature(14.15, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(14.15, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(14.15, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(14, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(91, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(14.15, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(14.15, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2596,7 +2598,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 201d,
+                            Direction = new Angle(201, AngleUnit.Degree),
                             Speed = 2.44d
                           }
                         },
@@ -2611,14 +2613,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(14.29, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(14.15, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(91),
-                            MaximumTemperature = new Temperature(14.29, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(14.29, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(14.29, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(14.15, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(91, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(14.29, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(14.29, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2632,7 +2634,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 203d,
+                            Direction = new Angle(203, AngleUnit.Degree),
                             Speed = 1.99d
                           }
                         },
@@ -2647,14 +2649,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(14.45, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(14.3, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(90),
-                            MaximumTemperature = new Temperature(14.45, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(14.45, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(14.45, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(14.3, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(90, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(14.45, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(14.45, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2668,7 +2670,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 203d,
+                            Direction = new Angle(203, AngleUnit.Degree),
                             Speed = 1.8d
                           }
                         },
@@ -2683,14 +2685,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(16.1, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(16.09, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(89),
-                            MaximumTemperature = new Temperature(16.1, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(16.1, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(16.1, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(16.09, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(89, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(16.1, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(16.1, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2704,7 +2706,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 213d,
+                            Direction = new Angle(213, AngleUnit.Degree),
                             Speed = 1.74d
                           }
                         },
@@ -2723,14 +2725,14 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(18.79, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(18.89, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(83),
-                            MaximumTemperature = new Temperature(18.79, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(18.79, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(950),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(18.79, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(18.89, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(83, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(18.79, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(18.79, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(950, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2744,7 +2746,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 218d,
+                            Direction = new Angle(218, AngleUnit.Degree),
                             Speed = 1.2d
                           }
                         },
@@ -2759,14 +2761,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(20.93, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(20.98, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(73),
-                            MaximumTemperature = new Temperature(20.93, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(20.93, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(950),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(20.93, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(20.98, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(73, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(20.93, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(20.93, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(950, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2780,7 +2782,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 274d,
+                            Direction = new Angle(274, AngleUnit.Degree),
                             Speed = 1.26d
                           }
                         },
@@ -2799,14 +2801,14 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(21.6, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(21.8, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(76),
-                            MaximumTemperature = new Temperature(21.6, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(21.6, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(951),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(21.6, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(21.8, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(76, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(21.6, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(21.6, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2820,7 +2822,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 286d,
+                            Direction = new Angle(286, AngleUnit.Degree),
                             Speed = 1.71d
                           }
                         },
@@ -2839,14 +2841,14 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(23.13, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(23.3, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(69),
-                            MaximumTemperature = new Temperature(23.13, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(23.13, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1021),
-                            GroundLevel = new Pressure(951),
-                            SeaLevel = new Pressure(1021)
+                            Temperature = new Temperature(23.13, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(23.3, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(69, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(23.13, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(23.13, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2860,7 +2862,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 286d,
+                            Direction = new Angle(286, AngleUnit.Degree),
                             Speed = 1.76d
                           }
                         },
@@ -2879,14 +2881,14 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(25.26, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(25.2, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(52),
-                            MaximumTemperature = new Temperature(25.26, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(25.26, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(25.26, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(25.2, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(52, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(25.26, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(25.26, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2900,7 +2902,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 286d,
+                            Direction = new Angle(286, AngleUnit.Degree),
                             Speed = 2.12d
                           }
                         },
@@ -2915,14 +2917,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(26.27, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(26.27, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(46),
-                            MaximumTemperature = new Temperature(26.27, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(26.27, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(26.27, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(26.27, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(46, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(26.27, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(26.27, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2936,7 +2938,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 294d,
+                            Direction = new Angle(294, AngleUnit.Degree),
                             Speed = 2.4d
                           }
                         },
@@ -2951,14 +2953,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(26.88, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(26.92, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(43),
-                            MaximumTemperature = new Temperature(26.88, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(26.88, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(26.88, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(26.92, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(43, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(26.88, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(26.88, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -2972,7 +2974,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 302d,
+                            Direction = new Angle(302, AngleUnit.Degree),
                             Speed = 2.81d
                           }
                         },
@@ -2987,14 +2989,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(27.28, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(27.07, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(40),
-                            MaximumTemperature = new Temperature(27.28, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(27.28, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(27.28, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(27.07, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(40, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(27.28, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(27.28, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3008,7 +3010,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 313d,
+                            Direction = new Angle(313, AngleUnit.Degree),
                             Speed = 3.25d
                           }
                         },
@@ -3023,14 +3025,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(26.53, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(26.53, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(44),
-                            MaximumTemperature = new Temperature(26.53, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(26.53, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1021),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1021)
+                            Temperature = new Temperature(26.53, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(26.53, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(44, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(26.53, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(26.53, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3044,7 +3046,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 328d,
+                            Direction = new Angle(328, AngleUnit.Degree),
                             Speed = 3.58d
                           }
                         },
@@ -3059,14 +3061,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(24.58, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(24.53, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(55),
-                            MaximumTemperature = new Temperature(24.58, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(24.58, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1021),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1021)
+                            Temperature = new Temperature(24.58, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(24.53, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(55, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(24.58, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(24.58, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3080,7 +3082,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 338d,
+                            Direction = new Angle(338, AngleUnit.Degree),
                             Speed = 1.98d
                           }
                         },
@@ -3095,14 +3097,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(25.67, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(25.49, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(46),
-                            MaximumTemperature = new Temperature(25.67, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(25.67, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1021),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1021)
+                            Temperature = new Temperature(25.67, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(25.49, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(46, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(25.67, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(25.67, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3116,7 +3118,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 340d,
+                            Direction = new Angle(340, AngleUnit.Degree),
                             Speed = 2.2d
                           }
                         },
@@ -3131,14 +3133,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(24.81, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(24.76, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(54),
-                            MaximumTemperature = new Temperature(24.81, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(24.81, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1021),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1021)
+                            Temperature = new Temperature(24.81, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(24.76, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(54, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(24.81, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(24.81, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3152,7 +3154,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 338d,
+                            Direction = new Angle(338, AngleUnit.Degree),
                             Speed = 1.84d
                           }
                         },
@@ -3167,14 +3169,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(22.4, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(22.5, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(69),
-                            MaximumTemperature = new Temperature(22.4, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(22.4, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1021),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1021)
+                            Temperature = new Temperature(22.4, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(22.5, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(69, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(22.4, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(22.4, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3188,7 +3190,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 335d,
+                            Direction = new Angle(335, AngleUnit.Degree),
                             Speed = 1.29d
                           }
                         },
@@ -3203,14 +3205,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(20.11, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(20.06, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(72),
-                            MaximumTemperature = new Temperature(20.11, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(20.11, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1022),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1022)
+                            Temperature = new Temperature(20.11, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(20.06, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(72, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(20.11, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(20.11, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1022, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3224,7 +3226,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 327d,
+                            Direction = new Angle(327, AngleUnit.Degree),
                             Speed = 0.39d
                           }
                         },
@@ -3239,14 +3241,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(18.38, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(18.23, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(75),
-                            MaximumTemperature = new Temperature(18.38, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(18.38, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(18.38, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(18.23, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(75, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(18.38, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(18.38, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3260,7 +3262,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 187d,
+                            Direction = new Angle(187, AngleUnit.Degree),
                             Speed = 0.22d
                           }
                         },
@@ -3275,14 +3277,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(17.66, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(17.49, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(77),
-                            MaximumTemperature = new Temperature(17.66, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(17.66, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(17.66, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(17.49, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(77, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(17.66, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(17.66, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3296,7 +3298,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 179d,
+                            Direction = new Angle(179, AngleUnit.Degree),
                             Speed = 1.25d
                           }
                         },
@@ -3311,14 +3313,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(17.29, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(17.11, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(78),
-                            MaximumTemperature = new Temperature(17.29, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(17.29, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1024),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1024)
+                            Temperature = new Temperature(17.29, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(17.11, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(78, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(17.29, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(17.29, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1024, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1024, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3332,7 +3334,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 192d,
+                            Direction = new Angle(192, AngleUnit.Degree),
                             Speed = 0.67d
                           }
                         },
@@ -3347,14 +3349,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(16.19, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(16.01, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(82),
-                            MaximumTemperature = new Temperature(16.19, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(16.19, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(16.19, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(16.01, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(82, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(16.19, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(16.19, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3368,7 +3370,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 179d,
+                            Direction = new Angle(179, AngleUnit.Degree),
                             Speed = 0.9d
                           }
                         },
@@ -3383,14 +3385,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(15.49, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(15.31, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(85),
-                            MaximumTemperature = new Temperature(15.49, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(15.49, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(15.49, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(15.31, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(85, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(15.49, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(15.49, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3404,7 +3406,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 168d,
+                            Direction = new Angle(168, AngleUnit.Degree),
                             Speed = 1.22d
                           }
                         },
@@ -3419,14 +3421,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(14.93, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(14.75, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(87),
-                            MaximumTemperature = new Temperature(14.93, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(14.93, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(14.93, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(14.75, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(87, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(14.93, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(14.93, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3440,7 +3442,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 171d,
+                            Direction = new Angle(171, AngleUnit.Degree),
                             Speed = 1.05d
                           }
                         },
@@ -3455,14 +3457,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(14.53, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(14.34, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(88),
-                            MaximumTemperature = new Temperature(14.53, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(14.53, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(14.53, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(14.34, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(88, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(14.53, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(14.53, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3476,7 +3478,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 180d,
+                            Direction = new Angle(180, AngleUnit.Degree),
                             Speed = 1.04d
                           }
                         },
@@ -3491,14 +3493,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(14.59, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(14.38, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(87),
-                            MaximumTemperature = new Temperature(14.59, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(14.59, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(14.59, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(14.38, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(87, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(14.59, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(14.59, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3512,7 +3514,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 173d,
+                            Direction = new Angle(173, AngleUnit.Degree),
                             Speed = 1.53d
                           }
                         },
@@ -3527,14 +3529,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(14.85, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(14.61, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(85),
-                            MaximumTemperature = new Temperature(14.85, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(14.85, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1024),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1024)
+                            Temperature = new Temperature(14.85, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(14.61, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(85, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(14.85, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(14.85, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1024, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1024, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3548,7 +3550,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 179d,
+                            Direction = new Angle(179, AngleUnit.Degree),
                             Speed = 1.22d
                           }
                         },
@@ -3563,14 +3565,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(16.47, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(16.31, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(82),
-                            MaximumTemperature = new Temperature(16.47, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(16.47, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1024),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1024)
+                            Temperature = new Temperature(16.47, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(16.31, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(82, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(16.47, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(16.47, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1024, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1024, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3584,7 +3586,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 163d,
+                            Direction = new Angle(163, AngleUnit.Degree),
                             Speed = 0.95d
                           }
                         },
@@ -3599,14 +3601,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(19.06, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(18.9, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(72),
-                            MaximumTemperature = new Temperature(19.06, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(19.06, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1024),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1024)
+                            Temperature = new Temperature(19.06, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(18.9, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(72, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(19.06, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(19.06, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1024, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1024, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3620,7 +3622,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 91d,
+                            Direction = new Angle(91, AngleUnit.Degree),
                             Speed = 0.41d
                           }
                         },
@@ -3635,14 +3637,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(21.38, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(21.24, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(64),
-                            MaximumTemperature = new Temperature(21.38, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(21.38, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(21.38, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(21.24, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(64, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(21.38, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(21.38, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3656,7 +3658,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 72d,
+                            Direction = new Angle(72, AngleUnit.Degree),
                             Speed = 0.79d
                           }
                         },
@@ -3671,14 +3673,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(23.26, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(23.13, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(57),
-                            MaximumTemperature = new Temperature(23.26, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(23.26, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(23.26, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(23.13, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(57, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(23.26, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(23.26, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3692,7 +3694,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 39d,
+                            Direction = new Angle(39, AngleUnit.Degree),
                             Speed = 1.45d
                           }
                         },
@@ -3707,14 +3709,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(24.75, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(24.64, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(52),
-                            MaximumTemperature = new Temperature(24.75, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(24.75, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(24.75, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(24.64, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(52, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(24.75, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(24.75, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3728,7 +3730,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 41d,
+                            Direction = new Angle(41, AngleUnit.Degree),
                             Speed = 1.29d
                           }
                         },
@@ -3743,14 +3745,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(26.5, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(26.5, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(45),
-                            MaximumTemperature = new Temperature(26.5, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(26.5, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1022),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1022)
+                            Temperature = new Temperature(26.5, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(26.5, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(45, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(26.5, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(26.5, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1022, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3764,7 +3766,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 27d,
+                            Direction = new Angle(27, AngleUnit.Degree),
                             Speed = 1.53d
                           }
                         },
@@ -3779,14 +3781,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(27.47, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(27.17, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(39),
-                            MaximumTemperature = new Temperature(27.47, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(27.47, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1022),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1022)
+                            Temperature = new Temperature(27.47, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(27.17, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(39, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(27.47, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(27.47, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1022, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3800,7 +3802,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 11d,
+                            Direction = new Angle(11, AngleUnit.Degree),
                             Speed = 2.24d
                           }
                         },
@@ -3815,14 +3817,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(28.03, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(27.5, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(37),
-                            MaximumTemperature = new Temperature(28.03, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(28.03, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1022),
-                            GroundLevel = new Pressure(954),
-                            SeaLevel = new Pressure(1022)
+                            Temperature = new Temperature(28.03, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(27.5, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(37, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(28.03, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(28.03, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(954, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1022, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3836,7 +3838,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 8d,
+                            Direction = new Angle(8, AngleUnit.Degree),
                             Speed = 2.43d
                           }
                         },
@@ -3851,14 +3853,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(28.48, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(27.81, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(36),
-                            MaximumTemperature = new Temperature(28.48, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(28.48, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1022),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1022)
+                            Temperature = new Temperature(28.48, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(27.81, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(36, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(28.48, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(28.48, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1022, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3872,7 +3874,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 20d,
+                            Direction = new Angle(20, AngleUnit.Degree),
                             Speed = 1.94d
                           }
                         },
@@ -3887,14 +3889,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(28.58, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(27.9, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(36),
-                            MaximumTemperature = new Temperature(28.58, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(28.58, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1021),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1021)
+                            Temperature = new Temperature(28.58, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(27.9, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(36, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(28.58, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(28.58, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3908,7 +3910,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 24d,
+                            Direction = new Angle(24, AngleUnit.Degree),
                             Speed = 1.83d
                           }
                         },
@@ -3923,14 +3925,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(28.3, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(27.72, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(37),
-                            MaximumTemperature = new Temperature(28.3, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(28.3, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1021),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1021)
+                            Temperature = new Temperature(28.3, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(27.72, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(37, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(28.3, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(28.3, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3944,7 +3946,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 28d,
+                            Direction = new Angle(28, AngleUnit.Degree),
                             Speed = 1.81d
                           }
                         },
@@ -3959,14 +3961,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(27.49, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(27.36, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(42),
-                            MaximumTemperature = new Temperature(27.49, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(27.49, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1021),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1021)
+                            Temperature = new Temperature(27.49, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(27.36, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(42, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(27.49, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(27.49, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -3980,7 +3982,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 29d,
+                            Direction = new Angle(29, AngleUnit.Degree),
                             Speed = 1.79d
                           }
                         },
@@ -3995,14 +3997,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(26.42, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(26.42, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(55),
-                            MaximumTemperature = new Temperature(26.42, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(26.42, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1021),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1021)
+                            Temperature = new Temperature(26.42, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(26.42, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(55, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(26.42, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(26.42, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4016,7 +4018,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 41d,
+                            Direction = new Angle(41, AngleUnit.Degree),
                             Speed = 1.42d
                           }
                         },
@@ -4031,14 +4033,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(23.73, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(23.91, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(67),
-                            MaximumTemperature = new Temperature(23.73, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(23.73, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1022),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1022)
+                            Temperature = new Temperature(23.73, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(23.91, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(67, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(23.73, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(23.73, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1022, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4052,7 +4054,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 96d,
+                            Direction = new Angle(96, AngleUnit.Degree),
                             Speed = 0.77d
                           }
                         },
@@ -4067,14 +4069,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(20.64, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(20.64, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(72),
-                            MaximumTemperature = new Temperature(20.64, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(20.64, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1022),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1022)
+                            Temperature = new Temperature(20.64, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(20.64, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(72, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(20.64, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(20.64, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1022, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4088,7 +4090,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 154d,
+                            Direction = new Angle(154, AngleUnit.Degree),
                             Speed = 0.93d
                           }
                         },
@@ -4103,14 +4105,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(19.27, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(19.13, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(72),
-                            MaximumTemperature = new Temperature(19.27, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(19.27, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(19.27, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(19.13, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(72, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(19.27, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(19.27, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4124,7 +4126,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 164d,
+                            Direction = new Angle(164, AngleUnit.Degree),
                             Speed = 1.37d
                           }
                         },
@@ -4139,14 +4141,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(18.61, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(18.43, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(73),
-                            MaximumTemperature = new Temperature(18.61, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(18.61, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(18.61, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(18.43, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(73, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(18.61, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(18.61, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4160,7 +4162,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 171d,
+                            Direction = new Angle(171, AngleUnit.Degree),
                             Speed = 1.6d
                           }
                         },
@@ -4175,14 +4177,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(18.04, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(17.83, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(74),
-                            MaximumTemperature = new Temperature(18.04, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(18.04, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(953),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(18.04, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(17.83, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(74, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(18.04, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(18.04, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(953, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4196,7 +4198,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 173d,
+                            Direction = new Angle(173, AngleUnit.Degree),
                             Speed = 1.63d
                           }
                         },
@@ -4211,14 +4213,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(17.56, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(17.36, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(76),
-                            MaximumTemperature = new Temperature(17.56, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(17.56, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(17.56, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(17.36, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(76, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(17.56, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(17.56, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4232,7 +4234,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 164d,
+                            Direction = new Angle(164, AngleUnit.Degree),
                             Speed = 1.62d
                           }
                         },
@@ -4247,14 +4249,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(17.25, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(17.01, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(76),
-                            MaximumTemperature = new Temperature(17.25, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(17.25, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(17.25, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(17.01, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(76, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(17.25, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(17.25, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4268,7 +4270,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 162d,
+                            Direction = new Angle(162, AngleUnit.Degree),
                             Speed = 1.59d
                           }
                         },
@@ -4283,14 +4285,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(16.84, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(16.56, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(76),
-                            MaximumTemperature = new Temperature(16.84, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(16.84, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(952),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(16.84, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(16.56, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(76, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(16.84, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(16.84, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(952, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4304,7 +4306,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 160d,
+                            Direction = new Angle(160, AngleUnit.Degree),
                             Speed = 1.52d
                           }
                         },
@@ -4319,14 +4321,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(16.5, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(16.19, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(76),
-                            MaximumTemperature = new Temperature(16.5, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(16.5, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1023),
-                            GroundLevel = new Pressure(951),
-                            SeaLevel = new Pressure(1023)
+                            Temperature = new Temperature(16.5, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(16.19, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(76, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(16.5, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(16.5, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1023, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1023, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4340,7 +4342,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 161d,
+                            Direction = new Angle(161, AngleUnit.Degree),
                             Speed = 1.53d
                           }
                         },
@@ -4355,14 +4357,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(16.34, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(15.99, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(75),
-                            MaximumTemperature = new Temperature(16.34, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(16.34, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1022),
-                            GroundLevel = new Pressure(951),
-                            SeaLevel = new Pressure(1022)
+                            Temperature = new Temperature(16.34, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(15.99, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(75, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(16.34, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(16.34, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1022, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4376,7 +4378,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 157d,
+                            Direction = new Angle(157, AngleUnit.Degree),
                             Speed = 1.74d
                           }
                         },
@@ -4391,14 +4393,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(16.07, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(15.69, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(75),
-                            MaximumTemperature = new Temperature(16.07, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(16.07, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1022),
-                            GroundLevel = new Pressure(951),
-                            SeaLevel = new Pressure(1022)
+                            Temperature = new Temperature(16.07, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(15.69, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(75, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(16.07, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(16.07, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1022, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4412,7 +4414,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 151d,
+                            Direction = new Angle(151, AngleUnit.Degree),
                             Speed = 1.24d
                           }
                         },
@@ -4427,14 +4429,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(17.69, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(17.45, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(74),
-                            MaximumTemperature = new Temperature(17.69, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(17.69, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1022),
-                            GroundLevel = new Pressure(951),
-                            SeaLevel = new Pressure(1022)
+                            Temperature = new Temperature(17.69, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(17.45, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(74, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(17.69, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(17.69, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1022, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4448,7 +4450,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 143d,
+                            Direction = new Angle(143, AngleUnit.Degree),
                             Speed = 1.61d
                           }
                         },
@@ -4463,14 +4465,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(20.74, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(20.57, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(65),
-                            MaximumTemperature = new Temperature(20.74, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(20.74, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1021),
-                            GroundLevel = new Pressure(951),
-                            SeaLevel = new Pressure(1021)
+                            Temperature = new Temperature(20.74, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(20.57, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(65, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(20.74, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(20.74, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4484,7 +4486,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 108d,
+                            Direction = new Angle(108, AngleUnit.Degree),
                             Speed = 0.95d
                           }
                         },
@@ -4499,14 +4501,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(23.33, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(23.15, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(55),
-                            MaximumTemperature = new Temperature(23.33, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(23.33, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1021),
-                            GroundLevel = new Pressure(951),
-                            SeaLevel = new Pressure(1021)
+                            Temperature = new Temperature(23.33, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(23.15, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(55, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(23.33, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(23.33, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1021, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4520,7 +4522,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 74d,
+                            Direction = new Angle(74, AngleUnit.Degree),
                             Speed = 1.09d
                           }
                         },
@@ -4535,14 +4537,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(25.48, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(25.34, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(48),
-                            MaximumTemperature = new Temperature(25.48, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(25.48, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(951),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(25.48, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(25.34, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(48, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(25.48, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(25.48, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4556,7 +4558,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 51d,
+                            Direction = new Angle(51, AngleUnit.Degree),
                             Speed = 1.48d
                           }
                         },
@@ -4571,14 +4573,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(27.2, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(27.18, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(43),
-                            MaximumTemperature = new Temperature(27.2, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(27.2, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1020),
-                            GroundLevel = new Pressure(951),
-                            SeaLevel = new Pressure(1020)
+                            Temperature = new Temperature(27.2, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(27.18, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(43, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(27.2, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(27.2, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1020, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4592,7 +4594,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 53d,
+                            Direction = new Angle(53, AngleUnit.Degree),
                             Speed = 2.06d
                           }
                         },
@@ -4607,14 +4609,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(28.67, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(28.12, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(38),
-                            MaximumTemperature = new Temperature(28.67, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(28.67, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1019),
-                            GroundLevel = new Pressure(951),
-                            SeaLevel = new Pressure(1019)
+                            Temperature = new Temperature(28.67, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(28.12, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(38, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(28.67, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(28.67, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1019, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(951, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1019, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4628,7 +4630,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 60d,
+                            Direction = new Angle(60, AngleUnit.Degree),
                             Speed = 2.6d
                           }
                         },
@@ -4643,14 +4645,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(29.91, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(29.08, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(35),
-                            MaximumTemperature = new Temperature(29.91, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(29.91, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1018),
-                            GroundLevel = new Pressure(950),
-                            SeaLevel = new Pressure(1018)
+                            Temperature = new Temperature(29.91, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(29.08, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(35, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(29.91, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(29.91, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(950, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1018, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4664,7 +4666,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 59d,
+                            Direction = new Angle(59, AngleUnit.Degree),
                             Speed = 2.85d
                           }
                         },
@@ -4679,14 +4681,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(30.82, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(29.84, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(33),
-                            MaximumTemperature = new Temperature(30.82, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(30.82, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1017),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1017)
+                            Temperature = new Temperature(30.82, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(29.84, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(33, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(30.82, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(30.82, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1017, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1017, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4700,7 +4702,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 56d,
+                            Direction = new Angle(56, AngleUnit.Degree),
                             Speed = 3.13d
                           }
                         },
@@ -4715,14 +4717,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(31.56, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(30.55, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(32),
-                            MaximumTemperature = new Temperature(31.56, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(31.56, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1016),
-                            GroundLevel = new Pressure(949),
-                            SeaLevel = new Pressure(1016)
+                            Temperature = new Temperature(31.56, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(30.55, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(32, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(31.56, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(31.56, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(949, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1016, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4736,7 +4738,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 54d,
+                            Direction = new Angle(54, AngleUnit.Degree),
                             Speed = 3.25d
                           }
                         },
@@ -4751,14 +4753,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(31.87, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(30.9, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(32),
-                            MaximumTemperature = new Temperature(31.87, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(31.87, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1015),
-                            GroundLevel = new Pressure(948),
-                            SeaLevel = new Pressure(1015)
+                            Temperature = new Temperature(31.87, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(30.9, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(32, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(31.87, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(31.87, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1015, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1015, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4772,7 +4774,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 55d,
+                            Direction = new Angle(55, AngleUnit.Degree),
                             Speed = 3.29d
                           }
                         },
@@ -4787,14 +4789,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(31.58, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(30.69, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(33),
-                            MaximumTemperature = new Temperature(31.58, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(31.58, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1015),
-                            GroundLevel = new Pressure(948),
-                            SeaLevel = new Pressure(1015)
+                            Temperature = new Temperature(31.58, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(30.69, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(33, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(31.58, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(31.58, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1015, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(948, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1015, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4808,7 +4810,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 51d,
+                            Direction = new Angle(51, AngleUnit.Degree),
                             Speed = 3.19d
                           }
                         },
@@ -4823,14 +4825,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(30.66, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(30.35, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(39),
-                            MaximumTemperature = new Temperature(30.66, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(30.66, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1014),
-                            GroundLevel = new Pressure(947),
-                            SeaLevel = new Pressure(1014)
+                            Temperature = new Temperature(30.66, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(30.35, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(39, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(30.66, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(30.66, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1014, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1014, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4844,7 +4846,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 46d,
+                            Direction = new Angle(46, AngleUnit.Degree),
                             Speed = 2.44d
                           }
                         },
@@ -4859,14 +4861,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(28.71, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(29.64, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(53),
-                            MaximumTemperature = new Temperature(28.71, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(28.71, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1014),
-                            GroundLevel = new Pressure(947),
-                            SeaLevel = new Pressure(1014)
+                            Temperature = new Temperature(28.71, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(29.64, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(53, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(28.71, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(28.71, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1014, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(947, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1014, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4880,7 +4882,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 47d,
+                            Direction = new Angle(47, AngleUnit.Degree),
                             Speed = 1.49d
                           }
                         },
@@ -4895,14 +4897,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(25.86, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(26.17, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(64),
-                            MaximumTemperature = new Temperature(25.86, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(25.86, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1014),
-                            GroundLevel = new Pressure(946),
-                            SeaLevel = new Pressure(1014)
+                            Temperature = new Temperature(25.86, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(26.17, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(64, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(25.86, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(25.86, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1014, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(946, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1014, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4916,7 +4918,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 59d,
+                            Direction = new Angle(59, AngleUnit.Degree),
                             Speed = 0.32d
                           }
                         },
@@ -4931,14 +4933,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(23.01, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(23.17, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(69),
-                            MaximumTemperature = new Temperature(23.01, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(23.01, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1015),
-                            GroundLevel = new Pressure(946),
-                            SeaLevel = new Pressure(1015)
+                            Temperature = new Temperature(23.01, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(23.17, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(69, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(23.01, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(23.01, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1015, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(946, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1015, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4952,7 +4954,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 195d,
+                            Direction = new Angle(195, AngleUnit.Degree),
                             Speed = 1.38d
                           }
                         },
@@ -4967,14 +4969,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(21.97, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(22.02, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(69),
-                            MaximumTemperature = new Temperature(21.97, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(21.97, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1015),
-                            GroundLevel = new Pressure(946),
-                            SeaLevel = new Pressure(1015)
+                            Temperature = new Temperature(21.97, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(22.02, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(69, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(21.97, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(21.97, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1015, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(946, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1015, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -4988,7 +4990,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 193d,
+                            Direction = new Angle(193, AngleUnit.Degree),
                             Speed = 1.9d
                           }
                         },
@@ -5003,14 +5005,14 @@ namespace WeatherDisplay.Tests.Testdata
                           Rain = null,
                           Main = new TemperatureInfo
                           {
-                            Temperature = new Temperature(21.31, TemperatureUnit.Celsius),
-                            FeelsLike = new Temperature(21.3, TemperatureUnit.Celsius),
-                            Humidity = new Humidity(69),
-                            MaximumTemperature = new Temperature(21.31, TemperatureUnit.Celsius),
-                            MinimumTemperature = new Temperature(21.31, TemperatureUnit.Celsius),
-                            Pressure = new Pressure(1015),
-                            GroundLevel = new Pressure(945),
-                            SeaLevel = new Pressure(1015)
+                            Temperature = new Temperature(21.31, TemperatureUnit.DegreeCelsius),
+                            FeelsLike = new Temperature(21.3, TemperatureUnit.DegreeCelsius),
+                            Humidity = new RelativeHumidity(69, RelativeHumidityUnit.Percent),
+                            MaximumTemperature = new Temperature(21.31, TemperatureUnit.DegreeCelsius),
+                            MinimumTemperature = new Temperature(21.31, TemperatureUnit.DegreeCelsius),
+                            Pressure = new Pressure(1015, PressureUnit.Hectopascal),
+                            GroundLevel = new Pressure(945, PressureUnit.Hectopascal),
+                            SeaLevel = new Pressure(1015, PressureUnit.Hectopascal)
                           },
                           WeatherConditions = new List<WeatherCondition>
                           {
@@ -5024,7 +5026,7 @@ namespace WeatherDisplay.Tests.Testdata
                           },
                           Wind = new WindInfo
                           {
-                            Direction = 184d,
+                            Direction = new Angle(184, AngleUnit.Degree),
                             Speed = 2.14d
                           }
                         }

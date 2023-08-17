@@ -15,6 +15,7 @@ using NCrontab.Scheduler;
 using OpenWeatherMap;
 using OpenWeatherMap.Models;
 using SkiaSharp;
+using UnitsNet;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Pages.OpenWeatherMap;
 using WeatherDisplay.Resources;
@@ -171,11 +172,11 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
         {
             // Arrange
             this.openWeatherMapServiceMock.SetupSequence(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()))
-                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromCelsius(1.2f); return i; })
-                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromCelsius(12.34f); return i; })
-                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromCelsius(123.456f); return i; })
-                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromCelsius(12.34f); return i; })
-                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromCelsius(1.8f); return i; })
+                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromDegreesCelsius(1.2f); return i; })
+                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromDegreesCelsius(12.34f); return i; })
+                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromDegreesCelsius(123.456f); return i; })
+                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromDegreesCelsius(12.34f); return i; })
+                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromDegreesCelsius(1.8f); return i; })
                 ;
 
             var taskIds = new List<Guid>();

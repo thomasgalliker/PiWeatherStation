@@ -13,8 +13,10 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NCrontab;
 using OpenWeatherMap;
+using OpenWeatherMap.Extensions;
 using OpenWeatherMap.Models;
 using RaspberryPi;
+using UnitsNet;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Resources;
@@ -22,7 +24,6 @@ using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.DeepL;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
-using Temperature = OpenWeatherMap.Models.Temperature;
 
 namespace WeatherDisplay.Pages.OpenWeatherMap
 {
@@ -626,7 +627,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 Y = 220 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{dailyForecastToday.Pressure} ({dailyForecastToday.Pressure.Range:N})",
+                                Value = $"{dailyForecastToday.Pressure} ({dailyForecastToday.Pressure.GetRange():N})",
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,

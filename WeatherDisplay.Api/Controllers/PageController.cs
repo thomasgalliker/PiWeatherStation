@@ -3,7 +3,6 @@ using RaspberryPi.Process;
 using WeatherDisplay.Api.Services.Configuration;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.Settings;
-using WeatherDisplay.Pages;
 using WeatherDisplay.Pages.MeteoSwiss;
 using WeatherDisplay.Pages.OpenWeatherMap;
 using WeatherDisplay.Pages.Wiewarm;

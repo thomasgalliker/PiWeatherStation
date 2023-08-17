@@ -5,6 +5,8 @@ using System.Linq;
 using Newtonsoft.Json;
 using OpenWeatherMap;
 using OpenWeatherMap.Models;
+using UnitsNet;
+using UnitsNet.Units;
 
 namespace WeatherDisplay.Tests.Testdata
 {
@@ -32,16 +34,16 @@ namespace WeatherDisplay.Tests.Testdata
                     DateTime = DateTime.ParseExact("2022-06-14T20:05:49.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                     Sunrise = DateTime.ParseExact("2022-06-14T03:31:53.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                     Sunset = DateTime.ParseExact("2022-06-14T19:24:17.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                    Temperature = new Temperature(18.01, TemperatureUnit.Celsius),
-                    FeelsLike = new Temperature(17.54, TemperatureUnit.Celsius),
-                    Pressure = new Pressure(1017),
-                    Humidity = new Humidity(64),
-                    DewPoint = new Temperature(11.11, TemperatureUnit.Celsius),
+                    Temperature = new Temperature(18.01, TemperatureUnit.DegreeCelsius),
+                    FeelsLike = new Temperature(17.54, TemperatureUnit.DegreeCelsius),
+                    Pressure = new Pressure(1017, PressureUnit.Hectopascal),
+                    Humidity = new RelativeHumidity(64, RelativeHumidityUnit.Percent),
+                    DewPoint = new Temperature(11.11, TemperatureUnit.DegreeCelsius),
                     UVIndex = new UVIndex(0),
                     Clouds = 73,
                     Visibility = 10000,
                     WindSpeed = 0d,
-                    WindDirection = 0,
+                    WindDirection = new Angle(0, AngleUnit.Degree),
                     WindGust = 0d,
                     Weather = new List<WeatherCondition>
                     {
@@ -367,16 +369,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-14T20:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(18.01, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(17.54, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1017),
-                      Humidity = new Humidity(64),
-                      DewPoint = new Temperature(11.11, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(18.01, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(17.54, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1017, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(64, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.11, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 73,
                       Visibility = 10000,
                       WindSpeed = 1.2d,
-                      WindDirection = 142,
+                      WindDirection = new Angle(142, AngleUnit.Degree),
                       WindGust = 1.33d,
                       Weather = new List<WeatherCondition>
                       {
@@ -393,16 +395,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-14T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(17.32, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(16.88, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1017),
-                      Humidity = new Humidity(68),
-                      DewPoint = new Temperature(11.36, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(17.32, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(16.88, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1017, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(68, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.36, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 70,
                       Visibility = 10000,
                       WindSpeed = 1.29d,
-                      WindDirection = 160,
+                      WindDirection = new Angle(160, AngleUnit.Degree),
                       WindGust = 1.35d,
                       Weather = new List<WeatherCondition>
                       {
@@ -419,16 +421,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-14T22:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(16.49, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(16.07, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1017),
-                      Humidity = new Humidity(72),
-                      DewPoint = new Temperature(11.43, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(16.49, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(16.07, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1017, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(72, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.43, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 61,
                       Visibility = 10000,
                       WindSpeed = 1.38d,
-                      WindDirection = 167,
+                      WindDirection = new Angle(167, AngleUnit.Degree),
                       WindGust = 1.34d,
                       Weather = new List<WeatherCondition>
                       {
@@ -445,16 +447,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-14T23:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(15.6, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(15.17, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1018),
-                      Humidity = new Humidity(75),
-                      DewPoint = new Temperature(11.19, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(15.6, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(15.17, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(75, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.19, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 50,
                       Visibility = 10000,
                       WindSpeed = 1.45d,
-                      WindDirection = 176,
+                      WindDirection = new Angle(176, AngleUnit.Degree),
                       WindGust = 1.34d,
                       Weather = new List<WeatherCondition>
                       {
@@ -471,16 +473,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(14.66, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(14.19, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1018),
-                      Humidity = new Humidity(77),
-                      DewPoint = new Temperature(10.68, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(14.66, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(14.19, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(77, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(10.68, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 38,
                       Visibility = 10000,
                       WindSpeed = 1.52d,
-                      WindDirection = 198,
+                      WindDirection = new Angle(198, AngleUnit.Degree),
                       WindGust = 1.36d,
                       Weather = new List<WeatherCondition>
                       {
@@ -497,16 +499,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T01:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(13.71, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(13.23, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1019),
-                      Humidity = new Humidity(80),
-                      DewPoint = new Temperature(9.43, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(13.71, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(13.23, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1019, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(80, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(9.43, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 17,
                       Visibility = 10000,
                       WindSpeed = 1.75d,
-                      WindDirection = 196,
+                      WindDirection = new Angle(196, AngleUnit.Degree),
                       WindGust = 1.58d,
                       Weather = new List<WeatherCondition>
                       {
@@ -523,16 +525,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T02:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(13.7, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(13.19, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1019),
-                      Humidity = new Humidity(79),
-                      DewPoint = new Temperature(9.18, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(13.7, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(13.19, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1019, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(79, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(9.18, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 11,
                       Visibility = 10000,
                       WindSpeed = 1.9d,
-                      WindDirection = 189,
+                      WindDirection = new Angle(189, AngleUnit.Degree),
                       WindGust = 1.7d,
                       Weather = new List<WeatherCondition>
                       {
@@ -549,16 +551,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(13.77, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(13.21, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1019),
-                      Humidity = new Humidity(77),
-                      DewPoint = new Temperature(8.99, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(13.77, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(13.21, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1019, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(77, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(8.99, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 8,
                       Visibility = 10000,
                       WindSpeed = 1.72d,
-                      WindDirection = 179,
+                      WindDirection = new Angle(179, AngleUnit.Degree),
                       WindGust = 1.47d,
                       Weather = new List<WeatherCondition>
                       {
@@ -575,16 +577,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T04:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(13.96, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(13.42, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1018),
-                      Humidity = new Humidity(77),
-                      DewPoint = new Temperature(9.14, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(13.96, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(13.42, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(77, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(9.14, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 6,
                       Visibility = 10000,
                       WindSpeed = 1.51d,
-                      WindDirection = 190,
+                      WindDirection = new Angle(190, AngleUnit.Degree),
                       WindGust = 1.4d,
                       Weather = new List<WeatherCondition>
                       {
@@ -601,16 +603,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T05:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(15.86, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(15.51, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1018),
-                      Humidity = new Humidity(77),
-                      DewPoint = new Temperature(10.83, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(15.86, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(15.51, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(77, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(10.83, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0.34),
                       Clouds = 6,
                       Visibility = 10000,
                       WindSpeed = 1.27d,
-                      WindDirection = 199,
+                      WindDirection = new Angle(199, AngleUnit.Degree),
                       WindGust = 1.29d,
                       Weather = new List<WeatherCondition>
                       {
@@ -627,16 +629,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(19.04, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(18.75, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1018),
-                      Humidity = new Humidity(67),
-                      DewPoint = new Temperature(11.93, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(19.04, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(18.75, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(67, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.93, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(1.01),
                       Clouds = 6,
                       Visibility = 10000,
                       WindSpeed = 0.73d,
-                      WindDirection = 216,
+                      WindDirection = new Angle(216, AngleUnit.Degree),
                       WindGust = 1.17d,
                       Weather = new List<WeatherCondition>
                       {
@@ -653,16 +655,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T07:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(21.42, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(21.18, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1018),
-                      Humidity = new Humidity(60),
-                      DewPoint = new Temperature(12.48, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(21.42, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(21.18, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(60, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(12.48, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(2.18),
                       Clouds = 19,
                       Visibility = 10000,
                       WindSpeed = 0.88d,
-                      WindDirection = 286,
+                      WindDirection = new Angle(286, AngleUnit.Degree),
                       WindGust = 1.46d,
                       Weather = new List<WeatherCondition>
                       {
@@ -679,16 +681,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T08:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(23.33, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(23.13, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1018),
-                      Humidity = new Humidity(54),
-                      DewPoint = new Temperature(12.54, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(23.33, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(23.13, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(54, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(12.54, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(3.82),
                       Clouds = 26,
                       Visibility = 10000,
                       WindSpeed = 0.98d,
-                      WindDirection = 289,
+                      WindDirection = new Angle(289, AngleUnit.Degree),
                       WindGust = 3.1d,
                       Weather = new List<WeatherCondition>
                       {
@@ -705,16 +707,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(25.57, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(25.36, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1018),
-                      Humidity = new Humidity(45),
-                      DewPoint = new Temperature(12.1, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(25.57, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(25.36, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1018, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(45, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(12.1, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(5.63),
                       Clouds = 29,
                       Visibility = 10000,
                       WindSpeed = 1.07d,
-                      WindDirection = 299,
+                      WindDirection = new Angle(299, AngleUnit.Degree),
                       WindGust = 3.32d,
                       Weather = new List<WeatherCondition>
                       {
@@ -731,16 +733,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T10:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(27.13, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(26.96, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1017),
-                      Humidity = new Humidity(40),
-                      DewPoint = new Temperature(11.68, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(27.13, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(26.96, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1017, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(40, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.68, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(7.22),
                       Clouds = 22,
                       Visibility = 10000,
                       WindSpeed = 1.6d,
-                      WindDirection = 292,
+                      WindDirection = new Angle(292, AngleUnit.Degree),
                       WindGust = 4.76d,
                       Weather = new List<WeatherCondition>
                       {
@@ -757,16 +759,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T11:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(28.26, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(27.69, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1017),
-                      Humidity = new Humidity(37),
-                      DewPoint = new Temperature(11.53, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(28.26, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(27.69, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1017, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(37, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.53, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(8.11),
                       Clouds = 20,
                       Visibility = 10000,
                       WindSpeed = 2.36d,
-                      WindDirection = 284,
+                      WindDirection = new Angle(284, AngleUnit.Degree),
                       WindGust = 5.7d,
                       Weather = new List<WeatherCondition>
                       {
@@ -783,16 +785,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(29, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(28.27, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1016),
-                      Humidity = new Humidity(36),
-                      DewPoint = new Temperature(11.68, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(29, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(28.27, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(36, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.68, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(8.08),
                       Clouds = 25,
                       Visibility = 10000,
                       WindSpeed = 3.2d,
-                      WindDirection = 280,
+                      WindDirection = new Angle(280, AngleUnit.Degree),
                       WindGust = 6.55d,
                       Weather = new List<WeatherCondition>
                       {
@@ -809,16 +811,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T13:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(29.44, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(28.61, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1016),
-                      Humidity = new Humidity(35),
-                      DewPoint = new Temperature(11.82, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(29.44, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(28.61, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(35, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.82, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(7.08),
                       Clouds = 44,
                       Visibility = 10000,
                       WindSpeed = 3.76d,
-                      WindDirection = 272,
+                      WindDirection = new Angle(272, AngleUnit.Degree),
                       WindGust = 6.65d,
                       Weather = new List<WeatherCondition>
                       {
@@ -835,16 +837,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T14:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(29.64, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(28.72, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1016),
-                      Humidity = new Humidity(34),
-                      DewPoint = new Temperature(11.63, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(29.64, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(28.72, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(34, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.63, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(5.49),
                       Clouds = 51,
                       Visibility = 10000,
                       WindSpeed = 3.74d,
-                      WindDirection = 268,
+                      WindDirection = new Angle(268, AngleUnit.Degree),
                       WindGust = 6.72d,
                       Weather = new List<WeatherCondition>
                       {
@@ -861,16 +863,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(29.38, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(28.64, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1016),
-                      Humidity = new Humidity(36),
-                      DewPoint = new Temperature(12.37, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(29.38, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(28.64, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(36, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(12.37, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(3.68),
                       Clouds = 37,
                       Visibility = 10000,
                       WindSpeed = 3.24d,
-                      WindDirection = 285,
+                      WindDirection = new Angle(285, AngleUnit.Degree),
                       WindGust = 5.8d,
                       Weather = new List<WeatherCondition>
                       {
@@ -887,16 +889,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T16:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(28.28, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(28.23, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1016),
-                      Humidity = new Humidity(44),
-                      DewPoint = new Temperature(14.37, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(28.28, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(28.23, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(44, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(14.37, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(2.09),
                       Clouds = 30,
                       Visibility = 10000,
                       WindSpeed = 2.98d,
-                      WindDirection = 315,
+                      WindDirection = new Angle(315, AngleUnit.Degree),
                       WindGust = 4.65d,
                       Weather = new List<WeatherCondition>
                       {
@@ -913,16 +915,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T17:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(26.64, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(26.64, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1016),
-                      Humidity = new Humidity(57),
-                      DewPoint = new Temperature(16.83, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(26.64, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(26.64, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(57, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(16.83, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0.94),
                       Clouds = 25,
                       Visibility = 10000,
                       WindSpeed = 2.3d,
-                      WindDirection = 342,
+                      WindDirection = new Angle(342, AngleUnit.Degree),
                       WindGust = 4.49d,
                       Weather = new List<WeatherCondition>
                       {
@@ -939,16 +941,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(23.48, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(23.82, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1016),
-                      Humidity = new Humidity(74),
-                      DewPoint = new Temperature(17.73, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(23.48, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(23.82, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1016, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(74, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(17.73, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0.31),
                       Clouds = 28,
                       Visibility = 10000,
                       WindSpeed = 1.24d,
-                      WindDirection = 17,
+                      WindDirection = new Angle(17, AngleUnit.Degree),
                       WindGust = 1.6d,
                       Weather = new List<WeatherCondition>
                       {
@@ -965,16 +967,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T19:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(20.36, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(20.62, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1017),
-                      Humidity = new Humidity(83),
-                      DewPoint = new Temperature(16.48, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(20.36, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(20.62, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1017, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(83, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(16.48, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 10,
                       Visibility = 10000,
                       WindSpeed = 1.42d,
-                      WindDirection = 176,
+                      WindDirection = new Angle(176, AngleUnit.Degree),
                       WindGust = 1.46d,
                       Weather = new List<WeatherCondition>
                       {
@@ -991,16 +993,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T20:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(18.12, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(18.29, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1019),
-                      Humidity = new Humidity(88),
-                      DewPoint = new Temperature(15.35, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(18.12, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(18.29, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1019, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(88, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(15.35, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 18,
                       Visibility = 10000,
                       WindSpeed = 2.88d,
-                      WindDirection = 194,
+                      WindDirection = new Angle(194, AngleUnit.Degree),
                       WindGust = 4.2d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1017,16 +1019,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(16.64, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(16.76, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1019),
-                      Humidity = new Humidity(92),
-                      DewPoint = new Temperature(14.54, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(16.64, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(16.76, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1019, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(92, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(14.54, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 39,
                       Visibility = 10000,
                       WindSpeed = 2.94d,
-                      WindDirection = 201,
+                      WindDirection = new Angle(201, AngleUnit.Degree),
                       WindGust = 4.93d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1043,16 +1045,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T22:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(14.59, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(14.59, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1021),
-                      Humidity = new Humidity(95),
-                      DewPoint = new Temperature(12.89, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(14.59, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(14.59, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(95, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(12.89, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 31,
                       Visibility = 7351,
                       WindSpeed = 2.94d,
-                      WindDirection = 161,
+                      WindDirection = new Angle(161, AngleUnit.Degree),
                       WindGust = 4.55d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1069,16 +1071,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-15T23:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(14, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(13.88, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1021),
-                      Humidity = new Humidity(93),
-                      DewPoint = new Temperature(12.09, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(14, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(13.88, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(93, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(12.09, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 26,
                       Visibility = 10000,
                       WindSpeed = 2.7d,
-                      WindDirection = 179,
+                      WindDirection = new Angle(179, AngleUnit.Degree),
                       WindGust = 2.96d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1095,16 +1097,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(13.87, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(13.69, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1020),
-                      Humidity = new Humidity(91),
-                      DewPoint = new Temperature(11.63, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(13.87, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(13.69, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(91, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.63, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 23,
                       Visibility = 10000,
                       WindSpeed = 2.63d,
-                      WindDirection = 197,
+                      WindDirection = new Angle(197, AngleUnit.Degree),
                       WindGust = 2.87d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1121,16 +1123,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T01:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(13.99, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(13.79, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1020),
-                      Humidity = new Humidity(90),
-                      DewPoint = new Temperature(11.63, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(13.99, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(13.79, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(90, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.63, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 9,
                       Visibility = 10000,
                       WindSpeed = 2.52d,
-                      WindDirection = 202,
+                      WindDirection = new Angle(202, AngleUnit.Degree),
                       WindGust = 2.25d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1147,16 +1149,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T02:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(14.15, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(14, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1020),
-                      Humidity = new Humidity(91),
-                      DewPoint = new Temperature(11.91, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(14.15, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(14, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(91, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.91, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 18,
                       Visibility = 10000,
                       WindSpeed = 2.44d,
-                      WindDirection = 201,
+                      WindDirection = new Angle(201, AngleUnit.Degree),
                       WindGust = 2.5d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1173,16 +1175,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(14.29, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(14.15, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1020),
-                      Humidity = new Humidity(91),
-                      DewPoint = new Temperature(11.98, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(14.29, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(14.15, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(91, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.98, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 14,
                       Visibility = 10000,
                       WindSpeed = 1.99d,
-                      WindDirection = 203,
+                      WindDirection = new Angle(203, AngleUnit.Degree),
                       WindGust = 1.89d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1199,16 +1201,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T04:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(14.45, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(14.3, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1020),
-                      Humidity = new Humidity(90),
-                      DewPoint = new Temperature(12.08, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(14.45, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(14.3, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(90, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(12.08, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 13,
                       Visibility = 10000,
                       WindSpeed = 1.8d,
-                      WindDirection = 203,
+                      WindDirection = new Angle(203, AngleUnit.Degree),
                       WindGust = 1.62d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1225,16 +1227,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T05:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(16.1, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(16.09, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1020),
-                      Humidity = new Humidity(89),
-                      DewPoint = new Temperature(13.5, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(16.1, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(16.09, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(89, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(13.5, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0.34),
                       Clouds = 14,
                       Visibility = 10000,
                       WindSpeed = 1.74d,
-                      WindDirection = 213,
+                      WindDirection = new Angle(213, AngleUnit.Degree),
                       WindGust = 1.82d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1251,16 +1253,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(18.79, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(18.89, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1020),
-                      Humidity = new Humidity(83),
-                      DewPoint = new Temperature(14.93, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(18.79, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(18.89, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(83, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(14.93, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(1.01),
                       Clouds = 13,
                       Visibility = 10000,
                       WindSpeed = 1.2d,
-                      WindDirection = 218,
+                      WindDirection = new Angle(218, AngleUnit.Degree),
                       WindGust = 2.03d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1277,16 +1279,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T07:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(20.93, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(20.98, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1020),
-                      Humidity = new Humidity(73),
-                      DewPoint = new Temperature(15.05, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(20.93, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(20.98, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(73, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(15.05, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(2.21),
                       Clouds = 2,
                       Visibility = 10000,
                       WindSpeed = 1.26d,
-                      WindDirection = 274,
+                      WindDirection = new Angle(274, AngleUnit.Degree),
                       WindGust = 3.46d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1303,16 +1305,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T08:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(21.6, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(21.8, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1020),
-                      Humidity = new Humidity(76),
-                      DewPoint = new Temperature(16.42, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(21.6, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(21.8, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(76, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(16.42, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(3.87),
                       Clouds = 7,
                       Visibility = 10000,
                       WindSpeed = 1.71d,
-                      WindDirection = 286,
+                      WindDirection = new Angle(286, AngleUnit.Degree),
                       WindGust = 3.79d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1329,16 +1331,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(23.13, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(23.3, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1021),
-                      Humidity = new Humidity(69),
-                      DewPoint = new Temperature(16.45, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(23.13, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(23.3, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(69, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(16.45, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(5.7),
                       Clouds = 7,
                       Visibility = 10000,
                       WindSpeed = 1.76d,
-                      WindDirection = 286,
+                      WindDirection = new Angle(286, AngleUnit.Degree),
                       WindGust = 4.1d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1355,16 +1357,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T10:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(25.26, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(25.2, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1020),
-                      Humidity = new Humidity(52),
-                      DewPoint = new Temperature(13.95, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(25.26, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(25.2, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(52, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(13.95, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(6.88),
                       Clouds = 8,
                       Visibility = 10000,
                       WindSpeed = 2.12d,
-                      WindDirection = 286,
+                      WindDirection = new Angle(286, AngleUnit.Degree),
                       WindGust = 4.34d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1381,16 +1383,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T11:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(26.27, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(26.27, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1020),
-                      Humidity = new Humidity(46),
-                      DewPoint = new Temperature(12.92, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(26.27, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(26.27, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(46, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(12.92, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(7.72),
                       Clouds = 24,
                       Visibility = 10000,
                       WindSpeed = 2.4d,
-                      WindDirection = 294,
+                      WindDirection = new Angle(294, AngleUnit.Degree),
                       WindGust = 4.9d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1407,16 +1409,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(26.88, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(26.92, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1020),
-                      Humidity = new Humidity(43),
-                      DewPoint = new Temperature(12.45, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(26.88, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(26.92, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(43, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(12.45, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(7.7),
                       Clouds = 37,
                       Visibility = 10000,
                       WindSpeed = 2.81d,
-                      WindDirection = 302,
+                      WindDirection = new Angle(302, AngleUnit.Degree),
                       WindGust = 5.14d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1433,16 +1435,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T13:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(27.28, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(27.07, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1020),
-                      Humidity = new Humidity(40),
-                      DewPoint = new Temperature(12.05, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(27.28, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(27.07, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(40, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(12.05, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(6.96),
                       Clouds = 100,
                       Visibility = 10000,
                       WindSpeed = 3.25d,
-                      WindDirection = 313,
+                      WindDirection = new Angle(313, AngleUnit.Degree),
                       WindGust = 4.88d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1459,16 +1461,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T14:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(26.53, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(26.53, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1021),
-                      Humidity = new Humidity(44),
-                      DewPoint = new Temperature(12.64, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(26.53, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(26.53, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(44, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(12.64, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(5.4),
                       Clouds = 97,
                       Visibility = 10000,
                       WindSpeed = 3.58d,
-                      WindDirection = 328,
+                      WindDirection = new Angle(328, AngleUnit.Degree),
                       WindGust = 4.29d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1485,16 +1487,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(24.58, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(24.53, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1021),
-                      Humidity = new Humidity(55),
-                      DewPoint = new Temperature(13.71, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(24.58, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(24.53, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(55, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(13.71, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(3.62),
                       Clouds = 87,
                       Visibility = 10000,
                       WindSpeed = 1.98d,
-                      WindDirection = 338,
+                      WindDirection = new Angle(338, AngleUnit.Degree),
                       WindGust = 3.32d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1511,16 +1513,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T16:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(25.67, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(25.49, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1021),
-                      Humidity = new Humidity(46),
-                      DewPoint = new Temperature(12.28, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(25.67, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(25.49, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(46, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(12.28, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(2.15),
                       Clouds = 74,
                       Visibility = 10000,
                       WindSpeed = 2.2d,
-                      WindDirection = 340,
+                      WindDirection = new Angle(340, AngleUnit.Degree),
                       WindGust = 2.63d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1537,16 +1539,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T17:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(24.81, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(24.76, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1021),
-                      Humidity = new Humidity(54),
-                      DewPoint = new Temperature(14.28, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(24.81, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(24.76, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(54, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(14.28, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0.97),
                       Clouds = 65,
                       Visibility = 10000,
                       WindSpeed = 1.84d,
-                      WindDirection = 338,
+                      WindDirection = new Angle(338, AngleUnit.Degree),
                       WindGust = 3.38d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1563,16 +1565,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(22.4, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(22.5, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1021),
-                      Humidity = new Humidity(69),
-                      DewPoint = new Temperature(15.58, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(22.4, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(22.5, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1021, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(69, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(15.58, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0.32),
                       Clouds = 62,
                       Visibility = 10000,
                       WindSpeed = 1.29d,
-                      WindDirection = 335,
+                      WindDirection = new Angle(335, AngleUnit.Degree),
                       WindGust = 1.56d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1589,16 +1591,16 @@ namespace WeatherDisplay.Tests.Testdata
                     new HourlyWeatherForecast
                     {
                       DateTime = DateTime.ParseExact("2022-06-16T19:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
-                      Temperature = new Temperature(20.11, TemperatureUnit.Celsius),
-                      FeelsLike = new Temperature(20.06, TemperatureUnit.Celsius),
-                      Pressure = new Pressure(1022),
-                      Humidity = new Humidity(72),
-                      DewPoint = new Temperature(14.21, TemperatureUnit.Celsius),
+                      Temperature = new Temperature(20.11, TemperatureUnit.DegreeCelsius),
+                      FeelsLike = new Temperature(20.06, TemperatureUnit.DegreeCelsius),
+                      Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(72, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(14.21, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(0),
                       Clouds = 97,
                       Visibility = 10000,
                       WindSpeed = 0.39d,
-                      WindDirection = 327,
+                      WindDirection = new Angle(327, AngleUnit.Degree),
                       WindGust = 0.66d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1625,28 +1627,28 @@ namespace WeatherDisplay.Tests.Testdata
                       MoonPhase = 0.5d,
                       Temperature = new DailyTemperatureForecast
                       {
-                        Day = new Temperature(23.42, TemperatureUnit.Celsius),
-                        Min = new Temperature(9.96, TemperatureUnit.Celsius),
-                        Max = new Temperature(25.01, TemperatureUnit.Celsius),
-                        Night = new Temperature(17.32, TemperatureUnit.Celsius),
-                        Evening = new Temperature(20.7, TemperatureUnit.Celsius),
-                        Morning = new Temperature(12.16, TemperatureUnit.Celsius)
+                        Day = new Temperature(23.42, TemperatureUnit.DegreeCelsius),
+                        Min = new Temperature(9.96, TemperatureUnit.DegreeCelsius),
+                        Max = new Temperature(25.01, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(17.32, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(20.7, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(12.16, TemperatureUnit.DegreeCelsius)
                       },
                       FeelsLike = new DailyFeelsLikeForecast
                       {
-                        Day = new Temperature(22.94, TemperatureUnit.Celsius),
-                        Night = new Temperature(16.88, TemperatureUnit.Celsius),
-                        Evening = new Temperature(20.34, TemperatureUnit.Celsius),
-                        Morning = new Temperature(11.55, TemperatureUnit.Celsius)
+                        Day = new Temperature(22.94, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(16.88, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(20.34, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(11.55, TemperatureUnit.DegreeCelsius)
                       },
-                      Pressure = new Pressure(1019),
-                      Humidity = new Humidity(43),
-                      DewPoint = new Temperature(9.49, TemperatureUnit.Celsius),
+                      Pressure = new Pressure(1019, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(43, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(9.49, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(7.88),
                       Clouds = 0,
                       Visibility = 0,
                       WindSpeed = 2.95d,
-                      WindDirection = 48,
+                      WindDirection = new Angle(48, AngleUnit.Degree),
                       WindGust = 3.51d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1672,28 +1674,28 @@ namespace WeatherDisplay.Tests.Testdata
                       MoonPhase = 0.54d,
                       Temperature = new DailyTemperatureForecast
                       {
-                        Day = new Temperature(28.26, TemperatureUnit.Celsius),
-                        Min = new Temperature(13.7, TemperatureUnit.Celsius),
-                        Max = new Temperature(29.64, TemperatureUnit.Celsius),
-                        Night = new Temperature(16.64, TemperatureUnit.Celsius),
-                        Evening = new Temperature(26.64, TemperatureUnit.Celsius),
-                        Morning = new Temperature(15.86, TemperatureUnit.Celsius)
+                        Day = new Temperature(28.26, TemperatureUnit.DegreeCelsius),
+                        Min = new Temperature(13.7, TemperatureUnit.DegreeCelsius),
+                        Max = new Temperature(29.64, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(16.64, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(26.64, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(15.86, TemperatureUnit.DegreeCelsius)
                       },
                       FeelsLike = new DailyFeelsLikeForecast
                       {
-                        Day = new Temperature(27.69, TemperatureUnit.Celsius),
-                        Night = new Temperature(16.76, TemperatureUnit.Celsius),
-                        Evening = new Temperature(26.64, TemperatureUnit.Celsius),
-                        Morning = new Temperature(15.51, TemperatureUnit.Celsius)
+                        Day = new Temperature(27.69, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(16.76, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(26.64, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(15.51, TemperatureUnit.DegreeCelsius)
                       },
-                      Pressure = new Pressure(1017),
-                      Humidity = new Humidity(37),
-                      DewPoint = new Temperature(11.53, TemperatureUnit.Celsius),
+                      Pressure = new Pressure(1017, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(37, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.53, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(8.11),
                       Clouds = 20,
                       Visibility = 0,
                       WindSpeed = 3.76d,
-                      WindDirection = 272,
+                      WindDirection = new Angle(272, AngleUnit.Degree),
                       WindGust = 6.72d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1719,28 +1721,28 @@ namespace WeatherDisplay.Tests.Testdata
                       MoonPhase = 0.58d,
                       Temperature = new DailyTemperatureForecast
                       {
-                        Day = new Temperature(26.27, TemperatureUnit.Celsius),
-                        Min = new Temperature(13.87, TemperatureUnit.Celsius),
-                        Max = new Temperature(27.28, TemperatureUnit.Celsius),
-                        Night = new Temperature(17.66, TemperatureUnit.Celsius),
-                        Evening = new Temperature(24.81, TemperatureUnit.Celsius),
-                        Morning = new Temperature(16.1, TemperatureUnit.Celsius)
+                        Day = new Temperature(26.27, TemperatureUnit.DegreeCelsius),
+                        Min = new Temperature(13.87, TemperatureUnit.DegreeCelsius),
+                        Max = new Temperature(27.28, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(17.66, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(24.81, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(16.1, TemperatureUnit.DegreeCelsius)
                       },
                       FeelsLike = new DailyFeelsLikeForecast
                       {
-                        Day = new Temperature(26.27, TemperatureUnit.Celsius),
-                        Night = new Temperature(17.49, TemperatureUnit.Celsius),
-                        Evening = new Temperature(24.76, TemperatureUnit.Celsius),
-                        Morning = new Temperature(16.09, TemperatureUnit.Celsius)
+                        Day = new Temperature(26.27, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(17.49, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(24.76, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(16.09, TemperatureUnit.DegreeCelsius)
                       },
-                      Pressure = new Pressure(1020),
-                      Humidity = new Humidity(46),
-                      DewPoint = new Temperature(12.92, TemperatureUnit.Celsius),
+                      Pressure = new Pressure(1020, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(46, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(12.92, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(7.72),
                       Clouds = 24,
                       Visibility = 0,
                       WindSpeed = 3.58d,
-                      WindDirection = 328,
+                      WindDirection = new Angle(328, AngleUnit.Degree),
                       WindGust = 5.14d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1766,28 +1768,28 @@ namespace WeatherDisplay.Tests.Testdata
                       MoonPhase = 0.62d,
                       Temperature = new DailyTemperatureForecast
                       {
-                        Day = new Temperature(27.47, TemperatureUnit.Celsius),
-                        Min = new Temperature(14.53, TemperatureUnit.Celsius),
-                        Max = new Temperature(28.3, TemperatureUnit.Celsius),
-                        Night = new Temperature(18.61, TemperatureUnit.Celsius),
-                        Evening = new Temperature(23.73, TemperatureUnit.Celsius),
-                        Morning = new Temperature(16.47, TemperatureUnit.Celsius)
+                        Day = new Temperature(27.47, TemperatureUnit.DegreeCelsius),
+                        Min = new Temperature(14.53, TemperatureUnit.DegreeCelsius),
+                        Max = new Temperature(28.3, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(18.61, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(23.73, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(16.47, TemperatureUnit.DegreeCelsius)
                       },
                       FeelsLike = new DailyFeelsLikeForecast
                       {
-                        Day = new Temperature(27.17, TemperatureUnit.Celsius),
-                        Night = new Temperature(18.43, TemperatureUnit.Celsius),
-                        Evening = new Temperature(23.91, TemperatureUnit.Celsius),
-                        Morning = new Temperature(16.31, TemperatureUnit.Celsius)
+                        Day = new Temperature(27.17, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(18.43, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(23.91, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(16.31, TemperatureUnit.DegreeCelsius)
                       },
-                      Pressure = new Pressure(1022),
-                      Humidity = new Humidity(39),
-                      DewPoint = new Temperature(11.72, TemperatureUnit.Celsius),
+                      Pressure = new Pressure(1022, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(39, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(11.72, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(8.52),
                       Clouds = 74,
                       Visibility = 0,
                       WindSpeed = 2.43d,
-                      WindDirection = 8,
+                      WindDirection = new Angle(8, AngleUnit.Degree),
                       WindGust = 2.34d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1813,28 +1815,28 @@ namespace WeatherDisplay.Tests.Testdata
                       MoonPhase = 0.65d,
                       Temperature = new DailyTemperatureForecast
                       {
-                        Day = new Temperature(30.82, TemperatureUnit.Celsius),
-                        Min = new Temperature(16.34, TemperatureUnit.Celsius),
-                        Max = new Temperature(31.58, TemperatureUnit.Celsius),
-                        Night = new Temperature(21.31, TemperatureUnit.Celsius),
-                        Evening = new Temperature(25.86, TemperatureUnit.Celsius),
-                        Morning = new Temperature(20.74, TemperatureUnit.Celsius)
+                        Day = new Temperature(30.82, TemperatureUnit.DegreeCelsius),
+                        Min = new Temperature(16.34, TemperatureUnit.DegreeCelsius),
+                        Max = new Temperature(31.58, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(21.31, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(25.86, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(20.74, TemperatureUnit.DegreeCelsius)
                       },
                       FeelsLike = new DailyFeelsLikeForecast
                       {
-                        Day = new Temperature(29.84, TemperatureUnit.Celsius),
-                        Night = new Temperature(21.3, TemperatureUnit.Celsius),
-                        Evening = new Temperature(26.17, TemperatureUnit.Celsius),
-                        Morning = new Temperature(20.57, TemperatureUnit.Celsius)
+                        Day = new Temperature(29.84, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(21.3, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(26.17, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(20.57, TemperatureUnit.DegreeCelsius)
                       },
-                      Pressure = new Pressure(1017),
-                      Humidity = new Humidity(33),
-                      DewPoint = new Temperature(12.28, TemperatureUnit.Celsius),
+                      Pressure = new Pressure(1017, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(33, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(12.28, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(8.56),
                       Clouds = 1,
                       Visibility = 0,
                       WindSpeed = 3.19d,
-                      WindDirection = 51,
+                      WindDirection = new Angle(51, AngleUnit.Degree),
                       WindGust = 4.24d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1860,28 +1862,28 @@ namespace WeatherDisplay.Tests.Testdata
                       MoonPhase = 0.69d,
                       Temperature = new DailyTemperatureForecast
                       {
-                        Day = new Temperature(31.74, TemperatureUnit.Celsius),
-                        Min = new Temperature(17.84, TemperatureUnit.Celsius),
-                        Max = new Temperature(31.74, TemperatureUnit.Celsius),
-                        Night = new Temperature(17.84, TemperatureUnit.Celsius),
-                        Evening = new Temperature(20.36, TemperatureUnit.Celsius),
-                        Morning = new Temperature(21.82, TemperatureUnit.Celsius)
+                        Day = new Temperature(31.74, TemperatureUnit.DegreeCelsius),
+                        Min = new Temperature(17.84, TemperatureUnit.DegreeCelsius),
+                        Max = new Temperature(31.74, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(17.84, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(20.36, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(21.82, TemperatureUnit.DegreeCelsius)
                       },
                       FeelsLike = new DailyFeelsLikeForecast
                       {
-                        Day = new Temperature(31.01, TemperatureUnit.Celsius),
-                        Night = new Temperature(17.9, TemperatureUnit.Celsius),
-                        Evening = new Temperature(20.8, TemperatureUnit.Celsius),
-                        Morning = new Temperature(21.75, TemperatureUnit.Celsius)
+                        Day = new Temperature(31.01, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(17.9, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(20.8, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(21.75, TemperatureUnit.DegreeCelsius)
                       },
-                      Pressure = new Pressure(1010),
-                      Humidity = new Humidity(34),
-                      DewPoint = new Temperature(13.19, TemperatureUnit.Celsius),
+                      Pressure = new Pressure(1010, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(34, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(13.19, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(8.57),
                       Clouds = 0,
                       Visibility = 0,
                       WindSpeed = 3.47d,
-                      WindDirection = 149,
+                      WindDirection = new Angle(149, AngleUnit.Degree),
                       WindGust = 7.32d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1907,28 +1909,28 @@ namespace WeatherDisplay.Tests.Testdata
                       MoonPhase = 0.72d,
                       Temperature = new DailyTemperatureForecast
                       {
-                        Day = new Temperature(23.92, TemperatureUnit.Celsius),
-                        Min = new Temperature(14.68, TemperatureUnit.Celsius),
-                        Max = new Temperature(24.37, TemperatureUnit.Celsius),
-                        Night = new Temperature(14.68, TemperatureUnit.Celsius),
-                        Evening = new Temperature(18.14, TemperatureUnit.Celsius),
-                        Morning = new Temperature(20.58, TemperatureUnit.Celsius)
+                        Day = new Temperature(23.92, TemperatureUnit.DegreeCelsius),
+                        Min = new Temperature(14.68, TemperatureUnit.DegreeCelsius),
+                        Max = new Temperature(24.37, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(14.68, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(18.14, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(20.58, TemperatureUnit.DegreeCelsius)
                       },
                       FeelsLike = new DailyFeelsLikeForecast
                       {
-                        Day = new Temperature(23.88, TemperatureUnit.Celsius),
-                        Night = new Temperature(14.76, TemperatureUnit.Celsius),
-                        Evening = new Temperature(18.52, TemperatureUnit.Celsius),
-                        Morning = new Temperature(20.5, TemperatureUnit.Celsius)
+                        Day = new Temperature(23.88, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(14.76, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(18.52, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(20.5, TemperatureUnit.DegreeCelsius)
                       },
-                      Pressure = new Pressure(1012),
-                      Humidity = new Humidity(58),
-                      DewPoint = new Temperature(14.37, TemperatureUnit.Celsius),
+                      Pressure = new Pressure(1012, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(58, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(14.37, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(9),
                       Clouds = 76,
                       Visibility = 0,
                       WindSpeed = 3.32d,
-                      WindDirection = 359,
+                      WindDirection = new Angle(359, AngleUnit.Degree),
                       WindGust = 7.06d,
                       Weather = new List<WeatherCondition>
                       {
@@ -1954,28 +1956,28 @@ namespace WeatherDisplay.Tests.Testdata
                       MoonPhase = 0.75d,
                       Temperature = new DailyTemperatureForecast
                       {
-                        Day = new Temperature(7.46, TemperatureUnit.Celsius),
-                        Min = new Temperature(7.46, TemperatureUnit.Celsius),
-                        Max = new Temperature(14.02, TemperatureUnit.Celsius),
-                        Night = new Temperature(8.01, TemperatureUnit.Celsius),
-                        Evening = new Temperature(12.57, TemperatureUnit.Celsius),
-                        Morning = new Temperature(10.98, TemperatureUnit.Celsius)
+                        Day = new Temperature(7.46, TemperatureUnit.DegreeCelsius),
+                        Min = new Temperature(7.46, TemperatureUnit.DegreeCelsius),
+                        Max = new Temperature(14.02, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(8.01, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(12.57, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(10.98, TemperatureUnit.DegreeCelsius)
                       },
                       FeelsLike = new DailyFeelsLikeForecast
                       {
-                        Day = new Temperature(5.04, TemperatureUnit.Celsius),
-                        Night = new Temperature(6.87, TemperatureUnit.Celsius),
-                        Evening = new Temperature(11.68, TemperatureUnit.Celsius),
-                        Morning = new Temperature(10.69, TemperatureUnit.Celsius)
+                        Day = new Temperature(5.04, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(6.87, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(11.68, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(10.69, TemperatureUnit.DegreeCelsius)
                       },
-                      Pressure = new Pressure(1015),
-                      Humidity = new Humidity(96),
-                      DewPoint = new Temperature(6.06, TemperatureUnit.Celsius),
+                      Pressure = new Pressure(1015, PressureUnit.Hectopascal),
+                      Humidity = new RelativeHumidity(96, RelativeHumidityUnit.Percent),
+                      DewPoint = new Temperature(6.06, TemperatureUnit.DegreeCelsius),
                       UVIndex = new UVIndex(9),
                       Clouds = 100,
                       Visibility = 0,
                       WindSpeed = 3.7d,
-                      WindDirection = 211,
+                      WindDirection = new Angle(211, AngleUnit.Degree),
                       WindGust = 8.22d,
                       Weather = new List<WeatherCondition>
                       {
@@ -2008,11 +2010,11 @@ namespace WeatherDisplay.Tests.Testdata
                 TimezoneOffset = 3600,
                 CurrentWeather = new CurrentWeatherForecast
                 {
-                    Temperature = new Temperature(25, TemperatureUnit.Celsius),
-                    FeelsLike = new Temperature(26, TemperatureUnit.Celsius),
-                    Pressure = new Pressure(1000),
-                    Humidity = new Humidity(50),
-                    DewPoint = new Temperature(3.4, TemperatureUnit.Celsius),
+                    Temperature = new Temperature(25, TemperatureUnit.DegreeCelsius),
+                    FeelsLike = new Temperature(26, TemperatureUnit.DegreeCelsius),
+                    Pressure = new Pressure(1000, PressureUnit.Hectopascal),
+                    Humidity = new RelativeHumidity(50, RelativeHumidityUnit.Percent),
+                    DewPoint = new Temperature(3.4, TemperatureUnit.DegreeCelsius),
                     UVIndex = new UVIndex(6.5d),
                     Weather = WeatherConditions.GetTestWeatherConditions().Take(1).ToList(),
                 },
@@ -2028,25 +2030,25 @@ namespace WeatherDisplay.Tests.Testdata
                         MoonPhase = 0.47d,
                         Temperature = new DailyTemperatureForecast
                         {
-                            Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                            Min = new Temperature(6.32d, TemperatureUnit.Celsius),
-                            Max = new Temperature(15.85d, TemperatureUnit.Celsius),
-                            Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                            Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                            Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                            Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                            Min = new Temperature(6.32d, TemperatureUnit.DegreeCelsius),
+                            Max = new Temperature(15.85d, TemperatureUnit.DegreeCelsius),
+                            Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                            Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                            Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
                         FeelsLike = new DailyFeelsLikeForecast
                         {
-                            Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                            Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                            Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                            Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                            Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                            Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                            Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                            Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
-                        Pressure = 1025,
-                        Humidity = 63,
-                        DewPoint = new Temperature(7.7d, TemperatureUnit.Celsius),
+                        Pressure = new Pressure(1025, PressureUnit.Hectopascal),
+                        Humidity = new RelativeHumidity(63, RelativeHumidityUnit.Percent),
+                        DewPoint = new Temperature(7.7d, TemperatureUnit.DegreeCelsius),
                         WindSpeed = 3.85d,
-                        WindDirection = 42,
+                        WindDirection = new Angle(42, AngleUnit.Degree),
                         WindGust = 7.82d,
                         Weather = new List<WeatherCondition>
                         {
@@ -2073,25 +2075,25 @@ namespace WeatherDisplay.Tests.Testdata
                         MoonPhase = 0.5d,
                         Temperature = new DailyTemperatureForecast
                         {
-                            Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                            Min = new Temperature(6.32d, TemperatureUnit.Celsius),
-                            Max = new Temperature(15.85d, TemperatureUnit.Celsius),
-                            Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                            Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                            Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                            Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                            Min = new Temperature(6.32d, TemperatureUnit.DegreeCelsius),
+                            Max = new Temperature(15.85d, TemperatureUnit.DegreeCelsius),
+                            Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                            Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                            Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
                         FeelsLike = new DailyFeelsLikeForecast
                         {
-                            Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                            Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                            Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                            Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                            Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                            Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                            Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                            Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
-                        Pressure = 1034,
-                        Humidity = 77,
-                        DewPoint = new Temperature(3.45d, TemperatureUnit.Celsius),
+                        Pressure = new Pressure(1034, PressureUnit.Hectopascal),
+                        Humidity = new RelativeHumidity(77, RelativeHumidityUnit.Percent),
+                        DewPoint = new Temperature(3.45d, TemperatureUnit.DegreeCelsius),
                         WindSpeed = 5.02d,
-                        WindDirection = 60,
+                        WindDirection = new Angle(60, AngleUnit.Degree),
                         WindGust = 9.32d,
                         Weather = new List<WeatherCondition>
                         {
@@ -2117,25 +2119,25 @@ namespace WeatherDisplay.Tests.Testdata
                         MoonPhase = 0.54d,
                         Temperature = new DailyTemperatureForecast
                         {
-                            Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                            Min = new Temperature(6.32d, TemperatureUnit.Celsius),
-                            Max = new Temperature(15.85d, TemperatureUnit.Celsius),
-                            Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                            Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                            Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                            Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                            Min = new Temperature(6.32d, TemperatureUnit.DegreeCelsius),
+                            Max = new Temperature(15.85d, TemperatureUnit.DegreeCelsius),
+                            Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                            Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                            Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
                         FeelsLike = new DailyFeelsLikeForecast
                         {
-                            Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                            Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                            Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                            Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                            Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                            Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                            Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                            Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
-                        Pressure = 1029,
-                        Humidity = 59,
-                        DewPoint = new Temperature(1.55d, TemperatureUnit.Celsius),
+                        Pressure = new Pressure(1029, PressureUnit.Hectopascal),
+                        Humidity = new RelativeHumidity(59, RelativeHumidityUnit.Percent),
+                        DewPoint = new Temperature(1.55d, TemperatureUnit.DegreeCelsius),
                         WindSpeed = 3.58d,
-                        WindDirection = 61,
+                        WindDirection = new Angle(61, AngleUnit.Degree),
                         WindGust = 7.48d,
                         Weather = new List<WeatherCondition>
                         {
@@ -2161,25 +2163,25 @@ namespace WeatherDisplay.Tests.Testdata
                         MoonPhase = 0.58d,
                         Temperature = new DailyTemperatureForecast
                         {
-                        Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                        Min = new Temperature(6.32d, TemperatureUnit.Celsius),
-                        Max = new Temperature(15.85d, TemperatureUnit.Celsius),
-                        Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                        Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                        Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                        Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                        Min = new Temperature(6.32d, TemperatureUnit.DegreeCelsius),
+                        Max = new Temperature(15.85d, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
                         FeelsLike = new DailyFeelsLikeForecast
                         {
-                        Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                        Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                        Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                        Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                        Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
-                        Pressure = 1026,
-                        Humidity = 34,
-                        DewPoint = new Temperature(-2.23d, TemperatureUnit.Celsius),
+                        Pressure = new Pressure(1026, PressureUnit.Hectopascal),
+                        Humidity = new RelativeHumidity(34, RelativeHumidityUnit.Percent),
+                        DewPoint = new Temperature(-2.23d, TemperatureUnit.DegreeCelsius),
                         WindSpeed = 2.38d,
-                        WindDirection = 155,
+                        WindDirection = new Angle(155, AngleUnit.Degree),
                         WindGust = 3.04d,
                         Weather = new List<WeatherCondition>
                         {
@@ -2205,25 +2207,25 @@ namespace WeatherDisplay.Tests.Testdata
                         MoonPhase = 0.61d,
                         Temperature = new DailyTemperatureForecast
                         {
-                            Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                            Min = new Temperature(6.32d, TemperatureUnit.Celsius),
-                            Max = new Temperature(15.85d, TemperatureUnit.Celsius),
-                            Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                            Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                            Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                            Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                            Min = new Temperature(6.32d, TemperatureUnit.DegreeCelsius),
+                            Max = new Temperature(15.85d, TemperatureUnit.DegreeCelsius),
+                            Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                            Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                            Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
                         FeelsLike = new DailyFeelsLikeForecast
                         {
-                            Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                            Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                            Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                            Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                            Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                            Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                            Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                            Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
-                        Pressure = 1030,
-                        Humidity = 35,
-                        DewPoint = new Temperature(-1.93d, TemperatureUnit.Celsius),
+                        Pressure = new Pressure(1030, PressureUnit.Hectopascal),
+                        Humidity = new RelativeHumidity(35, RelativeHumidityUnit.Percent),
+                        DewPoint = new Temperature(-1.93d, TemperatureUnit.DegreeCelsius),
                         WindSpeed = 2.11d,
-                        WindDirection = 158,
+                        WindDirection = new Angle(158, AngleUnit.Degree),
                         WindGust = 2.51d,
                         Weather = new List<WeatherCondition>
                         {
@@ -2249,25 +2251,25 @@ namespace WeatherDisplay.Tests.Testdata
                         MoonPhase = 0.65d,
                         Temperature = new DailyTemperatureForecast
                         {
-                        Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                        Min = new Temperature(6.32d, TemperatureUnit.Celsius),
-                        Max = new Temperature(15.85d, TemperatureUnit.Celsius),
-                        Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                        Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                        Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                        Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                        Min = new Temperature(6.32d, TemperatureUnit.DegreeCelsius),
+                        Max = new Temperature(15.85d, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
                         FeelsLike = new DailyFeelsLikeForecast
                         {
-                        Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                        Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                        Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                        Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                        Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
-                        Pressure = 1027,
-                        Humidity = 41,
-                        DewPoint = new Temperature(-0.3d, TemperatureUnit.Celsius),
+                        Pressure = new Pressure(1027, PressureUnit.Hectopascal),
+                        Humidity = new RelativeHumidity(41, RelativeHumidityUnit.Percent),
+                        DewPoint = new Temperature(-0.3d, TemperatureUnit.DegreeCelsius),
                         WindSpeed = 2d,
-                        WindDirection = 163,
+                        WindDirection = new Angle(163, AngleUnit.Degree),
                         WindGust = 1.92d,
                         Weather = new List<WeatherCondition>
                         {
@@ -2293,25 +2295,25 @@ namespace WeatherDisplay.Tests.Testdata
                         MoonPhase = 0.69d,
                         Temperature = new DailyTemperatureForecast
                         {
-                        Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                        Min = new Temperature(6.32d, TemperatureUnit.Celsius),
-                        Max = new Temperature(15.85d, TemperatureUnit.Celsius),
-                        Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                        Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                        Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                        Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                        Min = new Temperature(6.32d, TemperatureUnit.DegreeCelsius),
+                        Max = new Temperature(15.85d, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
                         FeelsLike = new DailyFeelsLikeForecast
                         {
-                        Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                        Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                        Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                        Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                        Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
-                        Pressure = 1025,
-                        Humidity = 30,
-                        DewPoint = new Temperature(-3.29d, TemperatureUnit.Celsius),
+                        Pressure = new Pressure(1025, PressureUnit.Hectopascal),
+                        Humidity = new RelativeHumidity(30, RelativeHumidityUnit.Percent),
+                        DewPoint = new Temperature(-3.29d, TemperatureUnit.DegreeCelsius),
                         WindSpeed = 1.9d,
-                        WindDirection = 163,
+                        WindDirection = new Angle(163, AngleUnit.Degree),
                         WindGust = 1.85d,
                         Weather = new List<WeatherCondition>
                         {
@@ -2337,25 +2339,25 @@ namespace WeatherDisplay.Tests.Testdata
                         MoonPhase = 0.72d,
                         Temperature = new DailyTemperatureForecast
                         {
-                        Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                        Min = new Temperature(6.32d, TemperatureUnit.Celsius),
-                        Max = new Temperature(15.85d, TemperatureUnit.Celsius),
-                        Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                        Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                        Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                        Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                        Min = new Temperature(6.32d, TemperatureUnit.DegreeCelsius),
+                        Max = new Temperature(15.85d, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
                         FeelsLike = new DailyFeelsLikeForecast
                         {
-                        Day = new Temperature(14.66d, TemperatureUnit.Celsius),
-                        Night = new Temperature(8.95d, TemperatureUnit.Celsius),
-                        Evening = new Temperature(13.64d, TemperatureUnit.Celsius),
-                        Morning = new Temperature(6.39d, TemperatureUnit.Celsius),
+                        Day = new Temperature(14.66d, TemperatureUnit.DegreeCelsius),
+                        Night = new Temperature(8.95d, TemperatureUnit.DegreeCelsius),
+                        Evening = new Temperature(13.64d, TemperatureUnit.DegreeCelsius),
+                        Morning = new Temperature(6.39d, TemperatureUnit.DegreeCelsius),
                         },
-                        Pressure = 1025,
-                        Humidity = 37,
-                        DewPoint = new Temperature(0.06d, TemperatureUnit.Celsius),
+                        Pressure = new Pressure(1025, PressureUnit.Hectopascal),
+                        Humidity = new RelativeHumidity(37, RelativeHumidityUnit.Percent),
+                        DewPoint = new Temperature(0.06d, TemperatureUnit.DegreeCelsius),
                         WindSpeed = 1.81d,
-                        WindDirection = 173,
+                        WindDirection = new Angle(173, AngleUnit.Degree),
                         WindGust = 1.62d,
                         Weather = new List<WeatherCondition>
                         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using OpenWeatherMap;
 using OpenWeatherMap.Models;
+using UnitsNet;
 
 namespace WeatherDisplay.Tests.Testdata
 {
@@ -12,7 +13,7 @@ namespace WeatherDisplay.Tests.Testdata
 
         internal static WeatherInfo GetTestWeatherInfo()
         {
-            return GetTestWeatherInfo(Temperature.FromCelsius(5.5d));
+            return GetTestWeatherInfo(Temperature.FromDegreesCelsius(5.5d));
         }
 
         internal static string GetTestWeatherInfoJson()
@@ -31,11 +32,11 @@ namespace WeatherDisplay.Tests.Testdata
                 Main = new TemperatureInfo
                 {
                     Temperature = mainTemperature,
-                    Humidity = 35,
-                    Pressure = 998,
+                    Humidity = RelativeHumidity.FromPercent(35),
+                    Pressure = Pressure.FromHectopascals(998),
                     FeelsLike = mainTemperature,
-                    MinimumTemperature = mainTemperature - 10,
-                    MaximumTemperature = mainTemperature + 10,
+                    MinimumTemperature = new Temperature(mainTemperature.Value - 10, mainTemperature.Unit),
+                    MaximumTemperature = new Temperature(mainTemperature.Value + 10, mainTemperature.Unit),
                 },
                 Weather = new List<WeatherCondition>
                 {

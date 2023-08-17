@@ -6,7 +6,9 @@ using DisplayService.Tests.Services;
 using OpenWeatherMap;
 using OpenWeatherMap.Models;
 using SkiaSharp;
+using UnitsNet;
 using WeatherDisplay.Extensions;
+using WeatherDisplay.Pages.OpenWeatherMap;
 using WeatherDisplay.Tests.Logging;
 using Xunit;
 using Xunit.Abstractions;
@@ -44,11 +46,6 @@ namespace WeatherDisplay.Tests
             var canvas = new SKCanvas(screen);
 
             var temperatureDiagram = new TemperatureDiagram();
-
-            static (Temperature Min, Temperature Max) temperatureRangeSelector(IEnumerable<TemperatureSet> s)
-            {
-                return (s.Min(x => x.Min) - 1, s.Max(x => x.Max) + 1);
-            }
 
             var latitude = 49.2178194d;
             var longitude = 12.6663832d;
@@ -129,7 +126,7 @@ namespace WeatherDisplay.Tests
             var temperatureDiagramOptions = TemperatureDiagramOptions.Default;
 
             // Act
-            temperatureDiagram.Draw(canvas, screen.Width, screen.Height, temperatureSets, precipitation, temperatureRangeSelector, now, temperatureDiagramOptions);
+            temperatureDiagram.Draw(canvas, screen.Width, screen.Height, temperatureSets, precipitation, TemperatureDiagramPage.TemperatureRangeSelector, now, temperatureDiagramOptions);
 
             // Assert
             var bitmapStream = screen.ToStream();
