@@ -15,7 +15,6 @@ using NCrontab;
 using OpenWeatherMap;
 using OpenWeatherMap.Extensions;
 using OpenWeatherMap.Models;
-using RaspberryPi;
 using UnitsNet;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.Settings;
@@ -135,12 +134,11 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                         };
 
                         var oneCallWeatherInfo = await this.openWeatherMapService.GetWeatherOneCallAsync(this.currentPlace.Latitude, this.currentPlace.Longitude, oneCallOptions);
-
+                        var currentWeather = oneCallWeatherInfo.CurrentWeather;
                         var dailyForecasts = oneCallWeatherInfo.DailyForecasts.ToList();
                         var dailyForecastToday = dailyForecasts.OrderBy(f => f.DateTime).First();
 
-                        var currentWeatherInfo = oneCallWeatherInfo.CurrentWeather;
-                        var currentWeatherCondition = currentWeatherInfo.Weather.First();
+                        var currentWeatherCondition = currentWeather.Weather.First();
                         var currentWeatherImage = await this.openWeatherMapService.GetWeatherIconAsync(currentWeatherCondition, this.weatherIconMapping);
 
                         var dateTimeNow = this.dateTime.Now;
@@ -194,7 +192,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                     HorizontalTextAlignment = HorizontalAlignment.Left,
                                     VerticalTextAlignment = VerticalAlignment.Center,
                                     VerticalAlignment = VerticalAlignment.Center,
-                                    Value = currentWeatherInfo.Temperature.ToString("N0"),
+                                    Value = currentWeather.Temperature.Value.ToString("N0"),
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 70,
@@ -207,7 +205,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                     HorizontalTextAlignment = HorizontalAlignment.Left,
                                     VerticalTextAlignment = VerticalAlignment.Bottom,
                                     VerticalAlignment = VerticalAlignment.Center,
-                                    Value = $"{currentWeatherInfo.Temperature:U}",
+                                    Value = $"{currentWeather.Temperature:A}",
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 35,
@@ -219,7 +217,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                     X = -30,
                                     HorizontalTextAlignment = HorizontalAlignment.Left,
                                     VerticalTextAlignment = VerticalAlignment.Bottom,
-                                    Value = $"/ {dailyForecastToday.Humidity} {Translations.RelativeHumiditySuffix}",
+                                    Value = $"/ {currentWeather.Humidity.Value:0}% {Translations.RelativeHumiditySuffix}",
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 20,
@@ -232,9 +230,9 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                         // Display local temperature and humidity if the selected place is current place
                         // and the temperature sensor is present
 
-                        UnitsNet.Temperature localTemperature = default;
-                        UnitsNet.RelativeHumidity localHumidity = default;
-                        UnitsNet.VolumeConcentration co2 = default;
+                        Temperature localTemperature = default;
+                        RelativeHumidity localHumidity = default;
+                        VolumeConcentration co2 = default;
 
                         if (this.currentPlace.IsCurrentPlace)
                         {
@@ -332,11 +330,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 .ThenBy(a => a.StartTime)
                                 .First();
 
-                            var alertDisplayText = $"{mostImportantAlert.Description}";
-                            if (oneCallWeatherInfo.Alerts.Count > 1)
-                            {
-                                alertDisplayText += $" (+{oneCallWeatherInfo.Alerts.Count - 1})";
-                            }
+                            var alertDisplayText = mostImportantAlert.EventName.Substring(mostImportantAlert.EventName.IndexOf(' ')).Trim();
 
                             try
                             {
@@ -349,6 +343,16 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             catch
                             {
                                 // Ignored
+                            }
+
+                            if (alertDisplayText.Length > 25)
+                            {
+                                alertDisplayText = $"{alertDisplayText.Substring(0, 22)}...";
+                            }
+
+                            if (oneCallWeatherInfo.Alerts.Count > 1)
+                            {
+                                alertDisplayText += $" (+{oneCallWeatherInfo.Alerts.Count - 1})";
                             }
 
                             currentWeatherRenderActions.AddRange(new IRenderAction[]
@@ -394,14 +398,15 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 20,
                                 });
+                        }
 
-                            var airPollutionInfo = await this.openWeatherMapService.GetAirPollutionAsync(this.currentPlace.Latitude, this.currentPlace.Longitude);
-                            if (airPollutionInfo.Items.FirstOrDefault() is AirPollutionInfoItem airPollutionInfoItem)
+                        var airPollutionInfo = await this.openWeatherMapService.GetAirPollutionAsync(this.currentPlace.Latitude, this.currentPlace.Longitude);
+                        if (airPollutionInfo.Items.FirstOrDefault() is AirPollutionInfoItem airPollutionInfoItem)
+                        {
+                            var airPollutionInfoText = $"{Translations.AirQualityLabelText}: {airPollutionInfoItem.Main.AirQuality:N}";
+
+                            currentWeatherRenderActions.AddRange(new IRenderAction[]
                             {
-                                var airPollutionInfoText = $"{Translations.AirQualityLabelText}: {airPollutionInfoItem.Main.AirQuality:N}";
-
-                                currentWeatherRenderActions.AddRange(new IRenderAction[]
-                                {
                                     new RenderActions.Text
                                     {
                                         X = 360 + 12,
@@ -420,7 +425,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                         Y = 300 + 24,
                                         HorizontalTextAlignment = HorizontalAlignment.Center,
                                         VerticalTextAlignment = VerticalAlignment.Bottom,
-                                        Value = dailyForecastToday.UVIndex.ToString("F0"),
+                                        Value = oneCallWeatherInfo.CurrentWeather.UVIndex.ToString("F0"),
                                         ForegroundColor = "#000000",
                                         BackgroundColor = "#FFFFFF",
                                         FontSize = 14,
@@ -433,7 +438,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                         AdjustsFontSizeToFitWidth = true,
                                         HorizontalTextAlignment = HorizontalAlignment.Left,
                                         VerticalTextAlignment = VerticalAlignment.Top,
-                                        Value = dailyForecastToday.UVIndex.Range.ToString("N"),
+                                        Value = currentWeather.UVIndex.Range.ToString("N"),
                                         ForegroundColor = "#000000",
                                         BackgroundColor = "#FFFFFF",
                                         FontSize = 20,
@@ -460,8 +465,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                         BackgroundColor = "#FFFFFF",
                                         FontSize = 20,
                                     }
-                                });
-                            }
+                            });
                         }
 
                         currentWeatherRenderActions.AddRange(new IRenderAction[]
@@ -483,7 +487,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 Y = 140 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{dailyForecastToday.Sunrise.ToUniversalTime().WithOffset(oneCallWeatherInfo.TimezoneOffset):t}",
+                                Value = $"{currentWeather.Sunrise.ToUniversalTime().WithOffset(oneCallWeatherInfo.TimezoneOffset):t}",
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -507,7 +511,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 Y = 180 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{dailyForecastToday.Sunset.ToUniversalTime().WithOffset(oneCallWeatherInfo.TimezoneOffset):t}",
+                                Value = $"{currentWeather.Sunset.ToUniversalTime().WithOffset(oneCallWeatherInfo.TimezoneOffset):t}",
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -579,7 +583,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 Y = 140 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{FormatRain(dailyForecastToday.Rain)} ({dailyForecastToday.Pop * 100:0}%)",
+                                Value = $"{FormatPrecipitation(dailyForecastToday.Rain)} ({dailyForecastToday.Pop})",
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -603,7 +607,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 Y = 180 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{dailyForecastToday.WindSpeed:0}m/s ({dailyForecastToday.WindDirection.GetSecondaryIntercardinalWindDirection().ToString("A")})",
+                                Value = $"{currentWeather.WindSpeed:N1} ({currentWeather.WindDirection.ToIntercardinalWindDirection():A})",
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -627,7 +631,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 Y = 220 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{dailyForecastToday.Pressure} ({dailyForecastToday.Pressure.GetRange():N})",
+                                Value = $"{currentWeather.Pressure} ({currentWeather.Pressure.GetRange():N})",
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -760,7 +764,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                     Y = 450,
                                     HorizontalTextAlignment = HorizontalAlignment.Center,
                                     VerticalTextAlignment = VerticalAlignment.Top,
-                                    Value = $"{dailyWeatherForecast.Temperature.Min.Value:F0}/{dailyWeatherForecast.Temperature.Max:F0}{dailyWeatherForecast.Temperature.Max:U}",
+                                    Value = $"{dailyWeatherForecast.Temperature.Min.Value:N0}/{dailyWeatherForecast.Temperature.Max.Value:N0}{dailyWeatherForecast.Temperature.Max:A0}",
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 20,
@@ -839,9 +843,10 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
             return Task.CompletedTask;
         }
 
-        private static string FormatRain(double rain)
+        private static string FormatPrecipitation(Length precipitation)
         {
-            return rain > 0d && rain < 1d ? $"{rain:F1}mm" : $"{rain:0}mm";
+            var prefix = precipitation.Value > 0d && precipitation.Value < 1d ? "< " : "";
+            return $"{prefix}{precipitation:N0}";
         }
 
         private static string FormatTemperature(Temperature temperature)
