@@ -8,10 +8,12 @@ using DisplayService.Resources;
 using DisplayService.Services;
 using Iot.Device.Bmxx80;
 using Iot.Device.Scd4x;
+using MeteoSwissApi;
+using MeteoSwissApi.Extensions;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NCrontab;
-using MeteoSwissApi;
+using UnitsNet;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Resources;
@@ -19,7 +21,6 @@ using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
 using Place = WeatherDisplay.Pages.MeteoSwiss.MeteoSwissPlace;
-using UnitsNet;
 
 namespace WeatherDisplay.Pages.MeteoSwiss
 {
@@ -56,6 +57,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             this.sensorAccessService = sensorAccessService;
         }
 
+        [Obsolete]
         public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
             var places = this.options.CurrentValue.Places.ToList();
@@ -71,7 +73,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var weatherStation = (await this.swissMetNetService.GetWeatherStationAsync(this.currentPlace.WeatherStation));
+                    var weatherStation = await this.swissMetNetService.GetWeatherStationAsync(this.currentPlace.WeatherStation);
 
                     var assembly = Assembly.GetExecutingAssembly();
                     var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
@@ -499,7 +501,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 Y = 180 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{latestMeasurement.WindSpeed} ({latestMeasurement.WindDirection})", // TODO: GetSecondaryIntercardinalWindDirection
+                                Value = this.FormatWind(latestMeasurement.WindSpeed, latestMeasurement.WindDirection),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -523,7 +525,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 Y = 220 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{latestMeasurement.PressureQFE.Value.ToString("N0")}", // ({latestMeasurement.Pressure.Range:N})",
+                                Value = $"{latestMeasurement.PressureQFE.Value:N0}", // ({latestMeasurement.Pressure.Range:N})",
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -727,6 +729,21 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             }
 
             return Task.CompletedTask;
+        }
+
+        private string FormatWind(Speed? windSpeed, Angle? windDirection)
+        {
+            if (windSpeed is null)
+            {
+                windSpeed = Speed.FromKilometersPerHour(0d);
+            }
+
+            if (windDirection is null || windSpeed.Value.Value == 0d)
+            {
+                return $"{windSpeed}";
+            }
+
+            return $"{windSpeed} ({windDirection.Value.ToIntercardinalWindDirection()})";
         }
 
         public Task OnNavigatedFromAsync(INavigationParameters parameters)
