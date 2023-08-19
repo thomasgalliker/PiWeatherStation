@@ -80,12 +80,14 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
             this.openWeatherMapServiceMock = this.autoMocker.GetMock<IOpenWeatherMapService>();
             this.openWeatherMapServiceMock.Setup(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()))
                 .ReturnsAsync(OneCallWeatherInfos.GetTestWeatherInfo());
+            this.openWeatherMapServiceMock.Setup(w => w.GetAirPollutionAsync(It.IsAny<double>(), It.IsAny<double>()))
+                .ReturnsAsync(AirPollutionInfos.GetTestAirPollutionInfo());
             this.openWeatherMapServiceMock.Setup(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()))
                 .ReturnsAsync(Icons.Sun);
 
             var bme680Mock = this.autoMocker.GetMock<IBme680>();
             bme680Mock.Setup(b => b.ReadAsync())
-                .ReturnsAsync(new Bme680ReadResult(UnitsNet.Temperature.FromDegreesCelsius(20), null, UnitsNet.RelativeHumidity.FromPercent(50), null));
+                .ReturnsAsync(new Bme680ReadResult(Temperature.FromDegreesCelsius(20), null, RelativeHumidity.FromPercent(50), null));
 
             var sensorAccessServiceMock = this.autoMocker.GetMock<ISensorAccessService>();
             sensorAccessServiceMock.SetupGet(f => f.Bme680)
@@ -128,6 +130,7 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
             this.testHelper.WriteFile(bitmapStream);
 
             this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(4));
+            this.openWeatherMapServiceMock.Verify(w => w.GetAirPollutionAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(4));
             this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(32));
             this.openWeatherMapServiceMock.VerifyNoOtherCalls();
         }
@@ -163,6 +166,7 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
             this.testHelper.WriteFile(bitmapStream);
 
             this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(4));
+            this.openWeatherMapServiceMock.Verify(w => w.GetAirPollutionAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(4));
             this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(32));
             this.openWeatherMapServiceMock.VerifyNoOtherCalls();
         }
@@ -202,6 +206,7 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
             this.testHelper.WriteFile(bitmapStream);
 
             this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(4));
+            this.openWeatherMapServiceMock.Verify(w => w.GetAirPollutionAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(4));
             this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(32));
             this.openWeatherMapServiceMock.VerifyNoOtherCalls();
         }
@@ -240,6 +245,7 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
             this.testHelper.WriteFile(bitmapStream);
 
             this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(72));
+            this.openWeatherMapServiceMock.Verify(w => w.GetAirPollutionAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(72));
             this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(576));
             this.openWeatherMapServiceMock.VerifyNoOtherCalls();
         }
@@ -282,6 +288,7 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
             this.testHelper.WriteFile(bitmapStream);
 
             this.openWeatherMapServiceMock.Verify(w => w.GetWeatherOneCallAsync(It.IsAny<double>(), It.IsAny<double>(), It.IsAny<OneCallOptions>()), Times.Exactly(365));
+            this.openWeatherMapServiceMock.Verify(w => w.GetAirPollutionAsync(It.IsAny<double>(), It.IsAny<double>()), Times.Exactly(365));
             this.openWeatherMapServiceMock.Verify(w => w.GetWeatherIconAsync(It.IsAny<WeatherCondition>(), It.IsAny<IWeatherIconMapping>()), Times.Exactly(2920));
             this.openWeatherMapServiceMock.VerifyNoOtherCalls();
         }

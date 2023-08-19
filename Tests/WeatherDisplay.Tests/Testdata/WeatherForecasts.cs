@@ -24,8 +24,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-14T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 59d,
-                        Today = 0d
+                        All = new Ratio(59d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -52,7 +52,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(160, AngleUnit.Degree),
-                        Speed = 1.29d
+                        Speed = new Speed(1.29d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -60,8 +60,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 49d,
-                        Today = 0d
+                        All = new Ratio(49d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -88,7 +88,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(198, AngleUnit.Degree),
-                        Speed = 1.52d
+                        Speed = new Speed(1.52d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -96,8 +96,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 25d,
-                        Today = 0d
+                        All = new Ratio(25d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -124,7 +124,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(179, AngleUnit.Degree),
-                        Speed = 1.72d
+                        Speed = new Speed(1.72d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -132,8 +132,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 6d,
-                        Today = 0d
+                        All = new Ratio(6d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -160,7 +160,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(216, AngleUnit.Degree),
-                        Speed = 0.73d
+                        Speed = new Speed(0.73d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -168,8 +168,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 29d,
-                        Today = 0d
+                        All = new Ratio(29d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = new RainInformation
                         {
@@ -200,7 +200,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(299, AngleUnit.Degree),
-                        Speed = 1.07d
+                        Speed = new Speed(1.07d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -208,8 +208,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 25d,
-                        Today = 0d
+                        All = new Ratio(25d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -236,7 +236,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(280, AngleUnit.Degree),
-                        Speed = 3.2d
+                        Speed = new Speed(3.2d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -244,8 +244,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 37d,
-                        Today = 0d
+                        All = new Ratio(37d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -272,7 +272,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(285, AngleUnit.Degree),
-                        Speed = 3.24d
+                        Speed = new Speed(3.24d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -280,8 +280,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 28d,
-                        Today = 0d
+                        All = new Ratio(28d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = new RainInformation
                         {
@@ -312,7 +312,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(17, AngleUnit.Degree),
-                        Speed = 1.24d
+                        Speed = new Speed(1.24d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -320,8 +320,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-15T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 39d,
-                        Today = 0d
+                        All = new Ratio(39d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = new RainInformation
                         {
@@ -352,7 +352,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(201, AngleUnit.Degree),
-                        Speed = 2.94d
+                        Speed = new Speed(2.94d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -360,8 +360,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 23d,
-                        Today = 0d
+                        All = new Ratio(23d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = new RainInformation
                         {
@@ -392,7 +392,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(197, AngleUnit.Degree),
-                        Speed = 2.63d
+                        Speed = new Speed(2.63d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -400,8 +400,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 14d,
-                        Today = 0d
+                        All = new Ratio(14d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -428,7 +428,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(203, AngleUnit.Degree),
-                        Speed = 1.99d
+                        Speed = new Speed(1.99d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -436,8 +436,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 13d,
-                        Today = 0d
+                        All = new Ratio(13d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = new RainInformation
                         {
@@ -468,7 +468,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(218, AngleUnit.Degree),
-                        Speed = 1.2d
+                        Speed = new Speed(1.2d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -476,8 +476,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 7d,
-                        Today = 0d
+                        All = new Ratio(7d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = new RainInformation
                         {
@@ -508,7 +508,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(286, AngleUnit.Degree),
-                        Speed = 1.76d
+                        Speed = new Speed(1.76d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -516,8 +516,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 37d,
-                        Today = 0d
+                        All = new Ratio(37d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = new RainInformation
                         {
@@ -548,7 +548,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(302, AngleUnit.Degree),
-                        Speed = 2.81d
+                        Speed = new Speed(2.81d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -556,8 +556,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 87d,
-                        Today = 0d
+                        All = new Ratio(87d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -584,7 +584,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(338, AngleUnit.Degree),
-                        Speed = 1.98d
+                        Speed = new Speed(1.98d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -592,8 +592,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 62d,
-                        Today = 0d
+                        All = new Ratio(62d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -620,7 +620,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(335, AngleUnit.Degree),
-                        Speed = 1.29d
+                        Speed = new Speed(1.29d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -628,8 +628,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-16T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 96d,
-                        Today = 0d
+                        All = new Ratio(96d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -656,7 +656,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(179, AngleUnit.Degree),
-                        Speed = 1.25d
+                        Speed = new Speed(1.25d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -664,8 +664,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 79d,
-                        Today = 0d
+                        All = new Ratio(79d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -692,7 +692,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(168, AngleUnit.Degree),
-                        Speed = 1.22d
+                        Speed = new Speed(1.22d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -700,8 +700,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 37d,
-                        Today = 0d
+                        All = new Ratio(37d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -728,7 +728,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(173, AngleUnit.Degree),
-                        Speed = 1.53d
+                        Speed = new Speed(1.53d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -736,8 +736,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 64d,
-                        Today = 0d
+                        All = new Ratio(64d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -764,7 +764,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(91, AngleUnit.Degree),
-                        Speed = 0.41d
+                        Speed = new Speed(0.41d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -772,8 +772,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 68d,
-                        Today = 0d
+                        All = new Ratio(68d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -800,7 +800,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(41, AngleUnit.Degree),
-                        Speed = 1.29d
+                        Speed = new Speed(1.29d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -808,8 +808,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 71d,
-                        Today = 0d
+                        All = new Ratio(71d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -836,7 +836,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(8, AngleUnit.Degree),
-                        Speed = 2.43d
+                        Speed = new Speed(2.43d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -844,8 +844,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 55d,
-                        Today = 0d
+                        All = new Ratio(55d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -872,7 +872,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(28, AngleUnit.Degree),
-                        Speed = 1.81d
+                        Speed = new Speed(1.81d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -880,8 +880,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 61d,
-                        Today = 0d
+                        All = new Ratio(61d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -908,7 +908,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(96, AngleUnit.Degree),
-                        Speed = 0.77d
+                        Speed = new Speed(0.77d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -916,8 +916,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-17T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 93d,
-                        Today = 0d
+                        All = new Ratio(93d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -944,7 +944,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(171, AngleUnit.Degree),
-                        Speed = 1.6d
+                        Speed = new Speed(1.6d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -952,8 +952,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 93d,
-                        Today = 0d
+                        All = new Ratio(93d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -980,7 +980,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(162, AngleUnit.Degree),
-                        Speed = 1.59d
+                        Speed = new Speed(1.59d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -988,8 +988,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 35d,
-                        Today = 0d
+                        All = new Ratio(35d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1016,7 +1016,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(157, AngleUnit.Degree),
-                        Speed = 1.74d
+                        Speed = new Speed(1.74d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -1024,8 +1024,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 23d,
-                        Today = 0d
+                        All = new Ratio(23d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1052,7 +1052,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(108, AngleUnit.Degree),
-                        Speed = 0.95d
+                        Speed = new Speed(0.95d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -1060,8 +1060,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 1d,
-                        Today = 0d
+                        All = new Ratio(1d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1088,7 +1088,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(53, AngleUnit.Degree),
-                        Speed = 2.06d
+                        Speed = new Speed(2.06d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -1096,8 +1096,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 1d,
-                        Today = 0d
+                        All = new Ratio(1d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1124,7 +1124,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(56, AngleUnit.Degree),
-                        Speed = 3.13d
+                        Speed = new Speed(3.13d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -1132,8 +1132,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 0d,
-                        Today = 0d
+                        All = new Ratio(0d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1160,7 +1160,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(51, AngleUnit.Degree),
-                        Speed = 3.19d
+                        Speed = new Speed(3.19d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -1168,8 +1168,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 0d,
-                        Today = 0d
+                        All = new Ratio(0d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1196,7 +1196,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(59, AngleUnit.Degree),
-                        Speed = 0.32d
+                        Speed = new Speed(0.32d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -1204,8 +1204,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-18T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 0d,
-                        Today = 0d
+                        All = new Ratio(0d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1232,7 +1232,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(184, AngleUnit.Degree),
-                        Speed = 2.14d
+                        Speed = new Speed(2.14d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -1240,8 +1240,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-19T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 1d,
-                        Today = 0d
+                        All = new Ratio(1d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1268,7 +1268,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(178, AngleUnit.Degree),
-                        Speed = 2.32d
+                        Speed = new Speed(2.32d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -1276,8 +1276,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-19T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 0d,
-                        Today = 0d
+                        All = new Ratio(0d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1304,7 +1304,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(187, AngleUnit.Degree),
-                        Speed = 2.32d
+                        Speed = new Speed(2.32d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -1312,8 +1312,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-19T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 0d,
-                        Today = 0d
+                        All = new Ratio(0d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1340,7 +1340,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(183, AngleUnit.Degree),
-                        Speed = 1.17d
+                        Speed = new Speed(1.17d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -1348,8 +1348,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-19T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 0d,
-                        Today = 0d
+                        All = new Ratio(0d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1376,7 +1376,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(306, AngleUnit.Degree),
-                        Speed = 1.19d
+                        Speed = new Speed(1.19d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -1384,8 +1384,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-19T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 0d,
-                        Today = 0d
+                        All = new Ratio(0d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = null,
                         Main = new TemperatureInfo
@@ -1412,7 +1412,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(315, AngleUnit.Degree),
-                        Speed = 2.03d
+                        Speed = new Speed(2.03d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -1420,8 +1420,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-19T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 24d,
-                        Today = 0d
+                        All = new Ratio(24d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = new RainInformation
                         {
@@ -1452,7 +1452,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(203, AngleUnit.Degree),
-                        Speed = 1.63d
+                        Speed = new Speed(1.63d, SpeedUnit.MeterPerSecond)
                         }
                     },
                     new WeatherForecastItem
@@ -1460,8 +1460,8 @@ namespace WeatherDisplay.Tests.Testdata
                         DateTime = DateTime.ParseExact("2022-06-19T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                         Clouds = new CloudsInformation
                         {
-                        All = 49d,
-                        Today = 0d
+                        All = new Ratio(49d, RatioUnit.Percent),
+                        Today = new Ratio(0d, RatioUnit.Percent)
                         },
                         Rain = new RainInformation
                         {
@@ -1492,7 +1492,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Wind = new WindInfo
                         {
                         Direction = new Angle(149, AngleUnit.Degree),
-                        Speed = 3.47d
+                        Speed = new Speed(3.47d, SpeedUnit.MeterPerSecond)
                         }
                     }
                 },
@@ -1531,8 +1531,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-14T22:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 56d,
-                            Today = 0d
+                            All = new Ratio(56d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1559,7 +1559,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(167, AngleUnit.Degree),
-                            Speed = 1.38d
+                            Speed = new Speed(1.38d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -1567,8 +1567,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-14T23:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 49d,
-                            Today = 0d
+                            All = new Ratio(49d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1595,7 +1595,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(176, AngleUnit.Degree),
-                            Speed = 1.45d
+                            Speed = new Speed(1.45d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -1603,8 +1603,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 41d,
-                            Today = 0d
+                            All = new Ratio(41d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1631,7 +1631,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(198, AngleUnit.Degree),
-                            Speed = 1.52d
+                            Speed = new Speed(1.52d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -1639,8 +1639,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T01:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 25d,
-                            Today = 0d
+                            All = new Ratio(25d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1667,7 +1667,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(196, AngleUnit.Degree),
-                            Speed = 1.75d
+                            Speed = new Speed(1.75d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -1675,8 +1675,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T02:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 11d,
-                            Today = 0d
+                            All = new Ratio(11d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1703,7 +1703,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(189, AngleUnit.Degree),
-                            Speed = 1.9d
+                            Speed = new Speed(1.9d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -1711,8 +1711,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 8d,
-                            Today = 0d
+                            All = new Ratio(8d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1739,7 +1739,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(179, AngleUnit.Degree),
-                            Speed = 1.72d
+                            Speed = new Speed(1.72d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -1747,8 +1747,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T04:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 6d,
-                            Today = 0d
+                            All = new Ratio(6d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1775,7 +1775,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(190, AngleUnit.Degree),
-                            Speed = 1.51d
+                            Speed = new Speed(1.51d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -1783,8 +1783,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T05:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 6d,
-                            Today = 0d
+                            All = new Ratio(6d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1811,7 +1811,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(199, AngleUnit.Degree),
-                            Speed = 1.27d
+                            Speed = new Speed(1.27d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -1819,8 +1819,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 6d,
-                            Today = 0d
+                            All = new Ratio(6d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1847,7 +1847,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(216, AngleUnit.Degree),
-                            Speed = 0.73d
+                            Speed = new Speed(0.73d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -1855,8 +1855,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T07:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 19d,
-                            Today = 0d
+                            All = new Ratio(19d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1883,7 +1883,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(286, AngleUnit.Degree),
-                            Speed = 0.88d
+                            Speed = new Speed(0.88d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -1891,8 +1891,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T08:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 26d,
-                            Today = 0d
+                            All = new Ratio(26d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = new RainInformation
                           {
@@ -1923,7 +1923,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(289, AngleUnit.Degree),
-                            Speed = 0.98d
+                            Speed = new Speed(0.98d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -1931,8 +1931,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 29d,
-                            Today = 0d
+                            All = new Ratio(29d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1959,7 +1959,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(299, AngleUnit.Degree),
-                            Speed = 1.07d
+                            Speed = new Speed(1.07d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -1967,8 +1967,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T10:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 22d,
-                            Today = 0d
+                            All = new Ratio(22d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -1995,7 +1995,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(292, AngleUnit.Degree),
-                            Speed = 1.6d
+                            Speed = new Speed(1.6d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2003,8 +2003,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T11:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 20d,
-                            Today = 0d
+                            All = new Ratio(20d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2031,7 +2031,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(284, AngleUnit.Degree),
-                            Speed = 2.36d
+                            Speed = new Speed(2.36d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2039,8 +2039,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 25d,
-                            Today = 0d
+                            All = new Ratio(25d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2067,7 +2067,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(280, AngleUnit.Degree),
-                            Speed = 3.2d
+                            Speed = new Speed(3.2d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2075,8 +2075,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T13:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 44d,
-                            Today = 0d
+                            All = new Ratio(44d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2103,7 +2103,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(272, AngleUnit.Degree),
-                            Speed = 3.76d
+                            Speed = new Speed(3.76d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2111,8 +2111,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T14:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 51d,
-                            Today = 0d
+                            All = new Ratio(51d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2139,7 +2139,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(268, AngleUnit.Degree),
-                            Speed = 3.74d
+                            Speed = new Speed(3.74d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2147,8 +2147,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 37d,
-                            Today = 0d
+                            All = new Ratio(37d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2175,7 +2175,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(285, AngleUnit.Degree),
-                            Speed = 3.24d
+                            Speed = new Speed(3.24d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2183,8 +2183,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T16:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 30d,
-                            Today = 0d
+                            All = new Ratio(30d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2211,7 +2211,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(315, AngleUnit.Degree),
-                            Speed = 2.98d
+                            Speed = new Speed(2.98d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2219,8 +2219,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T17:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 25d,
-                            Today = 0d
+                            All = new Ratio(25d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2247,7 +2247,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(342, AngleUnit.Degree),
-                            Speed = 2.3d
+                            Speed = new Speed(2.3d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2255,8 +2255,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 28d,
-                            Today = 0d
+                            All = new Ratio(28d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = new RainInformation
                           {
@@ -2287,7 +2287,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(17, AngleUnit.Degree),
-                            Speed = 1.24d
+                            Speed = new Speed(1.24d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2295,8 +2295,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T19:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 10d,
-                            Today = 0d
+                            All = new Ratio(10d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = new RainInformation
                           {
@@ -2327,7 +2327,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(176, AngleUnit.Degree),
-                            Speed = 1.42d
+                            Speed = new Speed(1.42d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2335,8 +2335,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T20:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 18d,
-                            Today = 0d
+                            All = new Ratio(18d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = new RainInformation
                           {
@@ -2367,7 +2367,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(194, AngleUnit.Degree),
-                            Speed = 2.88d
+                            Speed = new Speed(2.88d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2375,8 +2375,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 39d,
-                            Today = 0d
+                            All = new Ratio(39d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = new RainInformation
                           {
@@ -2407,7 +2407,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(201, AngleUnit.Degree),
-                            Speed = 2.94d
+                            Speed = new Speed(2.94d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2415,8 +2415,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T22:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 31d,
-                            Today = 0d
+                            All = new Ratio(31d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = new RainInformation
                           {
@@ -2447,7 +2447,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(161, AngleUnit.Degree),
-                            Speed = 2.94d
+                            Speed = new Speed(2.94d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2455,8 +2455,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-15T23:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 26d,
-                            Today = 0d
+                            All = new Ratio(26d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = new RainInformation
                           {
@@ -2487,7 +2487,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(179, AngleUnit.Degree),
-                            Speed = 2.7d
+                            Speed = new Speed(2.7d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2495,8 +2495,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 23d,
-                            Today = 0d
+                            All = new Ratio(23d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = new RainInformation
                           {
@@ -2527,7 +2527,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(197, AngleUnit.Degree),
-                            Speed = 2.63d
+                            Speed = new Speed(2.63d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2535,8 +2535,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T01:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 9d,
-                            Today = 0d
+                            All = new Ratio(9d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2563,7 +2563,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(202, AngleUnit.Degree),
-                            Speed = 2.52d
+                            Speed = new Speed(2.52d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2571,8 +2571,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T02:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 18d,
-                            Today = 0d
+                            All = new Ratio(18d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2599,7 +2599,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(201, AngleUnit.Degree),
-                            Speed = 2.44d
+                            Speed = new Speed(2.44d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2607,8 +2607,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 14d,
-                            Today = 0d
+                            All = new Ratio(14d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2635,7 +2635,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(203, AngleUnit.Degree),
-                            Speed = 1.99d
+                            Speed = new Speed(1.99d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2643,8 +2643,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T04:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 13d,
-                            Today = 0d
+                            All = new Ratio(13d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2671,7 +2671,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(203, AngleUnit.Degree),
-                            Speed = 1.8d
+                            Speed = new Speed(1.8d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2679,8 +2679,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T05:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 14d,
-                            Today = 0d
+                            All = new Ratio(14d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2707,7 +2707,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(213, AngleUnit.Degree),
-                            Speed = 1.74d
+                            Speed = new Speed(1.74d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2715,8 +2715,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 13d,
-                            Today = 0d
+                            All = new Ratio(13d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = new RainInformation
                           {
@@ -2747,7 +2747,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(218, AngleUnit.Degree),
-                            Speed = 1.2d
+                            Speed = new Speed(1.2d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2755,8 +2755,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T07:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 2d,
-                            Today = 0d
+                            All = new Ratio(2d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2783,7 +2783,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(274, AngleUnit.Degree),
-                            Speed = 1.26d
+                            Speed = new Speed(1.26d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2791,8 +2791,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T08:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 7d,
-                            Today = 0d
+                            All = new Ratio(7d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = new RainInformation
                           {
@@ -2823,7 +2823,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(286, AngleUnit.Degree),
-                            Speed = 1.71d
+                            Speed = new Speed(1.71d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2831,8 +2831,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 7d,
-                            Today = 0d
+                            All = new Ratio(7d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = new RainInformation
                           {
@@ -2863,7 +2863,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(286, AngleUnit.Degree),
-                            Speed = 1.76d
+                            Speed = new Speed(1.76d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2871,8 +2871,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T10:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 8d,
-                            Today = 0d
+                            All = new Ratio(8d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = new RainInformation
                           {
@@ -2903,7 +2903,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(286, AngleUnit.Degree),
-                            Speed = 2.12d
+                            Speed = new Speed(2.12d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2911,8 +2911,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T11:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 24d,
-                            Today = 0d
+                            All = new Ratio(24d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2939,7 +2939,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(294, AngleUnit.Degree),
-                            Speed = 2.4d
+                            Speed = new Speed(2.4d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2947,8 +2947,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 37d,
-                            Today = 0d
+                            All = new Ratio(37d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -2975,7 +2975,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(302, AngleUnit.Degree),
-                            Speed = 2.81d
+                            Speed = new Speed(2.81d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -2983,8 +2983,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T13:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 100d,
-                            Today = 0d
+                            All = new Ratio(100d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3011,7 +3011,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(313, AngleUnit.Degree),
-                            Speed = 3.25d
+                            Speed = new Speed(3.25d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3019,8 +3019,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T14:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 97d,
-                            Today = 0d
+                            All = new Ratio(97d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3047,7 +3047,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(328, AngleUnit.Degree),
-                            Speed = 3.58d
+                            Speed = new Speed(3.58d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3055,8 +3055,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 87d,
-                            Today = 0d
+                            All = new Ratio(87d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3083,7 +3083,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(338, AngleUnit.Degree),
-                            Speed = 1.98d
+                            Speed = new Speed(1.98d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3091,8 +3091,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T16:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 74d,
-                            Today = 0d
+                            All = new Ratio(74d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3119,7 +3119,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(340, AngleUnit.Degree),
-                            Speed = 2.2d
+                            Speed = new Speed(2.2d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3127,8 +3127,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T17:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 65d,
-                            Today = 0d
+                            All = new Ratio(65d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3155,7 +3155,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(338, AngleUnit.Degree),
-                            Speed = 1.84d
+                            Speed = new Speed(1.84d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3163,8 +3163,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 62d,
-                            Today = 0d
+                            All = new Ratio(62d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3191,7 +3191,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(335, AngleUnit.Degree),
-                            Speed = 1.29d
+                            Speed = new Speed(1.29d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3199,8 +3199,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T19:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 97d,
-                            Today = 0d
+                            All = new Ratio(97d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3227,7 +3227,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(327, AngleUnit.Degree),
-                            Speed = 0.39d
+                            Speed = new Speed(0.39d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3235,8 +3235,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T20:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 94d,
-                            Today = 0d
+                            All = new Ratio(94d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3263,7 +3263,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(187, AngleUnit.Degree),
-                            Speed = 0.22d
+                            Speed = new Speed(0.22d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3271,8 +3271,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 96d,
-                            Today = 0d
+                            All = new Ratio(96d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3299,7 +3299,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(179, AngleUnit.Degree),
-                            Speed = 1.25d
+                            Speed = new Speed(1.25d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3307,8 +3307,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T22:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 97d,
-                            Today = 0d
+                            All = new Ratio(97d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3335,7 +3335,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(192, AngleUnit.Degree),
-                            Speed = 0.67d
+                            Speed = new Speed(0.67d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3343,8 +3343,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-16T23:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 90d,
-                            Today = 0d
+                            All = new Ratio(90d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3371,7 +3371,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(179, AngleUnit.Degree),
-                            Speed = 0.9d
+                            Speed = new Speed(0.9d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3379,8 +3379,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 79d,
-                            Today = 0d
+                            All = new Ratio(79d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3407,7 +3407,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(168, AngleUnit.Degree),
-                            Speed = 1.22d
+                            Speed = new Speed(1.22d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3415,8 +3415,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T01:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 9d,
-                            Today = 0d
+                            All = new Ratio(9d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3443,7 +3443,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(171, AngleUnit.Degree),
-                            Speed = 1.05d
+                            Speed = new Speed(1.05d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3451,8 +3451,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T02:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 9d,
-                            Today = 0d
+                            All = new Ratio(9d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3479,7 +3479,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(180, AngleUnit.Degree),
-                            Speed = 1.04d
+                            Speed = new Speed(1.04d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3487,8 +3487,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 37d,
-                            Today = 0d
+                            All = new Ratio(37d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3515,7 +3515,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(173, AngleUnit.Degree),
-                            Speed = 1.53d
+                            Speed = new Speed(1.53d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3523,8 +3523,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T04:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 53d,
-                            Today = 0d
+                            All = new Ratio(53d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3551,7 +3551,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(179, AngleUnit.Degree),
-                            Speed = 1.22d
+                            Speed = new Speed(1.22d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3559,8 +3559,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T05:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 62d,
-                            Today = 0d
+                            All = new Ratio(62d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3587,7 +3587,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(163, AngleUnit.Degree),
-                            Speed = 0.95d
+                            Speed = new Speed(0.95d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3595,8 +3595,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 64d,
-                            Today = 0d
+                            All = new Ratio(64d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3623,7 +3623,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(91, AngleUnit.Degree),
-                            Speed = 0.41d
+                            Speed = new Speed(0.41d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3631,8 +3631,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T07:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 62d,
-                            Today = 0d
+                            All = new Ratio(62d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3659,7 +3659,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(72, AngleUnit.Degree),
-                            Speed = 0.79d
+                            Speed = new Speed(0.79d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3667,8 +3667,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T08:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 53d,
-                            Today = 0d
+                            All = new Ratio(53d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3695,7 +3695,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(39, AngleUnit.Degree),
-                            Speed = 1.45d
+                            Speed = new Speed(1.45d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3703,8 +3703,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 68d,
-                            Today = 0d
+                            All = new Ratio(68d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3731,7 +3731,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(41, AngleUnit.Degree),
-                            Speed = 1.29d
+                            Speed = new Speed(1.29d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3739,8 +3739,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T10:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 72d,
-                            Today = 0d
+                            All = new Ratio(72d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3767,7 +3767,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(27, AngleUnit.Degree),
-                            Speed = 1.53d
+                            Speed = new Speed(1.53d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3775,8 +3775,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T11:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 74d,
-                            Today = 0d
+                            All = new Ratio(74d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3803,7 +3803,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(11, AngleUnit.Degree),
-                            Speed = 2.24d
+                            Speed = new Speed(2.24d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3811,8 +3811,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 71d,
-                            Today = 0d
+                            All = new Ratio(71d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3839,7 +3839,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(8, AngleUnit.Degree),
-                            Speed = 2.43d
+                            Speed = new Speed(2.43d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3847,8 +3847,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T13:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 42d,
-                            Today = 0d
+                            All = new Ratio(42d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3875,7 +3875,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(20, AngleUnit.Degree),
-                            Speed = 1.94d
+                            Speed = new Speed(1.94d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3883,8 +3883,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T14:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 54d,
-                            Today = 0d
+                            All = new Ratio(54d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3911,7 +3911,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(24, AngleUnit.Degree),
-                            Speed = 1.83d
+                            Speed = new Speed(1.83d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3919,8 +3919,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 55d,
-                            Today = 0d
+                            All = new Ratio(55d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3947,7 +3947,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(28, AngleUnit.Degree),
-                            Speed = 1.81d
+                            Speed = new Speed(1.81d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3955,8 +3955,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T16:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 66d,
-                            Today = 0d
+                            All = new Ratio(66d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -3983,7 +3983,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(29, AngleUnit.Degree),
-                            Speed = 1.79d
+                            Speed = new Speed(1.79d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -3991,8 +3991,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T17:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 59d,
-                            Today = 0d
+                            All = new Ratio(59d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4019,7 +4019,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(41, AngleUnit.Degree),
-                            Speed = 1.42d
+                            Speed = new Speed(1.42d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4027,8 +4027,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 61d,
-                            Today = 0d
+                            All = new Ratio(61d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4055,7 +4055,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(96, AngleUnit.Degree),
-                            Speed = 0.77d
+                            Speed = new Speed(0.77d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4063,8 +4063,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T19:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 86d,
-                            Today = 0d
+                            All = new Ratio(86d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4091,7 +4091,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(154, AngleUnit.Degree),
-                            Speed = 0.93d
+                            Speed = new Speed(0.93d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4099,8 +4099,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T20:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 89d,
-                            Today = 0d
+                            All = new Ratio(89d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4127,7 +4127,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(164, AngleUnit.Degree),
-                            Speed = 1.37d
+                            Speed = new Speed(1.37d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4135,8 +4135,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 93d,
-                            Today = 0d
+                            All = new Ratio(93d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4163,7 +4163,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(171, AngleUnit.Degree),
-                            Speed = 1.6d
+                            Speed = new Speed(1.6d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4171,8 +4171,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T22:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 95d,
-                            Today = 0d
+                            All = new Ratio(95d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4199,7 +4199,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(173, AngleUnit.Degree),
-                            Speed = 1.63d
+                            Speed = new Speed(1.63d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4207,8 +4207,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-17T23:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 95d,
-                            Today = 0d
+                            All = new Ratio(95d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4235,7 +4235,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(164, AngleUnit.Degree),
-                            Speed = 1.62d
+                            Speed = new Speed(1.62d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4243,8 +4243,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T00:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 93d,
-                            Today = 0d
+                            All = new Ratio(93d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4271,7 +4271,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(162, AngleUnit.Degree),
-                            Speed = 1.59d
+                            Speed = new Speed(1.59d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4279,8 +4279,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T01:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 61d,
-                            Today = 0d
+                            All = new Ratio(61d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4307,7 +4307,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(160, AngleUnit.Degree),
-                            Speed = 1.52d
+                            Speed = new Speed(1.52d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4315,8 +4315,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T02:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 48d,
-                            Today = 0d
+                            All = new Ratio(48d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4343,7 +4343,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(161, AngleUnit.Degree),
-                            Speed = 1.53d
+                            Speed = new Speed(1.53d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4351,8 +4351,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T03:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 35d,
-                            Today = 0d
+                            All = new Ratio(35d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4379,7 +4379,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(157, AngleUnit.Degree),
-                            Speed = 1.74d
+                            Speed = new Speed(1.74d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4387,8 +4387,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T04:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 31d,
-                            Today = 0d
+                            All = new Ratio(31d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4415,7 +4415,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(151, AngleUnit.Degree),
-                            Speed = 1.24d
+                            Speed = new Speed(1.24d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4423,8 +4423,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T05:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 27d,
-                            Today = 0d
+                            All = new Ratio(27d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4451,7 +4451,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(143, AngleUnit.Degree),
-                            Speed = 1.61d
+                            Speed = new Speed(1.61d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4459,8 +4459,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T06:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 23d,
-                            Today = 0d
+                            All = new Ratio(23d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4487,7 +4487,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(108, AngleUnit.Degree),
-                            Speed = 0.95d
+                            Speed = new Speed(0.95d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4495,8 +4495,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T07:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 1d,
-                            Today = 0d
+                            All = new Ratio(1d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4523,7 +4523,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(74, AngleUnit.Degree),
-                            Speed = 1.09d
+                            Speed = new Speed(1.09d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4531,8 +4531,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T08:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 1d,
-                            Today = 0d
+                            All = new Ratio(1d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4559,7 +4559,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(51, AngleUnit.Degree),
-                            Speed = 1.48d
+                            Speed = new Speed(1.48d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4567,8 +4567,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T09:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 1d,
-                            Today = 0d
+                            All = new Ratio(1d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4595,7 +4595,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(53, AngleUnit.Degree),
-                            Speed = 2.06d
+                            Speed = new Speed(2.06d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4603,8 +4603,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T10:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 2d,
-                            Today = 0d
+                            All = new Ratio(2d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4631,7 +4631,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(60, AngleUnit.Degree),
-                            Speed = 2.6d
+                            Speed = new Speed(2.6d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4639,8 +4639,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T11:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 2d,
-                            Today = 0d
+                            All = new Ratio(2d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4667,7 +4667,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(59, AngleUnit.Degree),
-                            Speed = 2.85d
+                            Speed = new Speed(2.85d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4675,8 +4675,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T12:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 1d,
-                            Today = 0d
+                            All = new Ratio(1d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4703,7 +4703,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(56, AngleUnit.Degree),
-                            Speed = 3.13d
+                            Speed = new Speed(3.13d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4711,8 +4711,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T13:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 0d,
-                            Today = 0d
+                            All = new Ratio(0d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4739,7 +4739,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(54, AngleUnit.Degree),
-                            Speed = 3.25d
+                            Speed = new Speed(3.25d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4747,8 +4747,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T14:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 0d,
-                            Today = 0d
+                            All = new Ratio(0d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4775,7 +4775,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(55, AngleUnit.Degree),
-                            Speed = 3.29d
+                            Speed = new Speed(3.29d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4783,8 +4783,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T15:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 0d,
-                            Today = 0d
+                            All = new Ratio(0d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4811,7 +4811,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(51, AngleUnit.Degree),
-                            Speed = 3.19d
+                            Speed = new Speed(3.19d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4819,8 +4819,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T16:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 0d,
-                            Today = 0d
+                            All = new Ratio(0d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4847,7 +4847,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(46, AngleUnit.Degree),
-                            Speed = 2.44d
+                            Speed = new Speed(2.44d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4855,8 +4855,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T17:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 0d,
-                            Today = 0d
+                            All = new Ratio(0d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4883,7 +4883,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(47, AngleUnit.Degree),
-                            Speed = 1.49d
+                            Speed = new Speed(1.49d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4891,8 +4891,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T18:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 0d,
-                            Today = 0d
+                            All = new Ratio(0d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4919,7 +4919,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(59, AngleUnit.Degree),
-                            Speed = 0.32d
+                            Speed = new Speed(0.32d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4927,8 +4927,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T19:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 0d,
-                            Today = 0d
+                            All = new Ratio(0d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4955,7 +4955,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(195, AngleUnit.Degree),
-                            Speed = 1.38d
+                            Speed = new Speed(1.38d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4963,8 +4963,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T20:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 0d,
-                            Today = 0d
+                            All = new Ratio(0d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -4991,7 +4991,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(193, AngleUnit.Degree),
-                            Speed = 1.9d
+                            Speed = new Speed(1.9d, SpeedUnit.MeterPerSecond)
                           }
                         },
                         new WeatherForecastItem
@@ -4999,8 +4999,8 @@ namespace WeatherDisplay.Tests.Testdata
                           DateTime = DateTime.ParseExact("2022-06-18T21:00:00.0000000Z", "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind),
                           Clouds = new CloudsInformation
                           {
-                            All = 0d,
-                            Today = 0d
+                            All = new Ratio(0d, RatioUnit.Percent),
+                            Today = new Ratio(0d, RatioUnit.Percent)
                           },
                           Rain = null,
                           Main = new TemperatureInfo
@@ -5027,7 +5027,7 @@ namespace WeatherDisplay.Tests.Testdata
                           Wind = new WindInfo
                           {
                             Direction = new Angle(184, AngleUnit.Degree),
-                            Speed = 2.14d
+                            Speed = new Speed(2.14d, SpeedUnit.MeterPerSecond)
                           }
                         }
                       },
