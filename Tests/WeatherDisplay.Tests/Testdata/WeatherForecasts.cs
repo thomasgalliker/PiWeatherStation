@@ -171,10 +171,10 @@ namespace WeatherDisplay.Tests.Testdata
                         All = new Ratio(29d, RatioUnit.Percent),
                         Today = new Ratio(0d, RatioUnit.Percent)
                         },
-                        Rain = new RainInformation
+                        Rain = new PrecipitationVolume
                         {
-                        VolumeLast3Hours = 0.12d,
-                        VolumeLastHour = null
+                        Last3h = new Length(0.12, LengthUnit.Millimeter),
+                        Last1h = null
                         },
                         Main = new TemperatureInfo
                         {
@@ -283,10 +283,10 @@ namespace WeatherDisplay.Tests.Testdata
                         All = new Ratio(28d, RatioUnit.Percent),
                         Today = new Ratio(0d, RatioUnit.Percent)
                         },
-                        Rain = new RainInformation
+                        Rain = new PrecipitationVolume
                         {
-                        VolumeLast3Hours = 0.16d,
-                        VolumeLastHour = null
+                        Last3h = new Length(0.16, LengthUnit.Millimeter),
+                        Last1h = null
                         },
                         Main = new TemperatureInfo
                         {
@@ -323,10 +323,10 @@ namespace WeatherDisplay.Tests.Testdata
                         All = new Ratio(39d, RatioUnit.Percent),
                         Today = new Ratio(0d, RatioUnit.Percent)
                         },
-                        Rain = new RainInformation
+                        Rain = new PrecipitationVolume
                         {
-                        VolumeLast3Hours = 2.51d,
-                        VolumeLastHour = null
+                        Last3h = new Length(2.51, LengthUnit.Millimeter),
+                        Last1h = null
                         },
                         Main = new TemperatureInfo
                         {
@@ -363,10 +363,10 @@ namespace WeatherDisplay.Tests.Testdata
                         All = new Ratio(23d, RatioUnit.Percent),
                         Today = new Ratio(0d, RatioUnit.Percent)
                         },
-                        Rain = new RainInformation
+                        Rain = new PrecipitationVolume
                         {
-                        VolumeLast3Hours = 2.31d,
-                        VolumeLastHour = null
+                        Last3h = new Length(2.31, LengthUnit.Millimeter),
+                        Last1h = null
                         },
                         Main = new TemperatureInfo
                         {
@@ -439,10 +439,10 @@ namespace WeatherDisplay.Tests.Testdata
                         All = new Ratio(13d, RatioUnit.Percent),
                         Today = new Ratio(0d, RatioUnit.Percent)
                         },
-                        Rain = new RainInformation
+                        Rain = new PrecipitationVolume
                         {
-                        VolumeLast3Hours = 0.13d,
-                        VolumeLastHour = null
+                        Last3h = new Length(0.13, LengthUnit.Millimeter),
+                        Last1h = null
                         },
                         Main = new TemperatureInfo
                         {
@@ -479,10 +479,10 @@ namespace WeatherDisplay.Tests.Testdata
                         All = new Ratio(7d, RatioUnit.Percent),
                         Today = new Ratio(0d, RatioUnit.Percent)
                         },
-                        Rain = new RainInformation
+                        Rain = new PrecipitationVolume
                         {
-                        VolumeLast3Hours = 0.93d,
-                        VolumeLastHour = null
+                        Last3h = new Length(0.93, LengthUnit.Millimeter),
+                        Last1h = null
                         },
                         Main = new TemperatureInfo
                         {
@@ -519,10 +519,10 @@ namespace WeatherDisplay.Tests.Testdata
                         All = new Ratio(37d, RatioUnit.Percent),
                         Today = new Ratio(0d, RatioUnit.Percent)
                         },
-                        Rain = new RainInformation
+                        Rain = new PrecipitationVolume
                         {
-                        VolumeLast3Hours = 0.2d,
-                        VolumeLastHour = null
+                        Last3h = new Length(0.2, LengthUnit.Millimeter),
+                        Last1h = null
                         },
                         Main = new TemperatureInfo
                         {
@@ -1423,10 +1423,10 @@ namespace WeatherDisplay.Tests.Testdata
                         All = new Ratio(24d, RatioUnit.Percent),
                         Today = new Ratio(0d, RatioUnit.Percent)
                         },
-                        Rain = new RainInformation
+                        Rain = new PrecipitationVolume
                         {
-                        VolumeLast3Hours = 1.77d,
-                        VolumeLastHour = null
+                        Last3h = new Length(1.77, LengthUnit.Millimeter),
+                        Last1h = null
                         },
                         Main = new TemperatureInfo
                         {
@@ -1463,10 +1463,10 @@ namespace WeatherDisplay.Tests.Testdata
                         All = new Ratio(49d, RatioUnit.Percent),
                         Today = new Ratio(0d, RatioUnit.Percent)
                         },
-                        Rain = new RainInformation
+                        Rain = new PrecipitationVolume
                         {
-                        VolumeLast3Hours = 2.84d,
-                        VolumeLastHour = null
+                        Last3h = new Length(2.84, LengthUnit.Millimeter),
+                        Last1h = null
                         },
                         Main = new TemperatureInfo
                         {
@@ -1894,10 +1894,10 @@ namespace WeatherDisplay.Tests.Testdata
                             All = new Ratio(26d, RatioUnit.Percent),
                             Today = new Ratio(0d, RatioUnit.Percent)
                           },
-                          Rain = new RainInformation
+                          Rain = new PrecipitationVolume
                           {
-                            VolumeLast3Hours = null,
-                            VolumeLastHour = 0.1d
+                            Last3h = null,
+                            Last1h = new Length(0.1, LengthUnit.Millimeter)
                           },
                           Main = new TemperatureInfo
                           {
@@ -2258,10 +2258,10 @@ namespace WeatherDisplay.Tests.Testdata
                             All = new Ratio(28d, RatioUnit.Percent),
                             Today = new Ratio(0d, RatioUnit.Percent)
                           },
-                          Rain = new RainInformation
+                          Rain = new PrecipitationVolume
                           {
-                            VolumeLast3Hours = null,
-                            VolumeLastHour = 0.16d
+                            Last3h = null,
+                            Last1h = new Length(0.16, LengthUnit.Millimeter)
                           },
                           Main = new TemperatureInfo
                           {
@@ -2298,10 +2298,10 @@ namespace WeatherDisplay.Tests.Testdata
                             All = new Ratio(10d, RatioUnit.Percent),
                             Today = new Ratio(0d, RatioUnit.Percent)
                           },
-                          Rain = new RainInformation
+                          Rain = new PrecipitationVolume
                           {
-                            VolumeLast3Hours = null,
-                            VolumeLastHour = 0.66d
+                            Last3h = null,
+                            Last1h = new Length(0.66, LengthUnit.Millimeter)
                           },
                           Main = new TemperatureInfo
                           {
@@ -2338,10 +2338,10 @@ namespace WeatherDisplay.Tests.Testdata
                             All = new Ratio(18d, RatioUnit.Percent),
                             Today = new Ratio(0d, RatioUnit.Percent)
                           },
-                          Rain = new RainInformation
+                          Rain = new PrecipitationVolume
                           {
-                            VolumeLast3Hours = null,
-                            VolumeLastHour = 0.81d
+                            Last3h = null,
+                            Last1h = new Length(0.81, LengthUnit.Millimeter)
                           },
                           Main = new TemperatureInfo
                           {
@@ -2378,10 +2378,10 @@ namespace WeatherDisplay.Tests.Testdata
                             All = new Ratio(39d, RatioUnit.Percent),
                             Today = new Ratio(0d, RatioUnit.Percent)
                           },
-                          Rain = new RainInformation
+                          Rain = new PrecipitationVolume
                           {
-                            VolumeLast3Hours = null,
-                            VolumeLastHour = 1.04d
+                            Last3h = null,
+                            Last1h = new Length(1.04, LengthUnit.Millimeter)
                           },
                           Main = new TemperatureInfo
                           {
@@ -2418,10 +2418,10 @@ namespace WeatherDisplay.Tests.Testdata
                             All = new Ratio(31d, RatioUnit.Percent),
                             Today = new Ratio(0d, RatioUnit.Percent)
                           },
-                          Rain = new RainInformation
+                          Rain = new PrecipitationVolume
                           {
-                            VolumeLast3Hours = null,
-                            VolumeLastHour = 1.17d
+                            Last3h = null,
+                            Last1h = new Length(1.17, LengthUnit.Millimeter)
                           },
                           Main = new TemperatureInfo
                           {
@@ -2458,10 +2458,10 @@ namespace WeatherDisplay.Tests.Testdata
                             All = new Ratio(26d, RatioUnit.Percent),
                             Today = new Ratio(0d, RatioUnit.Percent)
                           },
-                          Rain = new RainInformation
+                          Rain = new PrecipitationVolume
                           {
-                            VolumeLast3Hours = null,
-                            VolumeLastHour = 0.96d
+                            Last3h = null,
+                            Last1h = new Length(0.96, LengthUnit.Millimeter)
                           },
                           Main = new TemperatureInfo
                           {
@@ -2498,10 +2498,10 @@ namespace WeatherDisplay.Tests.Testdata
                             All = new Ratio(23d, RatioUnit.Percent),
                             Today = new Ratio(0d, RatioUnit.Percent)
                           },
-                          Rain = new RainInformation
+                          Rain = new PrecipitationVolume
                           {
-                            VolumeLast3Hours = null,
-                            VolumeLastHour = 0.18d
+                            Last3h = null,
+                            Last1h = new Length(0.18, LengthUnit.Millimeter)
                           },
                           Main = new TemperatureInfo
                           {
@@ -2718,10 +2718,10 @@ namespace WeatherDisplay.Tests.Testdata
                             All = new Ratio(13d, RatioUnit.Percent),
                             Today = new Ratio(0d, RatioUnit.Percent)
                           },
-                          Rain = new RainInformation
+                          Rain = new PrecipitationVolume
                           {
-                            VolumeLast3Hours = null,
-                            VolumeLastHour = 0.11d
+                            Last3h = null,
+                            Last1h = new Length(0.11, LengthUnit.Millimeter)
                           },
                           Main = new TemperatureInfo
                           {
@@ -2794,10 +2794,10 @@ namespace WeatherDisplay.Tests.Testdata
                             All = new Ratio(7d, RatioUnit.Percent),
                             Today = new Ratio(0d, RatioUnit.Percent)
                           },
-                          Rain = new RainInformation
+                          Rain = new PrecipitationVolume
                           {
-                            VolumeLast3Hours = null,
-                            VolumeLastHour = 0.45d
+                            Last3h = null,
+                            Last1h = new Length(0.45, LengthUnit.Millimeter)
                           },
                           Main = new TemperatureInfo
                           {
@@ -2834,10 +2834,10 @@ namespace WeatherDisplay.Tests.Testdata
                             All = new Ratio(7d, RatioUnit.Percent),
                             Today = new Ratio(0d, RatioUnit.Percent)
                           },
-                          Rain = new RainInformation
+                          Rain = new PrecipitationVolume
                           {
-                            VolumeLast3Hours = null,
-                            VolumeLastHour = 0.41d
+                            Last3h = null,
+                            Last1h = new Length(0.41, LengthUnit.Millimeter)
                           },
                           Main = new TemperatureInfo
                           {
@@ -2874,10 +2874,10 @@ namespace WeatherDisplay.Tests.Testdata
                             All = new Ratio(8d, RatioUnit.Percent),
                             Today = new Ratio(0d, RatioUnit.Percent)
                           },
-                          Rain = new RainInformation
+                          Rain = new PrecipitationVolume
                           {
-                            VolumeLast3Hours = null,
-                            VolumeLastHour = 0.11d
+                            Last3h = null,
+                            Last1h = new Length(0.11, LengthUnit.Millimeter)
                           },
                           Main = new TemperatureInfo
                           {
