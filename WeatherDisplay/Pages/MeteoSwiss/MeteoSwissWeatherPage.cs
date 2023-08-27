@@ -61,13 +61,8 @@ namespace WeatherDisplay.Pages.MeteoSwiss
         public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
             var places = this.options.CurrentValue.Places.ToList();
-            //if (!places.Any())
-            //{
-            //    throw new Exception(Translations.MeteoSwissWeatherPageErrorMissingPlacesConfigurationLine1);
-            //}
 
             this.currentPlace = places.GetNextElement(this.currentPlace, defaultValue: places.FirstOrDefault());
-
 
             // Date header
             this.displayManager.AddRenderActionsAsync(
@@ -135,7 +130,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                         var dailyForecasts = forecastInfo.Forecast.OrderBy(f => f.DayDate).ToList();
                         var dailyForecastToday = dailyForecasts.First();
 
-                        var currentWeatherImage = await this.meteoSwissWeatherService.GetWeatherIconAsync(dailyForecastToday.IconDayV2, this.weatherIconMapping);
+                        var currentWeatherImage = await this.meteoSwissWeatherService.GetWeatherIconAsync(currentWeatherInfo.IconV2, this.weatherIconMapping);
 
                         var dateTimeNow = this.dateTime.Now;
 
