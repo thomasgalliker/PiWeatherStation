@@ -81,7 +81,6 @@ namespace WeatherDisplay.Pages.Wiewarm
                 },
                 CrontabSchedule.Parse("0 0 * * *")); // Update every day at 00:00
 
-
             // Current weather info
             this.displayManager.AddRenderActionsAsync(
                 async () =>
