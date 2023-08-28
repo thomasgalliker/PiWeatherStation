@@ -6,7 +6,6 @@ using DisplayService.Model;
 using DisplayService.Services;
 using Microsoft.Extensions.Options;
 using NCrontab;
-using OpenWeatherMap;
 using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Navigation;
 using WeatherDisplay.Services.Wiewarm;
@@ -89,15 +88,7 @@ namespace WeatherDisplay.Pages.Wiewarm
                 {
                     var places = this.options.CurrentValue.Places;
 
-                    // Get current weather & daily forecasts
-                    var oneCallOptions = new OneCallOptions
-                    {
-                        IncludeCurrentWeather = true,
-                        IncludeDailyForecasts = true,
-                        IncludeMinutelyForecasts = true,
-                        IncludeHourlyForecasts = true,
-                    };
-
+                    // Search baths by search terms
                     var searchTerms = places.ToArray();
 
                     var searchTasks = searchTerms.Select(s => this.wiewarmService.SearchBathsAsync(s));
