@@ -55,6 +55,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             this.appSettings = appSettings;
             this.options = options;
             this.sensorAccessService = sensorAccessService;
+            this.weatherIconMapping = new HighContrastWeatherIconMapping();
         }
 
         [Obsolete]

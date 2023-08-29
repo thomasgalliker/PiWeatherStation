@@ -643,10 +643,10 @@ namespace DisplayService.Services
                 {
                     using (var paint = new SKPaint())
                     {
-                        var contrast = 0.01f;
-                        var cf = SKColorFilter.CreateHighContrast(true, SKHighContrastConfigInvertStyle.InvertBrightness, contrast);
-                        paint.FilterQuality = SKFilterQuality.High;
-                        paint.ColorFilter = cf;
+                        //var contrast = 0.01f;
+                        //var cf = SKColorFilter.CreateHighContrast(true, SKHighContrastConfigInvertStyle.InvertBrightness, contrast);
+                        //paint.FilterQuality = SKFilterQuality.High;
+                        //paint.ColorFilter = cf;
 
                         this.logger.LogDebug($"DrawPicture(SKPicture, x={x}, y={y})");
                         canvas.DrawPicture(skPicture, ref scaleMatrix, paint);

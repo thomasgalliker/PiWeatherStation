@@ -52,10 +52,7 @@ namespace Microsoft.Extensions.DependencyInjection
             // ====== Services ======
             services.AddSingleton<IOpenWeatherMapService, OpenWeatherMapService>();
 
-            services.AddSingleton<IMeteoSwissWeatherServiceOptions, MeteoSwissWeatherServiceOptions>();
-            services.AddSingleton<IMeteoSwissWeatherService, MeteoSwissWeatherService>();
-            services.AddSingleton<ISwissMetNetServiceOptions, SwissMetNetServiceOptions>();
-            services.AddSingleton<ISwissMetNetService, SwissMetNetService>();
+            services.AddMeteoSwissApi();
 
             services.AddSingleton<ISpaceWeatherService, SpaceWeatherService>();
 
