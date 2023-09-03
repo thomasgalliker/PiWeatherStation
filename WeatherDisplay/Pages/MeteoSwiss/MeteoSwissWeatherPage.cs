@@ -64,6 +64,10 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             var places = this.options.CurrentValue.Places.ToList();
 
             this.currentPlace = places.GetNextElement(this.currentPlace, defaultValue: places.FirstOrDefault());
+            //if (this.currentPlace != null)
+            //{
+            //    return Task.CompletedTask;
+            //}
 
             // Date header
             this.displayManager.AddRenderActionsAsync(

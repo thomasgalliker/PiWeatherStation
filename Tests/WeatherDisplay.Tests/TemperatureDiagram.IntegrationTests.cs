@@ -24,7 +24,7 @@ namespace WeatherDisplay.Tests
         {
             this.testHelper = new TestHelper(testOutputHelper);
             var logger = new TestOutputHelperLogger<OpenWeatherMapService>(testOutputHelper);
-            var openWeatherMapConfiguration = new OpenWeatherMapConfiguration
+            var openWeatherMapConfiguration = new OpenWeatherMapOptions
             {
                 ApiEndpoint = "https://pro.openweathermap.org",
                 ApiKey = "b1b15e88fa797225412429c1c50c122a1",

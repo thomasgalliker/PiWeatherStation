@@ -173,17 +173,17 @@ namespace WeatherDisplay.Api
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services
-                .AddAuthentication(options =>
+                .AddAuthentication(o =>
                 {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(cfg =>
+                .AddJwtBearer(o =>
                 {
-                    cfg.RequireHttpsMetadata = false;
-                    cfg.SaveToken = true;
-                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    o.RequireHttpsMetadata = false;
+                    o.SaveToken = true;
+                    o.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
                         ValidIssuer = identityConfiguration.JwtIssuer,

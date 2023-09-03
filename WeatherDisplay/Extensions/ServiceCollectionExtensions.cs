@@ -30,11 +30,6 @@ namespace Microsoft.Extensions.DependencyInjection
             // TODO Try to minimize boiler-plate code with this method
             //services.AddConfigurationBindings(configuration).Bind<AppSettings>("AppSettings");
 
-            var openWeatherMapConfiguration = new OpenWeatherMapConfiguration();
-            var openWeatherMapSection = configuration.GetSection("OpenWeatherMap");
-            openWeatherMapSection.Bind(openWeatherMapConfiguration);
-            services.AddSingleton<IOpenWeatherMapConfiguration>(openWeatherMapConfiguration);
-
             var deepLTranslationConfiguration = new DeepLTranslationConfiguration();
             var deepLTranslationSection = configuration.GetSection("DeepL");
             deepLTranslationSection.Bind(deepLTranslationConfiguration);
@@ -50,9 +45,13 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddDisplayService(displayOptionsConfiguration);
 
             // ====== Services ======
-            services.AddSingleton<IOpenWeatherMapService, OpenWeatherMapService>();
-
-            services.AddMeteoSwissApi();
+            var openWeatherMapSection = configuration.GetSection("OpenWeatherMap");
+            services.AddOpenWeatherMap(openWeatherMapSection);
+            services.AddMeteoSwissApi(o =>
+            {
+                o.Language = appSettings.CultureInfo.TwoLetterISOLanguageName;
+                o.SwissMetNet.CacheExpiration = TimeSpan.FromMinutes(20);
+            });
 
             services.AddSingleton<ISpaceWeatherService, SpaceWeatherService>();
 
