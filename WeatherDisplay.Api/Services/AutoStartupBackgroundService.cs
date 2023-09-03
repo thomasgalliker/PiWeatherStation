@@ -94,7 +94,11 @@ namespace WeatherDisplay.Api.Services
                         // Schedule automatic update check for "Daily, 4:50 at night"
                         // this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });
                         // Schedule automatic update check every hour at minute 50
-                        this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.TryInstallUpdateAsync(); });
+                        var automaticUpdateTask = new AsyncScheduledTask(
+                            "AutomaticUpdateTask",
+                            CrontabSchedule.Parse("50 * * * *"),
+                            c => this.TryInstallUpdateAsync());
+                        this.scheduler.AddTask(automaticUpdateTask);
 
                         var defaultButton = this.appSettings.ButtonMappings.GetDefaultButtonMapping();
                         await this.navigationService.NavigateAsync(defaultButton.Page);
