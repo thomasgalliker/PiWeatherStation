@@ -7,11 +7,13 @@
 
   <ItemGroup>
     <None Remove="Resources\SvgImage1.svg" />
+    <None Remove="Resources\SvgImage2.svg" />
     <None Remove="Resources\TestImage1.png" />
     <None Remove="Resources\TestImage2.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\SvgImage1.svg" />
+    <EmbeddedResource Include="Resources\SvgImage2.svg" />
     <EmbeddedResource Include="Resources\TestImage1.png" />
     <EmbeddedResource Include="Resources\TestImage2.png" />
   </ItemGroup>
@@ -24,6 +26,6 @@
     <PackageReference Include="SkiaSharp" Version="2.88.3" />
     <PackageReference Include="eXoCooLd.Waveshare.EPaperDisplay" Version="1.0.4" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.3" />
-    <PackageReference Include="SkiaSharp.Svg" Version="1.60.0" />
+    <PackageReference Include="Svg.Skia" Version="1.0.0.1" />
   </ItemGroup>
 </Project>
