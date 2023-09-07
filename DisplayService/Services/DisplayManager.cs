@@ -72,7 +72,7 @@ namespace DisplayService.Services
             Guid id;
             if (cronExpression != null)
             {
-                id = this.scheduler.AddTask(cronExpression, (c) => { });
+                id = this.scheduler.AddTask(cronExpression);
             }
             else
             {
