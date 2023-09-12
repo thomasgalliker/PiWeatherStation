@@ -23,6 +23,7 @@ using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.DeepL;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
+using WeatherDisplay.Utils;
 
 namespace WeatherDisplay.Pages.OpenWeatherMap
 {
@@ -60,6 +61,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
             this.weatherIconMapping = new HighContrastWeatherIconMapping();
         }
 
+        [Obsolete]
         public Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
             var places = this.options.CurrentValue.Places.ToList();
@@ -583,7 +585,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 Y = 140 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{FormatPrecipitation(dailyForecastToday.Rain)} ({dailyForecastToday.Pop})",
+                                Value = MeteoFormatter.FormatPrecipitation(dailyForecastToday.Rain, dailyForecastToday.Pop),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -607,7 +609,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 Y = 180 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{currentWeather.WindSpeed:N1} ({currentWeather.WindDirection.ToIntercardinalWindDirection():A})",
+                                Value = MeteoFormatter.FormatWind(currentWeather.WindSpeed, currentWeather.WindDirection),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -841,12 +843,6 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
         {
             this.currentPlace = null;
             return Task.CompletedTask;
-        }
-
-        private static string FormatPrecipitation(Length precipitation)
-        {
-            var prefix = precipitation.Value > 0d && precipitation.Value < 1d ? "< " : "";
-            return $"{prefix}{precipitation:N0}";
         }
 
         private static string FormatTemperature(Temperature temperature)

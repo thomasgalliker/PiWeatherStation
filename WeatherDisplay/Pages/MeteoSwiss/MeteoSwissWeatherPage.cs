@@ -20,6 +20,7 @@ using WeatherDisplay.Resources;
 using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
+using WeatherDisplay.Utils;
 using Place = WeatherDisplay.Pages.MeteoSwiss.MeteoSwissPlace;
 
 namespace WeatherDisplay.Pages.MeteoSwiss
@@ -166,10 +167,8 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 X = 20,
                                 Y = 198,
                                 Image = currentWeatherImage,
-                                Tag = "test",
                                 Width = 92,
                                 Height = 92,
-                                //BackgroundColor = Colors.Magenta,
                                 VerticalAlignment = VerticalAlignment.Center,
                                 HorizontalAlignment = HorizontalAlignment.Left,
                             },
@@ -361,6 +360,22 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 }
                             });
                         }
+                        else
+                        {
+                            // If there are no weather alerts we display the weather description
+                            currentWeatherRenderActions.Add(
+                                new RenderActions.Text
+                                {
+                                    X = 20,
+                                    Y = 300,
+                                    HorizontalTextAlignment = HorizontalAlignment.Left,
+                                    VerticalTextAlignment = VerticalAlignment.Top,
+                                    Value = weatherInfo.CurrentWeather.WeatherCondition.ToString("G", this.appSettings.CultureInfo),
+                                    ForegroundColor = "#000000",
+                                    BackgroundColor = "#FFFFFF",
+                                    FontSize = 20,
+                                });
+                        }
 
                         currentWeatherRenderActions.AddRange(new IRenderAction[]
                         {
@@ -477,7 +492,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 Y = 140 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{FormatPrecipitation(dailyForecastToday.Precipitation)}",
+                                Value = MeteoFormatter.FormatPrecipitation(dailyForecastToday.Precipitation),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -501,7 +516,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 Y = 180 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = this.FormatWind(latestMeasurement.WindSpeed, latestMeasurement.WindDirection),
+                                Value = MeteoFormatter.FormatWind(latestMeasurement.WindSpeed, latestMeasurement.WindDirection),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -731,31 +746,10 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             return Task.CompletedTask;
         }
 
-        private string FormatWind(Speed? windSpeed, Angle? windDirection)
-        {
-            if (windSpeed is null)
-            {
-                windSpeed = Speed.FromKilometersPerHour(0d);
-            }
-
-            if (windDirection is null || windSpeed.Value.Value == 0d)
-            {
-                return $"{windSpeed}";
-            }
-
-            return $"{windSpeed} ({windDirection.Value.ToIntercardinalWindDirection()})";
-        }
-
         public Task OnNavigatedFromAsync(INavigationParameters parameters)
         {
             this.currentPlace = null;
             return Task.CompletedTask;
-        }
-
-        private static string FormatPrecipitation(Length precipitation)
-        {
-            var prefix = precipitation.Value > 0d && precipitation.Value < 1d ? "< " : "";
-            return $"{prefix}{precipitation:N0}";
         }
 
         private static string FormatTemperature(Temperature temperature)
