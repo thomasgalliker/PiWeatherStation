@@ -123,14 +123,19 @@
   <data name="CarbonDioxideAbbreviation" xml:space="preserve">
     <value>CO2</value>
   </data>
+  <data name="ErrorPage_ErrorTitle" xml:space="preserve">
+    <value>An error has occurred.</value>
+  </data>
+  <data name="MeteoSwissWeatherPage_ErrorMissingPlacesConfiguration" xml:space="preserve">
+    <value>Error: Missing places configuration.
+appsettings.User.json &gt;&gt; MeteoSwissWeatherPageOptions &gt;&gt; Places</value>
+  </data>
   <data name="MeteoSwissWeatherPage_SourceName" xml:space="preserve">
     <value>Source: MeteoSwiss</value>
   </data>
-  <data name="OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine1" xml:space="preserve">
-    <value>Error: Missing places configuration.</value>
-  </data>
-  <data name="OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine2" xml:space="preserve">
-    <value>appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places</value>
+  <data name="OpenWeatherMapPage_ErrorMissingPlacesConfiguration" xml:space="preserve">
+    <value>Error: Missing places configuration.
+appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places</value>
   </data>
   <data name="OpenWeatherMapPage_SourceName" xml:space="preserve">
     <value>Source: OpenWeatherMap</value>

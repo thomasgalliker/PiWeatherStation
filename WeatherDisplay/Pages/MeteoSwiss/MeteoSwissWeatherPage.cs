@@ -65,10 +65,10 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             var places = this.options.CurrentValue.Places.ToList();
 
             this.currentPlace = places.GetNextElement(this.currentPlace, defaultValue: places.FirstOrDefault());
-            //if (this.currentPlace != null)
-            //{
-            //    return Task.CompletedTask;
-            //}
+            if (this.currentPlace == null)
+            {
+                throw new Exception(Translations.MeteoSwissWeatherPage_ErrorMissingPlacesConfiguration);
+            }
 
             // Date header
             this.displayManager.AddRenderActionsAsync(

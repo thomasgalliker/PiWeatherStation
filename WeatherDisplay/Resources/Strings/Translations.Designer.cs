@@ -79,6 +79,25 @@ namespace WeatherDisplay.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to An error has occurred..
+        /// </summary>
+        public static string ErrorPage_ErrorTitle {
+            get {
+                return ResourceManager.GetString("ErrorPage_ErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error: Missing places configuration.
+        ///appsettings.User.json &gt;&gt; MeteoSwissWeatherPageOptions &gt;&gt; Places.
+        /// </summary>
+        public static string MeteoSwissWeatherPage_ErrorMissingPlacesConfiguration {
+            get {
+                return ResourceManager.GetString("MeteoSwissWeatherPage_ErrorMissingPlacesConfiguration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source: MeteoSwiss.
         /// </summary>
         public static string MeteoSwissWeatherPage_SourceName {
@@ -88,20 +107,12 @@ namespace WeatherDisplay.Resources.Strings {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error: Missing places configuration..
+        ///   Looks up a localized string similar to Error: Missing places configuration.
+        ///appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places.
         /// </summary>
-        public static string OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine1 {
+        public static string OpenWeatherMapPage_ErrorMissingPlacesConfiguration {
             get {
-                return ResourceManager.GetString("OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places.
-        /// </summary>
-        public static string OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine2 {
-            get {
-                return ResourceManager.GetString("OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine2", resourceCulture);
+                return ResourceManager.GetString("OpenWeatherMapPage_ErrorMissingPlacesConfiguration", resourceCulture);
             }
         }
         
