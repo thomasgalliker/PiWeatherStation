@@ -34,7 +34,7 @@ namespace WeatherDisplay.Tests.Testdata
                         Id = 1,
                         Description = "Klarer Himmel",
                         IconId = "09d",
-                        Type = WeatherConditionType.Clear,
+                        Main = WeatherConditionGroup.Clear,
                     },
                 },
                 AdditionalInformation = new AdditionalWeatherInfo

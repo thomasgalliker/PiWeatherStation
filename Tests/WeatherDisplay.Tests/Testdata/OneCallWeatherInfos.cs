@@ -39,7 +39,7 @@ namespace WeatherDisplay.Tests.Testdata
                       new WeatherCondition
                       {
                         Id = 803,
-                        Type = WeatherConditionType.Clouds,
+                        Main = WeatherConditionGroup.Clouds,
                         Description = "Überwiegend bewölkt",
                         IconId = "04n"
                       }
@@ -374,7 +374,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 803,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Überwiegend bewölkt",
                           IconId = "04n"
                         }
@@ -400,7 +400,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 803,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Überwiegend bewölkt",
                           IconId = "04n"
                         }
@@ -426,7 +426,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 803,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Überwiegend bewölkt",
                           IconId = "04n"
                         }
@@ -452,7 +452,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 802,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Mäßig bewölkt",
                           IconId = "03n"
                         }
@@ -478,7 +478,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 802,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Mäßig bewölkt",
                           IconId = "03n"
                         }
@@ -504,7 +504,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 801,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Ein paar Wolken",
                           IconId = "02n"
                         }
@@ -530,7 +530,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 801,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Ein paar Wolken",
                           IconId = "02n"
                         }
@@ -556,7 +556,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 800,
-                          Type = WeatherConditionType.Clear,
+                          Main = WeatherConditionGroup.Clear,
                           Description = "Klarer Himmel",
                           IconId = "01n"
                         }
@@ -582,7 +582,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 800,
-                          Type = WeatherConditionType.Clear,
+                          Main = WeatherConditionGroup.Clear,
                           Description = "Klarer Himmel",
                           IconId = "01d"
                         }
@@ -608,7 +608,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 800,
-                          Type = WeatherConditionType.Clear,
+                          Main = WeatherConditionGroup.Clear,
                           Description = "Klarer Himmel",
                           IconId = "01d"
                         }
@@ -634,7 +634,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 800,
-                          Type = WeatherConditionType.Clear,
+                          Main = WeatherConditionGroup.Clear,
                           Description = "Klarer Himmel",
                           IconId = "01d"
                         }
@@ -660,7 +660,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 801,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Ein paar Wolken",
                           IconId = "02d"
                         }
@@ -686,7 +686,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 500,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Leichter Regen",
                           IconId = "10d"
                         }
@@ -712,7 +712,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 802,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Mäßig bewölkt",
                           IconId = "03d"
                         }
@@ -738,7 +738,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 801,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Ein paar Wolken",
                           IconId = "02d"
                         }
@@ -764,7 +764,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 801,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Ein paar Wolken",
                           IconId = "02d"
                         }
@@ -790,7 +790,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 802,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Mäßig bewölkt",
                           IconId = "03d"
                         }
@@ -816,7 +816,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 802,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Mäßig bewölkt",
                           IconId = "03d"
                         }
@@ -842,7 +842,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 803,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Überwiegend bewölkt",
                           IconId = "04d"
                         }
@@ -868,7 +868,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 802,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Mäßig bewölkt",
                           IconId = "03d"
                         }
@@ -894,7 +894,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 802,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Mäßig bewölkt",
                           IconId = "03d"
                         }
@@ -920,7 +920,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 802,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Mäßig bewölkt",
                           IconId = "03d"
                         }
@@ -946,7 +946,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 500,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Leichter Regen",
                           IconId = "10d"
                         }
@@ -972,7 +972,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 500,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Leichter Regen",
                           IconId = "10d"
                         }
@@ -998,7 +998,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 500,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Leichter Regen",
                           IconId = "10n"
                         }
@@ -1024,7 +1024,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 501,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Mäßiger Regen",
                           IconId = "10n"
                         }
@@ -1050,7 +1050,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 501,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Mäßiger Regen",
                           IconId = "10n"
                         }
@@ -1076,7 +1076,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 500,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Leichter Regen",
                           IconId = "10n"
                         }
@@ -1102,7 +1102,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 500,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Leichter Regen",
                           IconId = "10n"
                         }
@@ -1128,7 +1128,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 800,
-                          Type = WeatherConditionType.Clear,
+                          Main = WeatherConditionGroup.Clear,
                           Description = "Klarer Himmel",
                           IconId = "01n"
                         }
@@ -1154,7 +1154,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 801,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Ein paar Wolken",
                           IconId = "02n"
                         }
@@ -1180,7 +1180,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 801,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Ein paar Wolken",
                           IconId = "02n"
                         }
@@ -1206,7 +1206,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 801,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Ein paar Wolken",
                           IconId = "02d"
                         }
@@ -1232,7 +1232,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 801,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Ein paar Wolken",
                           IconId = "02d"
                         }
@@ -1258,7 +1258,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 500,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Leichter Regen",
                           IconId = "10d"
                         }
@@ -1284,7 +1284,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 800,
-                          Type = WeatherConditionType.Clear,
+                          Main = WeatherConditionGroup.Clear,
                           Description = "Klarer Himmel",
                           IconId = "01d"
                         }
@@ -1310,7 +1310,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 500,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Leichter Regen",
                           IconId = "10d"
                         }
@@ -1336,7 +1336,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 500,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Leichter Regen",
                           IconId = "10d"
                         }
@@ -1362,7 +1362,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 500,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Leichter Regen",
                           IconId = "10d"
                         }
@@ -1388,7 +1388,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 801,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Ein paar Wolken",
                           IconId = "02d"
                         }
@@ -1414,7 +1414,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 802,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Mäßig bewölkt",
                           IconId = "03d"
                         }
@@ -1440,7 +1440,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 804,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Bedeckt",
                           IconId = "04d"
                         }
@@ -1466,7 +1466,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 804,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Bedeckt",
                           IconId = "04d"
                         }
@@ -1492,7 +1492,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 804,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Bedeckt",
                           IconId = "04d"
                         }
@@ -1518,7 +1518,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 803,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Überwiegend bewölkt",
                           IconId = "04d"
                         }
@@ -1544,7 +1544,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 803,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Überwiegend bewölkt",
                           IconId = "04d"
                         }
@@ -1570,7 +1570,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 803,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Überwiegend bewölkt",
                           IconId = "04d"
                         }
@@ -1596,7 +1596,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 804,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Bedeckt",
                           IconId = "04d"
                         }
@@ -1644,7 +1644,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 800,
-                          Type = WeatherConditionType.Clear,
+                          Main = WeatherConditionGroup.Clear,
                           Description = "Klarer Himmel",
                           IconId = "01d"
                         }
@@ -1691,7 +1691,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 501,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Mäßiger Regen",
                           IconId = "10d"
                         }
@@ -1738,7 +1738,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 501,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Mäßiger Regen",
                           IconId = "10d"
                         }
@@ -1785,7 +1785,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 803,
-                          Type = WeatherConditionType.Clouds,
+                          Main = WeatherConditionGroup.Clouds,
                           Description = "Überwiegend bewölkt",
                           IconId = "04d"
                         }
@@ -1832,7 +1832,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 800,
-                          Type = WeatherConditionType.Clear,
+                          Main = WeatherConditionGroup.Clear,
                           Description = "Klarer Himmel",
                           IconId = "01d"
                         }
@@ -1879,7 +1879,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 500,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Leichter Regen",
                           IconId = "10d"
                         }
@@ -1926,7 +1926,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 501,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Mäßiger Regen",
                           IconId = "10d"
                         }
@@ -1973,7 +1973,7 @@ namespace WeatherDisplay.Tests.Testdata
                         new WeatherCondition
                         {
                           Id = 502,
-                          Type = WeatherConditionType.Rain,
+                          Main = WeatherConditionGroup.Rain,
                           Description = "Starker Regen",
                           IconId = "10d"
                         }
@@ -2046,7 +2046,7 @@ namespace WeatherDisplay.Tests.Testdata
                                 Description = "Überwiegend bewölkt",
                                 IconId = "04d",
                                 Id = 803,
-                                Type = WeatherConditionType.Clouds
+                                Main = WeatherConditionGroup.Clouds
                             }
                         },
                         Clouds = new Ratio(68d, RatioUnit.Percent),
@@ -2091,7 +2091,7 @@ namespace WeatherDisplay.Tests.Testdata
                                 Description = "Bedeckt",
                                 IconId = "04d",
                                 Id = 804,
-                                Type = WeatherConditionType.Clouds
+                                Main = WeatherConditionGroup.Clouds
                             }
                         },
                         Clouds = new Ratio(100d, RatioUnit.Percent),
@@ -2135,7 +2135,7 @@ namespace WeatherDisplay.Tests.Testdata
                                 Description = "Mäßig bewölkt",
                                 IconId = "03d",
                                 Id = 802,
-                                Type = WeatherConditionType.Clouds
+                                Main = WeatherConditionGroup.Clouds
                             }
                         },
                         Clouds = new Ratio(32d, RatioUnit.Percent),
@@ -2179,7 +2179,7 @@ namespace WeatherDisplay.Tests.Testdata
                             Description = "Überwiegend bewölkt",
                             IconId = "04d",
                             Id = 803,
-                            Type = WeatherConditionType.Clouds
+                            Main = WeatherConditionGroup.Clouds
                         }
                         },
                         Clouds = new Ratio(69d, RatioUnit.Percent),
@@ -2223,7 +2223,7 @@ namespace WeatherDisplay.Tests.Testdata
                                 Description = "Klarer Himmel",
                                 IconId = "01d",
                                 Id = 800,
-                                Type = WeatherConditionType.Clear
+                                Main = WeatherConditionGroup.Clear
                             }
                         },
                         Clouds = new Ratio(1d, RatioUnit.Percent),
@@ -2267,7 +2267,7 @@ namespace WeatherDisplay.Tests.Testdata
                             Description = "Klarer Himmel",
                             IconId = "01d",
                             Id = 800,
-                            Type = WeatherConditionType.Clear
+                            Main = WeatherConditionGroup.Clear
                         }
                         },
                         Clouds = new Ratio(0d, RatioUnit.Percent),
@@ -2311,7 +2311,7 @@ namespace WeatherDisplay.Tests.Testdata
                             Description = "Klarer Himmel",
                             IconId = "01d",
                             Id = 800,
-                            Type = WeatherConditionType.Clear
+                            Main = WeatherConditionGroup.Clear
                         }
                         },
                         Clouds = new Ratio(0d, RatioUnit.Percent),
@@ -2355,7 +2355,7 @@ namespace WeatherDisplay.Tests.Testdata
                             Description = "Klarer Himmel",
                             IconId = "01d",
                             Id = 800,
-                            Type = WeatherConditionType.Clear
+                            Main = WeatherConditionGroup.Clear
                         }
                         },
                         Clouds = new Ratio(0d, RatioUnit.Percent),
