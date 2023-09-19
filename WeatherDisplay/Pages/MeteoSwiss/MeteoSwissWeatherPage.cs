@@ -10,6 +10,7 @@ using Iot.Device.Bmxx80;
 using Iot.Device.Scd4x;
 using MeteoSwissApi;
 using MeteoSwissApi.Extensions;
+using MeteoSwissApi.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NCrontab;
@@ -540,7 +541,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 Y = 220 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{latestMeasurement.PressureQFE.Value:N0}", // ({latestMeasurement.Pressure.Range:N})",
+                                Value = MeteoFormatter.FormatPressure(latestMeasurement.PressureQFE),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,

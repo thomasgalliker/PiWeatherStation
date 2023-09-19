@@ -1,5 +1,6 @@
-﻿using MeteoSwissApi.Extensions;
-using UnitsNet;
+﻿using UnitsNet;
+using AngleExtensions = OpenWeatherMap.Extensions.AngleExtensions;
+using PressureExtensions = OpenWeatherMap.Extensions.PressureExtensions;
 
 namespace WeatherDisplay.Utils
 {
@@ -32,7 +33,7 @@ namespace WeatherDisplay.Utils
                 windSpeedString = $"{windSpeedValue:G1}";
             }
 
-            var value = $"{windSpeedString}{(windDirection is Angle windDirectionValue ? $" ({windDirectionValue.ToIntercardinalWindDirection()})" : "")}";
+            var value = $"{windSpeedString}{(windDirection is Angle windDirectionValue ? $" ({AngleExtensions.ToIntercardinalWindDirection(windDirectionValue)})" : "")}";
             return value;
         }
 
@@ -60,6 +61,16 @@ namespace WeatherDisplay.Utils
 
             var value = $"{precipitationString}{(pop is Ratio popValue ? $" ({popValue})" : "")}";
             return value;
+        }
+
+        internal static string FormatPressure(Pressure? pressure)
+        {
+            if (pressure is not Pressure pressureValue)
+            {
+                return "-";
+            }
+
+            return $"{pressureValue:N0} ({PressureExtensions.GetRange(pressureValue):N})";
         }
     }
 }

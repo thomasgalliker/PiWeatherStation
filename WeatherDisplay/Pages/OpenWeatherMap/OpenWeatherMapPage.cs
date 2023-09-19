@@ -631,7 +631,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 Y = 220 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{currentWeather.Pressure} ({currentWeather.Pressure.GetRange():N})",
+                                Value = MeteoFormatter.FormatPressure(currentWeather.Pressure),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
