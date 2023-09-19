@@ -5,6 +5,11 @@ namespace WeatherDisplay.Utils
 {
     internal static class MeteoFormatter
     {
+        internal static string FormatTemperature(Temperature temperature)
+        {
+            return $"{temperature:0}";
+        }
+
         internal static string FormatWind(Speed? windSpeed, Angle? windDirection)
         {
             if (windSpeed is not Speed windSpeedValue)

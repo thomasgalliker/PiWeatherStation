@@ -535,7 +535,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 Y = 220 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = FormatTemperature(dailyForecastToday.Temperature.Min),
+                                Value = MeteoFormatter.FormatTemperature(dailyForecastToday.Temperature.Min),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -559,7 +559,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                                 Y = 260 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = FormatTemperature(dailyForecastToday.Temperature.Max),
+                                Value = MeteoFormatter.FormatTemperature(dailyForecastToday.Temperature.Max),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -808,21 +808,6 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
         {
             this.currentPlace = null;
             return Task.CompletedTask;
-        }
-
-        private static string FormatTemperature(Temperature temperature)
-        {
-            string formattedTemperature;
-            //if (temperature.Value < 1d && temperature.Value > -1)
-            //{
-            //    formattedTemperature = temperature.ToString("0.#");
-            //}
-            //else
-            {
-                formattedTemperature = temperature.ToString("0");
-            }
-
-            return formattedTemperature;
         }
     }
 }

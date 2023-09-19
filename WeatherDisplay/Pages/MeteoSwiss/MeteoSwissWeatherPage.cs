@@ -444,7 +444,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 Y = 220 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = FormatTemperature(dailyForecastToday.TemperatureMin),
+                                Value = MeteoFormatter.FormatTemperature(dailyForecastToday.TemperatureMin),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -468,7 +468,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 Y = 260 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = FormatTemperature(dailyForecastToday.TemperatureMax),
+                                Value = MeteoFormatter.FormatTemperature(dailyForecastToday.TemperatureMax),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -750,21 +750,6 @@ namespace WeatherDisplay.Pages.MeteoSwiss
         {
             this.currentPlace = null;
             return Task.CompletedTask;
-        }
-
-        private static string FormatTemperature(Temperature temperature)
-        {
-            string formattedTemperature;
-            //if (temperature.Value < 1d && temperature.Value > -1)
-            //{
-            //    formattedTemperature = temperature.ToString("0.#");
-            //}
-            //else
-            {
-                formattedTemperature = temperature.ToString("0");
-            }
-
-            return formattedTemperature;
         }
     }
 }
