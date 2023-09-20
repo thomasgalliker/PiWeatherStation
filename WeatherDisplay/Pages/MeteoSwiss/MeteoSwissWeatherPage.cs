@@ -40,7 +40,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
         public MeteoSwissWeatherPage(
             ILogger<MeteoSwissWeatherPage> logger,
             IDisplayManager displayManager,
-            IMeteoSwissWeatherService openWeatherMapService,
+            IMeteoSwissWeatherService meteoSwissWeatherService,
             ISwissMetNetService swissMetNetService,
             IDateTime dateTime,
             IAppSettings appSettings,
@@ -49,7 +49,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
         {
             this.logger = logger;
             this.displayManager = displayManager;
-            this.meteoSwissWeatherService = openWeatherMapService;
+            this.meteoSwissWeatherService = meteoSwissWeatherService;
             this.swissMetNetService = swissMetNetService;
             this.dateTime = dateTime;
             this.appSettings = appSettings;
@@ -119,28 +119,26 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                 },
                 CrontabSchedule.Parse("0 0 * * *")); // Update every day at 00:00
 
-            if (this.currentPlace != null)
-            {
-                // Current weather info
-                this.displayManager.AddRenderActionsAsync(
-                    async () =>
+            // Current weather info
+            this.displayManager.AddRenderActionsAsync(
+                async () =>
+                {
+                    // Get current weather & daily forecasts
+                    var latestMeasurement = await this.swissMetNetService.GetLatestMeasurementAsync(this.currentPlace.WeatherStation, cacheExpiration: TimeSpan.FromMinutes(20));
+
+                    var weatherInfo = await this.meteoSwissWeatherService.GetCurrentWeatherAsync(this.currentPlace.Plz);
+                    var currentWeatherInfo = weatherInfo.CurrentWeather;
+
+                    var forecastInfo = await this.meteoSwissWeatherService.GetForecastAsync(this.currentPlace.Plz);
+                    var dailyForecasts = forecastInfo.Forecast.OrderBy(f => f.DayDate).ToList();
+                    var dailyForecastToday = dailyForecasts.First();
+
+                    var currentWeatherImage = await this.meteoSwissWeatherService.GetWeatherIconAsync(currentWeatherInfo.IconV2, this.weatherIconMapping);
+
+                    var dateTimeNow = this.dateTime.Now;
+
+                    var currentWeatherRenderActions = new List<IRenderAction>
                     {
-                        // Get current weather & daily forecasts
-                        var latestMeasurement = await this.swissMetNetService.GetLatestMeasurementAsync(this.currentPlace.WeatherStation, cacheExpiration: TimeSpan.FromMinutes(20));
-
-                        var weatherInfo = await this.meteoSwissWeatherService.GetCurrentWeatherAsync(this.currentPlace.Plz);
-                        var currentWeatherInfo = weatherInfo.CurrentWeather;
-
-                        var forecastInfo = await this.meteoSwissWeatherService.GetForecastAsync(this.currentPlace.Plz);
-                        var dailyForecasts = forecastInfo.Forecast.OrderBy(f => f.DayDate).ToList();
-                        var dailyForecastToday = dailyForecasts.First();
-
-                        var currentWeatherImage = await this.meteoSwissWeatherService.GetWeatherIconAsync(currentWeatherInfo.IconV2, this.weatherIconMapping);
-
-                        var dateTimeNow = this.dateTime.Now;
-
-                        var currentWeatherRenderActions = new List<IRenderAction>
-                        {
                             // Current location + current temperature
                             new RenderActions.Rectangle
                             {
@@ -171,19 +169,19 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 VerticalAlignment = VerticalAlignment.Center,
                                 HorizontalAlignment = HorizontalAlignment.Left,
                             },
-                        };
+                    };
 
-                        var outdoorTempStackLayout = new RenderActions.StackLayout
+                    var outdoorTempStackLayout = new RenderActions.StackLayout
+                    {
+                        X = 140,
+                        Y = 198,
+                        Width = 200,
+                        Height = 70,
+                        Orientation = StackOrientation.Horizontal,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        //BackgroundColor = Colors.Magenta,
+                        Children = new List<IRenderAction>
                         {
-                            X = 140,
-                            Y = 198,
-                            Width = 200,
-                            Height = 70,
-                            Orientation = StackOrientation.Horizontal,
-                            VerticalAlignment = VerticalAlignment.Center,
-                            //BackgroundColor = Colors.Magenta,
-                            Children = new List<IRenderAction>
-                            {
                                 new RenderActions.Text
                                 {
                                     HorizontalTextAlignment = HorizontalAlignment.Left,
@@ -220,64 +218,64 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                     FontSize = 20,
                                     Bold = false,
                                 }
-                            }
-                        };
-                        currentWeatherRenderActions.Add(outdoorTempStackLayout);
+                        }
+                    };
+                    currentWeatherRenderActions.Add(outdoorTempStackLayout);
 
-                        // Display local temperature and humidity if the selected place is current place
-                        // and the temperature sensor is present
+                    // Display local temperature and humidity if the selected place is current place
+                    // and the temperature sensor is present
 
-                        Temperature localTemperature = default;
-                        RelativeHumidity localHumidity = default;
-                        VolumeConcentration co2 = default;
+                    Temperature localTemperature = default;
+                    RelativeHumidity localHumidity = default;
+                    VolumeConcentration co2 = default;
 
-                        if (this.currentPlace.IsCurrentPlace)
+                    if (this.currentPlace.IsCurrentPlace)
+                    {
+                        if (this.sensorAccessService.Scd41 is IScd4x scd41)
                         {
-                            if (this.sensorAccessService.Scd41 is IScd4x scd41)
+                            localTemperature = scd41.Temperature;
+                            localHumidity = scd41.RelativeHumidity;
+                            co2 = scd41.Co2;
+                        }
+                        else if (this.sensorAccessService.Bme680 is IBme680 bme680)
+                        {
+                            try
                             {
-                                localTemperature = scd41.Temperature;
-                                localHumidity = scd41.RelativeHumidity;
-                                co2 = scd41.Co2;
-                            }
-                            else if (this.sensorAccessService.Bme680 is IBme680 bme680)
-                            {
-                                try
-                                {
-                                    var bme680ReadResult = await bme680.ReadAsync();
+                                var bme680ReadResult = await bme680.ReadAsync();
 
-                                    if (bme680ReadResult != null &&
-                                        bme680ReadResult.Temperature != null &&
-                                        bme680ReadResult.Humidity != null)
-                                    {
-
-                                        localTemperature = bme680ReadResult.Temperature.Value;
-                                        localHumidity = bme680ReadResult.Humidity.Value;
-                                    }
-                                }
-                                catch (Exception ex)
+                                if (bme680ReadResult != null &&
+                                    bme680ReadResult.Temperature != null &&
+                                    bme680ReadResult.Humidity != null)
                                 {
-                                    this.logger.LogError(ex, "Failed to read temperature/humidity from BME680");
+
+                                    localTemperature = bme680ReadResult.Temperature.Value;
+                                    localHumidity = bme680ReadResult.Humidity.Value;
                                 }
                             }
-                            else
+                            catch (Exception ex)
                             {
-                                this.logger.LogWarning("No local temp/humidity/co2 sensor present");
+                                this.logger.LogError(ex, "Failed to read temperature/humidity from BME680");
                             }
+                        }
+                        else
+                        {
+                            this.logger.LogWarning("No local temp/humidity/co2 sensor present");
+                        }
 
-                            if (localTemperature != default & localHumidity != default)
+                        if (localTemperature != default & localHumidity != default)
+                        {
+                            var indoorTempStackLayout = new RenderActions.StackLayout
                             {
-                                var indoorTempStackLayout = new RenderActions.StackLayout
+                                X = 140 - 24 - 6,
+                                Y = 240,
+                                Width = 200,
+                                Height = 35,
+                                Orientation = StackOrientation.Horizontal,
+                                VerticalAlignment = VerticalAlignment.Top,
+                                //BackgroundColor = Colors.Cyan,
+                                Spacing = 6,
+                                Children = new List<IRenderAction>
                                 {
-                                    X = 140 - 24 - 6,
-                                    Y = 240,
-                                    Width = 200,
-                                    Height = 35,
-                                    Orientation = StackOrientation.Horizontal,
-                                    VerticalAlignment = VerticalAlignment.Top,
-                                    //BackgroundColor = Colors.Cyan,
-                                    Spacing = 6,
-                                    Children = new List<IRenderAction>
-                                    {
                                         new RenderActions.BitmapImage
                                         {
                                             X = 0,
@@ -312,29 +310,29 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                             FontSize = 20,
                                             Bold = false,
                                         }
-                                    }
-                                };
+                                }
+                            };
 
-                                currentWeatherRenderActions.Add(indoorTempStackLayout);
-                            }
+                            currentWeatherRenderActions.Add(indoorTempStackLayout);
+                        }
+                    }
+
+                    // Weather alerts (if exists)
+                    if (weatherInfo.Warnings.Any())
+                    {
+                        var mostImportantAlert = weatherInfo.Warnings
+                            .OrderBy(a => a.ValidFrom >= dateTimeNow && a.ValidTo <= dateTimeNow)
+                            .ThenBy(a => a.ValidFrom)
+                            .First();
+
+                        var alertDisplayText = $"{mostImportantAlert.WarnType} ({mostImportantAlert.WarnLevel.Level}/{mostImportantAlert.WarnLevel})";
+                        if (weatherInfo.Warnings.Count > 1)
+                        {
+                            alertDisplayText += $" (+{weatherInfo.Warnings.Count - 1})";
                         }
 
-                        // Weather alerts (if exists)
-                        if (weatherInfo.Warnings.Any())
+                        currentWeatherRenderActions.AddRange(new IRenderAction[]
                         {
-                            var mostImportantAlert = weatherInfo.Warnings
-                                .OrderBy(a => a.ValidFrom >= dateTimeNow && a.ValidTo <= dateTimeNow)
-                                .ThenBy(a => a.ValidFrom)
-                                .First();
-
-                            var alertDisplayText = $"{mostImportantAlert.WarnType} ({mostImportantAlert.WarnLevel.Level}/{mostImportantAlert.WarnLevel})";
-                            if (weatherInfo.Warnings.Count > 1)
-                            {
-                                alertDisplayText += $" (+{weatherInfo.Warnings.Count - 1})";
-                            }
-
-                            currentWeatherRenderActions.AddRange(new IRenderAction[]
-                            {
                                 new RenderActions.BitmapImage
                                 {
                                     X = 20,
@@ -357,27 +355,27 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 20,
                                 }
+                        });
+                    }
+                    else
+                    {
+                        // If there are no weather alerts we display the weather description
+                        currentWeatherRenderActions.Add(
+                            new RenderActions.Text
+                            {
+                                X = 20,
+                                Y = 300,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = weatherInfo.CurrentWeather.WeatherCondition.ToString("G", this.appSettings.CultureInfo),
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 20,
                             });
-                        }
-                        else
-                        {
-                            // If there are no weather alerts we display the weather description
-                            currentWeatherRenderActions.Add(
-                                new RenderActions.Text
-                                {
-                                    X = 20,
-                                    Y = 300,
-                                    HorizontalTextAlignment = HorizontalAlignment.Left,
-                                    VerticalTextAlignment = VerticalAlignment.Top,
-                                    Value = weatherInfo.CurrentWeather.WeatherCondition.ToString("G", this.appSettings.CultureInfo),
-                                    ForegroundColor = "#000000",
-                                    BackgroundColor = "#FFFFFF",
-                                    FontSize = 20,
-                                });
-                        }
+                    }
 
-                        currentWeatherRenderActions.AddRange(new IRenderAction[]
-                        {
+                    currentWeatherRenderActions.AddRange(new IRenderAction[]
+                    {
                             // Sunrise
                             new RenderActions.BitmapImage
                             {
@@ -545,12 +543,12 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 FontSize = 20,
                                 Bold = false,
                             }
-                        });
+                    });
 
-                        if (co2 != null)
+                    if (co2 != null)
+                    {
+                        currentWeatherRenderActions.AddRange(new IRenderAction[]
                         {
-                            currentWeatherRenderActions.AddRange(new IRenderAction[]
-                            {
                                 // CO2
                                 new RenderActions.BitmapImage
                                 {
@@ -585,11 +583,11 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 20,
                                 }
-                            });
-                        }
+                        });
+                    }
 
-                        currentWeatherRenderActions.AddRange(new[]
-                        {
+                    currentWeatherRenderActions.AddRange(new[]
+                    {
                             // Divider line to separated current weather and weather forecast
                             new RenderActions.Rectangle
                             {
@@ -608,42 +606,42 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 VerticalAlignment = VerticalAlignment.Bottom,
                                 BackgroundColor = "#000000",
                             }
-                        });
+                    });
 
-                        if (this.appSettings.IsDebug)
-                        {
-                            currentWeatherRenderActions.Add(
-                                new RenderActions.Text
-                                {
-                                    X = 20,
-                                    Y = 160 + 48,
-                                    HorizontalTextAlignment = HorizontalAlignment.Left,
-                                    VerticalTextAlignment = VerticalAlignment.Center,
-                                    Value = $"{dailyForecastToday.IconDayV2}",
-                                    ForegroundColor = "#000000",
-                                    BackgroundColor = "#FFFFFF",
-                                    FontSize = 12,
-                                    Bold = true,
-                                });
-                        }
-
-                        // Display daily weather forecast
-                        var numberOfForecastItems = 7;
-                        dailyForecasts = dailyForecasts.Take(numberOfForecastItems).ToList();
-
-                        var spacing = 20;
-                        var widthPerDailyForecast = (800 - ((numberOfForecastItems + 1) * spacing)) / numberOfForecastItems;
-                        var xOffset = spacing;
-
-                        for (var i = 0; i < dailyForecasts.Count; i++)
-                        {
-                            var dailyWeatherForecast = dailyForecasts[i];
-                            var xCenter = xOffset + (widthPerDailyForecast / 2);
-
-                            var dailyWeatherImage = await this.meteoSwissWeatherService.GetWeatherIconAsync(dailyWeatherForecast.IconDayV2, this.weatherIconMapping);
-
-                            var dailyWeatherRenderActions = new List<IRenderAction>
+                    if (this.appSettings.IsDebug)
+                    {
+                        currentWeatherRenderActions.Add(
+                            new RenderActions.Text
                             {
+                                X = 20,
+                                Y = 160 + 48,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Center,
+                                Value = $"{dailyForecastToday.IconDayV2}",
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 12,
+                                Bold = true,
+                            });
+                    }
+
+                    // Display daily weather forecast
+                    var numberOfForecastItems = 7;
+                    dailyForecasts = dailyForecasts.Take(numberOfForecastItems).ToList();
+
+                    var spacing = 20;
+                    var widthPerDailyForecast = (800 - ((numberOfForecastItems + 1) * spacing)) / numberOfForecastItems;
+                    var xOffset = spacing;
+
+                    for (var i = 0; i < dailyForecasts.Count; i++)
+                    {
+                        var dailyWeatherForecast = dailyForecasts[i];
+                        var xCenter = xOffset + (widthPerDailyForecast / 2);
+
+                        var dailyWeatherImage = await this.meteoSwissWeatherService.GetWeatherIconAsync(dailyWeatherForecast.IconDayV2, this.weatherIconMapping);
+
+                        var dailyWeatherRenderActions = new List<IRenderAction>
+                        {
                                 new RenderActions.Text
                                 {
                                     X = xCenter,
@@ -678,12 +676,12 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                     FontSize = 20,
                                     Bold= false,
                                 },
-                            };
+                        };
 
-                            if (this.appSettings.IsDebug)
+                        if (this.appSettings.IsDebug)
+                        {
+                            dailyWeatherRenderActions.AddRange(new[]
                             {
-                                dailyWeatherRenderActions.AddRange(new[]
-                                {
                                     new RenderActions.Text
                                     {
                                         X = xCenter,
@@ -696,51 +694,18 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                         FontSize = 12,
                                         Bold= true,
                                     },
-                                });
-                            }
-
-                            currentWeatherRenderActions.AddRange(dailyWeatherRenderActions);
-
-                            xOffset = xOffset + spacing + widthPerDailyForecast;
-
+                            });
                         }
 
-                        return currentWeatherRenderActions;
-                    },
-                    CrontabSchedule.Parse("*/15 * * * *")); // Update every 15mins
-            }
-            else
-            {
-                // Error: Missing places configuration in appsettings.User.json
-                //this.displayManager.AddRenderActions(() =>
-                //{
-                //    return new IRenderAction[]
-                //    {
-                //        new RenderActions.Text
-                //        {
-                //            X = 20,
-                //            Y = 120,
-                //            HorizontalTextAlignment = HorizontalAlignment.Left,
-                //            VerticalTextAlignment = VerticalAlignment.Top,
-                //            Value = Translations.MeteoSwissWeatherPage_ErrorMissingPlacesConfigurationLine1,
-                //            ForegroundColor = "#000000",
-                //            BackgroundColor = "#FFFFFF",
-                //            FontSize = 20,
-                //        },
-                //        new RenderActions.Text
-                //        {
-                //            X = 20,
-                //            Y = 140,
-                //            HorizontalTextAlignment = HorizontalAlignment.Left,
-                //            VerticalTextAlignment = VerticalAlignment.Top,
-                //            Value = Translations.MeteoSwissWeatherPage_ErrorMissingPlacesConfigurationLine2,
-                //            ForegroundColor = "#000000",
-                //            BackgroundColor = "#FFFFFF",
-                //            FontSize = 20,
-                //        },
-                //    };
-                //});
-            }
+                        currentWeatherRenderActions.AddRange(dailyWeatherRenderActions);
+
+                        xOffset = xOffset + spacing + widthPerDailyForecast;
+
+                    }
+
+                    return currentWeatherRenderActions;
+                },
+                CrontabSchedule.Parse("*/15 * * * *")); // Update every 15mins
 
             return Task.CompletedTask;
         }
