@@ -9,8 +9,6 @@ using DisplayService.Services;
 using Iot.Device.Bmxx80;
 using Iot.Device.Scd4x;
 using MeteoSwissApi;
-using MeteoSwissApi.Extensions;
-using MeteoSwissApi.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NCrontab;
