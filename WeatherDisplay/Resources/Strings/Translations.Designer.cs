@@ -61,6 +61,15 @@ namespace WeatherDisplay.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to a.s.l..
+        /// </summary>
+        public static string AboveSeaLevelAbbreviationLabelText {
+            get {
+                return ResourceManager.GetString("AboveSeaLevelAbbreviationLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Air Quality.
         /// </summary>
         public static string AirQualityLabelText {

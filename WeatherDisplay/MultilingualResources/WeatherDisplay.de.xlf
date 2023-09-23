@@ -66,6 +66,10 @@ appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places</target
           <source>An error has occurred.</source>
           <target state="final">Ein Fehler ist aufgetreten.</target>
         </trans-unit>
+        <trans-unit id="AboveSeaLevelAbbreviationLabelText" translate="yes" xml:space="preserve">
+          <source>a.s.l.</source>
+          <target state="translated">ü.M.</target>
+        </trans-unit>
       </group>
     </body>
   </file>

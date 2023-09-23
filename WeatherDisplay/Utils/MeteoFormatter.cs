@@ -1,4 +1,5 @@
-﻿using UnitsNet;
+﻿using System;
+using UnitsNet;
 using AngleExtensions = OpenWeatherMap.Extensions.AngleExtensions;
 using PressureExtensions = OpenWeatherMap.Extensions.PressureExtensions;
 
@@ -6,9 +7,14 @@ namespace WeatherDisplay.Utils
 {
     internal static class MeteoFormatter
     {
-        internal static string FormatTemperature(Temperature temperature)
+        internal static string FormatTemperature(Temperature? temperature, int decimalPlaces = 0)
         {
-            return $"{temperature:0}";
+            if (temperature is not Temperature temperatureValue)
+            {
+                return "-";
+            }
+
+            return $"{temperatureValue.ToString($"N{decimalPlaces}")}";
         }
 
         internal static string FormatWind(Speed? windSpeed, Angle? windDirection)
@@ -48,15 +54,15 @@ namespace WeatherDisplay.Utils
 
             if (precipitationValue.Value == 0d)
             {
-                precipitationString = $"{precipitationValue:G0}";
+                precipitationString = $"{precipitationValue:N0}";
             }
             else if (precipitationValue.Value is > 0d and < 1d)
             {
-                precipitationString = $"< {Length.From(1d, precipitationValue.Unit):G0}";
+                precipitationString = $"< {Length.From(1d, precipitationValue.Unit):N0}";
             }
             else
             {
-                precipitationString = $"{precipitationValue:G1}";
+                precipitationString = $"{precipitationValue:N1}";
             }
 
             var value = $"{precipitationString}{(pop is Ratio popValue ? $" ({popValue})" : "")}";
@@ -71,6 +77,16 @@ namespace WeatherDisplay.Utils
             }
 
             return $"{pressureValue:N0} ({PressureExtensions.GetRange(pressureValue):N})";
+        }
+
+        internal static string FormatHumidity(RelativeHumidity? relativeHumidity, int decimalPlaces = 0)
+        {
+            if (relativeHumidity is not RelativeHumidity relativeHumidityValue)
+            {
+                return "-";
+            }
+
+            return $"{relativeHumidityValue.ToString($"N{decimalPlaces}")}";
         }
     }
 }

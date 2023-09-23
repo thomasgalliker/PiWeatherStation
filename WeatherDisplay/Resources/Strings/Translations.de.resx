@@ -56,4 +56,7 @@ appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places</value>
   <data name="ErrorPage_ErrorTitle" xml:space="preserve">
     <value>Ein Fehler ist aufgetreten.</value>
   </data>
+  <data name="AboveSeaLevelAbbreviationLabelText" xml:space="preserve">
+    <value>ü.M.</value>
+  </data>
 </root>
