@@ -62,7 +62,7 @@ namespace WeatherDisplay.Utils
             }
             else
             {
-                precipitationString = $"{precipitationValue:N1}";
+                precipitationString = $"{precipitationValue:N0}";
             }
 
             var value = $"{precipitationString}{(pop is Ratio popValue ? $" ({popValue})" : "")}";
