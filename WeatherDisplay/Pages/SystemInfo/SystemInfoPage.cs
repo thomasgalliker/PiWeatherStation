@@ -9,10 +9,10 @@ using DisplayService.Model;
 using DisplayService.Resources;
 using DisplayService.Services;
 using NCrontab;
+using OpenWeatherMap.Resources.Icons;
 using RaspberryPi;
 using RaspberryPi.Network;
 using WeatherDisplay.Model.Settings;
-using WeatherDisplay.Resources;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
 
@@ -518,7 +518,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                     Width = width - strokeWidth,
                     HorizontalAlignment = HorizontalAlignment.Left,
                     VerticalAlignment = VerticalAlignment.Top,
-                    StrokeColor = StrokeColor,
+                    StrokeColor = this.StrokeColor,
                     StrokeWidth = strokeWidth,
                     CornerRadius = 16,
                 });

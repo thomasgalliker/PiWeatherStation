@@ -16,5 +16,10 @@ namespace WeatherDisplay.Resources
         {
             return ResourceLoader.Current.GetEmbeddedResourceStream(Assembly, "WeatherStation.png");
         }
+
+        public static Stream GetWeatherStation2()
+        {
+            return ResourceLoader.Current.GetEmbeddedResourceStream(Assembly, "weather-station.svg");
+        }
     }
 }

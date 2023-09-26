@@ -12,6 +12,7 @@ using MeteoSwissApi;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NCrontab;
+using OpenWeatherMap.Resources.Icons;
 using UnitsNet;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.Settings;

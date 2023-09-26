@@ -9,6 +9,7 @@ using MeteoSwissApi;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NCrontab;
+using OpenWeatherMap.Resources.Icons;
 using UnitsNet;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Resources;
@@ -137,11 +138,11 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                         renderActions.AddRange(new IRenderAction[]
                         {
                             // Station image
-                            new RenderActions.BitmapImage
+                            new RenderActions.SvgImage
                             {
                                 X = 20,
                                 Y = yOffset,
-                                Image = Images.GetWeatherStation(),
+                                Image = Images.GetWeatherStation2(),
                                 Width = 64,
                                 Height = 64,
                                 HorizontalAlignment = HorizontalAlignment.Left,
@@ -165,7 +166,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                             {
                                 X = spacing + 64 + spacing,
                                 Y = yOffset,
-                                Image = Icons.Placeholder(),
+                                Image = Icons.Location(),
                                 Width = 24,
                                 Height = 24,
                                 HorizontalAlignment = HorizontalAlignment.Left,
@@ -247,7 +248,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 Y = yOffset + 5 + 1 * (rowHeight + rowSpacing),
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{latestMeasurement.SunshineDuration.Value.Value / 10 * 100} %",
+                                Value = $"{(latestMeasurement.SunshineDuration is Duration duration ? $"{duration.Value / 10 * 100}%" : "-")}",
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,

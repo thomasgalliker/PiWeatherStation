@@ -15,6 +15,7 @@ using NCrontab;
 using OpenWeatherMap;
 using OpenWeatherMap.Extensions;
 using OpenWeatherMap.Models;
+using OpenWeatherMap.Resources.Icons;
 using UnitsNet;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.Settings;

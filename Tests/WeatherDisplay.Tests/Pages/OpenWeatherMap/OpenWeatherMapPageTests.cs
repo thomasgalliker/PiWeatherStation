@@ -14,6 +14,7 @@ using Moq.AutoMock;
 using NCrontab.Scheduler;
 using OpenWeatherMap;
 using OpenWeatherMap.Models;
+using OpenWeatherMap.Resources.Icons;
 using SkiaSharp;
 using UnitsNet;
 using WeatherDisplay.Model.Settings;

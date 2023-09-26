@@ -9,6 +9,7 @@ using Moq;
 using Moq.AutoMock;
 using OpenWeatherMap;
 using OpenWeatherMap.Models;
+using OpenWeatherMap.Resources.Icons;
 using SkiaSharp;
 using UnitsNet;
 using WeatherDisplay.Extensions;
