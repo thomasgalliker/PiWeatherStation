@@ -16,7 +16,6 @@ using OpenWeatherMap.Resources.Icons;
 using UnitsNet;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.Settings;
-using WeatherDisplay.Resources;
 using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
@@ -32,7 +31,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
         private readonly IMeteoSwissWeatherService meteoSwissWeatherService;
         private readonly ISwissMetNetService swissMetNetService;
         private readonly IDateTime dateTime;
-        private readonly IAppSettings appSettings;
+        private readonly IOptions<AppSettings> appSettings;
         private readonly IOptionsMonitor<MeteoSwissWeatherPageOptions> options;
         private readonly ISensorAccessService sensorAccessService;
         private readonly IWeatherIconMapping weatherIconMapping;
@@ -44,7 +43,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             IMeteoSwissWeatherService meteoSwissWeatherService,
             ISwissMetNetService swissMetNetService,
             IDateTime dateTime,
-            IAppSettings appSettings,
+            IOptions<AppSettings> appSettings,
             IOptionsMonitor<MeteoSwissWeatherPageOptions> options,
             ISensorAccessService sensorAccessService)
         {
@@ -368,7 +367,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 Y = 300,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = weatherInfo.CurrentWeather.WeatherCondition.ToString("G", this.appSettings.CultureInfo),
+                                Value = weatherInfo.CurrentWeather.WeatherCondition.ToString("G", this.appSettings.Value.CultureInfo),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -546,7 +545,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                             }
                     });
 
-                    if (co2 != null)
+                    if (co2 != default)
                     {
                         currentWeatherRenderActions.AddRange(new IRenderAction[]
                         {
@@ -609,7 +608,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                             }
                     });
 
-                    if (this.appSettings.IsDebug)
+                    if (this.appSettings.Value.IsDebug)
                     {
                         currentWeatherRenderActions.Add(
                             new RenderActions.Text
@@ -679,7 +678,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 },
                         };
 
-                        if (this.appSettings.IsDebug)
+                        if (this.appSettings.Value.IsDebug)
                         {
                             dailyWeatherRenderActions.AddRange(new[]
                             {

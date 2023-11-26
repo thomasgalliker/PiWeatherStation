@@ -12,7 +12,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NLog;
 using NLog.Extensions.Logging;
-using RaspberryPi.Extensions;
 using UnitsNet.Serialization.JsonNet;
 using WeatherDisplay.Api.Properties;
 using WeatherDisplay.Api.Services;
@@ -29,7 +28,7 @@ namespace WeatherDisplay.Api
 {
     internal static class Program
     {
-        private const string UserSpecificAppSettingsFileName = "appsettings.User.json";
+        internal const string UserSpecificAppSettingsFileName = "appsettings.User.json";
 
         private static void Main(string[] args)
         {

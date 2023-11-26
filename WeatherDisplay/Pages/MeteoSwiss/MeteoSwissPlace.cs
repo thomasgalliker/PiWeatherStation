@@ -2,7 +2,7 @@
 
 namespace WeatherDisplay.Pages.MeteoSwiss
 {
-    [DebuggerDisplay("{this.Name}")]
+    [DebuggerDisplay(@"\{Name = {Name}, Plz = {Plz}\}")]
     public class MeteoSwissPlace
     {
         public string Name { get; set; }

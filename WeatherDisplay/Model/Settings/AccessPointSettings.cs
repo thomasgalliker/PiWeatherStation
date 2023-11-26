@@ -2,7 +2,7 @@
 
 namespace WeatherDisplay.Model.Settings
 {
-    [DebuggerDisplay("AccessPointSettings: {this.SSID}")]
+    [DebuggerDisplay(@"\{SSID = {SSID}\}")]
     public class AccessPointSettings
     {
         public string SSID { get; set; }

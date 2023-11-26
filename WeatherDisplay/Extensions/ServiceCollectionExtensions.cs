@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Reflection;
-using MeteoSwissApi;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using OpenWeatherMap;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Services;
 using WeatherDisplay.Services.Astronomy;
@@ -25,7 +23,6 @@ namespace Microsoft.Extensions.DependencyInjection
             var appSettingsSection = configuration.GetSection("AppSettings");
             appSettingsSection.Bind(appSettings);
             services.AddSingleton<IAppSettings>(appSettings); // TODO: Remove IAppSettings and make properties virtual
-            services.Configure<AppSettings>(appSettingsSection);
 
             // TODO Try to minimize boiler-plate code with this method
             //services.AddConfigurationBindings(configuration).Bind<AppSettings>("AppSettings");
