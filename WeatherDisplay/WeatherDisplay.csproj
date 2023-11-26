@@ -6,7 +6,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MeteoSwissApi" Version="3.0.54-pre" />
+    <PackageReference Include="MeteoSwissApi" Version="3.0.57" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
