@@ -218,8 +218,14 @@ namespace WeatherDisplay.Api
                 endpoints.MapControllers().RequireAuthorization("RequireAuthenticatedUserPolicy");
             });
 
+            // ===== Use Swagger ======
             app.UseSwagger();
-            app.UseSwaggerUI(o => o.InjectStylesheet("/swagger-ui/SwaggerStyle.css"));
+            app.UseSwaggerUI(o =>
+            {
+                o.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                o.RoutePrefix = "swagger";
+                o.InjectStylesheet("/swagger-ui/SwaggerStyle.css");
+            });
 
             app.UseStaticFiles();
 
