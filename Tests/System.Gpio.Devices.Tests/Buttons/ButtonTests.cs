@@ -1,5 +1,6 @@
-﻿using System.Diagnostics.Metrics;
-using System.Diagnostics.Tracing;
+﻿using System.Collections.Generic;
+using System.Device.Buttons;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -377,6 +378,35 @@ namespace System.Gpio.Devices.Tests.Buttons
             Assert.True(pressedCounter == 1, "pressedCounter counter is wrong");
             Assert.True(holding, "holding");
             Assert.False(doublePressed, "doublePressed");
+        }
+        
+        [Fact]
+        public async Task If_Button_Is_Held_Down_Longer_HoldingTimer()
+        {
+            // Arrange
+            var holdingEvents = new List<ButtonHoldingEventArgs>();
+            var button = new TestButton(TimeSpan.FromMilliseconds(1000));
+            button.IsHoldingEnabled = true;
+
+            button.Holding += (sender, e) =>
+            {
+                holdingEvents.Add(e);
+            };
+
+            // Act
+            button.PressButton();
+            await Task.Delay(2200);
+            var isHoldingBeforeRelease = button.IsHolding;
+            button.ReleaseButton();
+            var isHoldingAfterRelease = button.IsHolding;
+
+            // Assert
+            holdingEvents.Should().HaveCount(2);
+            holdingEvents.ElementAt(0).HoldingState.Should().Be(ButtonHoldingState.Started);
+            holdingEvents.ElementAt(1).HoldingState.Should().Be(ButtonHoldingState.Completed);
+
+            isHoldingBeforeRelease.Should().BeTrue();
+            isHoldingAfterRelease.Should().BeFalse();
         }
 
         [Fact]

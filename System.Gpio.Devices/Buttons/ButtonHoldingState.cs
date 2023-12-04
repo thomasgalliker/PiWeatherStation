@@ -3,7 +3,7 @@
     /// <summary>
     /// The different states of a button that is being held.
     /// </summary>
-    public enum ButtonHoldingState
+    public enum ButtonHoldingState : long
     {
         /// <summary>Button holding started.</summary>
         Started,

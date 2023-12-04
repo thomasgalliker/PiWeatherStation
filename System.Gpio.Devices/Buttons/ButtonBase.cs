@@ -102,6 +102,11 @@ namespace System.Device.Buttons
         public bool IsPressed => Interlocked.Read(ref this.currentState) == Pressed;
 
         /// <summary>
+        /// Indicates if the button is corrently in holding state.
+        /// </summary>
+        public bool IsHolding => this.holdingState == ButtonHoldingState.Started;
+
+        /// <summary>
         /// Initialization of the button.
         /// </summary>
         public ButtonBase()
