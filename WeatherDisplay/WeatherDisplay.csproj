@@ -6,7 +6,7 @@
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="MeteoSwissApi" Version="3.0.57" />
+    <PackageReference Include="MeteoSwissApi" Version="3.0.64-pre" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options" Version="7.0.1" />
@@ -15,9 +15,9 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
-    <PackageReference Include="ObjectDumper.NET" Version="4.1.3" />
-    <PackageReference Include="OpenWeatherMap.API" Version="2.0.44-pre" />
-    <PackageReference Include="RaspberryPi.NET" Version="1.0.41-pre" />
+    <PackageReference Include="ObjectDumper.NET" Version="4.1.13-pre" />
+    <PackageReference Include="OpenWeatherMap.API" Version="2.0.47-pre" />
+    <PackageReference Include="RaspberryPi.NET" Version="1.0.43-pre" />
     <PackageReference Include="ResourceLoader" Version="3.2.8-pre" />
     <PackageReference Include="QRCoder" Version="1.4.1" />
   </ItemGroup>
