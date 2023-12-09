@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RaspberryPi.Process;
+using RaspberryPi.Services;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Services.Navigation;
@@ -22,7 +22,8 @@ namespace WeatherDisplay.Services.Hardware
         private readonly IOptions<AppSettings> appSettings;
         private readonly IGpioController gpioController;
         private readonly INavigationService navigationService;
-        private readonly IProcessRunner processRunner;
+        private readonly IShutdownService shutdownService;
+
         private GpioButton button1;
         private GpioButton button2;
         private GpioButton button3;
@@ -37,14 +38,14 @@ namespace WeatherDisplay.Services.Hardware
             IOptions<AppSettings> appSettings,
             IGpioController gpioController,
             INavigationService navigationService,
-            IProcessRunner processRunner)
+            IShutdownService shutdownService)
         {
             this.logger = logger;
             this.loggerFactory = loggerFactory;
             this.appSettings = appSettings;
             this.gpioController = gpioController;
             this.navigationService = navigationService;
-            this.processRunner = processRunner;
+            this.shutdownService = shutdownService;
         }
 
         public void Initialize()
@@ -156,13 +157,14 @@ namespace WeatherDisplay.Services.Hardware
 
             try
             {
-                if (buttonId == 1 && this.button2.IsHolding || buttonId == 2 && this.button1.IsHolding)
-                {
-                    this.processRunner.ExecuteCommand("sudo shutdown -h now");
-                    return;
-                }
+                var button1Holding = this.button1.IsHolding;
+                var button2Holding = this.button2.IsHolding;
 
-                if (buttonId == 4)
+                if (button1Holding && button2Holding)
+                {
+                    this.shutdownService.Shutdown();
+                }
+                else if (buttonId == 4)
                 {
                     var currentPage = this.navigationService.GetCurrentPage();
                     if (App.Pages.IsSystemPage(currentPage))
@@ -175,6 +177,7 @@ namespace WeatherDisplay.Services.Hardware
                         await this.navigationService.NavigateAsync(App.Pages.SetupPage);
                     }
                 }
+
             }
             catch (Exception ex)
             {
@@ -194,7 +197,7 @@ namespace WeatherDisplay.Services.Hardware
         {
             await this.HandleButtonHolding(buttonId: 1);
         }
-        
+
         private async void OnButton2Pressed(object sender, EventArgs e)
         {
             await this.HandleButtonPress(buttonId: 2);
