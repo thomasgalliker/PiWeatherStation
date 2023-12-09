@@ -153,10 +153,6 @@ namespace System.Device.Buttons
                     this.holdingTimer = new Timer(this.StartHoldingHandler, null, this.holdingMs, Timeout.Infinite);
                 }
             }
-            else
-            {
-
-            }
         }
 
         /// <summary>
@@ -176,7 +172,6 @@ namespace System.Device.Buttons
             try
             {
                 ButtonUp?.Invoke(this, EventArgs.Empty);
-                Press?.Invoke(this, EventArgs.Empty);
 
                 if (this.holdingState == ButtonHoldingState.Started)
                 {
@@ -186,8 +181,15 @@ namespace System.Device.Buttons
                     {
                         HoldingInternal?.Invoke(this, new ButtonHoldingEventArgs { HoldingState = ButtonHoldingState.Completed });
                     }
+                    else
+                    {
+                        Press?.Invoke(this, EventArgs.Empty);
+                    }
                 }
-
+                else
+                {
+                    Press?.Invoke(this, EventArgs.Empty);
+                }
 
                 if (this.IsDoublePressEnabled)
                 {
