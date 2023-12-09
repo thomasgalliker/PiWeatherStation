@@ -56,7 +56,7 @@ namespace WeatherDisplay.Services
             return iface;
         }
 
-        public async Task<(string SSID, string PSK)> SetupAccessPoint()
+        public async Task<(string SSID, string PSK)> SetupAccessPointAsync()
         {
             var cpuInfo = await this.systemInfoService.GetCpuInfoAsync();
             var ssid = $"PiWeatherDisplay_{cpuInfo.Serial.Substring(cpuInfo.Serial.Length - 4).ToUpperInvariant()}";
@@ -67,7 +67,7 @@ namespace WeatherDisplay.Services
             return (ssid, psk);
         }
 
-        public async Task SetupStationMode(string ssid, string psk)
+        public async Task ConnectToWifiAsync(string ssid, string psk)
         {
             var wlan0 = this.GetWlanNetworkInterface();
 

@@ -46,7 +46,7 @@ namespace WeatherDisplay.Api.Controllers
             // TODO: Input validation!
 
             // Connect to wifi network
-            await this.networkManager.SetupStationMode(ssid, psk);
+            await this.networkManager.ConnectToWifiAsync(ssid, psk);
 
             var placeObj = new Place
             {

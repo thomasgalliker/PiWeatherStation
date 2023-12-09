@@ -1,7 +1,5 @@
-using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using RaspberryPi;
-using RaspberryPi.Network;
+using WeatherDisplay.Services;
 
 namespace WeatherDisplay.Api.Controllers
 {
@@ -9,48 +7,25 @@ namespace WeatherDisplay.Api.Controllers
     [Route("api/system/network")]
     public class NetworkController : ControllerBase
     {
-        private const string DefaultIPAddress = "192.168.10.1";
-        private readonly INetworkInterfaceService networkInterfaceService;
         private readonly INetworkManager networkManager;
-        private readonly IWPA wpa;
 
         public NetworkController(
-            INetworkInterfaceService networkInterfaceService,
-            INetworkManager networkManager,
-            IWPA wpa)
+            INetworkManager networkManager)
         {
-            this.networkInterfaceService = networkInterfaceService;
             this.networkManager = networkManager;
-            this.wpa = wpa;
         }
 
         [HttpGet("scan")]
         public IEnumerable<string> ScanAsync()
         {
-            var wlan0 = this.networkInterfaceService.GetByName("wlan0");
-            var ssids = this.wpa.ScanSSIDs(wlan0);
+            var ssids = this.networkManager.ScanAsync();
             return ssids;
         }
 
-        [HttpGet("accesspoint/setup")]
-        public async Task ConfigureAccessPoint(string ssid, string psk, string ipAddress = DefaultIPAddress, int? channel = null, Country country = null)
+        [HttpGet("connectwifi")]
+        public async Task ConnectToWifiAsync(string ssid, string psk)
         {
-            var wlan0 = this.networkInterfaceService.GetByName("wlan0");
-            var parsedIPAddress = IPAddress.Parse(ipAddress);
-            await this.networkManager.SetupAccessPoint(wlan0, ssid, psk, parsedIPAddress, channel, country);
-        }
-        
-        [HttpGet("stationmode/setup")]
-        public async Task SetupStationMode(string ssid, string psk)
-        {
-            var wlan0 = this.networkInterfaceService.GetByName("wlan0");
-
-            var network = new WPASupplicantNetwork
-            {
-                SSID = ssid,
-                PSK = psk,
-            };
-            await this.networkManager.SetupStationMode(wlan0, network);
+            await this.networkManager.ConnectToWifiAsync(ssid, psk);
         }
     }
 }
