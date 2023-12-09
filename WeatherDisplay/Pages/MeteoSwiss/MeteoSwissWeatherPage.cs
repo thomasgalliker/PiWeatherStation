@@ -73,7 +73,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var weatherStation = await this.swissMetNetService.GetWeatherStationAsync(this.currentPlace.WeatherStation);
+                    var weatherStation = await this.swissMetNetService.GetWeatherStationAsync(this.currentPlace.WeatherStationCode);
 
                     var assembly = Assembly.GetExecutingAssembly();
                     var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
@@ -124,7 +124,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                 async () =>
                 {
                     // Get current weather & daily forecasts
-                    var latestMeasurement = await this.swissMetNetService.GetLatestMeasurementAsync(this.currentPlace.WeatherStation, cacheExpiration: TimeSpan.FromMinutes(20));
+                    var latestMeasurement = await this.swissMetNetService.GetLatestMeasurementAsync(this.currentPlace.WeatherStationCode, cacheExpiration: TimeSpan.FromMinutes(20));
 
                     var weatherInfo = await this.meteoSwissWeatherService.GetCurrentWeatherAsync(this.currentPlace.Plz);
                     var currentWeatherInfo = weatherInfo.CurrentWeather;

@@ -131,7 +131,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
 
                     foreach (var place in places)
                     {
-                        var stationCode = place.WeatherStation;
+                        var stationCode = place.WeatherStationCode;
                         var weatherStation = await this.swissMetNetService.GetWeatherStationAsync(stationCode, cacheExpiration: TimeSpan.FromMinutes(20));
                         var latestMeasurement = await this.swissMetNetService.GetLatestMeasurementAsync(stationCode, cacheExpiration: TimeSpan.FromMinutes(20));
 

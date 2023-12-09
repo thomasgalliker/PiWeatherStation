@@ -40,6 +40,14 @@ namespace WeatherDisplay.Api.Controllers
             this.processRunner = processRunner;
         }
 
+        [HttpGet("finish")]
+        public void FinishSetupAsync()
+        {
+            this.appSettings.UpdateProperty(a => a.RunSetup, false);
+
+            this.processRunner.ExecuteCommand("sudo reboot");
+        }
+
         [HttpGet("run")]
         public async Task RunAsync(string ssid, string psk, string place, double latitude, double longitude, int plz)
         {

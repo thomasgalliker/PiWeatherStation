@@ -9,7 +9,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
 
         public int Plz { get; set; }
 
-        public string WeatherStation { get; set; }
+        public string WeatherStationCode { get; set; }
 
         public bool IsCurrentPlace { get; set; }
     }
