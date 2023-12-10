@@ -11,7 +11,7 @@ using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {
-    public class ErrorPage : INavigatedTo
+    public class ErrorPage : ISystemPage, INavigatedTo
     {
         private readonly IDisplayManager displayManager;
         private readonly IDateTime dateTime;

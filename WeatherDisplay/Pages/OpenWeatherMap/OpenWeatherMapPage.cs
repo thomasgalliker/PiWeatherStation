@@ -28,7 +28,7 @@ using WeatherDisplay.Utils;
 
 namespace WeatherDisplay.Pages.OpenWeatherMap
 {
-    public class OpenWeatherMapPage : INavigatedTo, INavigatedFrom
+    public class OpenWeatherMapPage : IPage, INavigatedTo, INavigatedFrom
     {
         private readonly ILogger logger;
         private readonly IDisplayManager displayManager;

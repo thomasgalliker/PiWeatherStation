@@ -24,7 +24,7 @@ using Place = WeatherDisplay.Pages.MeteoSwiss.MeteoSwissPlace;
 
 namespace WeatherDisplay.Pages.MeteoSwiss
 {
-    public class MeteoSwissWeatherPage : INavigatedTo, INavigatedFrom
+    public class MeteoSwissWeatherPage : IPage, INavigatedTo, INavigatedFrom
     {
         private readonly ILogger logger;
         private readonly IDisplayManager displayManager;

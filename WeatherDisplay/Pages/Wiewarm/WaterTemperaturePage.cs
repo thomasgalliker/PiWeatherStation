@@ -12,7 +12,7 @@ using WeatherDisplay.Services.Wiewarm;
 
 namespace WeatherDisplay.Pages.Wiewarm
 {
-    public class WaterTemperaturePage : INavigatedTo
+    public class WaterTemperaturePage : IPage, INavigatedTo
     {
         private readonly IDisplayManager displayManager;
         private readonly IWiewarmService wiewarmService;

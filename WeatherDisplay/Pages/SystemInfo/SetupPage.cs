@@ -19,7 +19,7 @@ using WeatherDisplay.Services.QR;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {
-    public class SetupPage : INavigatedTo
+    public class SetupPage : ISystemPage, INavigatedTo
     {
         private readonly IDisplayManager displayManager;
         private readonly IDateTime dateTime;
