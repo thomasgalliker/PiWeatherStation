@@ -22,11 +22,11 @@ namespace DisplayService.ConsoleApp.Commands
                 this.displayService = displayService;
             }
 
-            public async Task<int> InvokeAsync(InvocationContext context)
+            public Task<int> InvokeAsync(InvocationContext context)
             {
                 Console.Clear();
-                await this.displayService.ResetAsync();
-                return 0;
+                this.displayService.Reset();
+                return Task.FromResult(0);
             }
         }
     }

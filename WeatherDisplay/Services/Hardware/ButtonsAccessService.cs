@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using RaspberryPi.Services;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Services.Navigation;

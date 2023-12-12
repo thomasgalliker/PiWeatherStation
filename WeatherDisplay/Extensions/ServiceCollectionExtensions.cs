@@ -54,6 +54,7 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddSingleton<ISpaceWeatherService, SpaceWeatherService>();
 
             services.AddSingleton<INetworkManager, NetworkManager>();
+            services.AddSingleton<IShutdownService, ShutdownService>();
             services.AddSingleton<ITranslationService, DeepLTranslationService>();
             services.AddSingleton<INavigationService, NavigationService>();
             services.RegisterAllPages();

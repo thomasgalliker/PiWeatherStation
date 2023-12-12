@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
 using RaspberryPi;
-using RaspberryPi.Network;
 using RaspberryPi.Process;
-using RaspberryPi.Services;
 using WeatherDisplay.Api.Services;
 using WeatherDisplay.Api.Updater.Services;
+using WeatherDisplay.Services;
 
 namespace WeatherDisplay.Api.Controllers
 {

@@ -35,7 +35,7 @@ namespace DisplayService.Tests.Services
         }
 
         [Fact]
-        public void ShouldResetAsync()
+        public void ShouldReset()
         {
             // Arrange
             var displayMock = this.autoMocker.GetMock<IDisplay>();
@@ -46,7 +46,7 @@ namespace DisplayService.Tests.Services
             displayManager.StartAsync();
 
             // Act
-            displayManager.ResetAsync();
+            displayManager.Reset();
             displayManager.StartAsync();
 
             // Assert

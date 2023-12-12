@@ -150,13 +150,15 @@ namespace WeatherDisplay.Api.Services
             }
         }
 
-        public async Task StopAsync(CancellationToken cancellationToken)
+        public Task StopAsync(CancellationToken cancellationToken)
         {
             this.logger.LogDebug("StopAsync");
 
-            await this.displayManager.ResetAsync();
+            this.displayManager.Reset();
 
             LogManager.Shutdown();
+
+            return Task.CompletedTask;
         }
     }
 }
