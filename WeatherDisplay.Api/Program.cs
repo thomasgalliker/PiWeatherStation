@@ -41,10 +41,11 @@ namespace WeatherDisplay.Api
             };
 
             var assembly = Assembly.GetExecutingAssembly();
+            var assemblyVersion = assembly.GetName().Version;
             var buildTime = assembly.GetBuildTime();
 
             Console.WriteLine(
-                $"WeatherStation version {assembly.GetName().Version} {(buildTime != null ? $"[{buildTime.Value:u}]{Environment.NewLine}" : "")}" +
+                $"WeatherStation version {assemblyVersion} {(buildTime != null ? $"[{buildTime.Value:u}]{Environment.NewLine}" : "")}" +
                 $"Copyright(C) superdev GmbH. All rights reserved.{Environment.NewLine}");
 
             var privateKeyFile = "localhost.pfx";
@@ -103,10 +104,11 @@ namespace WeatherDisplay.Api
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
+            var swaggerVersion = $"v{assemblyVersion.Major}";
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(option =>
             {
-                option.SwaggerDoc("v1", new OpenApiInfo { Title = "WeatherDisplay API", Version = "v1" });
+                option.SwaggerDoc(swaggerVersion, new OpenApiInfo { Title = "WeatherDisplay API", Version = $"{assemblyVersion}" });
                 option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
@@ -221,7 +223,7 @@ namespace WeatherDisplay.Api
             app.UseSwagger();
             app.UseSwaggerUI(o =>
             {
-                o.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
+                o.SwaggerEndpoint($"/swagger/{swaggerVersion}/swagger.json", swaggerVersion);
                 o.RoutePrefix = "swagger";
                 o.InjectStylesheet("/swagger-ui/SwaggerStyle.css");
             });
