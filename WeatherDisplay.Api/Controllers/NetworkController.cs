@@ -27,5 +27,11 @@ namespace WeatherDisplay.Api.Controllers
         {
             await this.networkManager.ConnectToWifiAsync(ssid, psk);
         }
+
+        [HttpGet("connectedwifis")]
+        public IEnumerable<string> GetConnectedSSIDs()
+        {
+            return this.networkManager.GetConnectedSSIDs();
+        }
     }
 }

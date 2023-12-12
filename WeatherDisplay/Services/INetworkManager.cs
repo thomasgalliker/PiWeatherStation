@@ -10,5 +10,7 @@ namespace WeatherDisplay.Services
         Task<(string SSID, string PSK)> SetupAccessPointAsync();
 
         Task ConnectToWifiAsync(string ssid, string psk);
+
+        IEnumerable<string> GetConnectedSSIDs();
     }
 }

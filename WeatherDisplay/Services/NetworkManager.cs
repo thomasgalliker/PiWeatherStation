@@ -40,6 +40,13 @@ namespace WeatherDisplay.Services
             return ssids;
         }
 
+        public IEnumerable<string> GetConnectedSSIDs()
+        {
+            var wlan0 = this.GetWlanNetworkInterface();
+            var ssids = this.wpa.GetConnectedSSIDs(wlan0);
+            return ssids;
+        }
+
         private INetworkInterface GetWlanNetworkInterface()
         {
             INetworkInterface iface;
