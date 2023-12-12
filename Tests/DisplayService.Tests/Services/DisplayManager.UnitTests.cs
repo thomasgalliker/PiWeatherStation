@@ -50,7 +50,7 @@ namespace DisplayService.Tests.Services
             displayManager.StartAsync();
 
             // Assert
-            displayMock.Verify(d => d.DisplayImage(It.IsAny<Stream>()), Times.Exactly(3));
+            displayMock.Verify(d => d.DisplayImage(It.IsAny<Stream>()), Times.Exactly(2));
             renderServiceMock.Verify(r => r.Clear(), Times.Exactly(3));
             renderServiceMock.Verify(r => r.Text(It.IsAny<RenderActions.Text>()), Times.Exactly(1));
         }

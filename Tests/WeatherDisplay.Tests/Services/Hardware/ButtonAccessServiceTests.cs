@@ -6,8 +6,8 @@ using Microsoft.Extensions.Logging.Abstractions;
 using Microsoft.Extensions.Options;
 using Moq;
 using Moq.AutoMock;
-using RaspberryPi.Services;
 using WeatherDisplay.Model.Settings;
+using WeatherDisplay.Services;
 using WeatherDisplay.Services.Hardware;
 using Xunit;
 
