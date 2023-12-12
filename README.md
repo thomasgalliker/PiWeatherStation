@@ -280,6 +280,7 @@ content-length: 1460
 - https://docs.microsoft.com/en-us/dotnet/iot/deployment
 - https://docs.microsoft.com/en-gb/dotnet/core/install/linux-scripted-manual#scripted-install
 - https://docs.microsoft.com/en-gb/dotnet/core/tools/dotnet-install-script
+- https://github.com/dotnet/designs/blob/main/accepted/2019/runtime-binding.md#rollforward
 
 #### Linux and ASP.NET Core related sources
 - https://swimburger.net/blog/dotnet/how-to-run-a-dotnet-core-console-app-as-a-service-using-systemd-on-linux
