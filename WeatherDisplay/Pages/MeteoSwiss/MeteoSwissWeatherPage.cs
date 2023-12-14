@@ -205,21 +205,29 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 35,
                                     Bold = true,
-                                },
-                                new RenderActions.Text
-                                {
-                                    Y = 60,
-                                    X = -30,
-                                    HorizontalTextAlignment = HorizontalAlignment.Left,
-                                    VerticalTextAlignment = VerticalAlignment.Bottom,
-                                    Value = $"/ {latestMeasurement.RelativeAirHumidity.Value.Value:0}% {Translations.RelativeHumiditySuffix}",
-                                    ForegroundColor = "#000000",
-                                    BackgroundColor = "#FFFFFF",
-                                    FontSize = 20,
-                                    Bold = false,
                                 }
                         }
+
                     };
+
+
+                    if (latestMeasurement.RelativeAirHumidity is RelativeHumidity relativeAirHumidity)
+                    {
+                        outdoorTempStackLayout.Children.Add(
+                            new RenderActions.Text
+                            {
+                                Y = 60,
+                                X = -30,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Bottom,
+                                Value = $"/ {relativeAirHumidity.Value:0}% {Translations.RelativeHumiditySuffix}",
+                                ForegroundColor = "#000000",
+                                BackgroundColor = "#FFFFFF",
+                                FontSize = 20,
+                                Bold = false,
+                            });
+                    }
+
                     currentWeatherRenderActions.Add(outdoorTempStackLayout);
 
                     // Display local temperature and humidity if the selected place is current place
