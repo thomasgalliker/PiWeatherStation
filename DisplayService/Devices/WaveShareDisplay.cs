@@ -2,6 +2,7 @@
 using System.Drawing;
 using System.IO;
 using DisplayService.Internals;
+using Microsoft.Extensions.Logging;
 using Waveshare;
 using Waveshare.Devices;
 using Waveshare.Interfaces;
@@ -12,16 +13,17 @@ namespace DisplayService.Devices
     {
         private readonly IEPaperDisplay ePaperDisplay;
         private readonly SyncHelper syncHelper = new SyncHelper();
-
+        private readonly ILogger<WaveShareDisplay> logger;
         private bool disposed;
 
-        public WaveShareDisplay(string displayType)
+        public WaveShareDisplay(ILogger<WaveShareDisplay> logger, string displayType)
         {
-            Console.WriteLine($"WaveShareDisplay creating for display type {displayType}");
+            this.logger = logger;
+            this.logger.LogDebug($"WaveShareDisplay creating for display type {displayType}");
 
             var displayTypeEnum = (EPaperDisplayType)Enum.Parse(typeof(EPaperDisplayType), displayType);
             this.ePaperDisplay = EPaperDisplay.Create(displayTypeEnum);
-            Console.WriteLine($"WaveShareDisplay created for display type {this.ePaperDisplay}");
+            this.logger.LogDebug($"WaveShareDisplay created for display type {this.ePaperDisplay}");
         }
 
         public int Width => this.ePaperDisplay.Width;
@@ -30,10 +32,13 @@ namespace DisplayService.Devices
 
         public void Clear()
         {
-            Console.WriteLine($"WaveShareDisplay: Clear");
-            this.ePaperDisplay.PowerOn();
-            this.ePaperDisplay.Clear();
-            this.ePaperDisplay.PowerOff();
+            this.syncHelper.RunOnce(() =>
+            {
+                this.logger.LogDebug("Clear");
+                this.ePaperDisplay.PowerOn();
+                this.ePaperDisplay.Clear();
+                this.ePaperDisplay.PowerOff();
+            });
         }
 
         public void DisplayImage(Stream bitmapStream)
@@ -45,7 +50,7 @@ namespace DisplayService.Devices
         {
             this.syncHelper.RunOnce(() =>
             {
-                Console.WriteLine($"WaveShareDisplay: DisplayImage");
+                this.logger.LogDebug("DisplayImage");
                 this.ePaperDisplay.PowerOn();
                 this.ePaperDisplay.DisplayImage(bitmap);
                 this.ePaperDisplay.PowerOff();
@@ -91,7 +96,7 @@ namespace DisplayService.Devices
         ///        }
         ///        catch (Exception ex)
         ///        {
-        ///            Console.WriteLine("An exception occurred setting update timer. " + ex.Message);
+        ///            this.logger.LogDebug("An exception occurred setting update timer. " + ex.Message);
         ///        }
         ///        finally
         ///        {
@@ -132,7 +137,7 @@ namespace DisplayService.Devices
         //             }
         //             catch (Exception ex)
         //             {
-        //                 Console.WriteLine("An exception occurred trying to get screen to update. " + ex.Message);
+        //                 this.logger.LogDebug("An exception occurred trying to get screen to update. " + ex.Message);
         //             }
         //             finally
         //             {
@@ -152,7 +157,7 @@ namespace DisplayService.Devices
         //         }
         //         catch (Exception ex)
         //         {
-        //             Console.WriteLine("An exception occurred trying to update display. " + ex.Message);
+        //             this.logger.LogDebug("An exception occurred trying to update display. " + ex.Message);
         //         }
         //         finally
         //         {
@@ -181,18 +186,18 @@ namespace DisplayService.Devices
         //         this.ePaperDisplay.PowerOn();
         //         for (var i = 0; i < 6; i++)
         //         {
-        //             Console.WriteLine("Flushing display");
+        //             this.logger.LogDebug("Flushing display");
         //             this.ePaperDisplay.ClearBlack();
         //             this.ePaperDisplay.Clear();
         //         }
         //
         //         this.ePaperDisplay.PowerOff();
-        //         Console.WriteLine("Finished flushing display");
+        //         this.logger.LogDebug("Finished flushing display");
         //         //_renderer.Refresh();
         //     }
         //     catch (Exception ex)
         //     {
-        //         Console.WriteLine("An exception occurred flushing display. " + ex.Message);
+        //         this.logger.LogDebug("An exception occurred flushing display. " + ex.Message);
         //     }
         //     finally
         //     {
