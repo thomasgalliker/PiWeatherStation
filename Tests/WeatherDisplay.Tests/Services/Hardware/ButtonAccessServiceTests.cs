@@ -9,6 +9,7 @@ using Moq.AutoMock;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Services;
 using WeatherDisplay.Services.Hardware;
+using WeatherDisplay.Services.Navigation;
 using Xunit;
 
 namespace WeatherDisplay.Tests.Services.Hardware
@@ -56,6 +57,7 @@ namespace WeatherDisplay.Tests.Services.Hardware
         {
             // Arrange
             var shutdownServiceMock = this.autoMocker.GetMock<IShutdownService>();
+            var navigationServiceMock = this.autoMocker.GetMock<INavigationService>();
 
             var gpioControllerMock = this.autoMocker.GetMock<IGpioController>();
 
@@ -84,6 +86,9 @@ namespace WeatherDisplay.Tests.Services.Hardware
 
             // Assert
             shutdownServiceMock.Verify(s => s.Shutdown(), Times.Once);
+            shutdownServiceMock.VerifyNoOtherCalls();
+
+            navigationServiceMock.VerifyNoOtherCalls();
         }
     }
 }
