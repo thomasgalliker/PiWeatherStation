@@ -22,13 +22,13 @@ namespace WeatherDisplay.Api.Controllers
             return ssids;
         }
 
-        [HttpGet("connectwifi")]
-        public async Task ConnectToWifiAsync(string ssid, string psk)
+        [HttpPost("wifi/connect")]
+        public async Task ConnectToWifiAsync([FromQuery] string ssid, [FromQuery] string psk)
         {
             await this.networkManager.ConnectToWifiAsync(ssid, psk);
         }
 
-        [HttpGet("connectedwifis")]
+        [HttpGet("wifi")]
         public IEnumerable<string> GetConnectedSSIDs()
         {
             return this.networkManager.GetConnectedSSIDs();
