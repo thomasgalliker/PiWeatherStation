@@ -120,13 +120,13 @@ serialNumber=$( cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2 )
 
 if ! test -v host; then
 
-    host="raspi$(echo $serialNumber)"
+    host="PiWeatherDisplay_$(echo $serialNumber | tail -c 7 | tr '[:lower:]' '[:upper:]')"
 fi
 
 # Generate wifi SSID and pre-shared key
 # - The SSID should be constant therefore we use the serial number as part of it.
 # - The PSK is a random number with a length of 8 characters. Some characters are explicitly filtered to avoid confusion (like O with 0).
-ap_ssid="PiWeatherDisplay_$(echo $serialNumber | tail -c 7 | tr '[:lower:]' '[:upper:]')"
+ap_ssid=$host
 ap_psk=$(< /dev/urandom tr -dc A-Z-a-z-0-9_$ | tr -d oO0lI1 | head -c 8)
 ap_wifi_mode="g"
 ap_country_code="CH"
