@@ -85,5 +85,16 @@ namespace WeatherDisplay.Services
             };
             await this.networkManager.SetupStationMode(wlan0, network);
         }
+
+
+        public async Task RemoveWifiAsync(string ssid)
+        {
+            var wlan0 = this.GetWlanNetworkInterface();
+            var network = new WPASupplicantNetwork
+            {
+                SSID = ssid,
+            };
+            await this.wpa.RemoveNetworkAsync(network);
+        }
     }
 }

@@ -11,6 +11,8 @@ namespace WeatherDisplay.Services
 
         Task ConnectToWifiAsync(string ssid, string psk);
 
+        Task RemoveWifiAsync(string ssid);
+
         IEnumerable<string> GetConnectedSSIDs();
     }
 }
