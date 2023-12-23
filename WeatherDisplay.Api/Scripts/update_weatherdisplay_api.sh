@@ -1,6 +1,10 @@
 #!/bin/bash
+# Setup script for PiWeatherStation
+# Author: Thomas Galliker
+
 # set -exv
 
+# Error management
 #set -o errexit
 #set -o pipefail
 #set -o nounset
@@ -120,13 +124,13 @@ serialNumber=$( cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2 )
 
 if ! test -v host; then
 
-    host="PiWeatherDisplay_$(echo $serialNumber | tail -c 7 | tr '[:lower:]' '[:upper:]')"
+    host="raspi$(echo $serialNumber)"
 fi
 
 # Generate wifi SSID and pre-shared key
 # - The SSID should be constant therefore we use the serial number as part of it.
 # - The PSK is a random number with a length of 8 characters. Some characters are explicitly filtered to avoid confusion (like O with 0).
-ap_ssid=$host
+ap_ssid="PiWeatherDisplay_$(echo $serialNumber | tail -c 7 | tr '[:lower:]' '[:upper:]')"
 ap_psk=$(< /dev/urandom tr -dc A-Z-a-z-0-9_$ | tr -d oO0lI1 | head -c 8)
 ap_wifi_mode="g"
 ap_country_code="CH"
@@ -198,32 +202,25 @@ EOF"
 fi
 echo ""
 
-logSuccess "Updating packages..."
+logSuccess "Updating software..."
 sudo apt-get update && sudo apt-get -y upgrade
 echo ""
 
-logSuccess "Installing packages..."
-if [[ $(dpkg -l | grep -c libgdiplus) == 0 ]]; then
-    logDebug "Installing libgdiplus..."
-    sudo apt-get install -y libgdiplus
+install_package() {
+if [[ "$(dpkg -s ${1} 2> /dev/null | grep -cow '^Status: install ok installed$')" -eq '0' ]]
+then
+    logSuccess "Installing package ${1}..."
+    sudo apt-get -y install "${1}"
+else
+    logSuccess "Installing package ${1} --> already installed"
 fi
+}
 
-if [[ $(dpkg -l | grep -c dhcpcd) == 0 ]]; then
-    logDebug "Installing dhcpcd..."
-    sudo apt-get install -y dhcpcd
-fi
-
-if [[ $(dpkg -l | grep -c hostapd) == 0 ]]; then
-    logDebug "Installing hostapd..."
-    sudo apt-get install -y hostapd
-fi
-
-if [[ $(dpkg -l | grep -c dnsmasq) == 0 ]]; then
-    logDebug "Installing dnsmasq..."
-    sudo apt-get install -y dnsmasq
-fi
+install_package "libgdiplus"
+install_package "dhcpcd"
+install_package "hostapd"
+install_package "dnsmasq"
 echo ""
-
 
 logSuccess "Setting up access point..."
 
@@ -236,8 +233,8 @@ interface ap@wlan0
     nohook wpa_supplicant
 EOF
 
-# Populate `/etc/dnsmasq.conf`
-logDebug "Populate /etc/dnsmasq.conf"
+# Update `/etc/dnsmasq.conf`
+logDebug "Updating /etc/dnsmasq.conf..."
 sudo bash -c 'cat > /etc/dnsmasq.conf' << EOF
 interface=lo,ap@wlan0
 no-dhcp-interface=lo,wlan0
@@ -249,8 +246,8 @@ dhcp-range=${ap_ip_begin}.50,${ap_ip_begin}.150,240h
 dhcp-option=3,${ap_ip}
 EOF
 
-# Populate hostapd.conf
-logDebug "Populate /etc/hostapd/hostapd.conf"
+# Update hostapd.conf
+logDebug "Updating /etc/hostapd/hostapd.conf..."
 sudo bash -c 'cat > /etc/hostapd/hostapd.conf' << EOF
 ctrl_interface=/var/run/hostapd
 ctrl_interface_group=0
@@ -272,6 +269,8 @@ EOF
 
 sudo chmod 600 /etc/hostapd/hostapd.conf
 
+# Create accesspoint service
+logDebug "Creating accesspoint service..."
 sudo bash -c 'SYSTEMD_EDITOR=tee systemctl edit --force --full accesspoint@.service' << EOF
 [Unit]
 Description=IEEE 802.11 ap@%i AP on %i with hostapd
@@ -294,15 +293,14 @@ EOF
 sudo systemctl disable wpa_supplicant.service
 
 logDebug "enable dnsmasq.service / disable hostapd.service"
-systemctl unmask dnsmasq.service
-systemctl enable dnsmasq.service
-sudo systemctl stop hostapd # if the default hostapd service was active before
-sudo systemctl disable hostapd # if the default hostapd service was enabled before
+sudo systemctl unmask dnsmasq.service
+sudo systemctl enable dnsmasq.service
+sudo systemctl stop hostapd     # if the default hostapd service was active before
+sudo systemctl disable hostapd  # if the default hostapd service was enabled before
 sudo systemctl enable accesspoint@wlan0.service
 sudo rfkill unblock wlan
 sudo systemctl daemon-reload
 
-logDebug "Create access point config"
 sudo bash -c "cat > $workingDirectory/accesspoint@wlan0.json" << EOF
 {
   "AccessPoint": {
@@ -312,7 +310,7 @@ sudo bash -c "cat > $workingDirectory/accesspoint@wlan0.json" << EOF
 }
 EOF
 
-logDebug "Create log folder"
+logDebug "Create log folder for wifi access point"
 mkdir -p /var/log/ap_sta_wifi
 touch /var/log/ap_sta_wifi/ap0_mgnt.log
 touch /var/log/ap_sta_wifi/on_boot.log
