@@ -50,10 +50,20 @@ namespace WeatherDisplay.Api.Controllers
         /// Gets all connected wifi networks.
         /// </summary>
         /// <returns>List of all connected SSIDs.</returns>
-        [HttpGet("wifi")]
+        [HttpGet("wifi/connected")]
         public IEnumerable<string> GetConnectedSSIDs()
         {
             return this.networkManager.GetConnectedSSIDs();
+        }
+
+        /// <summary>
+        /// Gets all configured wifi networks.
+        /// </summary>
+        /// <returns>List of all connected SSIDs.</returns>
+        [HttpGet("wifi/configured")]
+        public async Task<IEnumerable<string>> GetConfiguredSSIDsAsync()
+        {
+            return await this.networkManager.GetConfiguredSSIDsAsync();
         }
     }
 }

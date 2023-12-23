@@ -46,6 +46,12 @@ namespace WeatherDisplay.Services
             var ssids = this.wpa.GetConnectedSSIDs(wlan0);
             return ssids;
         }
+        
+        public async Task<IEnumerable<string>> GetConfiguredSSIDsAsync()
+        {
+            var wpaSupplicantConf = await this.wpa.GetWPASupplicantConfAsync();
+            return wpaSupplicantConf.Networks.Select(n => n.SSID);
+        }
 
         private INetworkInterface GetWlanNetworkInterface()
         {
@@ -89,12 +95,7 @@ namespace WeatherDisplay.Services
 
         public async Task RemoveWifiAsync(string ssid)
         {
-            var wlan0 = this.GetWlanNetworkInterface();
-            var network = new WPASupplicantNetwork
-            {
-                SSID = ssid,
-            };
-            await this.wpa.RemoveNetworkAsync(network);
+            await this.wpa.RemoveNetworkAsync(ssid);
         }
     }
 }
