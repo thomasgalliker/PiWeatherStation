@@ -211,7 +211,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                     };
 
 
-                    if (latestMeasurement.RelativeAirHumidity is RelativeHumidity relativeAirHumidity)
+                    if (latestMeasurement?.RelativeAirHumidity is RelativeHumidity relativeAirHumidity)
                     {
                         outdoorTempStackLayout.Children.Add(
                             new RenderActions.Text
@@ -521,7 +521,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 Y = 180 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = MeteoFormatter.FormatWind(latestMeasurement.WindSpeed, latestMeasurement.WindDirection),
+                                Value = MeteoFormatter.FormatWind(latestMeasurement?.WindSpeed, latestMeasurement?.WindDirection),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
@@ -545,7 +545,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                 Y = 220 + 5,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = MeteoFormatter.FormatPressure(latestMeasurement.PressureQFE),
+                                Value = MeteoFormatter.FormatPressure(latestMeasurement?.PressureQFE),
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
