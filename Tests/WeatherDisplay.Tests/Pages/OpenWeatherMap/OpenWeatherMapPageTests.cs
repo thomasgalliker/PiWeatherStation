@@ -19,7 +19,6 @@ using SkiaSharp;
 using UnitsNet;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Pages.OpenWeatherMap;
-using WeatherDisplay.Resources;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
 using WeatherDisplay.Tests.Extensions;
@@ -180,8 +179,7 @@ namespace WeatherDisplay.Tests.Pages.OpenWeatherMap
                 .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromDegreesCelsius(1.2f); return i; })
                 .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromDegreesCelsius(12.34f); return i; })
                 .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromDegreesCelsius(123.456f); return i; })
-                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromDegreesCelsius(12.34f); return i; })
-                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromDegreesCelsius(1.8f); return i; })
+                .ReturnsAsync(() => { var i = OneCallWeatherInfos.GetTestWeatherInfo(); i.CurrentWeather.Temperature = Temperature.FromDegreesCelsius(-0.1f); return i; })
                 ;
 
             var taskIds = new List<Guid>();

@@ -9,12 +9,24 @@ namespace WeatherDisplay.Utils
     {
         internal static string FormatTemperature(Temperature? temperature, int decimalPlaces = 0)
         {
+            var formattedTemperatureValue = FormatTemperature(temperature?.Value, decimalPlaces);
+
             if (temperature is not Temperature temperatureValue)
+            {
+                return formattedTemperatureValue;
+            }
+
+            return $"{formattedTemperatureValue} {temperatureValue:A}";
+        }
+
+        internal static string FormatTemperature(double? temperature, int decimalPlaces = 0)
+        {
+            if (temperature is not double temperatureValue)
             {
                 return "-";
             }
 
-            return $"{temperatureValue.ToString($"N{decimalPlaces}")}";
+            return $"{((decimal)temperatureValue).ToString($"N{decimalPlaces}")}";
         }
 
         internal static string FormatWind(Speed? windSpeed, Angle? windDirection)
@@ -39,8 +51,8 @@ namespace WeatherDisplay.Utils
                 windSpeedString = $"{windSpeedValue:G1}";
             }
 
-            var value = $"{windSpeedString}{(windDirection is Angle windDirectionValue ? $" ({AngleExtensions.ToIntercardinalWindDirection(windDirectionValue)})" : "")}";
-            return value;
+            var formattedWindSpeed = $"{windSpeedString}{(windDirection is Angle windDirectionValue ? $" ({AngleExtensions.ToIntercardinalWindDirection(windDirectionValue)})" : "")}";
+            return formattedWindSpeed;
         }
 
         internal static string FormatPrecipitation(Length? precipitation, Ratio? pop = null)
@@ -52,21 +64,17 @@ namespace WeatherDisplay.Utils
 
             string precipitationString = null;
 
-            if (precipitationValue.Value == 0d)
-            {
-                precipitationString = $"{precipitationValue:N0}";
-            }
-            else if (precipitationValue.Value is > 0d and < 1d)
+            if (precipitationValue.Value is > 0d and < 1d)
             {
                 precipitationString = $"< {Length.From(1d, precipitationValue.Unit):N0}";
             }
             else
             {
-                precipitationString = $"{precipitationValue:N0}";
+                precipitationString = $"{(decimal)precipitationValue.Value:N0} {precipitationValue:A}";
             }
 
-            var value = $"{precipitationString}{(pop is Ratio popValue ? $" ({popValue})" : "")}";
-            return value;
+            var formattedPrecipitation = $"{precipitationString}{(pop is Ratio popValue ? $" ({popValue})" : "")}";
+            return formattedPrecipitation;
         }
 
         internal static string FormatPressure(Pressure? pressure)
@@ -76,7 +84,7 @@ namespace WeatherDisplay.Utils
                 return "-";
             }
 
-            return $"{pressureValue:N0} ({PressureExtensions.GetRange(pressureValue):N})";
+            return $"{(decimal)pressureValue.Value:N0} {pressureValue:A} ({PressureExtensions.GetRange(pressureValue):N})";
         }
 
         internal static string FormatHumidity(RelativeHumidity? relativeHumidity, int decimalPlaces = 0)
@@ -86,7 +94,7 @@ namespace WeatherDisplay.Utils
                 return "-";
             }
 
-            return $"{relativeHumidityValue.ToString($"N{decimalPlaces}")}";
+            return $"{((decimal)relativeHumidityValue.Value).ToString($"N{decimalPlaces}")} {relativeHumidityValue:A}";
         }
     }
 }

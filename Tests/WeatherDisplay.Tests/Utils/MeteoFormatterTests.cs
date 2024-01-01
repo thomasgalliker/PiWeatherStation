@@ -1,5 +1,7 @@
-﻿using FluentAssertions;
+﻿using System;
+using FluentAssertions;
 using UnitsNet;
+using UnitsNet.Units;
 using WeatherDisplay.Utils;
 using Xunit;
 
@@ -8,6 +10,34 @@ namespace WeatherDisplay.Tests.Utils
     [Collection("CultureCollection")]
     public class MeteoFormatterTests
     {
+        [Theory]
+        [ClassData(typeof(FormatTemperatureTestData))]
+        [UseCulture("en-US")]
+        public void ShouldFormatTemperature(Temperature? temperature, string expectedOutput)
+        {
+            // Act
+            var output = MeteoFormatter.FormatTemperature(temperature);
+
+            // Assert
+            output.Should().Be(expectedOutput);
+        }
+
+        public class FormatTemperatureTestData : TheoryData<Temperature?, string>
+        {
+            public FormatTemperatureTestData()
+            {
+                // Null value
+                this.Add(null, "-");
+
+                // Round values from 1 to -1
+                this.Add(Temperature.FromDegreesCelsius(0.9d), "1 °C");
+                this.Add(Temperature.FromDegreesCelsius(0.44d), "0 °C");
+                this.Add(Temperature.FromDegreesCelsius(0.1d), "0 °C");
+                this.Add(Temperature.FromDegreesCelsius(-0.1d), "0 °C");
+                this.Add(Temperature.FromDegreesCelsius(-0.5d), "-1 °C");
+            }
+        }
+
         [Theory]
         [ClassData(typeof(FormatWindTestData))]
         [UseCulture("en-US")]
