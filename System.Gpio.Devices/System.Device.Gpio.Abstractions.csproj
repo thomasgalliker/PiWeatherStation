@@ -13,7 +13,7 @@
     <PackageReference Include="System.Device.Gpio" Version="2.3.0-prerelease.22520.10" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="[7.0.0,)" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="[7.0.1,)" />
-    <PackageReference Include="UnitsNet" Version="5.36.0" />
+    <PackageReference Include="UnitsNet" Version="5.42.0" />
   </ItemGroup>
 
 </Project>
