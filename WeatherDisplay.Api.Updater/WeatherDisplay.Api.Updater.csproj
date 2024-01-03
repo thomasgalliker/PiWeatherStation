@@ -5,6 +5,7 @@
 		<TargetFramework>net6.0</TargetFramework>
 		<ImplicitUsings>disable</ImplicitUsings>
 		<Nullable>disable</Nullable>
+    <RollForward>LatestMajor</RollForward>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
 	</PropertyGroup>
@@ -12,7 +13,7 @@
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-		<PackageReference Include="NuGet.Versioning" Version="6.6.1" />
+		<PackageReference Include="NuGet.Versioning" Version="6.8.0" />
 	</ItemGroup>
 
 </Project>

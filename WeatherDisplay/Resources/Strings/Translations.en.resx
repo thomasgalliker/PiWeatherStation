@@ -21,12 +21,6 @@
   <data name="CarbonDioxideAbbreviation" xml:space="preserve">
     <value>CO2</value>
   </data>
-  <data name="OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine1" xml:space="preserve">
-    <value>Error: Missing places configuration.</value>
-  </data>
-  <data name="OpenWeatherMapPage_ErrorMissingPlacesConfigurationLine2" xml:space="preserve">
-    <value>appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places</value>
-  </data>
   <data name="MeteoSwissWeatherPage_SourceName" xml:space="preserve">
     <value>Source: MeteoSwiss</value>
   </data>

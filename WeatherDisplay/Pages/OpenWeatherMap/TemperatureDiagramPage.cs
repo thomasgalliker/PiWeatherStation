@@ -8,17 +8,17 @@ using DisplayService.Services;
 using Microsoft.Extensions.Options;
 using NCrontab;
 using OpenWeatherMap;
-using OpenWeatherMap.Models;
 using SkiaSharp;
+using UnitsNet;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Navigation;
 
-namespace WeatherDisplay.Pages
+namespace WeatherDisplay.Pages.OpenWeatherMap
 {
-    public class TemperatureDiagramPage : INavigatedTo
+    public class TemperatureDiagramPage : IPage, INavigatedTo
     {
         private readonly IDisplayManager displayManager;
         private readonly IOpenWeatherMapService openWeatherMapService;
@@ -218,7 +218,7 @@ namespace WeatherDisplay.Pages
 
                     var bitmapStream = screen.ToStream();
 
-                    currentWeatherRenderActions.Add(new RenderActions.StreamImage
+                    currentWeatherRenderActions.Add(new RenderActions.BitmapImage
                     {
                         X = 0,
                         Y = 140,
@@ -234,9 +234,12 @@ namespace WeatherDisplay.Pages
             return Task.CompletedTask;
         }
 
-        private static (Temperature Min, Temperature Max) TemperatureRangeSelector(IEnumerable<TemperatureSet> s)
+        internal static (Temperature Min, Temperature Max) TemperatureRangeSelector(IEnumerable<TemperatureSet> s)
         {
-            return (s.Min(x => x.Min) - 1, s.Max(x => x.Max) + 1);
+            var minTemp = s.Min(x => x.Min);
+            var maxTemp = s.Max(x => x.Max);
+
+            return (new Temperature(minTemp.Value - 1, minTemp.Unit), new Temperature(minTemp.Value + 1, minTemp.Unit));
         }
     }
 }

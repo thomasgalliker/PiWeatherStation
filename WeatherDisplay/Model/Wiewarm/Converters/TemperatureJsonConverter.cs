@@ -1,5 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
+using UnitsNet;
 
 namespace WeatherDisplay.Model.Wiewarm.Converters
 {
@@ -14,10 +15,10 @@ namespace WeatherDisplay.Model.Wiewarm.Converters
         {
             if (reader.Value is string stringValue && double.TryParse(stringValue, out var celsius))
             {
-                return Temperature.FromCelsius(celsius);
+                return Temperature.FromDegreesCelsius(celsius);
             }
 
-            return default(Temperature);
+            return default;
         }
     }
 }

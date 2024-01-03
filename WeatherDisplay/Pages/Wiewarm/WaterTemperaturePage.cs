@@ -6,14 +6,13 @@ using DisplayService.Model;
 using DisplayService.Services;
 using Microsoft.Extensions.Options;
 using NCrontab;
-using OpenWeatherMap;
 using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Navigation;
 using WeatherDisplay.Services.Wiewarm;
 
 namespace WeatherDisplay.Pages.Wiewarm
 {
-    public class WaterTemperaturePage : INavigatedTo
+    public class WaterTemperaturePage : IPage, INavigatedTo
     {
         private readonly IDisplayManager displayManager;
         private readonly IWiewarmService wiewarmService;
@@ -82,22 +81,13 @@ namespace WeatherDisplay.Pages.Wiewarm
                 },
                 CrontabSchedule.Parse("0 0 * * *")); // Update every day at 00:00
 
-
             // Current weather info
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
                     var places = this.options.CurrentValue.Places;
 
-                    // Get current weather & daily forecasts
-                    var oneCallOptions = new OneCallOptions
-                    {
-                        IncludeCurrentWeather = true,
-                        IncludeDailyForecasts = true,
-                        IncludeMinutelyForecasts = true,
-                        IncludeHourlyForecasts = true,
-                    };
-
+                    // Search baths by search terms
                     var searchTerms = places.ToArray();
 
                     var searchTasks = searchTerms.Select(s => this.wiewarmService.SearchBathsAsync(s));

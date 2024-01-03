@@ -1,4 +1,5 @@
 ﻿using DisplayService.Services;
+using Microsoft.Extensions.Options;
 using NCrontab;
 using NCrontab.Scheduler;
 using NLog;
@@ -16,7 +17,7 @@ namespace WeatherDisplay.Api.Services
     public class AutoStartupBackgroundService : IHostedService
     {
         private readonly ILogger logger;
-        private readonly IAppSettings appSettings;
+        private readonly IOptionsMonitor<AppSettings> appSettings;
         private readonly IWritableOptions<AppSettings> writableAppSettings;
         private readonly IAutoUpdateService autoUpdateService;
         private readonly INavigationService navigationService;
@@ -28,7 +29,7 @@ namespace WeatherDisplay.Api.Services
 
         public AutoStartupBackgroundService(
             ILogger<AutoStartupBackgroundService> logger,
-            IAppSettings appSettings,
+            IOptionsMonitor<AppSettings> appSettings,
             IWritableOptions<AppSettings> writableAppSettings,
             IAutoUpdateService autoUpdateService,
             INavigationService navigationService,
@@ -56,6 +57,20 @@ namespace WeatherDisplay.Api.Services
 
             try
             {
+                // Create appSettings.user.json (if not exists)
+                var appSettingsUserFile = new FileInfo(Path.Combine(this.webHostEnvironment.ContentRootPath, Program.UserSpecificAppSettingsFileName));
+                if (!appSettingsUserFile.Exists)
+                {
+                    this.writableAppSettings.Update(a => AppSettings.Default);
+                }
+
+                // Check if there are button mappings configured
+                if (!this.appSettings.CurrentValue.ButtonMappings.Any())
+                {
+                    this.logger.LogDebug($"Creating initial ButtonMappings in {appSettingsUserFile.Name}");
+                    this.writableAppSettings.UpdateProperty(a => a.ButtonMappings, AppSettings.Default.ButtonMappings);
+                }
+
                 // Check if a new accesspoint configuration file is present
                 // and merge it into appSettings.User.json (if it exists)
                 var accessPointConfigFile = new FileInfo(Path.Combine(this.webHostEnvironment.ContentRootPath, "accesspoint@wlan0.json"));
@@ -69,7 +84,7 @@ namespace WeatherDisplay.Api.Services
                     if (accessPointSection.Exists())
                     {
                         var accessPointSettings = new AccessPointSettings();
-                        ConfigurationBinder.Bind(accessPointSection, accessPointSettings);
+                        accessPointSection.Bind(accessPointSettings);
 
                         this.logger.LogDebug($"Merging access point config file {accessPointConfigFile.Name} into appSettings.User.json");
                         this.writableAppSettings.UpdateProperty(a => a.AccessPoint, accessPointSettings);
@@ -84,7 +99,7 @@ namespace WeatherDisplay.Api.Services
                 var updateInProgress = await this.TryInstallUpdateAsync();
                 if (!updateInProgress)
                 {
-                    var runSetup = this.appSettings.RunSetup;
+                    var runSetup = this.appSettings.CurrentValue.RunSetup;
                     if (runSetup)
                     {
                         await this.navigationService.NavigateAsync(App.Pages.SetupPage);
@@ -94,9 +109,13 @@ namespace WeatherDisplay.Api.Services
                         // Schedule automatic update check for "Daily, 4:50 at night"
                         // this.scheduler.AddTask(CrontabSchedule.Parse("50 4 * * *"), async c => { await this.CheckAndStartUpdate(); });
                         // Schedule automatic update check every hour at minute 50
-                        this.scheduler.AddTask(CrontabSchedule.Parse("50 * * * *"), async c => { await this.TryInstallUpdateAsync(); });
+                        var automaticUpdateTask = new AsyncScheduledTask(
+                            "AutomaticUpdateTask",
+                            CrontabSchedule.Parse("50 * * * *"),
+                            c => this.TryInstallUpdateAsync());
+                        this.scheduler.AddTask(automaticUpdateTask);
 
-                        var defaultButton = this.appSettings.ButtonMappings.GetDefaultButtonMapping();
+                        var defaultButton = this.appSettings.CurrentValue.ButtonMappings.GetDefaultButtonMapping();
                         await this.navigationService.NavigateAsync(defaultButton.Page);
                     }
                 }
@@ -131,13 +150,15 @@ namespace WeatherDisplay.Api.Services
             }
         }
 
-        public async Task StopAsync(CancellationToken cancellationToken)
+        public Task StopAsync(CancellationToken cancellationToken)
         {
             this.logger.LogDebug("StopAsync");
 
-            await this.displayManager.ResetAsync();
+            this.displayManager.Reset();
 
             LogManager.Shutdown();
+
+            return Task.CompletedTask;
         }
     }
 }

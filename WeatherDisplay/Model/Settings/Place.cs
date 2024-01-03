@@ -2,7 +2,7 @@
 
 namespace WeatherDisplay.Model.Settings
 {
-    [DebuggerDisplay("{this.Name}")]
+    [DebuggerDisplay(@"\{Name = {Name}\}")]
     public class Place
     {
         public Place()

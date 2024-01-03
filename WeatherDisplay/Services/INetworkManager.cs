@@ -7,8 +7,14 @@ namespace WeatherDisplay.Services
     {
         IEnumerable<string> ScanAsync();
 
-        Task<(string SSID, string PSK)> SetupAccessPoint();
+        Task<(string SSID, string PSK)> SetupAccessPointAsync();
 
-        Task SetupStationMode(string ssid, string psk);
+        Task ConnectToWifiAsync(string ssid, string psk);
+
+        Task RemoveWifiAsync(string ssid);
+
+        IEnumerable<string> GetConnectedSSIDs();
+
+        Task<IEnumerable<string>> GetConfiguredSSIDsAsync();
     }
 }

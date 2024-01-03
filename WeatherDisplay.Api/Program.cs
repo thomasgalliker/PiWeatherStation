@@ -12,7 +12,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NLog;
 using NLog.Extensions.Logging;
-using RaspberryPi.Extensions;
 using UnitsNet.Serialization.JsonNet;
 using WeatherDisplay.Api.Properties;
 using WeatherDisplay.Api.Services;
@@ -29,7 +28,7 @@ namespace WeatherDisplay.Api
 {
     internal static class Program
     {
-        private const string UserSpecificAppSettingsFileName = "appsettings.User.json";
+        internal const string UserSpecificAppSettingsFileName = "appsettings.User.json";
 
         private static void Main(string[] args)
         {
@@ -42,10 +41,11 @@ namespace WeatherDisplay.Api
             };
 
             var assembly = Assembly.GetExecutingAssembly();
+            var assemblyVersion = assembly.GetName().Version;
             var buildTime = assembly.GetBuildTime();
 
             Console.WriteLine(
-                $"WeatherStation version {assembly.GetName().Version} {(buildTime != null ? $"[{buildTime.Value:u}]{Environment.NewLine}" : "")}" +
+                $"WeatherStation version {assemblyVersion} {(buildTime != null ? $"[{buildTime.Value:u}]{Environment.NewLine}" : "")}" +
                 $"Copyright(C) superdev GmbH. All rights reserved.{Environment.NewLine}");
 
             var privateKeyFile = "localhost.pfx";
@@ -104,10 +104,11 @@ namespace WeatherDisplay.Api
                 opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             });
 
+            var swaggerVersion = $"v{assemblyVersion.Major}";
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(option =>
             {
-                option.SwaggerDoc("v1", new OpenApiInfo { Title = "WeatherDisplay API", Version = "v1" });
+                option.SwaggerDoc(swaggerVersion, new OpenApiInfo { Title = "WeatherDisplay API", Version = $"{assemblyVersion}" });
                 option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
@@ -173,17 +174,17 @@ namespace WeatherDisplay.Api
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services
-                .AddAuthentication(options =>
+                .AddAuthentication(o =>
                 {
-                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(cfg =>
+                .AddJwtBearer(o =>
                 {
-                    cfg.RequireHttpsMetadata = false;
-                    cfg.SaveToken = true;
-                    cfg.TokenValidationParameters = new TokenValidationParameters
+                    o.RequireHttpsMetadata = false;
+                    o.SaveToken = true;
+                    o.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
                         ValidIssuer = identityConfiguration.JwtIssuer,
@@ -218,8 +219,14 @@ namespace WeatherDisplay.Api
                 endpoints.MapControllers().RequireAuthorization("RequireAuthenticatedUserPolicy");
             });
 
+            // ===== Use Swagger ======
             app.UseSwagger();
-            app.UseSwaggerUI(o => o.InjectStylesheet("/swagger-ui/SwaggerStyle.css"));
+            app.UseSwaggerUI(o =>
+            {
+                o.SwaggerEndpoint($"/swagger/{swaggerVersion}/swagger.json", swaggerVersion);
+                o.RoutePrefix = "swagger";
+                o.InjectStylesheet("/swagger-ui/SwaggerStyle.css");
+            });
 
             app.UseStaticFiles();
 

@@ -19,11 +19,11 @@ namespace WeatherDisplay.Api.Controllers
         {
             await this.displayManager.StartAsync();
         }
-        
+
         [HttpGet("reset")]
-        public async Task ResetAsync()
+        public void Reset()
         {
-            await this.displayManager.ResetAsync();
+            this.displayManager.Reset();
         }
     }
 }

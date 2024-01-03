@@ -37,6 +37,12 @@ namespace DisplayService.Tests.Services
             var scheduler = this.autoMocker.CreateInstance<Scheduler>(enablePrivate: true);
             this.autoMocker.Use<IScheduler>(scheduler);
 
+            var schedulerOptionsMock = this.autoMocker.GetMock<ISchedulerOptions>();
+            schedulerOptionsMock.SetupGet(o => o.DateTimeKind)
+                .Returns(DateTimeKind.Utc);
+            schedulerOptionsMock.SetupGet(o => o.Logging)
+                .Returns(new LoggingOptions());
+
             var schedulerFactoryMock = this.autoMocker.GetMock<ISchedulerFactory>();
             schedulerFactoryMock.Setup(f => f.Create())
                 .Returns(scheduler);

@@ -2,9 +2,9 @@
 using System.Device.Buttons;
 using System.Device.Gpio;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Services.Navigation;
@@ -18,9 +18,10 @@ namespace WeatherDisplay.Services.Hardware
 
         private readonly ILogger logger;
         private readonly ILoggerFactory loggerFactory;
-        private readonly IAppSettings appSettings;
+        private readonly IOptions<AppSettings> appSettings;
         private readonly IGpioController gpioController;
         private readonly INavigationService navigationService;
+        private readonly IShutdownService shutdownService;
 
         private GpioButton button1;
         private GpioButton button2;
@@ -33,15 +34,17 @@ namespace WeatherDisplay.Services.Hardware
         public ButtonsAccessService(
             ILogger<ButtonsAccessService> logger,
             ILoggerFactory loggerFactory,
-            IAppSettings appSettings,
+            IOptions<AppSettings> appSettings,
             IGpioController gpioController,
-            INavigationService navigationService)
+            INavigationService navigationService,
+            IShutdownService shutdownService)
         {
             this.logger = logger;
             this.loggerFactory = loggerFactory;
             this.appSettings = appSettings;
             this.gpioController = gpioController;
             this.navigationService = navigationService;
+            this.shutdownService = shutdownService;
         }
 
         public void Initialize()
@@ -56,13 +59,14 @@ namespace WeatherDisplay.Services.Hardware
 
             var gpioButtonLogger = this.loggerFactory.CreateLogger<GpioButton>();
 
-            var buttonMappings = this.appSettings.ButtonMappings;
+            var buttonMappings = this.appSettings.Value.ButtonMappings;
 
             var buttonMapping1 = buttonMappings.SingleOrDefault(b => b.ButtonId == 1);
             if (buttonMapping1 != null)
             {
                 this.button1 = new GpioButton(buttonMapping1.GpioPin, ButtonPullUp, gpio: this.gpioController, shouldDispose: true, debounceTime: ButtonDebounceTime, logger: gpioButtonLogger);
                 this.button1.Press += this.OnButton1Pressed;
+                this.button1.Holding += this.OnButton1Holding;
             }
 
             var buttonMapping2 = buttonMappings.SingleOrDefault(b => b.ButtonId == 2);
@@ -70,6 +74,7 @@ namespace WeatherDisplay.Services.Hardware
             {
                 this.button2 = new GpioButton(buttonMapping2.GpioPin, ButtonPullUp, gpio: this.gpioController, shouldDispose: true, debounceTime: ButtonDebounceTime, logger: gpioButtonLogger);
                 this.button2.Press += this.OnButton2Pressed;
+                this.button2.Holding += this.OnButton2Holding;
             }
 
             var buttonMapping3 = buttonMappings.SingleOrDefault(b => b.ButtonId == 3);
@@ -113,7 +118,7 @@ namespace WeatherDisplay.Services.Hardware
                 }
                 else
                 {
-                    var buttonMappings = this.appSettings.ButtonMappings.Where(b => b.ButtonId == buttonId);
+                    var buttonMappings = this.appSettings.Value.ButtonMappings.Where(b => b.ButtonId == buttonId);
                     var buttonMappingsCount = buttonMappings.Count();
                     if (buttonMappingsCount == 0)
                     {
@@ -151,12 +156,19 @@ namespace WeatherDisplay.Services.Hardware
 
             try
             {
-                if (buttonId == 4)
+                var button1Holding = this.button1.IsHolding;
+                var button2Holding = this.button2.IsHolding;
+
+                if (button1Holding && button2Holding)
+                {
+                    this.shutdownService.Shutdown();
+                }
+                else if (buttonId == 4)
                 {
                     var currentPage = this.navigationService.GetCurrentPage();
                     if (App.Pages.IsSystemPage(currentPage))
                     {
-                        var defaultButton = this.appSettings.ButtonMappings.GetDefaultButtonMapping();
+                        var defaultButton = this.appSettings.Value.ButtonMappings.GetDefaultButtonMapping();
                         await this.navigationService.NavigateAsync(defaultButton.Page);
                     }
                     else
@@ -164,6 +176,7 @@ namespace WeatherDisplay.Services.Hardware
                         await this.navigationService.NavigateAsync(App.Pages.SetupPage);
                     }
                 }
+
             }
             catch (Exception ex)
             {
@@ -179,9 +192,19 @@ namespace WeatherDisplay.Services.Hardware
             await this.HandleButtonPress(buttonId: 1);
         }
 
+        private async void OnButton1Holding(object sender, ButtonHoldingEventArgs e)
+        {
+            await this.HandleButtonHolding(buttonId: 1);
+        }
+
         private async void OnButton2Pressed(object sender, EventArgs e)
         {
             await this.HandleButtonPress(buttonId: 2);
+        }
+
+        private async void OnButton2Holding(object sender, ButtonHoldingEventArgs e)
+        {
+            await this.HandleButtonHolding(buttonId: 2);
         }
 
         private async void OnButton3Pressed(object sender, EventArgs e)
