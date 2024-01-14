@@ -18,7 +18,7 @@
     <PackageReference Include="ObjectDumper.NET" Version="4.1.13-pre" />
     <PackageReference Include="OpenWeatherMap.API" Version="2.0.47-pre" />
     <PackageReference Include="RaspberryPi.NET" Version="1.0.46-pre" />
-    <PackageReference Include="ResourceLoader" Version="3.2.8-pre" />
+    <PackageReference Include="ResourceLoader" Version="3.3.1" />
     <PackageReference Include="QRCoder" Version="1.4.1" />
   </ItemGroup>
   <ItemGroup>
