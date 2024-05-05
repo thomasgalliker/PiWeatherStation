@@ -36,7 +36,7 @@ namespace WeatherDisplay.Tests
             this.openWeatherMapService = new OpenWeatherMapService(logger, openWeatherMapConfiguration);
         }
 
-        [Fact]
+        [Fact(Skip = "ApiKey is outdated")]
         public async Task ShouldDrawBasicTemperatureDiagram()
         {
             // Arrange
