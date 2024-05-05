@@ -3,7 +3,7 @@ using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages.AirQuality
 {
-    public class AirQualityInfoPage : INavigatedTo
+    public class AirQualityInfoPage : IPage, INavigatedTo
     {
         public Task OnNavigatedToAsync(INavigationParameters parameters)
         {

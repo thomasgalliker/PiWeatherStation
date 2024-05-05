@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Diagnostics.Contracts;
-using System.Drawing;
 using System.IO;
-using System.Runtime.InteropServices.ComTypes;
 using DisplayService.Model;
 using Microsoft.Extensions.Logging;
 using SkiaSharp;
-using SkiaSharp.Extended.Svg;
+using Svg.Skia;
 
 namespace DisplayService.Services
 {
@@ -587,10 +584,10 @@ namespace DisplayService.Services
             }
 
 
-            var skSvg = new SkiaSharp.Extended.Svg.SKSvg();
+            var skSvg = new SKSvg();
             var skPicture = skSvg.Load(image.Image);
 
-            var skRect = skSvg.ViewBox;
+            var skRect = skSvg.Picture.CullRect;
 
             if (image.Width == -1)
             {
@@ -602,27 +599,23 @@ namespace DisplayService.Services
                 image.Height = (int)skRect.Height;
             }
 
-            float xRatio = image.Width / skRect.Width;
-            float yRatio = image.Height / skRect.Height;
+            var xRatio = image.Width / skRect.Width;
+            var yRatio = image.Height / skRect.Height;
 
-            float ratio = Math.Min(xRatio, yRatio);
+            var ratio = Math.Min(xRatio, yRatio);
 
             //canvas.Scale(ratio);
             //canvas.Translate(-skRect.MidX, -skRect.MidY);
-
-
 
             var x = CalculateX(image);
             var y = CalculateY(image);
 
             var rect = SKRect.Create(x, y, image.Width, image.Height);
 
-
             SKMatrix scaleMatrix = default;
             if (skSvg.Picture?.CullRect is { } cullRect)
             {
                 scaleMatrix = SKMatrix.CreateScaleTranslation(xRatio, yRatio, x, y);
-
             }
 
             if (skPicture != null)
@@ -637,17 +630,10 @@ namespace DisplayService.Services
                 }
 
                 // Draw image
-
-
                 using (skPicture)
                 {
                     using (var paint = new SKPaint())
                     {
-                        var contrast = 0.01f;
-                        var cf = SKColorFilter.CreateHighContrast(true, SKHighContrastConfigInvertStyle.InvertBrightness, contrast);
-                        paint.FilterQuality = SKFilterQuality.High;
-                        paint.ColorFilter = cf;
-
                         this.logger.LogDebug($"DrawPicture(SKPicture, x={x}, y={y})");
                         canvas.DrawPicture(skPicture, ref scaleMatrix, paint);
                     }

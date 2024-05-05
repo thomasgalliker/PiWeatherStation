@@ -47,6 +47,6 @@ namespace DisplayService.Services
         /// <summary>
         /// Removes all rendering actions and clears the display.
         /// </summary>
-        Task ResetAsync();
+        void Reset();
     }
 }

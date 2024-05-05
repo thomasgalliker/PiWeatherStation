@@ -6,11 +6,12 @@ using DisplayService.Model;
 using DisplayService.Services;
 using NCrontab;
 using WeatherDisplay.Model.Settings;
+using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {
-    public class ErrorPage : INavigatedTo
+    public class ErrorPage : ISystemPage, INavigatedTo
     {
         private readonly IDisplayManager displayManager;
         private readonly IDateTime dateTime;
@@ -103,39 +104,32 @@ namespace WeatherDisplay.Pages.SystemInfo
                             Y = 120,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"Ein Fehler ist aufgetreten.",
+                            Value = Translations.ErrorPage_ErrorTitle,
                             ForegroundColor = "#000000",
                             BackgroundColor = "#FFFFFF",
                             FontSize = 20,
                             Bold = true,
-                        },
-                        new RenderActions.Text
-                        {
-                            X = 20,
-                            Y = 160,
-                            HorizontalTextAlignment = HorizontalAlignment.Left,
-                            VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"Bitte Internetverbindung prüfen und Gerät ggf. neustarten.",
-                            ForegroundColor = "#000000",
-                            BackgroundColor = "#FFFFFF",
-                            FontSize = 20,
-                        },
+                        }
                     };
 
-                    if (this.appSettings.IsDebug)
+                    var yOffset = 160;
+                    var errorMessageLines = parameters.Exception.Message.Split(new[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var errorMessageLine in errorMessageLines)
                     {
                         errorInfos.Add(
                             new RenderActions.Text
                             {
                                 X = 20,
-                                Y = 200,
+                                Y = yOffset,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = parameters.Exception.Message,
+                                Value = errorMessageLine,
                                 ForegroundColor = "#000000",
                                 BackgroundColor = "#FFFFFF",
                                 FontSize = 20,
                             });
+
+                        yOffset += 40;
                     }
 
                     return errorInfos;

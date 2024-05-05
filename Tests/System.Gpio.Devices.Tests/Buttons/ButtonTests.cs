@@ -1,5 +1,6 @@
-﻿using System.Diagnostics.Metrics;
-using System.Diagnostics.Tracing;
+﻿using System.Collections.Generic;
+using System.Device.Buttons;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentAssertions;
@@ -52,26 +53,20 @@ namespace System.Gpio.Devices.Tests.Buttons
         public async Task If_Button_Is_Held_Holding_Event_Fires()
         {
             // Arrange
-            var pressed = false;
-            var holding = false;
-            var doublePressed = false;
+            var holdingEvents = new List<ButtonHoldingEventArgs>();
+            var pressCounter = 0;
 
             var button = new TestButton();
             button.IsHoldingEnabled = true;
 
-            button.Press += (sender, e) =>
-            {
-                pressed = true;
-            };
-
             button.Holding += (sender, e) =>
             {
-                holding = true;
+                holdingEvents.Add(e);
             };
 
-            button.DoublePress += (sender, e) =>
+            button.Press += (sender, e) =>
             {
-                doublePressed = true;
+                Interlocked.Increment(ref pressCounter);
             };
 
             // Act
@@ -83,9 +78,11 @@ namespace System.Gpio.Devices.Tests.Buttons
             button.ReleaseButton();
 
             // Assert
-            Assert.True(holding, "holding");
-            Assert.True(pressed, "pressed");
-            Assert.False(doublePressed, "doublePressed");
+            holdingEvents.Should().HaveCount(2);
+            holdingEvents.ElementAt(0).HoldingState.Should().Be(ButtonHoldingState.Started);
+            holdingEvents.ElementAt(1).HoldingState.Should().Be(ButtonHoldingState.Completed);
+
+            pressCounter.Should().Be(0);
         }
 
         [Fact]
@@ -374,9 +371,38 @@ namespace System.Gpio.Devices.Tests.Buttons
             // Assert
             Assert.True(buttonDownCounter == 1, "ButtonDown counter is wrong");
             Assert.True(buttonUpCounter == 1, "ButtonUp counter is wrong");
-            Assert.True(pressedCounter == 1, "pressedCounter counter is wrong");
+            Assert.True(pressedCounter == 0, "pressedCounter counter is wrong");
             Assert.True(holding, "holding");
             Assert.False(doublePressed, "doublePressed");
+        }
+        
+        [Fact]
+        public async Task If_Button_Is_Held_Down_Longer_HoldingTimer()
+        {
+            // Arrange
+            var holdingEvents = new List<ButtonHoldingEventArgs>();
+            var button = new TestButton(TimeSpan.FromMilliseconds(1000));
+            button.IsHoldingEnabled = true;
+
+            button.Holding += (sender, e) =>
+            {
+                holdingEvents.Add(e);
+            };
+
+            // Act
+            button.PressButton();
+            await Task.Delay(2200);
+            var isHoldingBeforeRelease = button.IsHolding;
+            button.ReleaseButton();
+            var isHoldingAfterRelease = button.IsHolding;
+
+            // Assert
+            holdingEvents.Should().HaveCount(2);
+            holdingEvents.ElementAt(0).HoldingState.Should().Be(ButtonHoldingState.Started);
+            holdingEvents.ElementAt(1).HoldingState.Should().Be(ButtonHoldingState.Completed);
+
+            isHoldingBeforeRelease.Should().BeTrue();
+            isHoldingAfterRelease.Should().BeFalse();
         }
 
         [Fact]

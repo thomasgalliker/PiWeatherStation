@@ -19,7 +19,7 @@ namespace WeatherDisplay.Tests.Testdata
             {
                 Id = id,
                 IconId = $"{id}",
-                Type = WeatherConditionType.Mist,
+                Main = WeatherConditionGroup.Mist,
                 Description = "Mist",
             };
         }

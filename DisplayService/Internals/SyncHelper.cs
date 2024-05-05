@@ -160,6 +160,8 @@ namespace DisplayService.Internals
                     {
                         item.SetException(ex);
                     }
+
+                    throw;
                 }
                 finally
                 {

@@ -19,7 +19,7 @@ using WeatherDisplay.Services.QR;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {
-    public class SetupPage : INavigatedTo
+    public class SetupPage : ISystemPage, INavigatedTo
     {
         private readonly IDisplayManager displayManager;
         private readonly IDateTime dateTime;
@@ -173,7 +173,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                                 Value = $"{Translations.WifiPSKLabelText}: {accessPointSettings.PSK}",
                                 FontSize = 20,
                             },
-                            new RenderActions.StreamImage
+                            new RenderActions.BitmapImage
                             {
                                 X = 780,
                                 Y = 120,

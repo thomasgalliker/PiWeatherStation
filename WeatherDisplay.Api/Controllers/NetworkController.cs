@@ -1,7 +1,5 @@
-using System.Net;
 using Microsoft.AspNetCore.Mvc;
-using RaspberryPi;
-using RaspberryPi.Network;
+using WeatherDisplay.Services;
 
 namespace WeatherDisplay.Api.Controllers
 {
@@ -9,48 +7,63 @@ namespace WeatherDisplay.Api.Controllers
     [Route("api/system/network")]
     public class NetworkController : ControllerBase
     {
-        private const string DefaultIPAddress = "192.168.10.1";
-        private readonly INetworkInterfaceService networkInterfaceService;
         private readonly INetworkManager networkManager;
-        private readonly IWPA wpa;
 
         public NetworkController(
-            INetworkInterfaceService networkInterfaceService,
-            INetworkManager networkManager,
-            IWPA wpa)
+            INetworkManager networkManager)
         {
-            this.networkInterfaceService = networkInterfaceService;
             this.networkManager = networkManager;
-            this.wpa = wpa;
         }
 
-        [HttpGet("scan")]
+        /// <summary>
+        /// Scans for wifi ssids.
+        /// </summary>
+        [HttpGet("wifi/scan")]
         public IEnumerable<string> ScanAsync()
         {
-            var wlan0 = this.networkInterfaceService.GetByName("wlan0");
-            var ssids = this.wpa.ScanSSIDs(wlan0);
+            var ssids = this.networkManager.ScanAsync();
             return ssids;
         }
 
-        [HttpGet("accesspoint/setup")]
-        public async Task ConfigureAccessPoint(string ssid, string psk, string ipAddress = DefaultIPAddress, int? channel = null, Country country = null)
+        /// <summary>
+        /// Connects to a wifi network using <paramref name="ssid"/> and <paramref name="psk"/>.
+        /// </summary>
+        /// <param name="ssid">The SSID.</param>
+        /// <param name="psk">The pre-shared key (password for the wifi network).</param>
+        [HttpPost("wifi")]
+        public async Task ConnectToWifiAsync([FromQuery] string ssid, [FromQuery] string psk)
         {
-            var wlan0 = this.networkInterfaceService.GetByName("wlan0");
-            var parsedIPAddress = IPAddress.Parse(ipAddress);
-            await this.networkManager.SetupAccessPoint(wlan0, ssid, psk, parsedIPAddress, channel, country);
+            await this.networkManager.ConnectToWifiAsync(ssid, psk);
         }
-        
-        [HttpGet("stationmode/setup")]
-        public async Task SetupStationMode(string ssid, string psk)
-        {
-            var wlan0 = this.networkInterfaceService.GetByName("wlan0");
 
-            var network = new WPASupplicantNetwork
-            {
-                SSID = ssid,
-                PSK = psk,
-            };
-            await this.networkManager.SetupStationMode(wlan0, network);
+        /// <summary>
+        /// Removes a wifi network connection.
+        /// </summary>
+        /// <param name="ssid">The SSID.</param>
+        [HttpDelete("wifi")]
+        public async Task RemoveWifiAsync([FromQuery] string ssid)
+        {
+            await this.networkManager.RemoveWifiAsync(ssid);
+        }
+
+        /// <summary>
+        /// Gets all connected wifi networks.
+        /// </summary>
+        /// <returns>List of all connected SSIDs.</returns>
+        [HttpGet("wifi/connected")]
+        public IEnumerable<string> GetConnectedSSIDs()
+        {
+            return this.networkManager.GetConnectedSSIDs();
+        }
+
+        /// <summary>
+        /// Gets all configured wifi networks.
+        /// </summary>
+        /// <returns>List of all connected SSIDs.</returns>
+        [HttpGet("wifi/configured")]
+        public async Task<IEnumerable<string>> GetConfiguredSSIDsAsync()
+        {
+            return await this.networkManager.GetConfiguredSSIDsAsync();
         }
     }
 }

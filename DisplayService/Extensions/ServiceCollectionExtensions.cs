@@ -32,9 +32,9 @@ namespace Microsoft.Extensions.DependencyInjection
             // ====== Services ======
             serviceCollection.AddScheduler();
 
-            serviceCollection.AddSingleton<IDisplay>(x =>
+            serviceCollection.AddSingleton<IDisplay>(s =>
             {
-                var displayOptions = x.GetRequiredService<IOptions<DisplayOptions>>().Value;
+                var displayOptions = s.GetRequiredService<IOptions<DisplayOptions>>().Value;
 
                 IDisplay display;
                 try
@@ -42,10 +42,12 @@ namespace Microsoft.Extensions.DependencyInjection
                     switch (displayOptions.DriverType)
                     {
                         case "WaveShareDisplay":
-                            display = new WaveShareDisplay(displayOptions.Driver);
+                            var waveShareDisplayLogger = s.GetRequiredService<ILogger<WaveShareDisplay>>();
+                            display = new WaveShareDisplay(waveShareDisplayLogger, displayOptions.Driver);
                             break;
                         case "NullDisplay":
-                            display = new NullDisplay(x.GetRequiredService<ILogger<NullDisplay>>());
+                            var nullDisplayLogger = s.GetRequiredService<ILogger<NullDisplay>>();
+                            display = new NullDisplay(nullDisplayLogger);
                             break;
                         default:
                             throw new NotSupportedException($"DriverType '{displayOptions.DriverType ?? "null"}' is not supported");
@@ -53,17 +55,17 @@ namespace Microsoft.Extensions.DependencyInjection
                 }
                 catch (Exception ex)
                 {
-                    var logger = x.GetRequiredService<ILogger<IServiceCollection>>();
+                    var logger = s.GetRequiredService<ILogger<IServiceCollection>>();
                     logger.LogError(ex, $"{nameof(AddDisplayService)} failed with exception while resolving display '{displayOptions.DriverType}'");
-                    display = new NullDisplay(x.GetRequiredService<ILogger<NullDisplay>>());
+                    display = new NullDisplay(s.GetRequiredService<ILogger<NullDisplay>>());
                 }
 
                 return display;
             });
 
-            serviceCollection.AddSingleton<IRenderSettings>(x =>
+            serviceCollection.AddSingleton<IRenderSettings>(s =>
             {
-                var displayOptions = x.GetRequiredService<IOptions<DisplayOptions>>().Value;
+                var displayOptions = s.GetRequiredService<IOptions<DisplayOptions>>().Value;
                 var renderSettings = new RenderSettings(displayOptions.Width, displayOptions.Height, displayOptions.Rotation);
                 return renderSettings;
             });

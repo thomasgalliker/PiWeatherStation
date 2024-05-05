@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using Newtonsoft.Json;
 using OpenWeatherMap.Models;
+using UnitsNet;
+using UnitsNet.Units;
 
 namespace WeatherDisplay.Tests.Testdata
 {
@@ -35,14 +37,14 @@ namespace WeatherDisplay.Tests.Testdata
                         },
                         Components = new AirConcentrationComponents
                         {
-                            CarbonMonoxide = 230.31d,
-                            NitrogenMonoxide = 0d,
-                            NitrogenDioxide = 4.54d,
-                            Ozone = 76.53d,
-                            SulphurDioxide = 1.74d,
-                            FineParticulateMatter = 5.87d,
-                            CoarseParticulateMatter = 6.05d,
-                            Ammonia = 0.91d
+                            CarbonMonoxide = new MassConcentration(230.31d, MassConcentrationUnit.MicrogramPerCubicMeter),
+                            NitrogenMonoxide = new MassConcentration(0d, MassConcentrationUnit.MicrogramPerCubicMeter),
+                            NitrogenDioxide = new MassConcentration(4.54d, MassConcentrationUnit.MicrogramPerCubicMeter),
+                            Ozone = new MassConcentration(76.53d, MassConcentrationUnit.MicrogramPerCubicMeter),
+                            SulphurDioxide = new MassConcentration(1.74d, MassConcentrationUnit.MicrogramPerCubicMeter),
+                            FineParticulateMatter = new MassConcentration(5.87d, MassConcentrationUnit.MicrogramPerCubicMeter),
+                            CoarseParticulateMatter = new MassConcentration(6.05d, MassConcentrationUnit.MicrogramPerCubicMeter),
+                            Ammonia = new MassConcentration( 0.91d, MassConcentrationUnit.MicrogramPerCubicMeter),
                         }
                     }
                 }

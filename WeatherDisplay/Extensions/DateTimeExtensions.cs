@@ -8,5 +8,10 @@ namespace WeatherDisplay.Extensions
         {
             return dateTime.AddSeconds(offsetInSeconds);
         }
+
+        public static DateTime WithOffset(this DateTime dateTime, TimeSpan offset)
+        {
+            return dateTime.Add(offset);
+        }
     }
 }

@@ -548,7 +548,7 @@ namespace DisplayService.Tests.Services
         }
         
         [Fact]
-        public void ShouldGetScreen_SvgImage_SvgImage2()
+        public void ShouldGetScreen_SvgImage_SvgImage1_Scaled()
         {
             // Arrange
             IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
@@ -560,6 +560,31 @@ namespace DisplayService.Tests.Services
                 Width = 100,
                 Height = 100,
                 Image = SvgImages.GetSvgImage1(),
+                BackgroundColor = "00EE00"
+            };
+            renderService.SvgImage(image);
+
+            // Act
+            var bitmapStream = renderService.GetScreen();
+
+            // Assert
+            bitmapStream.Should().NotBeNull();
+            this.testHelper.WriteFile(bitmapStream);
+        }
+        
+        [Fact]
+        public void ShouldGetScreen_SvgImage_SvgImage2_StrokeWidth()
+        {
+            // Arrange
+            IRenderService renderService = this.autoMocker.CreateInstance<RenderService>();
+
+            var image = new RenderActions.SvgImage
+            {
+                X = 100,
+                Y = 100,
+                Width = 100,
+                Height = 100,
+                Image = SvgImages.GetSvgImage2(),
                 BackgroundColor = "00EE00"
             };
             renderService.SvgImage(image);

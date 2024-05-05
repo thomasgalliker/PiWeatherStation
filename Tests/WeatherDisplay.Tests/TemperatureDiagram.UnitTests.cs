@@ -9,7 +9,9 @@ using Moq;
 using Moq.AutoMock;
 using OpenWeatherMap;
 using OpenWeatherMap.Models;
+using OpenWeatherMap.Resources.Icons;
 using SkiaSharp;
+using UnitsNet;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Pages.Wiewarm;
@@ -79,8 +81,17 @@ namespace WeatherDisplay.Tests
 
             var temperatureDiagram = new TemperatureDiagram();
 
-            Func<IEnumerable<TemperatureSet>, (Temperature Min, Temperature Max)> temperatureRangeSelector = (s) => { return (s.Min(x => x.Min) - 1, s.Max(x => x.Max) + 1); };
-            Func<IEnumerable<float>, (float Min, float Max)> precipitationRangeSelector = (s) => { return (0f, s.Max() + 10); };
+            Func<IEnumerable<TemperatureSet>, (Temperature Min, Temperature Max)> temperatureRangeSelector = (s) =>
+            {
+                var minTemp = s.Min(x => x.Min);
+                var maxTemp = s.Max(x => x.Max);
+
+                return (new Temperature(minTemp.Value - 1, minTemp.Unit), new Temperature(minTemp.Value + 1, minTemp.Unit));
+            };
+            Func<IEnumerable<float>, (float Min, float Max)> precipitationRangeSelector = (s) =>
+            {
+                return (0f, s.Max() + 10);
+            };
 
             var precipitation = temperatureSets.Select(t => (float)t.Rain).ToArray();
 
@@ -100,26 +111,26 @@ namespace WeatherDisplay.Tests
             {
                 this.Add(new[]
                 {
-                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 1, 00, 00, 00), Min = Temperature.FromCelsius(9d), Avg = Temperature.FromCelsius(10d), Max = Temperature.FromCelsius(11d) },
-                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 2, 23, 59, 59), Min = Temperature.FromCelsius(9d), Avg = Temperature.FromCelsius(10d), Max = Temperature.FromCelsius(11d) },
+                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 1, 00, 00, 00), Min = Temperature.FromDegreesCelsius(9d), Avg = Temperature.FromDegreesCelsius(10d), Max = Temperature.FromDegreesCelsius(11d) },
+                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 2, 23, 59, 59), Min = Temperature.FromDegreesCelsius(9d), Avg = Temperature.FromDegreesCelsius(10d), Max = Temperature.FromDegreesCelsius(11d) },
                 },
                 new DateTime(2000, 1, 1, 12, 00, 00),
                 "LinearStartToEnd");
 
                 this.Add(new[]
                 {
-                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 1, 12, 00, 00), Min = Temperature.FromCelsius(10d), Avg = Temperature.FromCelsius(11d), Max = Temperature.FromCelsius(12d) },
-                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 2, 12, 00, 00), Min = Temperature.FromCelsius(11d), Avg = Temperature.FromCelsius(12d), Max = Temperature.FromCelsius(13d) },
+                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 1, 12, 00, 00), Min = Temperature.FromDegreesCelsius(10d), Avg = Temperature.FromDegreesCelsius(11d), Max = Temperature.FromDegreesCelsius(12d) },
+                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 2, 12, 00, 00), Min = Temperature.FromDegreesCelsius(11d), Avg = Temperature.FromDegreesCelsius(12d), Max = Temperature.FromDegreesCelsius(13d) },
                 },
                 new DateTime(2000, 1, 1, 12, 00, 00),
                 "LinearMidToMid");
 
                 this.Add(new[]
                 {
-                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 1, 06, 00, 00), Min = Temperature.FromCelsius(11d), Avg = Temperature.FromCelsius(11d), Max = Temperature.FromCelsius(11d) },
-                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 1, 12, 00, 00), Min = Temperature.FromCelsius(11d), Avg = Temperature.FromCelsius(11d), Max = Temperature.FromCelsius(11d) },
-                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 2, 06, 00, 00), Min = Temperature.FromCelsius(13d), Avg = Temperature.FromCelsius(14d), Max = Temperature.FromCelsius(15d) },
-                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 2, 12, 00, 00), Min = Temperature.FromCelsius(13d), Avg = Temperature.FromCelsius(14d), Max = Temperature.FromCelsius(15d) },
+                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 1, 06, 00, 00), Min = Temperature.FromDegreesCelsius(11d), Avg = Temperature.FromDegreesCelsius(11d), Max = Temperature.FromDegreesCelsius(11d) },
+                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 1, 12, 00, 00), Min = Temperature.FromDegreesCelsius(11d), Avg = Temperature.FromDegreesCelsius(11d), Max = Temperature.FromDegreesCelsius(11d) },
+                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 2, 06, 00, 00), Min = Temperature.FromDegreesCelsius(13d), Avg = Temperature.FromDegreesCelsius(14d), Max = Temperature.FromDegreesCelsius(15d) },
+                    new TemperatureSet{ DateTime = new DateTime(2000, 1, 2, 12, 00, 00), Min = Temperature.FromDegreesCelsius(13d), Avg = Temperature.FromDegreesCelsius(14d), Max = Temperature.FromDegreesCelsius(15d) },
                 },
                 new DateTime(2000, 1, 2, 06, 00, 00),
                 "VariableMinMax");

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -90,7 +91,7 @@ namespace WeatherDisplay.Api.Updater.Services
             return result;
         }
 
-        public void StartUpdate(UpdateRequest updateRequest)
+        public async void StartUpdate(UpdateRequest updateRequest)
         {
             this.logger.LogInformation($"StartUpdate: updateVersion={updateRequest.UpdateVersion}, ExecutorSteps={{{updateRequest.ExecutorSteps.Length}}}");
 
@@ -133,11 +134,8 @@ namespace WeatherDisplay.Api.Updater.Services
                 {
                     FileName = "sudo",
                     Arguments = $"sh -c \"{command}\"",
-                    //Arguments = $"systemd-run --scope {command}",
-                    //FileName = this.options.DotnetExecutable,
-                    //Arguments = $"{updateExecutableFileCopy} {updateRequestJsonBase64}",
-                    RedirectStandardOutput = false,
-                    RedirectStandardError = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                     UseShellExecute = false,
                     CreateNoWindow = true,
                 };
@@ -146,13 +144,39 @@ namespace WeatherDisplay.Api.Updater.Services
                 this.logger.LogInformation($"StartUpdate: Starting update executor process...{Environment.NewLine}" +
                     $"ProcessStartInfo: {processStartInfo.FileName} {processStartInfo.Arguments}");
 
-                var success = process.Start();
+                var maxWaitTimeForUpdateStart = TimeSpan.FromSeconds(3);
+                var cts = new CancellationTokenSource();
+                cts.CancelAfter(maxWaitTimeForUpdateStart);
+
+                var success = await StartUpdateProcessAsync(process, cts.Token);
                 this.logger.LogInformation($"StartUpdate: success={success}");
             }
             catch (Exception ex)
             {
                 this.logger.LogError(ex, "StartUpdate failed with exception");
             }
+        }
+
+        private static async Task<bool> StartUpdateProcessAsync(IProcess process, CancellationToken cancellationToken)
+        {
+            var success = process.Start();
+
+            while (!process.StandardOutput.EndOfStream)
+            {
+                var line = await process.StandardOutput.ReadLineAsync()
+                    .WaitAsync(cancellationToken)
+                    .ConfigureAwait(false);
+
+                // If this line appears in the console output,
+                // we assume the update process was launched successfully.
+                if (line.Contains("WeatherDisplay.Api.Updater"))
+                {
+                    success = true;
+                    break;
+                }
+            }
+
+            return success;
         }
 
         private static void CopyFilesToUpdateDirectory(string currentDirectory, string updateDirectory, string pattern)

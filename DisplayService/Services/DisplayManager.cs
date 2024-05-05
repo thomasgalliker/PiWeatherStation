@@ -72,7 +72,7 @@ namespace DisplayService.Services
             Guid id;
             if (cronExpression != null)
             {
-                id = this.scheduler.AddTask(cronExpression, (c) => { });
+                id = this.scheduler.AddTask(cronExpression);
             }
             else
             {
@@ -213,14 +213,14 @@ namespace DisplayService.Services
             this.renderService.Clear();
         }
 
-        public async Task ResetAsync()
+        public void Reset()
         {
-            this.logger.LogInformation("ResetAsync");
+            this.logger.LogInformation("Reset");
 
             this.RemoveRenderingActions();
 
             // Update display
-            await this.UpdateDisplayAsync();
+            this.display.Clear();
         }
 
         protected void Dispose(bool disposing)

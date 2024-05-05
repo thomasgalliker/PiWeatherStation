@@ -35,9 +35,9 @@ namespace DisplayService.Model
                 get => this.value;
                 set
                 {
-                    if (string.IsNullOrWhiteSpace(value))
+                    if (value == null)
                     {
-                        throw new ArgumentException("Value must not be null or empty", nameof(this.Value));
+                        throw new ArgumentNullException(nameof(this.Value), "Value must not be null");
                     }
 
                     this.value = value;

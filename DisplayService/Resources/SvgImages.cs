@@ -11,5 +11,10 @@ namespace DisplayService.Resources
         {
             return ResourceLoader.Current.GetEmbeddedResourceStream(Assembly, "SvgImage1.svg");
         }
+
+        public static Stream GetSvgImage2()
+        {
+            return ResourceLoader.Current.GetEmbeddedResourceStream(Assembly, "SvgImage2.svg");
+        }
     }
 }

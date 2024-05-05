@@ -1,5 +1,5 @@
 ﻿using System;
-using OpenWeatherMap.Models;
+using UnitsNet;
 
 namespace WeatherDisplay
 {
@@ -12,8 +12,8 @@ namespace WeatherDisplay
         public Temperature Avg { get; set; }
 
         public Temperature Max { get; set; }
-        
-        public double Rain{ get; set; }
+
+        public double Rain { get; set; }
 
         public override string ToString()
         {
