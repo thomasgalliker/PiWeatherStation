@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Mvc;
 using RaspberryPi;
 using RaspberryPi.Process;
@@ -65,6 +66,12 @@ namespace WeatherDisplay.Api.Controllers
                 var updateRequest = UpdateRequestFactory.Create(result.UpdateVersion, result.UpdateVersionSource);
                 this.autoUpdateService.StartUpdate(updateRequest);
             }
+        }
+
+        [HttpGet("frameworkdescription")]
+        public string FrameworkDescription()
+        {
+            return RuntimeInformation.FrameworkDescription;
         }
 
         [HttpGet("shutdown")]
