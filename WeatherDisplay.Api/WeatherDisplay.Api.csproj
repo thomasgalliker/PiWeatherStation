@@ -21,7 +21,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.5.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.32.3" />
-    <PackageReference Include="UnitsNet.Serialization.JsonNet" Version="5.28.0" />
+    <PackageReference Include="UnitsNet.Serialization.JsonNet" Version="5.50.0" />
   </ItemGroup>
 
   <ItemGroup>
