@@ -111,7 +111,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             Y = 88,
                             HorizontalTextAlignment = HorizontalAlignment.Right,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{Translations.OpenWeatherMapPage_SourceName} / v{fvi.ProductVersion}",
+                            Value = $"{Translations.OpenWeatherMapPage_SourceName} / v{FileVersionInfoHelper.GetProductVersion(this.appSettings.IsDebug)}",
                             ForegroundColor = "#FFFFFF",
                             BackgroundColor = "#000000",
                             FontSize = 12,

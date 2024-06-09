@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Resources;
@@ -74,9 +73,6 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                 {
                     var weatherStation = await this.swissMetNetService.GetWeatherStationAsync(this.currentPlace.WeatherStationCode);
 
-                    var assembly = Assembly.GetExecutingAssembly();
-                    var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
                     return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
@@ -108,7 +104,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                             Y = 88,
                             HorizontalTextAlignment = HorizontalAlignment.Right,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{Translations.MeteoSwissWeatherPage_SourceName} / {weatherStation.StationCode} / v{fvi.ProductVersion}",
+                            Value = $"{Translations.MeteoSwissWeatherPage_SourceName} / {weatherStation.StationCode} / v{FileVersionInfoHelper.GetProductVersion(this.appSettings.Value.IsDebug)}",
                             ForegroundColor = "#FFFFFF",
                             BackgroundColor = "#000000",
                             FontSize = 12,

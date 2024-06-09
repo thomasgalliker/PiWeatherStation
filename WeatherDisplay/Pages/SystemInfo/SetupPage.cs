@@ -16,6 +16,7 @@ using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Navigation;
 using WeatherDisplay.Services.QR;
+using WeatherDisplay.Utils;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {
@@ -91,7 +92,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                             Y = 88,
                             HorizontalTextAlignment = HorizontalAlignment.Right,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"v{fvi.ProductVersion}",
+                            Value = $"v{FileVersionInfoHelper.GetProductVersion(this.appSettings.CurrentValue.IsDebug)}",
                             ForegroundColor = "#FFFFFF",
                             BackgroundColor = "#000000",
                             FontSize = 12,

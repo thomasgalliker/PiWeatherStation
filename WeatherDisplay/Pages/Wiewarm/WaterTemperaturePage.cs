@@ -6,9 +6,11 @@ using DisplayService.Model;
 using DisplayService.Services;
 using Microsoft.Extensions.Options;
 using NCrontab;
+using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Navigation;
 using WeatherDisplay.Services.Wiewarm;
+using WeatherDisplay.Utils;
 
 namespace WeatherDisplay.Pages.Wiewarm
 {
@@ -17,17 +19,20 @@ namespace WeatherDisplay.Pages.Wiewarm
         private readonly IDisplayManager displayManager;
         private readonly IWiewarmService wiewarmService;
         private readonly IDateTime dateTime;
+        private readonly IAppSettings appSettings;
         private readonly IOptionsMonitor<WaterTemperaturePageOptions> options;
 
         public WaterTemperaturePage(
             IDisplayManager displayManager,
             IWiewarmService wiewarmService,
             IDateTime dateTime,
+            IAppSettings appSettings,
             IOptionsMonitor<WaterTemperaturePageOptions> options)
         {
             this.displayManager = displayManager;
             this.wiewarmService = wiewarmService;
             this.dateTime = dateTime;
+            this.appSettings = appSettings;
             this.options = options;
         }
 
@@ -71,7 +76,7 @@ namespace WeatherDisplay.Pages.Wiewarm
                             Y = 88,
                             HorizontalTextAlignment = HorizontalAlignment.Right,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{Translations.WaterTemperaturePage_SourceName} / v{fvi.ProductVersion}",
+                            Value = $"{Translations.WaterTemperaturePage_SourceName} / v{FileVersionInfoHelper.GetProductVersion(this.appSettings.IsDebug)}",
                             ForegroundColor = "#FFFFFF",
                             BackgroundColor = "#000000",
                             FontSize = 12,

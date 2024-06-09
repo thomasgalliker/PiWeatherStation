@@ -15,6 +15,7 @@ using RaspberryPi.Network;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
+using WeatherDisplay.Utils;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {
@@ -247,7 +248,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                             Y = 95,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"PiWeatherDisplay Version: v{fvi.ProductVersion}",
+                            Value = $"PiWeatherDisplay Version: v{FileVersionInfoHelper.GetProductVersion(this.appSettings.IsDebug)}",
                             ForegroundColor = Colors.Black,
                             BackgroundColor = Colors.White,
                             FontSize = 12,
