@@ -6,9 +6,10 @@ This is a demo project which uses a Raspberry Pi 4 / Zero 2 to draw some basic w
 ### Quick Setup
 The script file `update_weatherdisplay_api.sh` contains all necessary steps to prepare a new Raspberry Pi to run WeatherDisplay.Api:
 - Downloads and installs the .NET SDK.
-- Downloads and installs WeatherDisplay.Api as a service unit. 
+- Downloads and installs WeatherDisplay.Api as a service. 
 - Adjusts the Raspberry Pi hardware configuration. (Enables SPI, sets dtoverlays).
-- Sets environment variables
+- Configures the wifi to become an access point.
+- Sets environment variables.
 
 Log-in to the Raspberry Pi and run the script file as follows.
 ```
@@ -204,9 +205,11 @@ sudo systemctl start weatherdisplay.api
 ```
 
 ### Run PiWeatherStation
-- Access the API using http://{ip-address-raspberry}:5000/swagger/index.html in order to start the Swagger UI. 
-- Use the /login method to authenticate with the API.
+- Connect to the access point with the SSID "Pi_..." and the wifi password given during setup.
+- Access the web API with the browser: https://192.168.10.1:5001/swagger/index.html.
+- Use the API method `/api/identity/login` to get an authentication token. Press the Swagger authorize button to use the authentication token.
 - Call any other API method after successful login. 
+
 ### Troubleshooting & Maintenance
 #### Update and restart the service
 If anything in the service definition (weatherdisplay.api.service file) is changed, the service needs to be stopped and restarted.
