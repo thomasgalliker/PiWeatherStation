@@ -34,7 +34,7 @@ namespace WeatherDisplay.Tests.Testdata
                     WindSpeed = new Speed(0d, SpeedUnit.MeterPerSecond),
                     WindDirection = new Angle(0, AngleUnit.Degree),
                     WindGust = new Speed(0d, SpeedUnit.MeterPerSecond),
-                    Weather = new List<WeatherCondition>
+                    Weather = new []
                     {
                       new WeatherCondition
                       {
@@ -369,7 +369,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.2d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(142, AngleUnit.Degree),
                       WindGust = new Speed(1.33d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -395,7 +395,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.29d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(160, AngleUnit.Degree),
                       WindGust = new Speed(1.35d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -421,7 +421,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.38d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(167, AngleUnit.Degree),
                       WindGust = new Speed(1.34d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -447,7 +447,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.45d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(176, AngleUnit.Degree),
                       WindGust = new Speed(1.34d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -473,7 +473,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.52d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(198, AngleUnit.Degree),
                       WindGust = new Speed(1.36d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -499,7 +499,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.75d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(196, AngleUnit.Degree),
                       WindGust = new Speed(1.58d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -525,7 +525,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.9d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(189, AngleUnit.Degree),
                       WindGust = new Speed(1.7d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -551,7 +551,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.72d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(179, AngleUnit.Degree),
                       WindGust = new Speed(1.47d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -577,7 +577,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.51d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(190, AngleUnit.Degree),
                       WindGust = new Speed(1.4d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -603,7 +603,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.27d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(199, AngleUnit.Degree),
                       WindGust = new Speed(1.29d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -629,7 +629,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(0.73d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(216, AngleUnit.Degree),
                       WindGust = new Speed(1.17d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -655,7 +655,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(0.88d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(286, AngleUnit.Degree),
                       WindGust = new Speed(1.46d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -681,7 +681,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(0.98d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(289, AngleUnit.Degree),
                       WindGust = new Speed(3.1d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -707,7 +707,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.07d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(299, AngleUnit.Degree),
                       WindGust = new Speed(3.32d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -733,7 +733,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.6d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(292, AngleUnit.Degree),
                       WindGust = new Speed(4.76d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -759,7 +759,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.36d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(284, AngleUnit.Degree),
                       WindGust = new Speed(5.7d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -785,7 +785,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(3.2d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(280, AngleUnit.Degree),
                       WindGust = new Speed(6.55d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -811,7 +811,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(3.76d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(272, AngleUnit.Degree),
                       WindGust = new Speed(6.65d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -837,7 +837,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(3.74d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(268, AngleUnit.Degree),
                       WindGust = new Speed(6.72d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -863,7 +863,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(3.24d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(285, AngleUnit.Degree),
                       WindGust = new Speed(5.8d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -889,7 +889,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.98d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(315, AngleUnit.Degree),
                       WindGust = new Speed(4.65d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -915,7 +915,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.3d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(342, AngleUnit.Degree),
                       WindGust = new Speed(4.49d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -941,7 +941,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.24d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(17, AngleUnit.Degree),
                       WindGust = new Speed(1.6d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -967,7 +967,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.42d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(176, AngleUnit.Degree),
                       WindGust = new Speed(1.46d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -993,7 +993,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.88d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(194, AngleUnit.Degree),
                       WindGust = new Speed(4.2d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1019,7 +1019,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.94d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(201, AngleUnit.Degree),
                       WindGust = new Speed(4.93d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1045,7 +1045,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.94d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(161, AngleUnit.Degree),
                       WindGust = new Speed(4.55d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1071,7 +1071,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.7d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(179, AngleUnit.Degree),
                       WindGust = new Speed(2.96d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1097,7 +1097,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.63d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(197, AngleUnit.Degree),
                       WindGust = new Speed(2.87d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1123,7 +1123,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.52d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(202, AngleUnit.Degree),
                       WindGust = new Speed(2.25d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1149,7 +1149,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.44d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(201, AngleUnit.Degree),
                       WindGust = new Speed(2.5d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1175,7 +1175,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.99d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(203, AngleUnit.Degree),
                       WindGust = new Speed(1.89d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1201,7 +1201,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.8d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(203, AngleUnit.Degree),
                       WindGust = new Speed(1.62d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1227,7 +1227,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.74d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(213, AngleUnit.Degree),
                       WindGust = new Speed(1.82d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1253,7 +1253,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.2d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(218, AngleUnit.Degree),
                       WindGust = new Speed(2.03d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1279,7 +1279,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.26d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(274, AngleUnit.Degree),
                       WindGust = new Speed(3.46d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1305,7 +1305,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.71d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(286, AngleUnit.Degree),
                       WindGust = new Speed(3.79d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1331,7 +1331,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.76d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(286, AngleUnit.Degree),
                       WindGust = new Speed(4.1d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1357,7 +1357,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.12d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(286, AngleUnit.Degree),
                       WindGust = new Speed(4.34d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1383,7 +1383,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.4d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(294, AngleUnit.Degree),
                       WindGust = new Speed(4.9d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1409,7 +1409,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.81d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(302, AngleUnit.Degree),
                       WindGust = new Speed(5.14d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1435,7 +1435,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(3.25d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(313, AngleUnit.Degree),
                       WindGust = new Speed(4.88d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1461,7 +1461,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(3.58d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(328, AngleUnit.Degree),
                       WindGust = new Speed(4.29d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1487,7 +1487,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.98d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(338, AngleUnit.Degree),
                       WindGust = new Speed(3.32d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1513,7 +1513,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.2d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(340, AngleUnit.Degree),
                       WindGust = new Speed(2.63d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1539,7 +1539,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.84d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(338, AngleUnit.Degree),
                       WindGust = new Speed(3.38d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1565,7 +1565,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(1.29d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(335, AngleUnit.Degree),
                       WindGust = new Speed(1.56d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1591,7 +1591,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(0.39d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(327, AngleUnit.Degree),
                       WindGust = new Speed(0.66d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1639,7 +1639,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.95d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(48, AngleUnit.Degree),
                       WindGust = new Speed(3.51d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1686,7 +1686,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(3.76d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(272, AngleUnit.Degree),
                       WindGust = new Speed(6.72d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1733,7 +1733,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(3.58d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(328, AngleUnit.Degree),
                       WindGust = new Speed(5.14d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1780,7 +1780,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(2.43d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(8, AngleUnit.Degree),
                       WindGust = new Speed(2.34d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1827,7 +1827,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(3.19d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(51, AngleUnit.Degree),
                       WindGust = new Speed(4.24d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1874,7 +1874,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(3.47d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(149, AngleUnit.Degree),
                       WindGust = new Speed(7.32d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1921,7 +1921,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(3.32d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(359, AngleUnit.Degree),
                       WindGust = new Speed(7.06d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -1968,7 +1968,7 @@ namespace WeatherDisplay.Tests.Testdata
                       WindSpeed = new Speed(3.7d, SpeedUnit.MeterPerSecond),
                       WindDirection = new Angle(211, AngleUnit.Degree),
                       WindGust = new Speed(8.22d, SpeedUnit.MeterPerSecond),
-                      Weather = new List<WeatherCondition>
+                      Weather = new []
                       {
                         new WeatherCondition
                         {
@@ -2005,7 +2005,7 @@ namespace WeatherDisplay.Tests.Testdata
                     Humidity = new RelativeHumidity(50, RelativeHumidityUnit.Percent),
                     DewPoint = new Temperature(3.4, TemperatureUnit.DegreeCelsius),
                     UVIndex = new UVIndex(6.5d),
-                    Weather = WeatherConditions.GetTestWeatherConditions().Take(1).ToList(),
+                    Weather = WeatherConditions.GetTestWeatherConditions().Take(1).ToArray(),
                 },
                 DailyForecasts = new List<DailyWeatherForecast>
                 {
@@ -2039,7 +2039,7 @@ namespace WeatherDisplay.Tests.Testdata
                         WindSpeed = new Speed(3.85d, SpeedUnit.MeterPerSecond),
                         WindDirection = new Angle(42, AngleUnit.Degree),
                         WindGust = new Speed(7.82d, SpeedUnit.MeterPerSecond),
-                        Weather = new List<WeatherCondition>
+                        Weather = new []
                         {
                             new WeatherCondition
                             {
@@ -2084,7 +2084,7 @@ namespace WeatherDisplay.Tests.Testdata
                         WindSpeed = new Speed(5.02d, SpeedUnit.MeterPerSecond),
                         WindDirection = new Angle(60, AngleUnit.Degree),
                         WindGust = new Speed(9.32d, SpeedUnit.MeterPerSecond),
-                        Weather = new List<WeatherCondition>
+                        Weather = new []
                         {
                             new WeatherCondition
                             {
@@ -2128,7 +2128,7 @@ namespace WeatherDisplay.Tests.Testdata
                         WindSpeed = new Speed(3.58d, SpeedUnit.MeterPerSecond),
                         WindDirection = new Angle(61, AngleUnit.Degree),
                         WindGust = new Speed(7.48d, SpeedUnit.MeterPerSecond),
-                        Weather = new List<WeatherCondition>
+                        Weather = new []
                         {
                             new WeatherCondition
                             {
@@ -2172,7 +2172,7 @@ namespace WeatherDisplay.Tests.Testdata
                         WindSpeed = new Speed(2.38d, SpeedUnit.MeterPerSecond),
                         WindDirection = new Angle(155, AngleUnit.Degree),
                         WindGust = new Speed(3.04d, SpeedUnit.MeterPerSecond),
-                        Weather = new List<WeatherCondition>
+                        Weather = new []
                         {
                         new WeatherCondition
                         {
@@ -2216,7 +2216,7 @@ namespace WeatherDisplay.Tests.Testdata
                         WindSpeed = new Speed(2.11d, SpeedUnit.MeterPerSecond),
                         WindDirection = new Angle(158, AngleUnit.Degree),
                         WindGust = new Speed(2.51d, SpeedUnit.MeterPerSecond),
-                        Weather = new List<WeatherCondition>
+                        Weather = new []
                         {
                             new WeatherCondition
                             {
@@ -2260,7 +2260,7 @@ namespace WeatherDisplay.Tests.Testdata
                         WindSpeed = new Speed(2d, SpeedUnit.MeterPerSecond),
                         WindDirection = new Angle(163, AngleUnit.Degree),
                         WindGust = new Speed(1.92d, SpeedUnit.MeterPerSecond),
-                        Weather = new List<WeatherCondition>
+                        Weather = new []
                         {
                         new WeatherCondition
                         {
@@ -2304,7 +2304,7 @@ namespace WeatherDisplay.Tests.Testdata
                         WindSpeed = new Speed(1.9d, SpeedUnit.MeterPerSecond),
                         WindDirection = new Angle(163, AngleUnit.Degree),
                         WindGust = new Speed(1.85d, SpeedUnit.MeterPerSecond),
-                        Weather = new List<WeatherCondition>
+                        Weather = new []
                         {
                         new WeatherCondition
                         {
@@ -2348,7 +2348,7 @@ namespace WeatherDisplay.Tests.Testdata
                         WindSpeed = new Speed(1.81d, SpeedUnit.MeterPerSecond),
                         WindDirection = new Angle(173, AngleUnit.Degree),
                         WindGust = new Speed(1.62d, SpeedUnit.MeterPerSecond),
-                        Weather = new List<WeatherCondition>
+                        Weather = new []
                         {
                         new WeatherCondition
                         {

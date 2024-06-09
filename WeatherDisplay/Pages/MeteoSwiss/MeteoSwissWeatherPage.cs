@@ -20,7 +20,6 @@ using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
 using WeatherDisplay.Utils;
-using Place = WeatherDisplay.Pages.MeteoSwiss.MeteoSwissPlace;
 
 namespace WeatherDisplay.Pages.MeteoSwiss
 {
@@ -35,7 +34,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
         private readonly IOptionsMonitor<MeteoSwissWeatherPageOptions> options;
         private readonly ISensorAccessService sensorAccessService;
         private readonly IWeatherIconMapping weatherIconMapping;
-        private Place currentPlace = null;
+        private MeteoSwissPlace currentPlace = null;
 
         public MeteoSwissWeatherPage(
             ILogger<MeteoSwissWeatherPage> logger,

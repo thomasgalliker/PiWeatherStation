@@ -60,7 +60,7 @@ namespace WeatherDisplay.Api.Controllers
         /// Configures the MeteoSwissWeatherPage.
         /// </summary>
         [HttpGet("step2")]
-        public async Task ConfigureMeteoSwissWeatherPageAsync(string place, int plz)
+        public void ConfigureMeteoSwissWeatherPage(string place, int plz, string weatherStationCode, bool isCurrentPlace)
         {
             // TODO: Input validation!
 
@@ -68,6 +68,8 @@ namespace WeatherDisplay.Api.Controllers
             {
                 Name = place,
                 Plz = plz,
+                WeatherStationCode = weatherStationCode,
+                IsCurrentPlace = isCurrentPlace
             };
 
             this.meteoSwissWeatherPageOptions.Update((o) =>
@@ -85,7 +87,7 @@ namespace WeatherDisplay.Api.Controllers
         /// Configures the OpenWeatherMapPage.
         /// </summary>
         [HttpGet("step3")]
-        public async Task ConfigureOpenWeatherMapAsync(string place, double latitude, double longitude)
+        public void ConfigureOpenWeatherMapPage(string place, double latitude, double longitude)
         {
             // TODO: Input validation!
 
@@ -119,7 +121,7 @@ namespace WeatherDisplay.Api.Controllers
         /// Configures the WaterTemperaturePage.
         /// </summary>
         [HttpGet("step4")]
-        public async Task ConfigureWaterTemperatureAsync(string place, double latitude, double longitude)
+        public void ConfigureWaterTemperature(string place, double latitude, double longitude)
         {
             // TODO: Input validation!
 
