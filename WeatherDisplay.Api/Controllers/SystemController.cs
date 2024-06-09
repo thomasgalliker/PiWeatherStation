@@ -53,6 +53,11 @@ namespace WeatherDisplay.Api.Controllers
             return cpuSensorsStatus;
         }
 
+        /// <summary>
+        /// Updates the PiWeatherStation software to latest.
+        /// </summary>
+        /// <param name="force">Forced update (this may overrides local debug versions).</param>
+        /// <returns></returns>
         [HttpGet("update")]
         public async Task CheckForUpdateAsync(bool force = false)
         {
