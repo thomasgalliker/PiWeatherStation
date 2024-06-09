@@ -132,6 +132,8 @@ namespace WeatherDisplay.Api
                         new string[]{}
                     }
                 });
+                var xmlDocumentationFilePath = Path.Combine(AppContext.BaseDirectory, "WeatherDisplay.Api.xml");
+                option.IncludeXmlComments(xmlDocumentationFilePath);
             });
             services.AddSwaggerGenNewtonsoftSupport();
 
