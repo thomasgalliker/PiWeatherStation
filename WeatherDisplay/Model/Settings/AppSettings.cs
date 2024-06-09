@@ -19,13 +19,13 @@ namespace WeatherDisplay.Model.Settings
                 {
                     ButtonId = 1,
                     GpioPin = 6,
-                    Page = App.Pages.OpenWeatherMapPage,
+                    Page = App.Pages.MeteoSwissWeatherPage,
                 },
                 new ButtonMapping
                 {
                     ButtonId = 2,
                     GpioPin = 5,
-                    Page = App.Pages.TemperatureDiagramPage,
+                    Page = App.Pages.MeteoSwissWeatherStationPage,
                 },
                 new ButtonMapping
                 {
@@ -38,7 +38,7 @@ namespace WeatherDisplay.Model.Settings
                 {
                     ButtonId = 4,
                     GpioPin = 26,
-                    Page = App.Pages.MeteoSwissWeatherStationPage,
+                    Page = App.Pages.MeteoSwissWeatherPage,
                 }
             }
         };

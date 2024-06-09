@@ -77,9 +77,6 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
             this.displayManager.AddRenderActions(
                 () =>
                 {
-                    var assembly = Assembly.GetExecutingAssembly();
-                    var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
                     return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle

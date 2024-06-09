@@ -60,9 +60,6 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var assembly = Assembly.GetExecutingAssembly();
-                    var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
                     return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle

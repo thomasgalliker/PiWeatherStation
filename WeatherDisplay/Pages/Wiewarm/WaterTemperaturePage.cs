@@ -42,9 +42,6 @@ namespace WeatherDisplay.Pages.Wiewarm
             this.displayManager.AddRenderActions(
                 () =>
                 {
-                    var assembly = Assembly.GetExecutingAssembly();
-                    var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
                     return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
