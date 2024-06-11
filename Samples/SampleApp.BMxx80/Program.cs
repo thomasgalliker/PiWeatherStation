@@ -3,6 +3,7 @@ using System.Device.Gpio;
 using System.Globalization;
 using System.Reflection;
 using System.Threading.Tasks;
+using Iot.Device.Scd4x;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
@@ -36,19 +37,33 @@ namespace SampleApp.BMxx80
                 });
             });
             serviceCollection.AddGpioDevices();
+            serviceCollection.AddIotDevices();
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
             if (args.Length == 1)
             {
                 switch (args[0])
                 {
-
                     case "bme680":
                         await Bme680Sample.RunAsync();
                         break;
-
-
+                    case "bme280":
+                        await Bme280Sample.RunAsync();
+                        break;
+                    case "bmp280":
+                        await Bmp280Sample.RunAsync();
+                        break;
+                    case "scd41":
+                        var scd4xFactory = serviceProvider.GetRequiredService<IScd4xFactory>();
+                        var scd41 = scd4xFactory.Create(new System.Device.I2c.I2cConnectionSettings(1, Scd4x.DefaultI2cAddress));
+                        var temp = scd41.Temperature;
+                        Console.WriteLine($"scd41.Temperature={scd41.Temperature}");
+                        break;
+                    default:
+                        Console.WriteLine($"Unknown parameter: {args[0]}");
+                        break;
                 }
+
                 Console.ReadKey();
 
                 // Retrieve general system information such as CPU sensor data.
