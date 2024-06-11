@@ -33,6 +33,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
         private readonly IOptionsMonitor<MeteoSwissWeatherPageOptions> options;
         private readonly ISensorAccessService sensorAccessService;
         private readonly IWeatherIconMapping weatherIconMapping;
+
         private MeteoSwissPlace currentPlace = null;
 
         public MeteoSwissWeatherPage(
@@ -236,9 +237,16 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                     {
                         if (this.sensorAccessService.Scd41 is IScd4x scd41)
                         {
-                            localTemperature = scd41.Temperature;
-                            localHumidity = scd41.RelativeHumidity;
-                            co2 = scd41.Co2;
+                            try
+                            {
+                                localTemperature = scd41.Temperature;
+                                localHumidity = scd41.RelativeHumidity;
+                                co2 = scd41.Co2;
+                            }
+                            catch (Exception ex)
+                            {
+                                this.logger.LogError(ex, "Failed to read sensor SCD41");
+                            }
                         }
                         else if (this.sensorAccessService.Bme680 is IBme680 bme680)
                         {
@@ -257,7 +265,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                             }
                             catch (Exception ex)
                             {
-                                this.logger.LogError(ex, "Failed to read temperature/humidity from BME680");
+                                this.logger.LogError(ex, "Failed to read sensor BME680");
                             }
                         }
                         else
