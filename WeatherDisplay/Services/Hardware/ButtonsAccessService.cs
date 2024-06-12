@@ -7,6 +7,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.Settings;
+using WeatherDisplay.Pages.SystemInfo;
 using WeatherDisplay.Services.Navigation;
 
 namespace WeatherDisplay.Services.Hardware
@@ -231,6 +232,7 @@ namespace WeatherDisplay.Services.Hardware
                     if (this.button1 != null)
                     {
                         this.button1.Press -= this.OnButton1Pressed;
+                        this.button1.Holding -= this.OnButton1Holding;
                         this.button1.Dispose();
                         this.button1 = null;
                     }
@@ -238,6 +240,7 @@ namespace WeatherDisplay.Services.Hardware
                     if (this.button2 != null)
                     {
                         this.button2.Press -= this.OnButton2Pressed;
+                        this.button2.Holding -= this.OnButton2Holding;
                         this.button2.Dispose();
                         this.button2 = null;
                     }
