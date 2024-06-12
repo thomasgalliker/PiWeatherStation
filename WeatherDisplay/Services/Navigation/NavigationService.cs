@@ -43,13 +43,6 @@ namespace WeatherDisplay.Services.Navigation
                 throw new ArgumentException(nameof(name));
             }
 
-            var currentPageName = this.GetCurrentPage();
-            //if (currentPageName == name)
-            //{
-            //    this.logger.LogDebug($"NavigateAsync: name={name} --> is already displayed");
-            //    return;
-            //}
-
             this.currentPage = await this.syncHelper.RunOnceAsync(async () =>
             {
                 this.logger.LogDebug($"NavigateAsync: name={name}, navigationParameters={navigationParameters?.ToString() ?? "null"}");
