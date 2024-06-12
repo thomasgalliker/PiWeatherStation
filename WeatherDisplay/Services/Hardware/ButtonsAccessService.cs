@@ -140,8 +140,8 @@ namespace WeatherDisplay.Services.Hardware
             {
                 this.logger.LogError(ex, $"HandleButtonPress for buttonId={buttonId} failed with exception");
 
-                //var navigationParameters = new ErrorPage.NavigationParameters { Exception = ex };
-                //await this.navigationService.NavigateAsync(App.Pages.ErrorPage, navigationParameters);
+                var navigationParameters = new ErrorPage.NavigationParameters { Exception = ex };
+                await this.navigationService.NavigateAsync(App.Pages.ErrorPage, navigationParameters);
             }
         }
 
@@ -182,8 +182,8 @@ namespace WeatherDisplay.Services.Hardware
             {
                 this.logger.LogError(ex, $"HandleButtonHolding for buttonId={buttonId} failed with exception");
 
-                //var navigationParameters = new ErrorPage.NavigationParameters { Exception = ex };
-                //await this.navigationService.NavigateAsync(App.Pages.ErrorPage, navigationParameters);
+                var navigationParameters = new ErrorPage.NavigationParameters { Exception = ex };
+                await this.navigationService.NavigateAsync(App.Pages.ErrorPage, navigationParameters);
             }
         }
 
