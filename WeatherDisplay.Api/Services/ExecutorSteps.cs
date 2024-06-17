@@ -32,12 +32,12 @@ namespace WeatherDisplay.Api.Services
                     Arguments = "systemctl stop weatherdisplay.api.service",
                     CreateNoWindow = true,
                 },
-                new ProcessStartExecutorStep
-                {
-                    FileName = "sudo",
-                    Arguments = "curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 6.0 --install-dir /home/pi/.dotnet",
-                    CreateNoWindow = true,
-                },
+                //new ProcessStartExecutorStep
+                //{
+                //    FileName = "sudo",
+                //    Arguments = "curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 8.0 --install-dir /home/pi/.dotnet",
+                //    CreateNoWindow = true,
+                //},
                 new ExtractZipStep
                 {
                     SourceArchiveFileName = downloadHttpFileStep.DestinationFileName,
@@ -57,12 +57,6 @@ namespace WeatherDisplay.Api.Services
                     Arguments = "systemctl start weatherdisplay.api.service",
                     CreateNoWindow = true,
                 },
-                //new ProcessStartExecutorStep
-                //{
-                //    FileName = "sudo",
-                //    Arguments = "reboot",
-                //    CreateNoWindow = true,
-                //}
             };
         }
     }

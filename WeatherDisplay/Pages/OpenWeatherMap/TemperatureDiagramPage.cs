@@ -15,6 +15,7 @@ using WeatherDisplay.Model;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Navigation;
+using WeatherDisplay.Utils;
 
 namespace WeatherDisplay.Pages.OpenWeatherMap
 {
@@ -23,6 +24,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
         private readonly IDisplayManager displayManager;
         private readonly IOpenWeatherMapService openWeatherMapService;
         private readonly IDateTime dateTime;
+        private readonly IAppSettings appSettings;
         private readonly IOptionsMonitor<TemperatureDiagramPageOptions> options;
 
         private Place currentPlace = null;
@@ -31,11 +33,13 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
             IDisplayManager displayManager,
             IOpenWeatherMapService openWeatherMapService,
             IDateTime dateTime,
+            IAppSettings appSettings,
             IOptionsMonitor<TemperatureDiagramPageOptions> options)
         {
             this.displayManager = displayManager;
             this.openWeatherMapService = openWeatherMapService;
             this.dateTime = dateTime;
+            this.appSettings = appSettings;
             this.options = options;
         }
 
@@ -48,9 +52,6 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
             this.displayManager.AddRenderActions(
                 () =>
                 {
-                    var assembly = Assembly.GetExecutingAssembly();
-                    var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
                     return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
@@ -82,7 +83,7 @@ namespace WeatherDisplay.Pages.OpenWeatherMap
                             Y = 88,
                             HorizontalTextAlignment = HorizontalAlignment.Right,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{Translations.MeteoSwissWeatherPage_SourceName} / v{fvi.ProductVersion}",
+                            Value = $"{Translations.MeteoSwissWeatherPage_SourceName} / v{FileVersionInfoHelper.GetProductVersion(this.appSettings.IsDebug)}",
                             ForegroundColor = "#FFFFFF",
                             BackgroundColor = "#000000",
                             FontSize = 12,

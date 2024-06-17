@@ -8,6 +8,7 @@ using NCrontab;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Navigation;
+using WeatherDisplay.Utils;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {
@@ -40,9 +41,6 @@ namespace WeatherDisplay.Pages.SystemInfo
             this.displayManager.AddRenderActions(
                 () =>
                 {
-                    var assembly = Assembly.GetExecutingAssembly();
-                    var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
                     return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
@@ -74,7 +72,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                             Y = 88,
                             HorizontalTextAlignment = HorizontalAlignment.Right,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"v{fvi.ProductVersion}",
+                            Value = $"v{FileVersionInfoHelper.GetProductVersion(displayGitHash: true)}",
                             ForegroundColor = "#FFFFFF",
                             BackgroundColor = "#000000",
                             FontSize = 12,

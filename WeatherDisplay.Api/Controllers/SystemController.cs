@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Microsoft.AspNetCore.Mvc;
 using RaspberryPi;
 using RaspberryPi.Process;
@@ -52,6 +53,11 @@ namespace WeatherDisplay.Api.Controllers
             return cpuSensorsStatus;
         }
 
+        /// <summary>
+        /// Updates the PiWeatherStation software to latest.
+        /// </summary>
+        /// <param name="force">Forced update (this may overrides local debug versions).</param>
+        /// <returns></returns>
         [HttpGet("update")]
         public async Task CheckForUpdateAsync(bool force = false)
         {
@@ -65,6 +71,12 @@ namespace WeatherDisplay.Api.Controllers
                 var updateRequest = UpdateRequestFactory.Create(result.UpdateVersion, result.UpdateVersionSource);
                 this.autoUpdateService.StartUpdate(updateRequest);
             }
+        }
+
+        [HttpGet("frameworkdescription")]
+        public string FrameworkDescription()
+        {
+            return RuntimeInformation.FrameworkDescription;
         }
 
         [HttpGet("shutdown")]

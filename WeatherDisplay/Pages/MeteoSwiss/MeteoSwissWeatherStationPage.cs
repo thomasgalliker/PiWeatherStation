@@ -60,9 +60,6 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var assembly = Assembly.GetExecutingAssembly();
-                    var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
                     return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
@@ -94,7 +91,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                             Y = 88,
                             HorizontalTextAlignment = HorizontalAlignment.Right,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{Translations.MeteoSwissWeatherPage_SourceName} / v{fvi.ProductVersion}",
+                            Value = $"{Translations.MeteoSwissWeatherPage_SourceName} / v{FileVersionInfoHelper.GetProductVersion(this.appSettings.IsDebug)}",
                             ForegroundColor = "#FFFFFF",
                             BackgroundColor = "#000000",
                             FontSize = 12,

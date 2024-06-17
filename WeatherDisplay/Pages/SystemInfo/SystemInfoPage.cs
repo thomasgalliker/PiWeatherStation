@@ -15,6 +15,7 @@ using RaspberryPi.Network;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
+using WeatherDisplay.Utils;
 
 namespace WeatherDisplay.Pages.SystemInfo
 {
@@ -48,9 +49,6 @@ namespace WeatherDisplay.Pages.SystemInfo
 
         public async Task OnNavigatedToAsync(INavigationParameters parameters)
         {
-            var assembly = Assembly.GetExecutingAssembly();
-            var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
             HostInfo hostInfo = null;
             CpuInfo cpuInfo = null;
             CpuSensorsStatus cpuSensorsStatus = null;
@@ -247,7 +245,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                             Y = 95,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"PiWeatherDisplay Version: v{fvi.ProductVersion}",
+                            Value = $"PiWeatherDisplay: v{FileVersionInfoHelper.GetProductVersion(displayGitHash: true)}",
                             ForegroundColor = Colors.Black,
                             BackgroundColor = Colors.White,
                             FontSize = 12,

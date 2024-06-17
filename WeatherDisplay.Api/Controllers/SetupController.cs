@@ -40,21 +40,56 @@ namespace WeatherDisplay.Api.Controllers
             this.processRunner = processRunner;
         }
 
-        [HttpGet("finish")]
-        public void FinishSetupAsync()
-        {
-            this.appSettings.UpdateProperty(a => a.RunSetup, false);
-
-            this.processRunner.ExecuteCommand("sudo reboot");
-        }
-
-        [HttpGet("run")]
-        public async Task RunAsync(string ssid, string psk, string place, double latitude, double longitude, int plz)
+        /// <summary>
+        /// Connects to a wifi client network.
+        /// </summary>
+        /// <remarks>Use this step to connect to a wifi ssid.</remarks>
+        /// <param name="ssid">The SSID (name) of the wifi.</param>
+        /// <param name="psk">The pre-shared key (password) for the wifi network.</param>
+        /// <response code="200">Successfully connected to the wifi network.</response>
+        /// <response code="400">The wifi network does not exist or there is a failure to connect to the network.</response>
+        [HttpGet("step1")]
+        public async Task ConnectToWifiAsync(string ssid, string psk)
         {
             // TODO: Input validation!
 
-            // Connect to wifi network
             await this.networkManager.ConnectToWifiAsync(ssid, psk);
+        }
+
+        /// <summary>
+        /// Configures the MeteoSwissWeatherPage.
+        /// </summary>
+        [HttpGet("step2")]
+        public void ConfigureMeteoSwissWeatherPage(string place, int plz, string weatherStationCode, bool isCurrentPlace)
+        {
+            // TODO: Input validation!
+
+            var meteoSwissPlace = new MeteoSwissPlace
+            {
+                Name = place,
+                Plz = plz,
+                WeatherStationCode = weatherStationCode,
+                IsCurrentPlace = isCurrentPlace
+            };
+
+            this.meteoSwissWeatherPageOptions.Update((o) =>
+            {
+                o.Places = new[]
+                {
+                    meteoSwissPlace
+                };
+                return o;
+            });
+
+        }
+
+        /// <summary>
+        /// Configures the OpenWeatherMapPage.
+        /// </summary>
+        [HttpGet("step3")]
+        public void ConfigureOpenWeatherMapPage(string place, double latitude, double longitude)
+        {
+            // TODO: Input validation!
 
             var placeObj = new Place
             {
@@ -80,21 +115,15 @@ namespace WeatherDisplay.Api.Controllers
                 };
                 return o;
             });
+        }
 
-            var meteoSwissPlace = new MeteoSwissPlace
-            {
-                Name = place,
-                Plz = plz,
-            };
-
-            this.meteoSwissWeatherPageOptions.Update((o) =>
-            {
-                o.Places = new[]
-                {
-                    meteoSwissPlace
-                };
-                return o;
-            });
+        /// <summary>
+        /// Configures the WaterTemperaturePage.
+        /// </summary>
+        [HttpGet("step4")]
+        public void ConfigureWaterTemperature(string place, double latitude, double longitude)
+        {
+            // TODO: Input validation!
 
             this.waterTemperaturePageOptions.Update((o) =>
             {
@@ -104,8 +133,18 @@ namespace WeatherDisplay.Api.Controllers
                 };
                 return o;
             });
+        }
 
-            // If everything succeeded, we set the RunSetup flag to false
+        /// <summary>
+        /// Finishes the initial setup.
+        /// </summary>
+        /// <remarks>
+        /// Marks the initial setup as finished (RunSetup=false)
+        /// and restarts the system.
+        /// </remarks>
+        [HttpGet("finish")]
+        public void FinishSetupAsync()
+        {
             this.appSettings.UpdateProperty(a => a.RunSetup, false);
 
             this.processRunner.ExecuteCommand("sudo reboot");

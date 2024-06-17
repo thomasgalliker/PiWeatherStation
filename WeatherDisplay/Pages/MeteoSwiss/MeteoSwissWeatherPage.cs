@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Resources;
@@ -20,7 +19,6 @@ using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Services.Hardware;
 using WeatherDisplay.Services.Navigation;
 using WeatherDisplay.Utils;
-using Place = WeatherDisplay.Pages.MeteoSwiss.MeteoSwissPlace;
 
 namespace WeatherDisplay.Pages.MeteoSwiss
 {
@@ -35,7 +33,8 @@ namespace WeatherDisplay.Pages.MeteoSwiss
         private readonly IOptionsMonitor<MeteoSwissWeatherPageOptions> options;
         private readonly ISensorAccessService sensorAccessService;
         private readonly IWeatherIconMapping weatherIconMapping;
-        private Place currentPlace = null;
+
+        private MeteoSwissPlace currentPlace = null;
 
         public MeteoSwissWeatherPage(
             ILogger<MeteoSwissWeatherPage> logger,
@@ -75,9 +74,6 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                 {
                     var weatherStation = await this.swissMetNetService.GetWeatherStationAsync(this.currentPlace.WeatherStationCode);
 
-                    var assembly = Assembly.GetExecutingAssembly();
-                    var fvi = System.Diagnostics.FileVersionInfo.GetVersionInfo(assembly.Location);
-
                     return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
@@ -109,7 +105,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                             Y = 88,
                             HorizontalTextAlignment = HorizontalAlignment.Right,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{Translations.MeteoSwissWeatherPage_SourceName} / {weatherStation.StationCode} / v{fvi.ProductVersion}",
+                            Value = $"{Translations.MeteoSwissWeatherPage_SourceName} / {weatherStation.StationCode} / v{FileVersionInfoHelper.GetProductVersion(this.appSettings.Value.IsDebug)}",
                             ForegroundColor = "#FFFFFF",
                             BackgroundColor = "#000000",
                             FontSize = 12,
@@ -241,9 +237,16 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                     {
                         if (this.sensorAccessService.Scd41 is IScd4x scd41)
                         {
-                            localTemperature = scd41.Temperature;
-                            localHumidity = scd41.RelativeHumidity;
-                            co2 = scd41.Co2;
+                            try
+                            {
+                                localTemperature = scd41.Temperature;
+                                localHumidity = scd41.RelativeHumidity;
+                                co2 = scd41.Co2;
+                            }
+                            catch (Exception ex)
+                            {
+                                this.logger.LogError(ex, "Failed to read sensor SCD41");
+                            }
                         }
                         else if (this.sensorAccessService.Bme680 is IBme680 bme680)
                         {
@@ -262,7 +265,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                             }
                             catch (Exception ex)
                             {
-                                this.logger.LogError(ex, "Failed to read temperature/humidity from BME680");
+                                this.logger.LogError(ex, "Failed to read sensor BME680");
                             }
                         }
                         else

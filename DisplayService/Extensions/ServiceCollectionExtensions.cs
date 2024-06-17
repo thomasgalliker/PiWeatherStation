@@ -5,8 +5,6 @@ using DisplayService.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using IDateTime = DisplayService.Services.IDateTime;
-using SystemDateTime = DisplayService.Services.SystemDateTime;
 
 namespace Microsoft.Extensions.DependencyInjection
 {
