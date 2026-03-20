@@ -1,24 +1,35 @@
-﻿using System;
-using Newtonsoft.Json;
+using System;
+using System.Globalization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using UnitsNet;
 
 namespace WeatherDisplay.Model.Wiewarm.Converters
 {
     internal class TemperatureJsonConverter : JsonConverter<Temperature>
     {
-        public override void WriteJson(JsonWriter writer, Temperature value, JsonSerializer serializer)
+        public override Temperature Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            writer.WriteValue($"{value.Value}");
-        }
-
-        public override Temperature ReadJson(JsonReader reader, Type objectType, Temperature existingValue, bool hasExistingValue, JsonSerializer serializer)
-        {
-            if (reader.Value is string stringValue && double.TryParse(stringValue, out var celsius))
+            if (reader.TokenType == JsonTokenType.String)
             {
-                return Temperature.FromDegreesCelsius(celsius);
+                var stringValue = reader.GetString();
+                if (double.TryParse(stringValue, NumberStyles.Float, CultureInfo.InvariantCulture, out var celsius))
+                {
+                    return Temperature.FromDegreesCelsius(celsius);
+                }
+            }
+
+            if (reader.TokenType == JsonTokenType.Number && reader.TryGetDouble(out var numberValue))
+            {
+                return Temperature.FromDegreesCelsius(numberValue);
             }
 
             return default;
+        }
+
+        public override void Write(Utf8JsonWriter writer, Temperature value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.Value.ToString(CultureInfo.InvariantCulture));
         }
     }
 }

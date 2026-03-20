@@ -1,5 +1,5 @@
-﻿using System;
-using Newtonsoft.Json;
+using System;
+using System.Text.Json.Serialization;
 using UnitsNet;
 using WeatherDisplay.Model.Wiewarm.Converters;
 
@@ -10,33 +10,33 @@ namespace WeatherDisplay.Model.Wiewarm
     /// </summary>
     public class Basin
     {
-        [JsonProperty("beckenid")]
+        [JsonPropertyName("beckenid")]
         public int Id { get; set; }
 
-        [JsonProperty("beckenname")]
+        [JsonPropertyName("beckenname")]
         public string Name { get; set; }
 
-        [JsonProperty("temp")]
+        [JsonPropertyName("temp")]
         [JsonConverter(typeof(TemperatureJsonConverter))]
         public Temperature Temperature { get; set; }
 
-        [JsonProperty("date")]
+        [JsonPropertyName("date")]
         [JsonConverter(typeof(WiewarmDateTimeJsonConverter))]
         public DateTime Date { get; set; }
 
-        [JsonProperty("typ")]
+        [JsonPropertyName("typ")]
         public string Type { get; set; }
 
-        [JsonProperty("status")]
+        [JsonPropertyName("status")]
         public string Status { get; set; }
 
-        [JsonProperty("smskeywords")]
+        [JsonPropertyName("smskeywords")]
         public string SmsKeywords { get; set; }
 
-        [JsonProperty("smsname")]
+        [JsonPropertyName("smsname")]
         public string SmsName { get; set; }
 
-        [JsonProperty("ismain")]
+        [JsonPropertyName("ismain")]
         public string IsMain { get; set; }
 
         public override string ToString()
