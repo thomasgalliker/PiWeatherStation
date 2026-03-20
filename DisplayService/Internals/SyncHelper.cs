@@ -1,23 +1,29 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace DisplayService.Internals
 {
     public class SyncHelper
     {
-        private readonly ConcurrentQueue<TaskCompletionSource<object>> requestQueue = new ConcurrentQueue<TaskCompletionSource<object>>();
-
-        private const long NotRunning = 0;
-        private const long Running = 1;
-        private long currentState;
+        private static readonly object NoResult = new object();
+        private readonly object syncRoot = new object();
+        private Task<object> currentExecutionTask;
+        private bool currentExecutionHasResult;
 
         /// <summary>
         /// Indicates if the current instance of <seealso cref="SyncHelper"/> is currently running.
         /// </summary>
-        public bool IsRunning => Interlocked.Read(ref this.currentState) == Running;
+        public bool IsRunning
+        {
+            get
+            {
+                lock (this.syncRoot)
+                {
+                    return this.currentExecutionTask != null;
+                }
+            }
+        }
 
         /// <summary>
         /// Runs the given <paramref name="action"/> only once at a time.
@@ -25,27 +31,29 @@ namespace DisplayService.Internals
         /// <param name="action">The synchronous action.</param>
         public void RunOnce(Action action)
         {
-            if (Interlocked.CompareExchange(ref this.currentState, Running, NotRunning) == NotRunning)
+            if (!this.TryBeginExecution(hasResult: false, out var execution))
             {
-                // The given task is only executed if we pass this atomic CompareExchange call,
-                // which switches the current state flag from 'not running' to 'running'.
-
-                var id = $"{Guid.NewGuid():N}".Substring(0, 5).ToUpperInvariant();
-                Debug.WriteLine($"RunOnce: Task {id} started");
-
-                try
-                {
-                    action();
-                }
-                finally
-                {
-                    Debug.WriteLine($"RunOnce: Task {id} finished");
-                    Interlocked.Exchange(ref this.currentState, NotRunning);
-                }
+                return;
             }
 
-            // All other method calls which can't make it into the critical section
-            // are just returned immediately.
+            var id = $"{Guid.NewGuid():N}".Substring(0, 5).ToUpperInvariant();
+            Debug.WriteLine($"RunOnce: Task {id} started");
+
+            try
+            {
+                action();
+                execution.SetResult(NoResult);
+            }
+            catch (Exception ex)
+            {
+                execution.SetException(ex);
+                throw;
+            }
+            finally
+            {
+                Debug.WriteLine($"RunOnce: Task {id} finished");
+                this.EndExecution(execution.Task);
+            }
         }
 
         /// <summary>
@@ -54,27 +62,29 @@ namespace DisplayService.Internals
         /// <param name="task">The asynchronous task.</param>
         public async Task RunOnceAsync(Func<Task> task)
         {
-            if (Interlocked.CompareExchange(ref this.currentState, Running, NotRunning) == NotRunning)
+            if (!this.TryBeginExecution(hasResult: false, out var execution))
             {
-                // The given task is only executed if we pass this atomic CompareExchange call,
-                // which switches the current state flag from 'not running' to 'running'.
-
-                var id = $"{Guid.NewGuid():N}".Substring(0, 5).ToUpperInvariant();
-                Debug.WriteLine($"RunOnceAsync: Task {id} started");
-
-                try
-                {
-                    await task();
-                }
-                finally
-                {
-                    Debug.WriteLine($"RunOnceAsync: Task {id} finished");
-                    Interlocked.Exchange(ref this.currentState, NotRunning);
-                }
+                return;
             }
 
-            // All other method calls which can't make it into the critical section
-            // are just returned immediately.
+            var id = $"{Guid.NewGuid():N}".Substring(0, 5).ToUpperInvariant();
+            Debug.WriteLine($"RunOnceAsync: Task {id} started");
+
+            try
+            {
+                await task().ConfigureAwait(false);
+                execution.SetResult(NoResult);
+            }
+            catch (Exception ex)
+            {
+                execution.SetException(ex);
+                throw;
+            }
+            finally
+            {
+                Debug.WriteLine($"RunOnceAsync: Task {id} finished");
+                this.EndExecution(execution.Task);
+            }
         }
 
         /// <summary> 
@@ -83,48 +93,39 @@ namespace DisplayService.Internals
         /// <param name="function">The synchronous function which returns a result of type <typeparamref name="T"/>.</param>
         public T RunOnce<T>(Func<T> function)
         {
-            if (Interlocked.CompareExchange(ref this.currentState, Running, NotRunning) == NotRunning)
+            while (true)
             {
+                var joinMode = this.TryJoinOrBeginResultExecution(out var executionTask, out var execution);
+                if (joinMode == JoinMode.WaitForResult)
+                {
+                    return (T)executionTask.GetAwaiter().GetResult();
+                }
+
+                if (joinMode == JoinMode.WaitForCompletion)
+                {
+                    executionTask.GetAwaiter().GetResult();
+                    continue;
+                }
+
                 var id = $"{Guid.NewGuid():N}".Substring(0, 5).ToUpperInvariant();
                 Debug.WriteLine($"RunOnce: Task {id} started");
 
                 try
                 {
                     var result = function();
-
-                    // As soon as we have a result value,
-                    // we signal the subsequent requests with the result.
-                    while (this.requestQueue.TryDequeue(out var item))
-                    {
-                        item.SetResult(result);
-                    }
-
+                    execution.SetResult(result);
                     return result;
                 }
                 catch (Exception ex)
                 {
-                    // In case of an exception,
-                    // we signal the subsequent requests with this exception.
-                    while (this.requestQueue.TryDequeue(out var item))
-                    {
-                        item.SetException(ex);
-                    }
+                    execution.SetException(ex);
+                    throw;
                 }
                 finally
                 {
                     Debug.WriteLine($"RunOnce: Task {id} finished");
-                    Interlocked.Exchange(ref this.currentState, NotRunning);
+                    this.EndExecution(execution.Task);
                 }
-            }
-
-            // All other method calls which can't make it into the critical section
-            // are waiting for the result to be returned.
-            {
-                var taskCompletionSource = new TaskCompletionSource<object>();
-                this.requestQueue.Enqueue(taskCompletionSource);
-
-                var result = (T)taskCompletionSource.Task.Result;
-                return result;
             }
         }
 
@@ -134,51 +135,102 @@ namespace DisplayService.Internals
         /// <param name="task">The asynchronous task which returns a result of type <typeparamref name="T"/>.</param>
         public async Task<T> RunOnceAsync<T>(Func<Task<T>> task)
         {
-            if (Interlocked.CompareExchange(ref this.currentState, Running, NotRunning) == NotRunning)
+            while (true)
             {
+                var joinMode = this.TryJoinOrBeginResultExecution(out var executionTask, out var execution);
+                if (joinMode == JoinMode.WaitForResult)
+                {
+                    return (T)await executionTask.ConfigureAwait(false);
+                }
+
+                if (joinMode == JoinMode.WaitForCompletion)
+                {
+                    await executionTask.ConfigureAwait(false);
+                    continue;
+                }
+
                 var id = $"{Guid.NewGuid():N}".Substring(0, 5).ToUpperInvariant();
                 Debug.WriteLine($"RunOnceAsync: Task {id} started");
 
                 try
                 {
-                    var result = await task();
-
-                    // As soon as we have a result value,
-                    // we signal the subsequent requests with the result.
-                    while (this.requestQueue.TryDequeue(out var item))
-                    {
-                        item.SetResult(result);
-                    }
-
+                    var result = await task().ConfigureAwait(false);
+                    execution.SetResult(result);
                     return result;
                 }
                 catch (Exception ex)
                 {
-                    // In case of an exception,
-                    // we signal the subsequent requests with this exception.
-                    while (this.requestQueue.TryDequeue(out var item))
-                    {
-                        item.SetException(ex);
-                    }
-
+                    execution.SetException(ex);
                     throw;
                 }
                 finally
                 {
                     Debug.WriteLine($"RunOnceAsync: Task {id} finished");
-                    Interlocked.Exchange(ref this.currentState, NotRunning);
+                    this.EndExecution(execution.Task);
                 }
             }
+        }
 
-            // All other method calls which can't make it into the critical section
-            // are waiting for the result to be returned.
+        private bool TryBeginExecution(bool hasResult, out TaskCompletionSource<object> execution)
+        {
+            lock (this.syncRoot)
             {
-                var taskCompletionSource = new TaskCompletionSource<object>();
-                this.requestQueue.Enqueue(taskCompletionSource);
+                if (this.currentExecutionTask != null)
+                {
+                    execution = null;
+                    return false;
+                }
 
-                var result = (T)await taskCompletionSource.Task;
-                return result;
+                execution = this.CreateExecutionSource();
+                this.currentExecutionTask = execution.Task;
+                this.currentExecutionHasResult = hasResult;
+                return true;
             }
+        }
+
+        private JoinMode TryJoinOrBeginResultExecution(out Task<object> executionTask, out TaskCompletionSource<object> execution)
+        {
+            lock (this.syncRoot)
+            {
+                executionTask = this.currentExecutionTask;
+                if (executionTask == null)
+                {
+                    execution = this.CreateExecutionSource();
+                    this.currentExecutionTask = execution.Task;
+                    this.currentExecutionHasResult = true;
+                    executionTask = execution.Task;
+                    return JoinMode.BeganExecution;
+                }
+
+                execution = null;
+                return this.currentExecutionHasResult
+                    ? JoinMode.WaitForResult
+                    : JoinMode.WaitForCompletion;
+            }
+        }
+
+        private void EndExecution(Task<object> executionTask)
+        {
+            lock (this.syncRoot)
+            {
+                if (ReferenceEquals(this.currentExecutionTask, executionTask))
+                {
+                    this.currentExecutionTask = null;
+                    this.currentExecutionHasResult = false;
+                }
+            }
+        }
+
+        private TaskCompletionSource<object> CreateExecutionSource()
+        {
+            return new TaskCompletionSource<object>(TaskCreationOptions.RunContinuationsAsynchronously);
+        }
+
+        private enum JoinMode
+        {
+            BeganExecution,
+            WaitForCompletion,
+            WaitForResult,
         }
     }
 }
