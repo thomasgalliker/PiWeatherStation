@@ -32,14 +32,6 @@ namespace WeatherDisplay.Api
 
         private static void Main(string[] args)
         {
-            var cancellationSource = new CancellationTokenSource();
-
-            Console.CancelKeyPress += (_, eventArgs) =>
-            {
-                eventArgs.Cancel = true;
-                cancellationSource.Cancel();
-            };
-
             var assembly = Assembly.GetExecutingAssembly();
             var assemblyVersion = assembly.GetName().Version;
             var buildTime = assembly.GetBuildTime();
@@ -217,9 +209,7 @@ namespace WeatherDisplay.Api
 
             app.UseStaticFiles();
 
-            _ = app.RunAsync(cancellationSource.Token);
-
-            app.WaitForShutdown();
+            app.Run();
         }
 
         private static (X509Certificate2 Private, X509Certificate2 Public) CreateSelfSignedCertificate(string privateKeyFile, string publicKeyFile, IPAddress httpsEndpoint)
