@@ -326,7 +326,7 @@ else
     logSuccess "Installing dotnet..."
 fi
 
-curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 8.0 --install-dir $dotnetDirectory
+curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 10.0 --install-dir $dotnetDirectory
 echo ""
 
 logDebug "Updating dotnet environment variables"

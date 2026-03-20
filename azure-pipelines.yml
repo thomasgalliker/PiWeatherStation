@@ -7,7 +7,7 @@
 name: $[format('{0}', variables['buildName'])]
 
 pool:
-  vmImage: 'windows-2022'
+  vmImage: 'windows-latest'
 
 trigger:
   branches:
@@ -77,9 +77,9 @@ steps:
       sed -i 's|1.0.0|$(Build.BuildNumber)|g' WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh
       
 - task: UseDotNet@2
-  displayName: 'Use net8.0'
+  displayName: 'Use net10.0'
   inputs:
-    version: 8.x
+    version: 10.x
     
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet 6.x'

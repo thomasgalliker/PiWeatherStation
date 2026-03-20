@@ -1,0 +1,2181 @@
+{
+  "openapi": "3.0.4",
+  "info": {
+    "title": "WeatherDisplay API",
+    "version": "1.0.0.0"
+  },
+  "paths": {
+    "/api/button/mappings": {
+      "get": {
+        "tags": [
+          "Buttons"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ButtonMapping"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ButtonMapping"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ButtonMapping"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/button/mapping": {
+      "post": {
+        "tags": [
+          "Buttons"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ButtonMapping"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ButtonMapping"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ButtonMapping"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ButtonMapping"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      },
+      "put": {
+        "tags": [
+          "Buttons"
+        ],
+        "parameters": [
+          {
+            "name": "buttonId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isDefault",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Buttons"
+        ],
+        "parameters": [
+          {
+            "name": "buttonId",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/button/press/{buttonId}": {
+      "get": {
+        "tags": [
+          "Buttons"
+        ],
+        "parameters": [
+          {
+            "name": "buttonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/button/hold/{buttonId}": {
+      "get": {
+        "tags": [
+          "Buttons"
+        ],
+        "parameters": [
+          {
+            "name": "buttonId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/button/hold": {
+      "post": {
+        "tags": [
+          "Buttons"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            },
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int32"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/images/testimage1": {
+      "get": {
+        "tags": [
+          "Demo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/images/testimage2": {
+      "get": {
+        "tags": [
+          "Demo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/images/sendimage": {
+      "post": {
+        "tags": [
+          "Demo"
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "formFile": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              },
+              "encoding": {
+                "formFile": {
+                  "style": "form"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/displaymanager/start": {
+      "get": {
+        "tags": [
+          "DisplayManager"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/displaymanager/reset": {
+      "get": {
+        "tags": [
+          "DisplayManager"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/identity/login": {
+      "post": {
+        "tags": [
+          "Identity"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/log": {
+      "get": {
+        "tags": [
+          "Log"
+        ],
+        "parameters": [
+          {
+            "name": "lines",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 200
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/page/meteoswissweather/weatherstations": {
+      "get": {
+        "tags": [
+          "MeteoSwissWeather"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherStation"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherStation"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/WeatherStation"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/page/meteoswissweather/places": {
+      "get": {
+        "tags": [
+          "MeteoSwissWeather"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MeteoSwissPlace"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MeteoSwissPlace"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MeteoSwissPlace"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/page/meteoswissweather/place": {
+      "post": {
+        "tags": [
+          "MeteoSwissWeather"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeteoSwissPlace"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeteoSwissPlace"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeteoSwissPlace"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeteoSwissPlace"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      },
+      "put": {
+        "tags": [
+          "MeteoSwissWeather"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeteoSwissPlace"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeteoSwissPlace"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeteoSwissPlace"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MeteoSwissPlace"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "MeteoSwissWeather"
+        ],
+        "parameters": [
+          {
+            "name": "plz",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/page/meteoswissweather/place/current": {
+      "put": {
+        "tags": [
+          "MeteoSwissWeather"
+        ],
+        "parameters": [
+          {
+            "name": "plz",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/network/wifi/scan": {
+      "get": {
+        "tags": [
+          "Network"
+        ],
+        "summary": "Scans for wifi ssids.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/network/wifi": {
+      "post": {
+        "tags": [
+          "Network"
+        ],
+        "summary": "Connects to a wifi network using ssid and psk.",
+        "parameters": [
+          {
+            "name": "ssid",
+            "in": "query",
+            "description": "The SSID.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "psk",
+            "in": "query",
+            "description": "The pre-shared key (password for the wifi network).",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Network"
+        ],
+        "summary": "Removes a wifi network connection.",
+        "parameters": [
+          {
+            "name": "ssid",
+            "in": "query",
+            "description": "The SSID.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/network/wifi/connected": {
+      "get": {
+        "tags": [
+          "Network"
+        ],
+        "summary": "Gets all connected wifi networks.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/network/wifi/configured": {
+      "get": {
+        "tags": [
+          "Network"
+        ],
+        "summary": "Gets all configured wifi networks.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/page/openweathermap/places": {
+      "get": {
+        "tags": [
+          "OpenWeatherMap"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Place"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Place"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Place"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/page/openweathermap/place": {
+      "post": {
+        "tags": [
+          "OpenWeatherMap"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Place"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Place"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Place"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Place"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      },
+      "put": {
+        "tags": [
+          "OpenWeatherMap"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json-patch+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Place"
+              }
+            },
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Place"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Place"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/Place"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "OpenWeatherMap"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/page/openweathermap/place/current": {
+      "put": {
+        "tags": [
+          "OpenWeatherMap"
+        ],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/page": {
+      "get": {
+        "tags": [
+          "Page"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/sensor/bme680": {
+      "get": {
+        "tags": [
+          "Sensor"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorData"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorData"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorData"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/sensor/scd41": {
+      "get": {
+        "tags": [
+          "Sensor"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorData"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorData"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SensorData"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/service/start": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/service/stop": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/service/restart": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/service/install": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/service/reinstall": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/service/uninstall": {
+      "get": {
+        "tags": [
+          "Service"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/setup/step1": {
+      "get": {
+        "tags": [
+          "Setup"
+        ],
+        "summary": "Connects to a wifi client network.",
+        "description": "Use this step to connect to a wifi ssid.",
+        "parameters": [
+          {
+            "name": "ssid",
+            "in": "query",
+            "description": "The SSID (name) of the wifi.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "psk",
+            "in": "query",
+            "description": "The pre-shared key (password) for the wifi network.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully connected to the wifi network."
+          },
+          "400": {
+            "description": "The wifi network does not exist or there is a failure to connect to the network."
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/setup/step2": {
+      "get": {
+        "tags": [
+          "Setup"
+        ],
+        "summary": "Configures the MeteoSwissWeatherPage.",
+        "parameters": [
+          {
+            "name": "place",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "plz",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "weatherStationCode",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "isCurrentPlace",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/setup/step3": {
+      "get": {
+        "tags": [
+          "Setup"
+        ],
+        "summary": "Configures the OpenWeatherMapPage.",
+        "parameters": [
+          {
+            "name": "place",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "latitude",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "longitude",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/setup/step4": {
+      "get": {
+        "tags": [
+          "Setup"
+        ],
+        "summary": "Configures the WaterTemperaturePage.",
+        "parameters": [
+          {
+            "name": "place",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "latitude",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "longitude",
+            "in": "query",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/setup/finish": {
+      "get": {
+        "tags": [
+          "Setup"
+        ],
+        "summary": "Finishes the initial setup.",
+        "description": "Marks the initial setup as finished (RunSetup=false)\r\nand restarts the system.",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/sudo": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "boolean"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/cpuinfo": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CpuInfo"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CpuInfo"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CpuInfo"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/cpusensors": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CpuSensorsStatus"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CpuSensorsStatus"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CpuSensorsStatus"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/update": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "summary": "Updates the PiWeatherStation software to latest.",
+        "parameters": [
+          {
+            "name": "force",
+            "in": "query",
+            "description": "Forced update (this may overrides local debug versions).",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/frameworkdescription": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/shutdown": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    },
+    "/api/system/reboot": {
+      "get": {
+        "tags": [
+          "System"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          { }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AmountOfSubstanceUnit": {
+        "enum": [
+          "Centimole",
+          "CentipoundMole",
+          "Decimole",
+          "DecipoundMole",
+          "Kilomole",
+          "KilopoundMole",
+          "Megamole",
+          "Micromole",
+          "MicropoundMole",
+          "Millimole",
+          "MillipoundMole",
+          "Mole",
+          "Nanomole",
+          "NanopoundMole",
+          "PoundMole",
+          "Picomole",
+          "Femtomole"
+        ],
+        "type": "string"
+      },
+      "BaseDimensions": {
+        "type": "object",
+        "properties": {
+          "length": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "mass": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "time": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "current": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "temperature": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "amount": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "luminousIntensity": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BaseUnits": {
+        "type": "object",
+        "properties": {
+          "length": {
+            "$ref": "#/components/schemas/LengthUnit"
+          },
+          "mass": {
+            "$ref": "#/components/schemas/MassUnit"
+          },
+          "time": {
+            "$ref": "#/components/schemas/DurationUnit"
+          },
+          "current": {
+            "$ref": "#/components/schemas/ElectricCurrentUnit"
+          },
+          "temperature": {
+            "$ref": "#/components/schemas/TemperatureUnit"
+          },
+          "amount": {
+            "$ref": "#/components/schemas/AmountOfSubstanceUnit"
+          },
+          "luminousIntensity": {
+            "$ref": "#/components/schemas/LuminousIntensityUnit"
+          },
+          "isFullyDefined": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ButtonMapping": {
+        "type": "object",
+        "properties": {
+          "page": {
+            "type": "string",
+            "nullable": true
+          },
+          "buttonId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "gpioPin": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "default": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "CpuInfo": {
+        "type": "object",
+        "properties": {
+          "processors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProcessorInfo"
+            },
+            "nullable": true
+          },
+          "hardware": {
+            "type": "string",
+            "nullable": true
+          },
+          "revision": {
+            "type": "string",
+            "nullable": true
+          },
+          "serial": {
+            "type": "string",
+            "nullable": true
+          },
+          "model": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "CpuSensorsStatus": {
+        "type": "object",
+        "properties": {
+          "temperature": {
+            "type": "string"
+          },
+          "voltage": {
+            "type": "string"
+          },
+          "underVoltageDetected": {
+            "type": "boolean"
+          },
+          "armFrequencyCapped": {
+            "type": "boolean"
+          },
+          "currentlyThrottled": {
+            "type": "boolean"
+          },
+          "softTemperatureLimitActive": {
+            "type": "boolean"
+          },
+          "underVoltageOccurred": {
+            "type": "boolean"
+          },
+          "armFrequencyCappingOccurred": {
+            "type": "boolean"
+          },
+          "throttlingOccurred": {
+            "type": "boolean"
+          },
+          "softTemperatureLimitOccurred": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DurationUnit": {
+        "enum": [
+          "Day",
+          "Hour",
+          "JulianYear",
+          "Microsecond",
+          "Millisecond",
+          "Minute",
+          "Month30",
+          "Nanosecond",
+          "Second",
+          "Week",
+          "Year365"
+        ],
+        "type": "string"
+      },
+      "ElectricCurrentUnit": {
+        "enum": [
+          "Ampere",
+          "Centiampere",
+          "Kiloampere",
+          "Megaampere",
+          "Microampere",
+          "Milliampere",
+          "Nanoampere",
+          "Picoampere",
+          "Femtoampere"
+        ],
+        "type": "string"
+      },
+      "GeoCoordinate": {
+        "type": "object",
+        "properties": {
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "altitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "horizontalAccuracy": {
+            "type": "number",
+            "format": "double"
+          },
+          "verticalAccuracy": {
+            "type": "number",
+            "format": "double"
+          },
+          "speed": {
+            "type": "string",
+            "nullable": true
+          },
+          "course": {
+            "type": "number",
+            "format": "double"
+          },
+          "isUnknown": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IQuantity": {
+        "type": "object",
+        "properties": {
+          "dimensions": {
+            "$ref": "#/components/schemas/BaseDimensions"
+          },
+          "quantityInfo": {
+            "$ref": "#/components/schemas/QuantityInfo"
+          },
+          "unit": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "value": {
+            "$ref": "#/components/schemas/QuantityValue"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LengthUnit": {
+        "enum": [
+          "Angstrom",
+          "AstronomicalUnit",
+          "Centimeter",
+          "Chain",
+          "DataMile",
+          "Decameter",
+          "Decimeter",
+          "DtpPica",
+          "DtpPoint",
+          "Fathom",
+          "Foot",
+          "Hand",
+          "Hectometer",
+          "Inch",
+          "KilolightYear",
+          "Kilometer",
+          "Kiloparsec",
+          "LightYear",
+          "MegalightYear",
+          "Megaparsec",
+          "Meter",
+          "Microinch",
+          "Micrometer",
+          "Mil",
+          "Mile",
+          "Millimeter",
+          "Nanometer",
+          "NauticalMile",
+          "Parsec",
+          "PrinterPica",
+          "PrinterPoint",
+          "Shackle",
+          "SolarRadius",
+          "Twip",
+          "UsSurveyFoot",
+          "Yard",
+          "Kiloyard",
+          "Megameter",
+          "Picometer",
+          "Gigameter",
+          "Kilofoot",
+          "Femtometer"
+        ],
+        "type": "string"
+      },
+      "LoginDto": {
+        "type": "object",
+        "properties": {
+          "userName": {
+            "type": "string",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LuminousIntensityUnit": {
+        "enum": [
+          "Candela"
+        ],
+        "type": "string"
+      },
+      "MassUnit": {
+        "enum": [
+          "Centigram",
+          "Decagram",
+          "Decigram",
+          "EarthMass",
+          "Grain",
+          "Gram",
+          "Hectogram",
+          "Kilogram",
+          "Kilopound",
+          "Kilotonne",
+          "LongHundredweight",
+          "LongTon",
+          "Megapound",
+          "Megatonne",
+          "Microgram",
+          "Milligram",
+          "Nanogram",
+          "Ounce",
+          "Pound",
+          "ShortHundredweight",
+          "ShortTon",
+          "Slug",
+          "SolarMass",
+          "Stone",
+          "Tonne",
+          "Picogram",
+          "Femtogram"
+        ],
+        "type": "string"
+      },
+      "MeteoSwissPlace": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "plz": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "weatherStationCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "isCurrentPlace": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Place": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "latitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "longitude": {
+            "type": "number",
+            "format": "double"
+          },
+          "isCurrentPlace": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ProcessorInfo": {
+        "type": "object",
+        "properties": {
+          "processor": {
+            "type": "string",
+            "nullable": true
+          },
+          "modelName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuantityInfo": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "unitInfos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/UnitInfo"
+            },
+            "nullable": true
+          },
+          "baseUnitInfo": {
+            "$ref": "#/components/schemas/UnitInfo"
+          },
+          "zero": {
+            "$ref": "#/components/schemas/IQuantity"
+          },
+          "unitType": {
+            "type": "string",
+            "nullable": true
+          },
+          "valueType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "baseDimensions": {
+            "$ref": "#/components/schemas/BaseDimensions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "QuantityValue": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "$ref": "#/components/schemas/UnderlyingDataType"
+          },
+          "isDecimal": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "SensorData": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": true
+          },
+          "dt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IQuantity"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TemperatureUnit": {
+        "enum": [
+          "DegreeCelsius",
+          "DegreeDelisle",
+          "DegreeFahrenheit",
+          "DegreeNewton",
+          "DegreeRankine",
+          "DegreeReaumur",
+          "DegreeRoemer",
+          "Kelvin",
+          "MillidegreeCelsius",
+          "SolarTemperature"
+        ],
+        "type": "string"
+      },
+      "UnderlyingDataType": {
+        "enum": [
+          "Decimal",
+          "Double"
+        ],
+        "type": "string"
+      },
+      "UnitInfo": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "pluralName": {
+            "type": "string",
+            "nullable": true
+          },
+          "baseUnits": {
+            "$ref": "#/components/schemas/BaseUnits"
+          },
+          "quantityName": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WeatherStation": {
+        "type": "object",
+        "properties": {
+          "place": {
+            "type": "string",
+            "nullable": true
+          },
+          "stationCode": {
+            "type": "string",
+            "nullable": true
+          },
+          "wigosId": {
+            "type": "string",
+            "nullable": true
+          },
+          "stationType": {
+            "$ref": "#/components/schemas/WeatherStationType"
+          },
+          "barometricAltitude": {
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
+            "$ref": "#/components/schemas/GeoCoordinate"
+          },
+          "dataOwners": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "canton": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WeatherStationType": {
+        "enum": [
+          "Unknown",
+          "WeatherStation",
+          "PrecipitationStation"
+        ],
+        "type": "string"
+      }
+    },
+    "securitySchemes": {
+      "Bearer": {
+        "type": "http",
+        "description": "Paste only the JWT access token here. Swagger UI adds the 'Bearer ' prefix automatically.",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Buttons"
+    },
+    {
+      "name": "Demo"
+    },
+    {
+      "name": "DisplayManager"
+    },
+    {
+      "name": "Identity"
+    },
+    {
+      "name": "Log"
+    },
+    {
+      "name": "MeteoSwissWeather"
+    },
+    {
+      "name": "Network"
+    },
+    {
+      "name": "OpenWeatherMap"
+    },
+    {
+      "name": "Page"
+    },
+    {
+      "name": "Sensor"
+    },
+    {
+      "name": "Service"
+    },
+    {
+      "name": "Setup"
+    },
+    {
+      "name": "System"
+    }
+  ]
+}

@@ -36,7 +36,7 @@ namespace WeatherDisplay.Services.Wiewarm
         public async Task<Bath> GetBathByIdAsync(int badId)
         {
             var uri = $"https://www.wiewarm.ch:443/api/v1/bad.json/{badId}";
-            this.logger.LogDebug($"GetBadByIdAsync: GET {uri}");
+            this.logger.LogDebug($"GetBathByIdAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();

@@ -7,7 +7,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using Microsoft.OpenApi;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using NLog;
@@ -93,7 +93,6 @@ namespace WeatherDisplay.Api
 
             // ====== Setup services ======
             var services = builder.Services;
-            services.AddEndpointsApiExplorer();
             services.AddControllers().AddNewtonsoftJson(opt =>
             {
                 opt.SerializerSettings.Converters.Add(new UnitsNetIQuantityJsonConverter());
@@ -105,32 +104,21 @@ namespace WeatherDisplay.Api
             });
 
             var swaggerVersion = $"v{assemblyVersion.Major}";
-            services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(option =>
             {
                 option.SwaggerDoc(swaggerVersion, new OpenApiInfo { Title = "WeatherDisplay API", Version = $"{assemblyVersion}" });
                 option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
-                    Description = "Please enter a valid token",
+                    Description = "Paste only the JWT access token here. Swagger UI adds the 'Bearer ' prefix automatically.",
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
                     BearerFormat = "JWT",
-                    Scheme = "Bearer"
+                    Scheme = "bearer"
                 });
-                option.AddSecurityRequirement(new OpenApiSecurityRequirement
+                option.AddSecurityRequirement(document => new OpenApiSecurityRequirement
                 {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id="Bearer"
-                            }
-                        },
-                        new string[]{}
-                    }
+                    [new OpenApiSecuritySchemeReference("Bearer", document, null)] = new List<string>()
                 });
                 var xmlDocumentationFilePath = Path.Combine(AppContext.BaseDirectory, "WeatherDisplay.Api.xml");
                 option.IncludeXmlComments(xmlDocumentationFilePath);
@@ -216,10 +204,7 @@ namespace WeatherDisplay.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers().RequireAuthorization("RequireAuthenticatedUserPolicy");
-            });
+            app.MapControllers().RequireAuthorization("RequireAuthenticatedUserPolicy");
 
             // ===== Use Swagger ======
             app.UseSwagger();

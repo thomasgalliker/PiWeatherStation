@@ -58,10 +58,10 @@ sudo timedatectl set-timezone Europe/Zurich
 ```
 
 #### Install .NET on Raspberry Pi
-- Go to Microsoft's [dotnet download page](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) and download the appropriate version of .NET. I usually use the 32bit Version of Raspbian OS, so the appropriate .NET architecture should be ARM32.
+- Go to Microsoft's [dotnet download page](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) and download the appropriate version of .NET. I usually use the 32bit Version of Raspbian OS, so the appropriate .NET architecture should be ARM32.
 - The following dotnet-install.sh script simplifies the automated installation of dotnet on Linux:
 ```
-curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 8.0 --install-dir /home/pi/.dotnet
+curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 10.0 --install-dir /home/pi/.dotnet
 ```
 
 - Edit the bash profile and add following lines to the end of the file. If `export PATH` already exists, extend it instead of creating a new export. Use `sudo nano ~/.bashrc` to double check if everything is fine.
@@ -290,7 +290,7 @@ content-length: 1460
 - https://swimburger.net/blog/dotnet/how-to-run-aspnet-core-as-a-service-on-linux
 - https://docs.microsoft.com/en-us/troubleshoot/developer/webapps/aspnetcore/practice-troubleshoot-linux/2-6-run-two-aspnetcore-applications-same-time
 - https://procodeguide.com/programming/how-to-set-start-url-in-aspnet-core/
-- https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoints?view=aspnetcore-8.0
+- https://learn.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoints?view=aspnetcore-10.0
 - https://richstokoe.com/2017/12/10/running-asp-net-core-raspbian-linux-raspberry-pi-https/
 - https://github.com/alastairgould/dotnet-core-systemd/blob/7eb500a1f1ffe4e27278edb14ef85fb0a11bf8bf/webapplication.service
 - https://dejanstojanovic.net/aspnet/2018/june/clean-service-stop-on-linux-with-net-core-21/
