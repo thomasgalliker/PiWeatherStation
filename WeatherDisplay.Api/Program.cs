@@ -5,15 +5,14 @@ using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using NLog;
 using NLog.Extensions.Logging;
-using UnitsNet.Serialization.JsonNet;
 using WeatherDisplay.Api.Properties;
+using WeatherDisplay.Api.Serialization;
 using WeatherDisplay.Api.Services;
 using WeatherDisplay.Api.Services.Configuration;
 using WeatherDisplay.Api.Services.Security;
@@ -85,14 +84,12 @@ namespace WeatherDisplay.Api
 
             // ====== Setup services ======
             var services = builder.Services;
-            services.AddControllers().AddNewtonsoftJson(opt =>
+            services.AddControllers().AddJsonOptions(opt =>
             {
-                opt.SerializerSettings.Converters.Add(new UnitsNetIQuantityJsonConverter());
-                opt.SerializerSettings.Converters.Add(new StringEnumConverter());
-                opt.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-                opt.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-                opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                opt.JsonSerializerOptions.Converters.Add(new UnitsNetIQuantityJsonConverter());
+                opt.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
 
             var swaggerVersion = $"v{assemblyVersion.Major}";
@@ -115,8 +112,6 @@ namespace WeatherDisplay.Api
                 var xmlDocumentationFilePath = Path.Combine(AppContext.BaseDirectory, "WeatherDisplay.Api.xml");
                 option.IncludeXmlComments(xmlDocumentationFilePath);
             });
-            services.AddSwaggerGenNewtonsoftSupport();
-
             services.AddRaspberryPi();
 
             // ====== Auto update ======

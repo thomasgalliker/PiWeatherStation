@@ -1,9 +1,9 @@
-﻿using System.Globalization;
 using System;
+using System.Globalization;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using OpenWeatherMap;
 
 namespace WeatherDisplay.Services.Astronomy
@@ -12,7 +12,7 @@ namespace WeatherDisplay.Services.Astronomy
     {
         private readonly ILogger logger;
         private readonly HttpClient httpClient;
-        private readonly JsonSerializerSettings serializerSettings;
+        private readonly JsonSerializerOptions serializerOptions;
         private const string apiEndpoint = "https://services.swpc.noaa.gov";
 
         public SpaceWeatherService(ILogger<SpaceWeatherService> logger)
@@ -24,13 +24,8 @@ namespace WeatherDisplay.Services.Astronomy
         {
             this.logger = logger;
             this.httpClient = httpClient;
-            this.serializerSettings = new JsonSerializerSettings
-            {
-                NullValueHandling = NullValueHandling.Ignore,
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-            };
-            this.serializerSettings.Converters.Add(new PlanetaryKIndexForecastJsonConverter());
+            this.serializerOptions = new JsonSerializerOptions();
+            this.serializerOptions.Converters.Add(new PlanetaryKIndexForecastJsonConverter());
         }
 
         public async Task<PlanetaryKIndexForecast[]> GetPlanetaryKIndexForecastAsync()
@@ -50,7 +45,7 @@ namespace WeatherDisplay.Services.Astronomy
 
             var responseJson = await response.Content.ReadAsStringAsync();
 
-            var planetaryKIndexForecasts = JsonConvert.DeserializeObject<PlanetaryKIndexForecast[]>(responseJson, this.serializerSettings);
+            var planetaryKIndexForecasts = JsonSerializer.Deserialize<PlanetaryKIndexForecast[]>(responseJson, this.serializerOptions);
             return planetaryKIndexForecasts;
         }
     }

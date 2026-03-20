@@ -1,8 +1,8 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-using Newtonsoft.Json.Linq;
 
 namespace WeatherDisplay.Api.Services.Configuration
 {
@@ -12,7 +12,7 @@ namespace WeatherDisplay.Api.Services.Configuration
         private readonly IOptionsMonitor<T> options;
         private readonly string section;
         private readonly string file;
-        private readonly JsonSerializerSettings jsonSerializerSettings;
+        private readonly JsonSerializerOptions jsonSerializerOptions;
 
         public WritableOptions(
             IWebHostEnvironment environment,
@@ -25,14 +25,12 @@ namespace WeatherDisplay.Api.Services.Configuration
             this.section = section;
             this.file = file;
 
-            this.jsonSerializerSettings = new JsonSerializerSettings
+            this.jsonSerializerOptions = new JsonSerializerOptions
             {
-                NullValueHandling = NullValueHandling.Ignore,
-                DateFormatHandling = DateFormatHandling.IsoDateFormat,
-                DefaultValueHandling = DefaultValueHandling.Ignore,
-                Formatting = Formatting.Indented,
+                DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
+                WriteIndented = true,
             };
-            this.jsonSerializerSettings.Converters.Add(new StringEnumConverter());
+            this.jsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
         }
 
         public T Value => this.options.CurrentValue;
@@ -43,20 +41,19 @@ namespace WeatherDisplay.Api.Services.Configuration
         {
             var fileProvider = this.environment.ContentRootFileProvider;
             var fileInfo = fileProvider.GetFileInfo(this.file);
-            var jObject = GetJsonContent(fileInfo);
+            var jsonObject = GetJsonContent(fileInfo);
 
             var propertyUpdater = PropertyUpdater<T, TValue>.GetPropertyUpdater(() => propertySelector);
 
-            var sectionObject = jObject[this.section];
-            if (sectionObject == null)
+            if (jsonObject[this.section] is not JsonObject sectionObject)
             {
-                sectionObject = new JObject();
-                jObject[this.section] = sectionObject;
+                sectionObject = [];
+                jsonObject[this.section] = sectionObject;
             }
 
-            sectionObject[propertyUpdater.Name] = JToken.FromObject(value);
+            sectionObject[propertyUpdater.Name] = JsonSerializer.SerializeToNode(value, this.jsonSerializerOptions);
 
-            var updatedFileContent = JsonConvert.SerializeObject(jObject, this.jsonSerializerSettings);
+            var updatedFileContent = jsonObject.ToJsonString(this.jsonSerializerOptions);
             File.WriteAllText(fileInfo.PhysicalPath, updatedFileContent);
         }
 
@@ -69,40 +66,36 @@ namespace WeatherDisplay.Api.Services.Configuration
         {
             var fileProvider = this.environment.ContentRootFileProvider;
             var fileInfo = fileProvider.GetFileInfo(this.file);
-            var jObject = GetJsonContent(fileInfo);
+            var jsonObject = GetJsonContent(fileInfo);
 
-            var sectionObject = this.DeserializeSection(jObject);
+            var sectionObject = this.DeserializeSection(jsonObject);
 
             sectionObject = options(sectionObject);
 
-            jObject[this.section] = JObject.Parse(JsonConvert.SerializeObject(sectionObject, this.jsonSerializerSettings));
+            jsonObject[this.section] = JsonSerializer.SerializeToNode(sectionObject, this.jsonSerializerOptions);
 
-            var updatedFileContent = JsonConvert.SerializeObject(jObject, this.jsonSerializerSettings);
+            var updatedFileContent = jsonObject.ToJsonString(this.jsonSerializerOptions);
             File.WriteAllText(fileInfo.PhysicalPath, updatedFileContent);
         }
 
-        private static JObject GetJsonContent(Microsoft.Extensions.FileProviders.IFileInfo fileInfo)
+        private static JsonObject GetJsonContent(Microsoft.Extensions.FileProviders.IFileInfo fileInfo)
         {
-            JObject jObject;
             if (fileInfo.Exists)
             {
                 var fileContent = File.ReadAllText(fileInfo.PhysicalPath);
-                jObject = JsonConvert.DeserializeObject<JObject>(fileContent);
-            }
-            else
-            {
-                jObject = new JObject();
+                var node = JsonNode.Parse(fileContent);
+                return node as JsonObject ?? [];
             }
 
-            return jObject;
+            return [];
         }
 
-        private T DeserializeSection(JObject jObject)
+        private T DeserializeSection(JsonObject jsonObject)
         {
             T sectionObject;
-            if (jObject.TryGetValue(this.section, out var section))
+            if (jsonObject.TryGetPropertyValue(this.section, out var section) && section != null)
             {
-                sectionObject = JsonConvert.DeserializeObject<T>(section.ToString(), this.jsonSerializerSettings);
+                sectionObject = section.Deserialize<T>(this.jsonSerializerOptions);
             }
             else
             {
