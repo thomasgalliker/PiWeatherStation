@@ -139,7 +139,7 @@ ap_wifi_mode="g"
 ap_country_code="CH"
 ap_ip="192.168.10.1"
 ap_ip_begin=$(echo "${ap_ip}" | sed -e 's/\.[0-9]\{1,3\}$//g')
-dotnetChannel=$(echo "$dotnetFramework" | sed 's/^net//')
+dotnetChannel=$(echo "$targetFramework" | sed 's/^net//')
 
 serviceFilePath="$systemDir"/"$serviceName.service"
 
@@ -167,7 +167,7 @@ timezone: $timezone
 locale: $locale
 keyboard: $keyboard
 reboot: $reboot
-dotnetFramework: $dotnetFramework
+targetFramework: $targetFramework
 dotnetChannel: $dotnetChannel
 =====================================================
 " >&2
