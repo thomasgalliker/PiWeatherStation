@@ -143,11 +143,11 @@ namespace WeatherDisplay.Api
             services.AddScoped<IUserService, UserService>();
 
             var identityConfiguration = new IdentityConfiguration();
-            var identitySection = builder.Configuration.GetSection("Identity");
+            var identitySection = builder.Configuration.GetSection(IdentityConfiguration.SectionName);
             identitySection.Bind(identityConfiguration);
             services.AddSingleton<IIdentityConfiguration>(identityConfiguration);
 
-            services.AddAuthorization(o => o.AddPolicy("RequireAuthenticatedUserPolicy", builder => builder.RequireAuthenticatedUser()));
+            services.AddAuthorization(o => o.AddPolicy("RequireAuthenticatedUserPolicy", b => b.RequireAuthenticatedUser()));
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services
