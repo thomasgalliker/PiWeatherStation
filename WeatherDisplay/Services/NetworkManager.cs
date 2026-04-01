@@ -89,9 +89,8 @@ namespace WeatherDisplay.Services
                 SSID = ssid,
                 PSK = psk,
             };
-            await this.networkManager.SetupStationModeAsync(wlan0, network);
+            await this.networkManager.ConnectToWifiNetworkAsync(wlan0, network);
         }
-
 
         public async Task RemoveWifiAsync(string ssid)
         {
