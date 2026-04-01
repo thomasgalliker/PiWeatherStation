@@ -158,7 +158,7 @@ steps:
     command: publish
     projects: 'WeatherDisplay.Api/WeatherDisplay.Api.csproj'
     publishWebProjects: false
-    arguments: '--configuration $(BuildConfiguration) --self-contained false --runtime linux-arm --output $(Build.ArtifactStagingDirectory)/Development /p:EnvironmentName=Development'
+    arguments: '--configuration $(BuildConfiguration) --self-contained false --runtime linux-arm64 --output $(Build.ArtifactStagingDirectory)/Development /p:EnvironmentName=Development'
     zipAfterPublish: false
 
 - task: DotNetCoreCLI@2
@@ -168,7 +168,7 @@ steps:
     command: publish
     projects: 'WeatherDisplay.Api/WeatherDisplay.Api.csproj'
     publishWebProjects: false
-    arguments: '--configuration $(BuildConfiguration) --self-contained false --runtime linux-arm --output $(Build.ArtifactStagingDirectory)/Production /p:EnvironmentName=Production'
+    arguments: '--configuration $(BuildConfiguration) --self-contained false --runtime linux-arm64 --output $(Build.ArtifactStagingDirectory)/Production /p:EnvironmentName=Production'
     zipAfterPublish: false
 
 - task: ArchiveFiles@2
