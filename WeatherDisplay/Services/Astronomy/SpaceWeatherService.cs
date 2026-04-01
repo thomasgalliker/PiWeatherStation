@@ -1,10 +1,8 @@
-using System;
-using System.Globalization;
+﻿using System;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using OpenWeatherMap;
 
 namespace WeatherDisplay.Services.Astronomy
 {
@@ -13,7 +11,7 @@ namespace WeatherDisplay.Services.Astronomy
         private readonly ILogger logger;
         private readonly HttpClient httpClient;
         private readonly JsonSerializerOptions serializerOptions;
-        private const string apiEndpoint = "https://services.swpc.noaa.gov";
+        private const string ApiEndpoint = "https://services.swpc.noaa.gov";
 
         public SpaceWeatherService(ILogger<SpaceWeatherService> logger)
             : this(logger, new HttpClient())
@@ -30,9 +28,9 @@ namespace WeatherDisplay.Services.Astronomy
 
         public async Task<PlanetaryKIndexForecast[]> GetPlanetaryKIndexForecastAsync()
         {
-            this.logger.LogDebug($"GetPlanetaryKIndexForecastAsync");
+            this.logger.LogDebug("GetPlanetaryKIndexForecastAsync");
 
-            var builder = new UriBuilder(apiEndpoint)
+            var builder = new UriBuilder(ApiEndpoint)
             {
                 Path = "products/noaa-planetary-k-index-forecast.json",
             };
