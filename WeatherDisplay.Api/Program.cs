@@ -176,6 +176,7 @@ namespace WeatherDisplay.Api
             // ====== Configure services ======
             var app = builder.Build();
 
+#if RELEASE
             var writableOptions = app.Services.GetRequiredService<IWritableOptions<IdentityOptions>>();
             writableOptions.UpdateAsync(o =>
             {
@@ -183,11 +184,8 @@ namespace WeatherDisplay.Api
                 {
                     o.JwtKey = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
                 }
-                //if (string.IsNullOrEmpty(o.JwtIssuer))
-                //{
-                //    o.JwtIssuer = "WeatherDisplayApi";
-                //}
             });
+#endif
 
 
             // Configure the HTTP request pipeline.
@@ -227,7 +225,7 @@ namespace WeatherDisplay.Api
             X509Certificate2 privateKeyCertificate;
             if (File.Exists(privateKeyFile))
             {
-                privateKeyCertificate = new X509Certificate2(privateKeyFile);
+                privateKeyCertificate = X509CertificateLoader.LoadPkcs12FromFile(privateKeyFile, password: null);
                 if (privateKeyCertificate.NotAfter.AddYears(-1) < now)
                 {
                     privateKeyCertificate = null;
@@ -241,7 +239,7 @@ namespace WeatherDisplay.Api
             X509Certificate2 publicKeyCertificate;
             if (File.Exists(publicKeyFile))
             {
-                publicKeyCertificate = new X509Certificate2(publicKeyFile);
+                publicKeyCertificate = X509CertificateLoader.LoadCertificateFromFile(publicKeyFile);
                 if (publicKeyCertificate.NotAfter.AddYears(-1) < now)
                 {
                     publicKeyCertificate = null;
@@ -260,8 +258,8 @@ namespace WeatherDisplay.Api
                 File.WriteAllBytes(privateKeyFile, certificate.Export(X509ContentType.Pfx));
                 File.WriteAllBytes(publicKeyFile, certificate.Export(X509ContentType.Cert));
 
-                privateKeyCertificate = new X509Certificate2(privateKeyFile);
-                publicKeyCertificate = new X509Certificate2(publicKeyFile);
+                privateKeyCertificate = X509CertificateLoader.LoadPkcs12FromFile(privateKeyFile, password: null);
+                publicKeyCertificate = X509CertificateLoader.LoadCertificateFromFile(publicKeyFile);
             }
 
             return (privateKeyCertificate, publicKeyCertificate);
