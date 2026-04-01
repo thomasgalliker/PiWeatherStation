@@ -1,17 +1,13 @@
 ﻿using System;
 using System.CommandLine;
-using System.CommandLine.Builder;
-using System.CommandLine.Parsing;
 using System.Globalization;
-using System.Linq;
 using System.Threading.Tasks;
-using DisplayService.ConsoleApp.Commands;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using WeatherDisplay.Extensions;
+using WeatherDisplay.ConsoleApp.Commands;
 
-namespace DisplayService.ConsoleApp
+namespace WeatherDisplay.ConsoleApp
 {
     internal class Program
     {
@@ -27,10 +23,10 @@ namespace DisplayService.ConsoleApp
             if (args.Length == 0)
             {
                 // Use default parameter 'start' in case no parameter is used
-                args = new string[] { StartCommand.CommandName };
+                args = new [] { StartCommand.CommandName };
             }
 
-            var result = await parser.InvokeAsync(args).ConfigureAwait(false);
+            var result = await parser.Parse(args).InvokeAsync().ConfigureAwait(false);
 
             if (args.Contains(StartCommand.CommandName))
             {
@@ -40,24 +36,20 @@ namespace DisplayService.ConsoleApp
             return result;
         }
 
-        private static Parser BuildParser(IServiceProvider serviceProvider)
+        private static RootCommand BuildParser(IServiceProvider serviceProvider)
         {
             var rootCommand = new RootCommand();
             //rootCommand.Description = $"Simplify nuget package administration.";
 
-            rootCommand.AddGlobalOption(ProgramOptions.ClearOption);
-
-            var commandLineBuilder = new CommandLineBuilder(rootCommand);
+            rootCommand.Add(ProgramOptions.ClearOption);
 
             var commands = serviceProvider.GetServices<Command>();
             foreach (var command in commands)
             {
-                commandLineBuilder.Command.Add(command);
+                rootCommand.Add(command);
             }
 
-            return commandLineBuilder
-                .UseDefaults()
-                .Build();
+            return rootCommand;
         }
 
         private static IServiceProvider BuildServiceProvider()
