@@ -25,11 +25,6 @@ trigger:
     - Scripts/*
 
 parameters:
-- name: dotnetVersion
-  displayName: .NET SDK version
-  type: string
-  default: '10.0.x'
-  
 - name: skipTests
   displayName: Skip tests
   type: boolean
@@ -91,10 +86,11 @@ steps:
       sed -i 's|scriptVersion=\"1.0.0\"|scriptVersion=\"$(semVersion)\"|g' WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh
       
 - task: UseDotNet@2
-  displayName: 'Use .NET SDK ${{ parameters.dotnetVersion }}'
+  displayName: 'Use .NET SDK from global.json'
   inputs:
     packageType: 'sdk'
-    version: ${{ parameters.dotnetVersion }}
+    useGlobalJson: true
+    workingDirectory: '$(Build.SourcesDirectory)'
 
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet 6.x'
