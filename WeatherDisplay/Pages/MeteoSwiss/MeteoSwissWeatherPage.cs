@@ -72,8 +72,6 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             this.displayManager.AddRenderActionsAsync(
                 async () =>
                 {
-                    var weatherStation = await this.swissMetNetService.GetWeatherStationAsync(this.currentPlace.WeatherStationCode);
-
                     return new List<IRenderAction>
                     {
                         new RenderActions.Rectangle
@@ -105,7 +103,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                             Y = 88,
                             HorizontalTextAlignment = HorizontalAlignment.Right,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"{Translations.MeteoSwissWeatherPage_SourceName} / {weatherStation.StationCode} / v{FileVersionInfoHelper.GetProductVersion(this.appSettings.Value.IsDebug)}",
+                            Value = $"{Translations.MeteoSwissWeatherPage_SourceName} / {this.currentPlace.WeatherStationCode} / v{FileVersionInfoHelper.GetProductVersion(this.appSettings.Value.IsDebug)}",
                             ForegroundColor = "#FFFFFF",
                             BackgroundColor = "#000000",
                             FontSize = 12,
