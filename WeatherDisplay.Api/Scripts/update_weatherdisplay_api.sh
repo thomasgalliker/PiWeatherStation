@@ -253,6 +253,17 @@ fi
 cd $workingDirectory
 
 logSuccess "Setting up raspberry pi@${host}..."
+logDebug "Disabling cloud-init..."
+mkdir -p /etc/cloud
+touch /etc/cloud/cloud-init.disabled
+
+logDebug "Updating hostname..."
+currentHostname=`cat /etc/hostname | tr -d " \t\n\r"`
+echo "$currentHostname -> $host"
+hostnamectl set-hostname "$host"
+echo $host > /etc/hostname
+sed -i -E 's/(127\.0\.1\.1\s+)[^ ]+/\1'"$host"'/g' /etc/hosts
+
 append_if_missing 'dtparam=spi=on' 'dtparam=spi=on' "$bootConfig"
 append_if_missing 'dtparam=i2c_arm=on' 'dtparam=i2c_arm=on' "$bootConfig"
 set_config_var camera_auto_detect 0 "$bootConfig"
@@ -299,6 +310,14 @@ echo ""
 systemctl enable dhcpcd >/dev/null 2>&1 || true
 
 logSuccess "Setting up access point..."
+
+logDebug "Configuring NetworkManager to ignore ap@wlan0..."
+mkdir -p /etc/NetworkManager/conf.d
+cat > /etc/NetworkManager/conf.d/99-weatherdisplay-ap-unmanaged.conf <<'EOF'
+[keyfile]
+unmanaged-devices=interface-name:ap@wlan0;interface-name:p2p-dev-ap@wlan0
+EOF
+logDebug "NetworkManager unmanaged-device config written. It will apply cleanly after reboot."
 
 # Exclude ap0 from `/etc/dhcpcd.conf`
 bash -c 'cat >> /etc/dhcpcd.conf' << EOF
@@ -351,6 +370,7 @@ cat > "$systemDir/accesspoint@.service" << EOF
 [Unit]
 Description=IEEE 802.11 ap@%i AP on %i with hostapd
 Wants=wpa_supplicant@%i.service
+After=network-online.target
 [Service]
 Type=forking
 PIDFile=/run/hostapd.pid
@@ -362,7 +382,7 @@ ExecStartPre=/sbin/iw dev %i interface add ap@%i type __ap
 ExecStart=/usr/sbin/hostapd -i ap@%i -P /run/hostapd.pid -B /etc/hostapd/hostapd.conf
 ExecStopPost=-/sbin/iw dev ap@%i del
 [Install]
-WantedBy=sys-subsystem-net-devices-%i.device
+WantedBy=multi-user.target
 EOF
 
 # wpa_supplicant is no longer used, as the agent is hooked by dhcpcd
@@ -373,9 +393,10 @@ systemctl unmask dnsmasq.service
 systemctl enable dnsmasq.service
 systemctl stop hostapd     # if the default hostapd service was active before
 systemctl disable hostapd  # if the default hostapd service was enabled before
+systemctl daemon-reload
 systemctl enable accesspoint@wlan0.service
 rfkill unblock wlan
-systemctl daemon-reload
+systemctl start accesspoint@wlan0.service || true
 
 bash -c "cat > $workingDirectory/accesspoint@wlan0.json" << EOF
 {
@@ -505,22 +526,6 @@ if [ ! -z "$keyboard" ]; then
     logDebug "Updating keyboard layout $keyboard..."
     sed -i "s/^XKBLAYOUT=.*/XKBLAYOUT=\\\"$keyboard\\\"/" /etc/default/keyboard
     setupcon -k --force >/dev/null 2>&1 || true
-fi
-
-logDebug "Updating hostname..."
-currentHostname=`cat /etc/hostname | tr -d " \t\n\r"`
-echo "$currentHostname -> $host"
-hostnamectl set-hostname "$host"
-echo $host > /etc/hostname
-sed -i -E 's/(127\.0\.1\.1\s+)[^ ]+/\1'"$host"'/g' /etc/hosts
-
-userDataPath="/boot/firmware/user-data"
-if [ -f "$userDataPath" ]; then
-    if grep -qE '^[[:space:]]*hostname:' "$userDataPath"; then
-        sed -i -E "s/^[[:space:]]*hostname:.*/hostname: $host/" "$userDataPath"
-    else
-        printf '\nhostname: %s\n' "$host" | tee -a "$userDataPath" > /dev/null
-    fi
 fi
 
 logSuccess "
