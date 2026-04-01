@@ -335,9 +335,9 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                             .First();
 
                         var alertDisplayText = $"{mostImportantAlert.WarnType} ({mostImportantAlert.WarnLevel.Level}/{mostImportantAlert.WarnLevel})";
-                        if (weatherInfo.Warnings.Count > 1)
+                        if (weatherInfo.Warnings.Length > 1)
                         {
-                            alertDisplayText += $" (+{weatherInfo.Warnings.Count - 1})";
+                            alertDisplayText += $" (+{weatherInfo.Warnings.Length - 1})";
                         }
 
                         currentWeatherRenderActions.AddRange(new IRenderAction[]
