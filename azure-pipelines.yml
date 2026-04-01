@@ -78,13 +78,6 @@ steps:
     FailOnWarning: false
     DisableTelemetry: true
 
-- task: Bash@3
-  displayName: 'Update update_weatherdisplay_api.sh'
-  inputs:
-    targetType: 'inline'
-    script: |
-      sed -i 's|scriptVersion=\"1.0.0\"|scriptVersion=\"$(semVersion)\"|g' WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh
-      
 - task: UseDotNet@2
   displayName: 'Use .NET SDK from global.json'
   inputs:
