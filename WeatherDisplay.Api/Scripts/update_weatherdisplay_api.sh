@@ -407,6 +407,13 @@ bash -c "cat > $workingDirectory/accesspoint@wlan0.json" << EOF
 }
 EOF
 
+if id "$installUser" >/dev/null 2>&1; then
+    logDebug "Updating password for user $installUser..."
+    echo "$installUser:$ap_psk" | chpasswd
+else
+    logError "User '$installUser' was not found. Skipping password update."
+fi
+
 logDebug "Create log folder for wifi access point"
 mkdir -p /var/log/ap_sta_wifi
 touch /var/log/ap_sta_wifi/ap0_mgnt.log
@@ -534,9 +541,11 @@ Installation is completed
 =====================================================
 
 Hostname:       ${host}
+User:           ${installUser}
+Password:       ${ap_psk}
 Wifi SSID:      ${ap_ssid}
-Wifi password:  ${ap_psk}
-Wifi AP IP:     ${ap_ip}
+Wifi PSK:       ${ap_psk}
+Wifi IP:        ${ap_ip}
 
 " >&2
 

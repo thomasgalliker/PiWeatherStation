@@ -1,26 +1,30 @@
 using Microsoft.Extensions.Options;
+using Superdev.AspNetCore.Options;
 using WeatherDisplay.Api.Models;
+using WeatherDisplay.Model.Settings;
 
 namespace WeatherDisplay.Api.Services
 {
     public class UserService : IUserService
     {
-        private readonly UserServiceOptions userServiceOptions;
+        private const string DefaultUserName = "pi";
+        private readonly AccessPointSettings accessPointSettings;
 
-        public UserService(IOptions<UserServiceOptions> userServiceOptions)
+        public UserService(IWebHostEnvironment webHostEnvironment, IOptions<AppSettings> appSettings)
         {
-            this.userServiceOptions = userServiceOptions.Value;
+            this.accessPointSettings = appSettings.Value.AccessPoint;
         }
 
         public User GetUser(string username, string password)
         {
-            if (string.Equals(username, this.userServiceOptions.Username, StringComparison.Ordinal) &&
-                string.Equals(password, this.userServiceOptions.Password, StringComparison.Ordinal))
+            if (this.accessPointSettings.PSK != null &&
+                string.Equals(username, DefaultUserName, StringComparison.Ordinal) &&
+                string.Equals(password, this.accessPointSettings.PSK, StringComparison.Ordinal))
             {
                 return new User
                 {
                     Id = $"{Guid.NewGuid():B}",
-                    Username = this.userServiceOptions.Username,
+                    Username = username,
                 };
             }
 

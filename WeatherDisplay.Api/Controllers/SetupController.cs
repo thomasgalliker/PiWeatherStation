@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using RaspberryPi.Process;
-using WeatherDisplay.Api.Services.Configuration;
+using Superdev.AspNetCore.Options;
 using WeatherDisplay.Model;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Pages.MeteoSwiss;
@@ -60,7 +60,7 @@ namespace WeatherDisplay.Api.Controllers
         /// Configures the MeteoSwissWeatherPage.
         /// </summary>
         [HttpGet("step2")]
-        public void ConfigureMeteoSwissWeatherPage(string place, int plz, string weatherStationCode, bool isCurrentPlace)
+        public async Task ConfigureMeteoSwissWeatherPage(string place, int plz, string weatherStationCode, bool isCurrentPlace)
         {
             // TODO: Input validation!
 
@@ -72,7 +72,7 @@ namespace WeatherDisplay.Api.Controllers
                 IsCurrentPlace = isCurrentPlace
             };
 
-            this.meteoSwissWeatherPageOptions.Update((o) =>
+            await this.meteoSwissWeatherPageOptions.UpdateAsync((o) =>
             {
                 o.Places = new[]
                 {
@@ -87,7 +87,7 @@ namespace WeatherDisplay.Api.Controllers
         /// Configures the OpenWeatherMapPage.
         /// </summary>
         [HttpGet("step3")]
-        public void ConfigureOpenWeatherMapPage(string place, double latitude, double longitude)
+        public async Task ConfigureOpenWeatherMapPage(string place, double latitude, double longitude)
         {
             // TODO: Input validation!
 
@@ -98,7 +98,7 @@ namespace WeatherDisplay.Api.Controllers
                 Longitude = longitude
             };
 
-            this.openWeatherMapPageOptions.Update((o) =>
+            await this.openWeatherMapPageOptions.UpdateAsync((o) =>
             {
                 o.Places = new[]
                 {
@@ -107,7 +107,7 @@ namespace WeatherDisplay.Api.Controllers
                 return o;
             });
 
-            this.temperatureDiagramPageOptions.Update((o) =>
+            await this.temperatureDiagramPageOptions.UpdateAsync((o) =>
             {
                 o.Places = new[]
                 {
@@ -121,11 +121,11 @@ namespace WeatherDisplay.Api.Controllers
         /// Configures the WaterTemperaturePage.
         /// </summary>
         [HttpGet("step4")]
-        public void ConfigureWaterTemperature(string place, double latitude, double longitude)
+        public async Task ConfigureWaterTemperature(string place, double latitude, double longitude)
         {
             // TODO: Input validation!
 
-            this.waterTemperaturePageOptions.Update((o) =>
+            await this.waterTemperaturePageOptions.UpdateAsync((o) =>
             {
                 o.Places = new[]
                 {
@@ -143,9 +143,9 @@ namespace WeatherDisplay.Api.Controllers
         /// and restarts the system.
         /// </remarks>
         [HttpGet("finish")]
-        public void FinishSetupAsync()
+        public async Task FinishSetupAsync()
         {
-            this.appSettings.UpdateProperty(a => a.RunSetup, false);
+            await this.appSettings.UpdatePropertyAsync(a => a.RunSetup, false);
 
             this.processRunner.ExecuteCommand("sudo reboot");
         }
