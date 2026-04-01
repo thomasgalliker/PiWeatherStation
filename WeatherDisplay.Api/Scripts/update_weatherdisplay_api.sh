@@ -489,7 +489,7 @@ Wants=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=$workingDirectory
-ExecStart=$dotnetDirectory/dotnet $workingDirectory/$executable.dll
+ExecStart=sudo $dotnetDirectory/dotnet $workingDirectory/$executable.dll
 ExecStop=/bin/kill \$MAINPID
 KillSignal=SIGTERM
 KillMode=process
