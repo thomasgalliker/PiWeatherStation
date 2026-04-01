@@ -140,6 +140,7 @@ namespace WeatherDisplay.Api
             services.AddHostedService<AutoStartupBackgroundService>();
 
             // ====== Authentification & authorization ======
+            services.Configure<UserServiceOptions>(builder.Configuration.GetSection(UserServiceOptions.SectionName));
             services.AddScoped<IUserService, UserService>();
 
             var identityConfiguration = new IdentityConfiguration();
