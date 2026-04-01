@@ -42,6 +42,7 @@ PARAMETERS:
     -l, --locale        Sets the locale.
     -k, --keyboard      Sets the keyboard locale.
     -s, --systemDir     Sets the path to the system deamon directory (default: /etc/systemd/system).
+    -f, --framework     Sets the target framework for the .NET installation (default: net10.0).
 
 FLAGS:
     -p, --pre           Downloads the latest pre-release of PiWeatherStation.
@@ -64,6 +65,7 @@ PiWeatherStation Setup Script [Version 1.0.0]
 debug=false
 preRelease=false
 reboot=true
+dotnetFramework="net10.0"
 
 usage_error () {
     logError >&2 "$(basename $0):  $1"; exit 2;
@@ -85,6 +87,7 @@ if [ "$#" != 0 ]; then
       -t|--timezone) assert_argument "$1" "$opt"; timezone="$1"; shift;;
       -l|--locale) assert_argument "$1" "$opt"; locale="$1"; shift;;
       -k|--keyboard) assert_argument "$1" "$opt"; keyboard="$1"; shift;;
+      -f|--framework) assert_argument "$1" "$opt"; dotnetFramework="$1"; shift;;
       -p|--pre) preRelease=true;;
       -v|--debug) debug=true;;
       -n|--no-reboot) reboot=false;;
@@ -136,6 +139,7 @@ ap_wifi_mode="g"
 ap_country_code="CH"
 ap_ip="192.168.10.1"
 ap_ip_begin=$(echo "${ap_ip}" | sed -e 's/\.[0-9]\{1,3\}$//g')
+dotnetChannel=$(echo "$dotnetFramework" | sed 's/^net//')
 
 serviceFilePath="$systemDir"/"$serviceName.service"
 
@@ -163,6 +167,8 @@ timezone: $timezone
 locale: $locale
 keyboard: $keyboard
 reboot: $reboot
+dotnetFramework: $dotnetFramework
+dotnetChannel: $dotnetChannel
 =====================================================
 " >&2
 fi
@@ -326,7 +332,7 @@ else
     logSuccess "Installing dotnet..."
 fi
 
-curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 10.0 --install-dir $dotnetDirectory
+curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel "$dotnetChannel" --install-dir $dotnetDirectory
 echo ""
 
 logDebug "Updating dotnet environment variables"

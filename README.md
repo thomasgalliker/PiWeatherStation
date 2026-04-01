@@ -21,6 +21,7 @@ Append script parameters if needed:
 | `--pre` | Downloads pre-releases of WeatherDisplay.Api. |
 | `--debug` | Writes verbose log messages to the console (mainly used for debugging purposes). |
 | `--host` | Sets the hostname. By default, a portion of the hardware serial number is used as hostname. The hostname can be changed later. |
+| `--framework` | Sets the target framework to install for .NET. Default is `net10.0`. |
 | `--keyboard` | Sets the keyboard layout (e.g. "us" or "de"). |
 | `--locale` | Sets the localization/language. |
 | `--timezone` | Sets the timezone. |
@@ -83,7 +84,7 @@ sudo reboot
 ```
 pi@raspberrypi:~ $ dotnet --info
 .NET SDK (reflecting any global.json):
- Version:   8.x.xxx
+ Version:   x.y.znn
  Commit:    ...
 
 Runtime Environment:
@@ -91,7 +92,7 @@ Runtime Environment:
  OS Version:  11
  OS Platform: Linux
  RID:         linux-arm
- Base Path:   /home/pi/.dotnet/sdk/8.x.xxx/
+ Base Path:   /home/pi/.dotnet/sdk/x.y.znn/
  ...
 ```
 
