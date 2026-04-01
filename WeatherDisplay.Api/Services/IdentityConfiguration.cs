@@ -2,6 +2,8 @@
 {
     public class IdentityConfiguration : IIdentityConfiguration
     {
+        public const string SectionName = "Identity";
+
         public string JwtKey { get; set; }
 
         public string JwtExpireDays { get; set; }
