@@ -84,11 +84,11 @@ steps:
     DisableTelemetry: true
 
 - task: Bash@3
-  displayName: 'Update bash scripts'
+  displayName: 'Update update_weatherdisplay_api.sh'
   inputs:
     targetType: 'inline'
     script: |
-      sed -i 's|1.0.0|$(Build.BuildNumber)|g' WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh
+      sed -i 's|scriptVersion=\"1.0.0\"|scriptVersion=\"$(semVersion)\"|g' WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh
       
 - task: UseDotNet@2
   displayName: 'Use .NET SDK ${{ parameters.dotnetVersion }}'

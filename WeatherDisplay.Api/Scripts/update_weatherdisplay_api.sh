@@ -14,6 +14,7 @@ DEFAULT='\033[0;39m'
 WHITE='\033[0;02m'
 GREEN='\033[1;32m'
 RED='\033[1;31m'
+scriptVersion="1.0.0"
 
 logDebug() {
     echo -e "${DEFAULT}${1}${DEFAULT}"
@@ -56,7 +57,7 @@ EOF
 
 logDebug "
 =====================================================
-PiWeatherStation Setup Script [Version 1.0.0]
+PiWeatherStation Setup Script [Version $scriptVersion]
 (c) superdev gmbh. All rights reserved.
 =====================================================
 " >&2
