@@ -5,7 +5,7 @@ This is a demo project which uses a Raspberry Pi 4 / Zero 2 to draw some basic w
 
 ### Quick Setup
 The script file `update_weatherdisplay_api.sh` contains all necessary steps to prepare a new Raspberry Pi to run WeatherDisplay.Api:
-- Downloads and installs the .NET SDK.
+- Downloads and installs .NET runtime.
 - Downloads and installs WeatherDisplay.Api as a service. 
 - Adjusts the Raspberry Pi hardware configuration. (Enables SPI, sets dtoverlays).
 - Configures the wifi to become an access point.
@@ -21,7 +21,7 @@ Append script parameters if needed:
 | `--pre` | Downloads pre-releases of WeatherDisplay.Api. |
 | `--debug` | Writes verbose log messages to the console (mainly used for debugging purposes). |
 | `--host` | Sets the hostname. By default, a portion of the hardware serial number is used as hostname. The hostname can be changed later. |
-| `--framework` | Sets the target framework to install for .NET. Default is `net10.0`. |
+| `--framework` | Sets the target framework used to choose the .NET runtime channel. Default is `net10.0`. |
 | `--keyboard` | Sets the keyboard layout (e.g. "us" or "de"). |
 | `--locale` | Sets the localization/language. |
 | `--timezone` | Sets the timezone. |
@@ -59,10 +59,10 @@ sudo timedatectl set-timezone Europe/Zurich
 ```
 
 #### Install .NET on Raspberry Pi
-- Go to Microsoft's [dotnet download page](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) and download the appropriate version of .NET. I usually use the 32bit Version of Raspbian OS, so the appropriate .NET architecture should be ARM32.
+- Go to Microsoft's [dotnet download page](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) and download the appropriate ASP.NET Core runtime version. I usually use the 32bit Version of Raspbian OS, so the appropriate .NET architecture should be ARM32.
 - The following dotnet-install.sh script simplifies the automated installation of dotnet on Linux:
 ```
-curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 10.0 --install-dir /home/pi/.dotnet
+curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --runtime aspnetcore --version latest --channel 10.0 --install-dir /home/pi/.dotnet
 ```
 
 - Edit the bash profile and add following lines to the end of the file. If `export PATH` already exists, extend it instead of creating a new export. Use `sudo nano ~/.bashrc` to double check if everything is fine.
@@ -83,16 +83,12 @@ sudo reboot
 - Run `dotnet --info` to check if your .NET installation works as expected:
 ```
 pi@raspberrypi:~ $ dotnet --info
-.NET SDK (reflecting any global.json):
- Version:   x.y.znn
- Commit:    ...
-
 Runtime Environment:
  OS Name:     raspbian
  OS Version:  11
  OS Platform: Linux
  RID:         linux-arm
- Base Path:   /home/pi/.dotnet/sdk/x.y.znn/
+ Base Path:   /home/pi/.dotnet/shared/Microsoft.AspNetCore.App/x.y.z/
  ...
 ```
 
