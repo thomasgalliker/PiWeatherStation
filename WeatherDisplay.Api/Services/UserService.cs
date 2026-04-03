@@ -1,5 +1,4 @@
 using Microsoft.Extensions.Options;
-using Superdev.AspNetCore.Options;
 using WeatherDisplay.Api.Models;
 using WeatherDisplay.Model.Settings;
 

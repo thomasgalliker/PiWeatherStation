@@ -1,5 +1,4 @@
-﻿using System;
-using UnitsNet;
+﻿using UnitsNet;
 using AngleExtensions = OpenWeatherMap.Extensions.AngleExtensions;
 using PressureExtensions = OpenWeatherMap.Extensions.PressureExtensions;
 
