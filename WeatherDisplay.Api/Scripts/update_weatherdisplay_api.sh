@@ -45,6 +45,9 @@ USAGE:
     # Configures the Raspberry Pi with the latest pre-release version of PiWeatherStation
     sudo bash setup_weatherdisplay.sh --pre
 
+    # Updates an existing PiWeatherStation installation without re-running device setup
+    sudo bash setup_weatherdisplay.sh --update
+
 PARAMETERS:
     -h, --host          Sets the hostname of the system.
     -t, --timezone      Sets the timezone.
@@ -55,6 +58,7 @@ PARAMETERS:
 
 FLAGS:
     -p, --pre           Downloads the latest pre-release of PiWeatherStation.
+    -u, --update        Updates an existing installation without reconfiguring the Raspberry Pi.
     -d, --debug         Prints verbose debug log messages.
     -n, --no-reboot     Does not reboot the system when the script ends.
     -h, --help          Show this help.
@@ -74,6 +78,7 @@ PiWeatherStation Setup
 debug=false
 preRelease=false
 reboot=true
+updateOnly=false
 targetFramework="net10.0"
 
 usage_error () {
@@ -98,6 +103,7 @@ if [ "$#" != 0 ]; then
       -k|--keyboard) assert_argument "$1" "$opt"; keyboard="$1"; shift;;
       -f|--framework) assert_argument "$1" "$opt"; targetFramework="$1"; shift;;
       -p|--pre) preRelease=true;;
+      -u|--update) updateOnly=true;;
       -v|--debug) debug=true;;
       -n|--no-reboot) reboot=false;;
       -?|--help) showHelp; shift;;
@@ -156,11 +162,15 @@ if ! test -v host; then
     host="raspi$(echo $serialNumber)"
 fi
 
-# Generate wifi SSID and pre-shared key
-# - The SSID should be constant therefore we use the serial number as part of it.
-# - The PSK is a random number with a length of 8 characters. Some characters are explicitly filtered to avoid confusion (like O with 0).
-ap_ssid="PiWeatherDisplay_$(echo $serialNumber | tail -c 7 | tr '[:lower:]' '[:upper:]')"
-ap_psk=$(< /dev/urandom tr -dc A-Z-a-z-0-9_$ | tr -d oO0lI1 | head -c 8)
+ap_ssid=""
+ap_psk=""
+if [ "$updateOnly" != "true" ]; then
+    # Generate wifi SSID and pre-shared key
+    # - The SSID should be constant therefore we use the serial number as part of it.
+    # - The PSK is a random number with a length of 8 characters. Some characters are explicitly filtered to avoid confusion (like O with 0).
+    ap_ssid="PiWeatherDisplay_$(echo $serialNumber | tail -c 7 | tr '[:lower:]' '[:upper:]')"
+    ap_psk=$(< /dev/urandom tr -dc A-Z-a-z-0-9_$ | tr -d oO0lI1 | head -c 8)
+fi
 ap_wifi_mode="g"
 ap_country_code="CH"
 ap_ip="192.168.10.1"
@@ -216,6 +226,7 @@ if [ "$debug" = "true" ]; then
 Debug Variables
 =====================================================
 preRelease: $preRelease
+updateOnly: $updateOnly
 systemDir: $systemDir
 workingDirectory: $workingDirectory
 dotnetDirectory: $dotnetDirectory
@@ -252,44 +263,44 @@ fi
 
 cd $workingDirectory
 
-logSuccess "Setting up raspberry pi@${host}..."
-logDebug "Disabling cloud-init..."
-mkdir -p /etc/cloud
-touch /etc/cloud/cloud-init.disabled
+if [ "$updateOnly" = "true" ]; then
+    logSuccess "Updating raspberry ${installUser}@${host}..."
+else
+    logSuccess "Setting up raspberry ${installUser}@${host}..."
+    logDebug "Disabling cloud-init..."
+    mkdir -p /etc/cloud
+    touch /etc/cloud/cloud-init.disabled
 
-logDebug "Updating hostname..."
-currentHostname=`cat /etc/hostname | tr -d " \t\n\r"`
-echo "$currentHostname -> $host"
-hostnamectl set-hostname "$host"
-echo $host > /etc/hostname
-sed -i -E 's/(127\.0\.1\.1\s+)[^ ]+/\1'"$host"'/g' /etc/hosts
+    logDebug "Updating hostname..."
+    currentHostname=`cat /etc/hostname | tr -d " \t\n\r"`
+    echo "$currentHostname -> $host"
+    hostnamectl set-hostname "$host"
+    echo $host > /etc/hostname
+    sed -i -E 's/(127\.0\.1\.1\s+)[^ ]+/\1'"$host"'/g' /etc/hosts
 
-append_if_missing 'dtparam=spi=on' 'dtparam=spi=on' "$bootConfig"
-append_if_missing 'dtparam=i2c_arm=on' 'dtparam=i2c_arm=on' "$bootConfig"
-set_config_var camera_auto_detect 0 "$bootConfig"
-systemctl enable ssh >/dev/null 2>&1 || true
-systemctl start ssh >/dev/null 2>&1 || true
+    append_if_missing 'dtparam=spi=on' 'dtparam=spi=on' "$bootConfig"
+    append_if_missing 'dtparam=i2c_arm=on' 'dtparam=i2c_arm=on' "$bootConfig"
+    set_config_var camera_auto_detect 0 "$bootConfig"
+    systemctl enable ssh >/dev/null 2>&1 || true
+    systemctl start ssh >/dev/null 2>&1 || true
 
-bash -c "sed -i \"s/^\s*hdmi_force_hotplug=/#hdmi_force_hotplug=/\" $bootConfig"
-bash -c "sed -i \"s/^\s*camera_auto_detect=/#camera_auto_detect=/\" $bootConfig"
-bash -c "sed -i \"s/^\s*display_auto_detect=/#display_auto_detect=/\" $bootConfig"
-bash -c "sed -i \"s/^\s*dtoverlay=vc4-kms-v3d/#dtoverlay=vc4-kms-v3d/\" $bootConfig"
-bash -c "sed -i \"s/^\s*dtparam=audio=on/dtparam=audio=off/\" $bootConfig"
+    bash -c "sed -i \"s/^\s*hdmi_force_hotplug=/#hdmi_force_hotplug=/\" $bootConfig"
+    bash -c "sed -i \"s/^\s*camera_auto_detect=/#camera_auto_detect=/\" $bootConfig"
+    bash -c "sed -i \"s/^\s*display_auto_detect=/#display_auto_detect=/\" $bootConfig"
+    bash -c "sed -i \"s/^\s*dtoverlay=vc4-kms-v3d/#dtoverlay=vc4-kms-v3d/\" $bootConfig"
+    bash -c "sed -i \"s/^\s*dtparam=audio=on/dtparam=audio=off/\" $bootConfig"
 
-dtoverlayToBeAdded="dtoverlay=spi0-1cs,cs0_pin=28"
-cnt=$(grep -c $dtoverlayToBeAdded $bootConfig)
-if [ $cnt -eq 0 ]; then
-    bash -c "cat >> $bootConfig <<EOF
+    dtoverlayToBeAdded="dtoverlay=spi0-1cs,cs0_pin=28"
+    cnt=$(grep -c $dtoverlayToBeAdded $bootConfig)
+    if [ $cnt -eq 0 ]; then
+        bash -c "cat >> $bootConfig <<EOF
 # WeatherDisplay.Api config section:
 $dtoverlayToBeAdded
 dtoverlay=disable-bt
 EOF"
+    fi
+    echo ""
 fi
-echo ""
-
-logSuccess "Updating software..."
-apt-get update && apt-get -y upgrade
-echo ""
 
 install_package() {
 if [[ "$(dpkg -s ${1} 2> /dev/null | grep -cow '^Status: install ok installed$')" -eq '0' ]]
@@ -301,26 +312,31 @@ else
 fi
 }
 
-install_package "libgdiplus"
-install_package "dhcpcd"
-install_package "hostapd"
-install_package "dnsmasq"
+logSuccess "Updating software..."
+apt-get update && apt-get -y upgrade
 echo ""
 
-systemctl enable dhcpcd >/dev/null 2>&1 || true
+if [ "$updateOnly" != "true" ]; then
+    install_package "libgdiplus"
+    install_package "dhcpcd"
+    install_package "hostapd"
+    install_package "dnsmasq"
+    echo ""
 
-logSuccess "Setting up access point..."
+    systemctl enable dhcpcd >/dev/null 2>&1 || true
 
-logDebug "Configuring NetworkManager to ignore ap@wlan0..."
-mkdir -p /etc/NetworkManager/conf.d
-cat > /etc/NetworkManager/conf.d/99-weatherdisplay-ap-unmanaged.conf <<'EOF'
+    logSuccess "Setting up access point..."
+
+    logDebug "Configuring NetworkManager to ignore ap@wlan0..."
+    mkdir -p /etc/NetworkManager/conf.d
+    cat > /etc/NetworkManager/conf.d/99-weatherdisplay-ap-unmanaged.conf <<'EOF'
 [keyfile]
 unmanaged-devices=interface-name:ap@wlan0;interface-name:p2p-dev-ap@wlan0
 EOF
-logDebug "NetworkManager unmanaged-device config written. It will apply cleanly after reboot."
+    logDebug "NetworkManager unmanaged-device config written. It will apply cleanly after reboot."
 
-# Exclude ap0 from `/etc/dhcpcd.conf`
-bash -c 'cat >> /etc/dhcpcd.conf' << EOF
+    # Exclude ap0 from `/etc/dhcpcd.conf`
+    bash -c 'cat >> /etc/dhcpcd.conf' << EOF
 # This sets a static address for ap@wlan0 and disables wpa_supplicant for this interface
 interface ap@wlan0
     static ip_address=${ap_ip}/24
@@ -328,9 +344,9 @@ interface ap@wlan0
     nohook wpa_supplicant
 EOF
 
-# Update `/etc/dnsmasq.conf`
-logDebug "Updating /etc/dnsmasq.conf..."
-bash -c 'cat > /etc/dnsmasq.conf' << EOF
+    # Update `/etc/dnsmasq.conf`
+    logDebug "Updating /etc/dnsmasq.conf..."
+    bash -c 'cat > /etc/dnsmasq.conf' << EOF
 interface=lo,ap@wlan0
 no-dhcp-interface=lo,wlan0
 bind-dynamic
@@ -341,9 +357,9 @@ dhcp-range=${ap_ip_begin}.50,${ap_ip_begin}.150,240h
 dhcp-option=3,${ap_ip}
 EOF
 
-# Update hostapd.conf
-logDebug "Updating /etc/hostapd/hostapd.conf..."
-bash -c 'cat > /etc/hostapd/hostapd.conf' << EOF
+    # Update hostapd.conf
+    logDebug "Updating /etc/hostapd/hostapd.conf..."
+    bash -c 'cat > /etc/hostapd/hostapd.conf' << EOF
 ctrl_interface=/var/run/hostapd
 ctrl_interface_group=0
 interface=ap@wlan0
@@ -362,11 +378,11 @@ wpa_pairwise=TKIP
 rsn_pairwise=CCMP
 EOF
 
-chmod 600 /etc/hostapd/hostapd.conf
+    chmod 600 /etc/hostapd/hostapd.conf
 
-# Create accesspoint service
-logDebug "Creating accesspoint service..."
-cat > "$systemDir/accesspoint@.service" << EOF
+    # Create accesspoint service
+    logDebug "Creating accesspoint service..."
+    cat > "$systemDir/accesspoint@.service" << EOF
 [Unit]
 Description=IEEE 802.11 ap@%i AP on %i with hostapd
 Wants=wpa_supplicant@%i.service
@@ -385,20 +401,20 @@ ExecStopPost=-/sbin/iw dev ap@%i del
 WantedBy=multi-user.target
 EOF
 
-# wpa_supplicant is no longer used, as the agent is hooked by dhcpcd
-systemctl disable wpa_supplicant.service
+    # wpa_supplicant is no longer used, as the agent is hooked by dhcpcd
+    systemctl disable wpa_supplicant.service
 
-logDebug "enable dnsmasq.service / disable hostapd.service"
-systemctl unmask dnsmasq.service
-systemctl enable dnsmasq.service
-systemctl stop hostapd     # if the default hostapd service was active before
-systemctl disable hostapd  # if the default hostapd service was enabled before
-systemctl daemon-reload
-systemctl enable accesspoint@wlan0.service
-rfkill unblock wlan
-systemctl start accesspoint@wlan0.service || true
+    logDebug "enable dnsmasq.service / disable hostapd.service"
+    systemctl unmask dnsmasq.service
+    systemctl enable dnsmasq.service
+    systemctl stop hostapd     # if the default hostapd service was active before
+    systemctl disable hostapd  # if the default hostapd service was enabled before
+    systemctl daemon-reload
+    systemctl enable accesspoint@wlan0.service
+    rfkill unblock wlan
+    systemctl start accesspoint@wlan0.service || true
 
-bash -c "cat > $workingDirectory/accesspoint@wlan0.json" << EOF
+    bash -c "cat > $workingDirectory/accesspoint@wlan0.json" << EOF
 {
   "AccessPoint": {
     "SSID": "$ap_ssid",
@@ -407,21 +423,22 @@ bash -c "cat > $workingDirectory/accesspoint@wlan0.json" << EOF
 }
 EOF
 
-if id "$installUser" >/dev/null 2>&1; then
-    logDebug "Updating password for user $installUser..."
-    echo "$installUser:$ap_psk" | chpasswd
-else
-    logError "User '$installUser' was not found. Skipping password update."
+    if id "$installUser" >/dev/null 2>&1; then
+        logDebug "Updating password for user $installUser..."
+        echo "$installUser:$ap_psk" | chpasswd
+    else
+        logError "User '$installUser' was not found. Skipping password update."
+    fi
+
+    logDebug "Create log folder for wifi access point"
+    mkdir -p /var/log/ap_sta_wifi
+    touch /var/log/ap_sta_wifi/ap0_mgnt.log
+    touch /var/log/ap_sta_wifi/on_boot.log
+
+    logDebug "Turn power management off for wlan0"
+    ensure_rc_local_power_save_off
+    echo ""
 fi
-
-logDebug "Create log folder for wifi access point"
-mkdir -p /var/log/ap_sta_wifi
-touch /var/log/ap_sta_wifi/ap0_mgnt.log
-touch /var/log/ap_sta_wifi/on_boot.log
-
-logDebug "Turn power management off for wlan0"
-ensure_rc_local_power_save_off
-echo ""
 
 
 if [ -d $dotnetDirectory ]; then
@@ -535,6 +552,17 @@ if [ ! -z "$keyboard" ]; then
     setupcon -k --force >/dev/null 2>&1 || true
 fi
 
+if [ "$updateOnly" = "true" ]; then
+logSuccess "
+=====================================================
+Update is completed
+=====================================================
+
+Hostname:       ${host}
+User:           ${installUser}
+
+" >&2
+else
 logSuccess "
 =====================================================
 Installation is completed
@@ -548,6 +576,7 @@ Wifi PSK:       ${ap_psk}
 Wifi IP:        ${ap_ip}
 
 " >&2
+fi
 
 if [ "$reboot" = "true" ]; then
     echo "Rebooting now..."
