@@ -21,7 +21,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.5" />
     <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.5" />
     <PackageReference Include="ncrontab" Version="3.4.0" />
-    <PackageReference Include="NCrontab.Scheduler" Version="2.1.8-pre" />
+    <PackageReference Include="NCrontab.Scheduler" Version="2.1.10" />
     <PackageReference Include="ResourceLoader" Version="3.3.1" />
     <PackageReference Include="SkiaSharp" Version="3.119.2" />
     <PackageReference Include="eXoCooLd.Waveshare.EPaperDisplay" Version="1.0.4" />

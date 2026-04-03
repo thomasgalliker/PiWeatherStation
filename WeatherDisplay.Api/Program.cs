@@ -14,7 +14,7 @@ using NLog.Extensions.Logging;
 using WeatherDisplay.Api.Properties;
 using WeatherDisplay.Api.Serialization;
 using WeatherDisplay.Api.Services;
-using WeatherDisplay.Api.Services.Configuration;
+using Superdev.AspNetCore.Options;
 using WeatherDisplay.Api.Services.Security;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Model;
@@ -140,12 +140,10 @@ namespace WeatherDisplay.Api
             services.AddHostedService<AutoStartupBackgroundService>();
 
             // ====== Authentification & authorization ======
+            var identityConfigSection = builder.Configuration.GetSection(IdentityOptions.SectionName);
+            services.ConfigureWritable<IdentityOptions>(identityConfigSection);
+            services.Configure<UserServiceOptions>(builder.Configuration.GetSection(UserServiceOptions.SectionName));
             services.AddScoped<IUserService, UserService>();
-
-            var identityConfiguration = new IdentityConfiguration();
-            var identitySection = builder.Configuration.GetSection(IdentityConfiguration.SectionName);
-            identitySection.Bind(identityConfiguration);
-            services.AddSingleton<IIdentityConfiguration>(identityConfiguration);
 
             services.AddAuthorization(o => o.AddPolicy("RequireAuthenticatedUserPolicy", b => b.RequireAuthenticatedUser()));
 
@@ -159,16 +157,17 @@ namespace WeatherDisplay.Api
                 })
                 .AddJwtBearer(o =>
                 {
+                    var identityOptions = identityConfigSection.Get<IdentityOptions>();
                     o.RequireHttpsMetadata = false;
                     o.SaveToken = true;
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = identityConfiguration.JwtIssuer,
+                        ValidIssuer = identityOptions.JwtIssuer,
                         ValidateAudience = true,
-                        ValidAudience = identityConfiguration.JwtIssuer,
+                        ValidAudience = identityOptions.JwtIssuer,
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(identityConfiguration.JwtKey)),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(identityOptions.JwtKey)),
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.FromMinutes(5)
                     };
@@ -176,6 +175,18 @@ namespace WeatherDisplay.Api
 
             // ====== Configure services ======
             var app = builder.Build();
+
+#if RELEASE
+            var writableOptions = app.Services.GetRequiredService<IWritableOptions<IdentityOptions>>();
+            writableOptions.UpdateAsync(o =>
+            {
+                if (o.JwtKey == "___SOME_RANDOM_KEY_DO_NOT_SHARE___")
+                {
+                    o.JwtKey = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+                }
+            });
+#endif
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -214,7 +225,7 @@ namespace WeatherDisplay.Api
             X509Certificate2 privateKeyCertificate;
             if (File.Exists(privateKeyFile))
             {
-                privateKeyCertificate = new X509Certificate2(privateKeyFile);
+                privateKeyCertificate = X509CertificateLoader.LoadPkcs12FromFile(privateKeyFile, password: null);
                 if (privateKeyCertificate.NotAfter.AddYears(-1) < now)
                 {
                     privateKeyCertificate = null;
@@ -228,7 +239,7 @@ namespace WeatherDisplay.Api
             X509Certificate2 publicKeyCertificate;
             if (File.Exists(publicKeyFile))
             {
-                publicKeyCertificate = new X509Certificate2(publicKeyFile);
+                publicKeyCertificate = X509CertificateLoader.LoadCertificateFromFile(publicKeyFile);
                 if (publicKeyCertificate.NotAfter.AddYears(-1) < now)
                 {
                     publicKeyCertificate = null;
@@ -247,8 +258,8 @@ namespace WeatherDisplay.Api
                 File.WriteAllBytes(privateKeyFile, certificate.Export(X509ContentType.Pfx));
                 File.WriteAllBytes(publicKeyFile, certificate.Export(X509ContentType.Cert));
 
-                privateKeyCertificate = new X509Certificate2(privateKeyFile);
-                publicKeyCertificate = new X509Certificate2(publicKeyFile);
+                privateKeyCertificate = X509CertificateLoader.LoadPkcs12FromFile(privateKeyFile, password: null);
+                publicKeyCertificate = X509CertificateLoader.LoadCertificateFromFile(publicKeyFile);
             }
 
             return (privateKeyCertificate, publicKeyCertificate);
