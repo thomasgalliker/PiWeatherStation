@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using WeatherDisplay.Api.Contracts;
 using WeatherDisplay.Api.Models;
@@ -14,12 +15,12 @@ namespace WeatherDisplay.Api.Controllers
     [Route("api/identity")]
     public class IdentityController : ControllerBase
     {
-        private readonly IIdentityConfiguration identityConfiguration;
+        private readonly IdentityOptions identityOptions;
         private readonly IUserService userService;
 
-        public IdentityController(IIdentityConfiguration identityConfiguration, IUserService userService)
+        public IdentityController(IOptionsMonitor<IdentityOptions> identityOptions, IUserService userService)
         {
-            this.identityConfiguration = identityConfiguration;
+            this.identityOptions = identityOptions.CurrentValue;
             this.userService = userService;
         }
 
@@ -46,14 +47,14 @@ namespace WeatherDisplay.Api.Controllers
 
         private string GenerateJwtToken(User user)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.identityConfiguration.JwtKey));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.identityOptions.JwtKey));
             var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var issueDate = DateTime.Now;
-            var expiryDate = issueDate.AddDays(double.Parse(this.identityConfiguration.JwtExpireDays));
+            var expiryDate = issueDate.AddDays(this.identityOptions.JwtExpireDays);
 
             var jwtSecurityToken = new JwtSecurityToken(
-                issuer: this.identityConfiguration.JwtIssuer,
-                audience: this.identityConfiguration.JwtIssuer,
+                issuer: this.identityOptions.JwtIssuer,
+                audience: this.identityOptions.JwtIssuer,
                 claims: new List<Claim>
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id),

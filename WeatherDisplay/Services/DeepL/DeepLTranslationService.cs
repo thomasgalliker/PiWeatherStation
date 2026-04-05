@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using WeatherDisplay.Model.DeepL;
 
 namespace WeatherDisplay.Services.DeepL
@@ -56,7 +56,7 @@ namespace WeatherDisplay.Services.DeepL
                 httpResponseMessage.EnsureSuccessStatusCode();
 
                 var jsonResponse = await httpResponseMessage.Content.ReadAsStringAsync();
-                var translationResult = JsonConvert.DeserializeObject<TranslationResult>(jsonResponse);
+                var translationResult = JsonSerializer.Deserialize<TranslationResult>(jsonResponse);
                 return translationResult.Translations.Select(x => x.Text ?? "");
             }
         }

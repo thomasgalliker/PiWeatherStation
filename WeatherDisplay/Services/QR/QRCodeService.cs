@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Net;
 using QRCoder;
 
 namespace WeatherDisplay.Services.QR

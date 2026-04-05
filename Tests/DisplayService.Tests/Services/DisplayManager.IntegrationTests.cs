@@ -37,7 +37,7 @@ namespace DisplayService.Tests.Services
             var scheduler = this.autoMocker.CreateInstance<Scheduler>(enablePrivate: true);
             this.autoMocker.Use<IScheduler>(scheduler);
 
-            var schedulerOptionsMock = this.autoMocker.GetMock<ISchedulerOptions>();
+            var schedulerOptionsMock = this.autoMocker.GetMock<SchedulerOptions>();
             schedulerOptionsMock.SetupGet(o => o.DateTimeKind)
                 .Returns(DateTimeKind.Utc);
             schedulerOptionsMock.SetupGet(o => o.Logging)
@@ -55,7 +55,7 @@ namespace DisplayService.Tests.Services
             var referenceDate = new DateTime(2000, 1, 1, 20, 59, 58);
 
             var clockQueue = new DateTimeGenerator(
-                referenceDate, 
+                referenceDate,
                 new[]
                 {
                     TimeSpan.Zero,

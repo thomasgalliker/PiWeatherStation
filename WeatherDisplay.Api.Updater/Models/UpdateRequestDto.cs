@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace WeatherDisplay.Api.Updater.Models
 {
@@ -10,12 +9,10 @@ namespace WeatherDisplay.Api.Updater.Models
             this.ExecutorSteps = new List<IExecutorStep>();
         }
 
-
         public int CallingProcessId { get; set; }
 
         public string WorkingDirectory { get; set; }
 
-        [JsonProperty(ItemTypeNameHandling = TypeNameHandling.Auto)]
         public ICollection<IExecutorStep> ExecutorSteps { get; set; }
     }
 }

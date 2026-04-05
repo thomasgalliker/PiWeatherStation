@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DisplayService.Tests.Services;
 using OpenWeatherMap;
-using OpenWeatherMap.Models;
 using SkiaSharp;
-using UnitsNet;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Pages.OpenWeatherMap;
 using WeatherDisplay.Tests.Logging;

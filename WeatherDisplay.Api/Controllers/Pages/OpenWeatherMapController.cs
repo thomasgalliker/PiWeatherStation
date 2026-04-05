@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using WeatherDisplay.Api.Services.Configuration;
+using Superdev.AspNetCore.Options;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Pages.OpenWeatherMap;
 
@@ -25,11 +25,11 @@ namespace WeatherDisplay.Api.Controllers.Pages
         }
 
         [HttpPost("place")]
-        public void AddPlace(Place place)
+        public async Task AddPlace(Place place)
         {
             // TODO: Input validation!
 
-            this.openWeatherMapPageOptions.Update((o) =>
+            await this.openWeatherMapPageOptions.UpdateAsync((o) =>
             {
                 if (o.Places.SingleOrDefault(p => string.Equals(p.Name, place.Name, StringComparison.InvariantCultureIgnoreCase)) is not null)
                 {
@@ -51,11 +51,11 @@ namespace WeatherDisplay.Api.Controllers.Pages
         }
 
         [HttpPut("place")]
-        public void UpdatePlace(Place place)
+        public async Task UpdatePlace(Place place)
         {
             // TODO: Input validation!
 
-            this.openWeatherMapPageOptions.Update((o) =>
+            await this.openWeatherMapPageOptions.UpdateAsync((o) =>
             {
                 if (place.IsCurrentPlace)
                 {
@@ -81,9 +81,9 @@ namespace WeatherDisplay.Api.Controllers.Pages
         }
 
         [HttpPut("place/current")]
-        public void SetCurrentPlace(string name)
+        public async Task SetCurrentPlace(string name)
         {
-            this.openWeatherMapPageOptions.Update((o) =>
+            await this.openWeatherMapPageOptions.UpdateAsync((o) =>
             {
                 if (o.Places.SingleOrDefault(p => string.Equals(p.Name, name, StringComparison.InvariantCultureIgnoreCase)) is Place existingPlace)
                 {
@@ -100,9 +100,9 @@ namespace WeatherDisplay.Api.Controllers.Pages
         }
 
         [HttpDelete("place")]
-        public void RemovePlace(string name)
+        public async Task RemovePlace(string name)
         {
-            this.openWeatherMapPageOptions.Update((o) =>
+            await this.openWeatherMapPageOptions.UpdateAsync((o) =>
             {
                 if (o.Places.SingleOrDefault(p => string.Equals(p.Name, name, StringComparison.InvariantCultureIgnoreCase)) is Place existingPlace)
                 {

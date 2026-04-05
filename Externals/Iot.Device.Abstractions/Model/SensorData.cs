@@ -1,25 +1,26 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using UnitsNet;
 
 namespace Iot.Device.Model
 {
     public class SensorData
     {
-        public SensorData([JsonProperty("id")] string sensorId)
+        [JsonConstructor]
+        public SensorData(string sensorId)
         {
             this.SensorId = sensorId;
             this.SensorValues = new List<IQuantity>();
         }
 
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public string SensorId { get; }
 
-        [JsonProperty("dt")]
+        [JsonPropertyName("dt")]
         public DateTime Date { get; set; }
 
-        [JsonProperty("values")]
+        [JsonPropertyName("values")]
         public IReadOnlyCollection<IQuantity> SensorValues { get; set; }
     }
 }

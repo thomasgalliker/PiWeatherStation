@@ -5,17 +5,16 @@ using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using Microsoft.OpenApi;
 using NLog;
 using NLog.Extensions.Logging;
-using UnitsNet.Serialization.JsonNet;
 using WeatherDisplay.Api.Properties;
+using WeatherDisplay.Api.Serialization;
 using WeatherDisplay.Api.Services;
-using WeatherDisplay.Api.Services.Configuration;
+using Superdev.AspNetCore.Options;
 using WeatherDisplay.Api.Services.Security;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Model;
@@ -32,14 +31,6 @@ namespace WeatherDisplay.Api
 
         private static void Main(string[] args)
         {
-            var cancellationSource = new CancellationTokenSource();
-
-            Console.CancelKeyPress += (_, eventArgs) =>
-            {
-                eventArgs.Cancel = true;
-                cancellationSource.Cancel();
-            };
-
             var assembly = Assembly.GetExecutingAssembly();
             var assemblyVersion = assembly.GetName().Version;
             var buildTime = assembly.GetBuildTime();
@@ -93,50 +84,34 @@ namespace WeatherDisplay.Api
 
             // ====== Setup services ======
             var services = builder.Services;
-            services.AddEndpointsApiExplorer();
-            services.AddControllers().AddNewtonsoftJson(opt =>
+            services.AddControllers().AddJsonOptions(opt =>
             {
-                opt.SerializerSettings.Converters.Add(new UnitsNetIQuantityJsonConverter());
-                opt.SerializerSettings.Converters.Add(new StringEnumConverter());
-                opt.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-                opt.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-                opt.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
-                opt.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+                opt.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                opt.JsonSerializerOptions.Converters.Add(new UnitsNetIQuantityJsonConverter());
+                opt.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                opt.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
 
             var swaggerVersion = $"v{assemblyVersion.Major}";
-            services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(option =>
             {
                 option.SwaggerDoc(swaggerVersion, new OpenApiInfo { Title = "WeatherDisplay API", Version = $"{assemblyVersion}" });
                 option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
                     In = ParameterLocation.Header,
-                    Description = "Please enter a valid token",
+                    Description = "Paste only the JWT access token here. Swagger UI adds the 'Bearer ' prefix automatically.",
                     Name = "Authorization",
                     Type = SecuritySchemeType.Http,
                     BearerFormat = "JWT",
-                    Scheme = "Bearer"
+                    Scheme = "bearer"
                 });
-                option.AddSecurityRequirement(new OpenApiSecurityRequirement
+                option.AddSecurityRequirement(document => new OpenApiSecurityRequirement
                 {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id="Bearer"
-                            }
-                        },
-                        new string[]{}
-                    }
+                    [new OpenApiSecuritySchemeReference("Bearer", document, null)] = new List<string>()
                 });
                 var xmlDocumentationFilePath = Path.Combine(AppContext.BaseDirectory, "WeatherDisplay.Api.xml");
                 option.IncludeXmlComments(xmlDocumentationFilePath);
             });
-            services.AddSwaggerGenNewtonsoftSupport();
-
             services.AddRaspberryPi();
 
             // ====== Auto update ======
@@ -165,14 +140,12 @@ namespace WeatherDisplay.Api
             services.AddHostedService<AutoStartupBackgroundService>();
 
             // ====== Authentification & authorization ======
+            var identityConfigSection = builder.Configuration.GetSection(IdentityOptions.SectionName);
+            services.ConfigureWritable<IdentityOptions>(identityConfigSection);
+            services.Configure<UserServiceOptions>(builder.Configuration.GetSection(UserServiceOptions.SectionName));
             services.AddScoped<IUserService, UserService>();
 
-            var identityConfiguration = new IdentityConfiguration();
-            var identitySection = builder.Configuration.GetSection("Identity");
-            identitySection.Bind(identityConfiguration);
-            services.AddSingleton<IIdentityConfiguration>(identityConfiguration);
-
-            services.AddAuthorization(o => o.AddPolicy("RequireAuthenticatedUserPolicy", builder => builder.RequireAuthenticatedUser()));
+            services.AddAuthorization(o => o.AddPolicy("RequireAuthenticatedUserPolicy", b => b.RequireAuthenticatedUser()));
 
             JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             services
@@ -184,16 +157,17 @@ namespace WeatherDisplay.Api
                 })
                 .AddJwtBearer(o =>
                 {
+                    var identityOptions = identityConfigSection.Get<IdentityOptions>();
                     o.RequireHttpsMetadata = false;
                     o.SaveToken = true;
                     o.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = identityConfiguration.JwtIssuer,
+                        ValidIssuer = identityOptions.JwtIssuer,
                         ValidateAudience = true,
-                        ValidAudience = identityConfiguration.JwtIssuer,
+                        ValidAudience = identityOptions.JwtIssuer,
                         ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(identityConfiguration.JwtKey)),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(identityOptions.JwtKey)),
                         ValidateLifetime = true,
                         ClockSkew = TimeSpan.FromMinutes(5)
                     };
@@ -201,6 +175,18 @@ namespace WeatherDisplay.Api
 
             // ====== Configure services ======
             var app = builder.Build();
+
+#if RELEASE
+            var writableOptions = app.Services.GetRequiredService<IWritableOptions<IdentityOptions>>();
+            writableOptions.UpdateAsync(o =>
+            {
+                if (o.JwtKey == "___SOME_RANDOM_KEY_DO_NOT_SHARE___")
+                {
+                    o.JwtKey = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+                }
+            });
+#endif
+
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -216,10 +202,7 @@ namespace WeatherDisplay.Api
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers().RequireAuthorization("RequireAuthenticatedUserPolicy");
-            });
+            app.MapControllers().RequireAuthorization("RequireAuthenticatedUserPolicy");
 
             // ===== Use Swagger ======
             app.UseSwagger();
@@ -232,9 +215,7 @@ namespace WeatherDisplay.Api
 
             app.UseStaticFiles();
 
-            _ = app.RunAsync(cancellationSource.Token);
-
-            app.WaitForShutdown();
+            app.Run();
         }
 
         private static (X509Certificate2 Private, X509Certificate2 Public) CreateSelfSignedCertificate(string privateKeyFile, string publicKeyFile, IPAddress httpsEndpoint)
@@ -244,7 +225,7 @@ namespace WeatherDisplay.Api
             X509Certificate2 privateKeyCertificate;
             if (File.Exists(privateKeyFile))
             {
-                privateKeyCertificate = new X509Certificate2(privateKeyFile);
+                privateKeyCertificate = X509CertificateLoader.LoadPkcs12FromFile(privateKeyFile, password: null);
                 if (privateKeyCertificate.NotAfter.AddYears(-1) < now)
                 {
                     privateKeyCertificate = null;
@@ -258,7 +239,7 @@ namespace WeatherDisplay.Api
             X509Certificate2 publicKeyCertificate;
             if (File.Exists(publicKeyFile))
             {
-                publicKeyCertificate = new X509Certificate2(publicKeyFile);
+                publicKeyCertificate = X509CertificateLoader.LoadCertificateFromFile(publicKeyFile);
                 if (publicKeyCertificate.NotAfter.AddYears(-1) < now)
                 {
                     publicKeyCertificate = null;
@@ -277,8 +258,8 @@ namespace WeatherDisplay.Api
                 File.WriteAllBytes(privateKeyFile, certificate.Export(X509ContentType.Pfx));
                 File.WriteAllBytes(publicKeyFile, certificate.Export(X509ContentType.Cert));
 
-                privateKeyCertificate = new X509Certificate2(privateKeyFile);
-                publicKeyCertificate = new X509Certificate2(publicKeyFile);
+                privateKeyCertificate = X509CertificateLoader.LoadPkcs12FromFile(privateKeyFile, password: null);
+                publicKeyCertificate = X509CertificateLoader.LoadCertificateFromFile(publicKeyFile);
             }
 
             return (privateKeyCertificate, publicKeyCertificate);

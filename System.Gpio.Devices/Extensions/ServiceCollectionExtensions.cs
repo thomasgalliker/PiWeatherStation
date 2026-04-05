@@ -16,7 +16,7 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 services.AddSingleton<IGpioController, GpioControllerWrapper>();
             }
-            else if (osplatform == OSPlatform.Windows)
+            else
             {
                 services.AddSingleton<IGpioController, GpioControllerMock>();
             }

@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using NuGet.Versioning;
 using WeatherDisplay.Api.Updater.Models;
 
@@ -15,6 +16,10 @@ namespace WeatherDisplay.Api.Updater.Services
     public class AutoUpdateService : IAutoUpdateService
     {
         private static readonly SemanticVersion LocalDebugVersion = new SemanticVersion(1, 0, 0);
+        private static readonly JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions
+        {
+            DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingDefault,
+        };
 
         private readonly ILogger logger;
         private readonly AutoUpdateOptions options;
@@ -111,7 +116,7 @@ namespace WeatherDisplay.Api.Updater.Services
                     ExecutorSteps = updateRequest.ExecutorSteps,
                 };
 
-                var updateRequestJson = JsonConvert.SerializeObject(updateRequestDto);
+                var updateRequestJson = JsonSerializer.Serialize(updateRequestDto, JsonSerializerOptions);
                 var updateRequestJsonBase64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(updateRequestJson));
 
                 this.logger.LogInformation($"StartUpdate: Preparing update directory {updateDirectory}");
@@ -126,7 +131,6 @@ namespace WeatherDisplay.Api.Updater.Services
 
                 var pattern = updateExecutableFile.Name.Remove(updateExecutableFile.Name.Length - updateExecutableFile.Extension.Length);
                 CopyFilesToUpdateDirectory(currentDirectory, updateDirectory, pattern);
-                CopyFilesToUpdateDirectory(currentDirectory, updateDirectory, "Newtonsoft.Json.dll");
 
                 var command = $"{this.options.DotnetExecutable} {updateExecutableFileCopy} {updateRequestJsonBase64}";
 
@@ -167,8 +171,6 @@ namespace WeatherDisplay.Api.Updater.Services
                     .WaitAsync(cancellationToken)
                     .ConfigureAwait(false);
 
-                // If this line appears in the console output,
-                // we assume the update process was launched successfully.
                 if (line.Contains("WeatherDisplay.Api.Updater"))
                 {
                     success = true;

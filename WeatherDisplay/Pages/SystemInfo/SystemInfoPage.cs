@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using DisplayService.Model;
@@ -60,8 +59,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                 cpuInfo = await this.systemInfoService.GetCpuInfoAsync();
                 cpuSensorsStatus = this.systemInfoService.GetCpuSensorsStatus();
             }
-            //#if DEBUG
-            else if (osplatform == OSPlatform.Windows)
+            else
             {
                 hostInfo = new HostInfo { Hostname = "raspi_0000000000000" };
                 cpuInfo = new CpuInfo { Model = "Raspberry Pi Zero 2 W Rev 1.0" };
@@ -72,7 +70,6 @@ namespace WeatherDisplay.Pages.SystemInfo
                     UnderVoltageDetected = true,
                 };
             }
-            //#endif
 
             var wlan0 = this.GetWifiNetworkInterface();
             var connectedSSIDs = this.GetConnectedSSIDs(wlan0);
@@ -321,7 +318,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                             Bold = true,
                         },
                         // TODO: Show buttons mapping here
-                        
+
                     });
 
                     // SCD41 Infos

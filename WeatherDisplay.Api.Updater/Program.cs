@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using WeatherDisplay.Api.Updater.Models;
 using WeatherDisplay.Api.Updater.Services;
 
@@ -12,6 +12,8 @@ namespace WeatherDisplay.Api.Updater
 {
     internal class Program
     {
+        private static readonly JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions();
+
         private static async Task<int> Main(string[] args)
         {
 #if DEBUG
@@ -27,7 +29,7 @@ namespace WeatherDisplay.Api.Updater
             }
 
             var updateRequestJson = DecodeBase64(args[0]);
-            var updateRequestDto = JsonConvert.DeserializeObject<UpdateRequestDto>(updateRequestJson.Replace("'", ""));
+            var updateRequestDto = JsonSerializer.Deserialize<UpdateRequestDto>(updateRequestJson.Replace("'", ""), JsonSerializerOptions);
 
             var logFilePath = Path.Combine(updateRequestDto.WorkingDirectory, GetLogFileName());
             RedirectConsoleOutputToFile(logFilePath);

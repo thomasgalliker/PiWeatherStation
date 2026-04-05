@@ -1,29 +1,39 @@
-﻿using System;
+using System;
 using System.Globalization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace WeatherDisplay.Model.Wiewarm.Converters
 {
-    internal class WiewarmDateTimeJsonConverter : DateTimeConverterBase
+    internal class WiewarmDateTimeJsonConverter : JsonConverter<DateTime>
     {
-        private const string DateFormat = "yyyy-MM-dd HH:mm:ss";
+        private static readonly string[] DateFormats =
+        [
+            "yyyy-MM-dd HH:mm:ss",
+            "yyyy-MM-dd HH:mm:ss.FFF",
+            "yyyy-MM-dd HH:mm:ss.FFFF",
+            "yyyy-MM-dd HH:mm:ss.FFFFF",
+            "yyyy-MM-dd HH:mm:ss.FFFFFF",
+            "yyyy-MM-dd HH:mm:ss.FFFFFFF",
+        ];
 
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override DateTime Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            var dateTime = (DateTime)value;
-            writer.WriteValue(dateTime.ToString(DateFormat, CultureInfo.InvariantCulture));
-        }
-
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.Value is string stringValue)
+            if (reader.TokenType == JsonTokenType.String)
             {
-                var dateTime = DateTime.ParseExact(stringValue, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal);
-                return dateTime;
+                var stringValue = reader.GetString();
+                if (DateTime.TryParseExact(stringValue, DateFormats, CultureInfo.InvariantCulture, DateTimeStyles.AssumeLocal, out var dateTime))
+                {
+                    return dateTime;
+                }
             }
 
-            return default(DateTime);
+            return default;
+        }
+
+        public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
+        {
+            writer.WriteStringValue(value.ToString(DateFormats[0], CultureInfo.InvariantCulture));
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
-using Newtonsoft.Json;
+using System.Text.Json;
 using OpenWeatherMap.Models;
 using UnitsNet;
 using UnitsNet.Units;
@@ -13,7 +13,7 @@ namespace WeatherDisplay.Tests.Testdata
         internal static string GetTestAirPollutionInfoJson()
         {
             var weatherInfo = GetTestAirPollutionInfo();
-            var weatherInfoJson = JsonConvert.SerializeObject(weatherInfo);
+            var weatherInfoJson = JsonSerializer.Serialize(weatherInfo);
             return weatherInfoJson;
         }
 

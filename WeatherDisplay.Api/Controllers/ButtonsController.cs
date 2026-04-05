@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using WeatherDisplay.Api.Services.Configuration;
+using Superdev.AspNetCore.Options;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Services.Hardware;
 
@@ -28,7 +28,7 @@ namespace WeatherDisplay.Api.Controllers
         }
 
         [HttpPost("mapping")]
-        public void AddButtonMapping(ButtonMapping buttonMapping)
+        public async Task AddButtonMapping(ButtonMapping buttonMapping)
         {
             var buttonMappings = this.appSettings.Value.ButtonMappings;
             var existingButtonMapping = buttonMappings.SingleOrDefault(m => m.ButtonId == buttonMapping.ButtonId);
@@ -47,11 +47,11 @@ namespace WeatherDisplay.Api.Controllers
 
             buttonMappings.Add(buttonMapping);
 
-            this.appSettings.UpdateProperty(s => s.ButtonMappings, buttonMappings);
+            await this.appSettings.UpdatePropertyAsync(s => s.ButtonMappings, buttonMappings);
         }
 
         [HttpPut("mapping")]
-        public void UpdateButtonMapping(int buttonId, string page, bool? isDefault)
+        public async Task UpdateButtonMapping(int buttonId, string page, bool? isDefault)
         {
             var buttonMappings = this.appSettings.Value.ButtonMappings;
             var existingButtonMapping = buttonMappings.SingleOrDefault(m => m.ButtonId == buttonId);
@@ -78,11 +78,11 @@ namespace WeatherDisplay.Api.Controllers
                 existingButtonMapping.Page = page;
             }
 
-            this.appSettings.UpdateProperty(s => s.ButtonMappings, buttonMappings);
+            await this.appSettings.UpdatePropertyAsync(s => s.ButtonMappings, buttonMappings);
         }
 
         [HttpDelete("mapping")]
-        public void RemoveButtonMapping(int buttonId)
+        public async Task RemoveButtonMapping(int buttonId)
         {
             var buttonMappings = this.appSettings.Value.ButtonMappings;
             var existingButtonMapping = buttonMappings.SingleOrDefault(m => m.ButtonId == buttonId);
@@ -93,7 +93,7 @@ namespace WeatherDisplay.Api.Controllers
 
             buttonMappings.Remove(existingButtonMapping);
 
-            this.appSettings.UpdateProperty(s => s.ButtonMappings, buttonMappings);
+            await this.appSettings.UpdatePropertyAsync(s => s.ButtonMappings, buttonMappings);
         }
 
         [HttpGet("press/{buttonId}")]

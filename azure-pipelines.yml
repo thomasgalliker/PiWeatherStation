@@ -1,18 +1,18 @@
 ####################################################################
-# VSTS Build Configuration, Version 1.4
+# Azure DevOps Build Configuration
 #
-# (c)2022 superdev GmbH
+# (c)2026 superdev GmbH
 ####################################################################
 
 name: $[format('{0}', variables['buildName'])]
 
 pool:
-  vmImage: 'windows-2022'
+  vmImage: 'windows-latest'
 
 trigger:
   branches:
     include:
-    - master
+    - main
     - develop
     - feature/*
     - bugfix/*
@@ -21,19 +21,27 @@ trigger:
     exclude:
     - README.md
     - Images/*
+    - Docs/*
     - Scripts/*
 
+parameters:
+- name: skipTests
+  displayName: Skip tests
+  type: boolean
+  default: false
+ 
 variables:
   solution: 'PiWeatherStation.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
-  majorVersion: 1
-  minorVersion: 6
+  disable.coverage.autogenerate: 'true'
+  majorVersion: 2
+  minorVersion: 0
   patchVersion: $[counter(format('{0}.{1}', variables.majorVersion, variables.minorVersion), 0)]
-  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/master') }}:
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/main') }}:
     # Versioning: 1.0.0
     semVersion: $[format('{0}.{1}.{2}', variables.majorVersion, variables.minorVersion, variables.patchVersion)]
-  ${{ if and(ne(variables['Build.SourceBranch'], 'refs/heads/master'), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/'))) }}:
+  ${{ if and(ne(variables['Build.SourceBranch'], 'refs/heads/main'), not(startsWith(variables['Build.SourceBranch'], 'refs/pull/'))) }}:
     # Versioning: 1.0.0-pre
     semVersion: $[format('{0}.{1}.{2}-pre', variables.majorVersion, variables.minorVersion, variables.patchVersion)]
   ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
@@ -41,14 +49,15 @@ variables:
     semVersion: $[format('{0}.{1}.{2}-pr.{3}', variables.majorVersion, variables.minorVersion, variables.patchVersion, variables['System.PullRequest.PullRequestId'])]
   buildName: $[format('{0}', variables.semVersion)]
 
+
 steps:
 - task: Bash@3
   displayName: 'Print all variables'
   inputs:
     targetType: 'inline'
     script: 'env | sort'
-      
-- task: Assembly-Info-NetCore@2
+   
+- task: Assembly-Info-NetCore@3
   displayName: 'Update Assembly Info'
   inputs:
     Path: '$(Build.SourcesDirectory)'
@@ -68,19 +77,14 @@ steps:
     LogLevel: 'verbose'
     FailOnWarning: false
     DisableTelemetry: true
-    
-- task: Bash@3
-  displayName: 'Update bash scripts'
-  inputs:
-    targetType: 'inline'
-    script: |
-      sed -i 's|1.0.0|$(Build.BuildNumber)|g' WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh
-      
+
 - task: UseDotNet@2
-  displayName: 'Use net8.0'
+  displayName: 'Use .NET SDK from global.json'
   inputs:
-    version: 8.x
-    
+    packageType: 'sdk'
+    useGlobalJson: true
+    workingDirectory: '$(Build.SourcesDirectory)'
+
 - task: NuGetToolInstaller@0
   displayName: 'Use NuGet 6.x'
   inputs:
@@ -95,75 +99,109 @@ steps:
 - task: DotNetCoreCLI@2
   displayName: 'Build solution'
   inputs:
+    command: build
     projects: '$(solution)'
     arguments: '--no-restore --configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   displayName: 'Run UnitTests'
+  condition: and(succeeded(), ne(${{ parameters.skipTests }}, true))
   inputs:
     command: test
-    projects: '**/*.Tests.csproj'
-    arguments: '--no-restore --no-build --configuration $(buildConfiguration) /p:CollectCoverage=true /p:Exclude="[Microsoft*]*%2C[Mono*]*%2C[xunit*]*%2C[*.Testdata]*" /p:CoverletOutput=UnitTests.coverage.cobertura.xml /p:MergeWith=$(Build.SourcesDirectory)/Tests/CoverletOutput/coverage.json /p:CoverletOutputFormat=cobertura'
-    
-- task: Palmmedia.reportgenerator.reportgenerator-build-release-task.reportgenerator@4
-  displayName: 'Create Code Coverage Report'
+    projects: '$(solution)'
+    arguments: >
+      --no-restore --no-build 
+      --configuration $(buildConfiguration) 
+      --filter "Category=UnitTests&Category!=Ignore&Category!=Manual"
+      /p:Exclude="[Microsoft*]*%2C[Mono*]*%2C[xunit*]*%2C[*.Testdata]*"
+      /p:CollectCoverage=true
+      /p:CoverletOutputFormat=json%2Ccobertura%2Copencover
+      /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/CodeCoverage/
+      /p:MergeWith=$(Build.SourcesDirectory)/TestResults/CodeCoverage/coverage.json
+
+- task: DotNetCoreCLI@2
+  displayName: 'Run IntegrationTests'
+  condition: and(succeeded(), ne(${{ parameters.skipTests }}, true))
   inputs:
-    reports: '$(Build.SourcesDirectory)/Tests/**/*.coverage.cobertura.xml'
-    targetdir: '$(Build.SourcesDirectory)/CodeCoverage'
-    reporttypes: 'Cobertura'
-    assemblyfilters: '-xunit*'
+    command: test
+    projects: '$(solution)'
+    arguments: >
+      --no-restore --no-build 
+      --configuration $(buildConfiguration) 
+      --filter "Category=IntegrationTests&Category!=Ignore&Category!=Manual"
+      /p:Exclude="[Microsoft*]*%2C[Mono*]*%2C[xunit*]*%2C[*.Testdata]*"
+      /p:CollectCoverage=true
+      /p:CoverletOutputFormat=json%2Ccobertura%2Copencover
+      /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/CodeCoverage/
+      /p:MergeWith=$(Build.SourcesDirectory)/TestResults/CodeCoverage/coverage.json
+    
+- task: DotNetCoreCLI@2
+  displayName: 'Run SystemTests'
+  condition: and(succeeded(), ne(${{ parameters.skipTests }}, true))
+  inputs:
+    command: test
+    projects: '$(solution)'
+    arguments: >
+      --no-restore --no-build 
+      --configuration $(buildConfiguration) 
+      --filter "Category=SystemTests&Category!=Ignore&Category!=Manual"
+      /p:Exclude="[Microsoft*]*%2C[Mono*]*%2C[xunit*]*%2C[*.Testdata]*"
+      /p:CollectCoverage=true
+      /p:CoverletOutputFormat=json%2Ccobertura%2Copencover
+      /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/CodeCoverage/
+      /p:MergeWith=$(Build.SourcesDirectory)/TestResults/CodeCoverage/coverage.json
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish WeatherDisplay.Api Development'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   inputs:
     command: publish
     projects: 'WeatherDisplay.Api/WeatherDisplay.Api.csproj'
     publishWebProjects: false
-    arguments: '--configuration $(BuildConfiguration) --self-contained false --runtime linux-arm --output $(Build.ArtifactStagingDirectory)/Development /p:EnvironmentName=Development'
+    arguments: '--configuration $(BuildConfiguration) --self-contained false --runtime linux-arm64 --output $(Build.ArtifactStagingDirectory)/Development /p:EnvironmentName=Development'
     zipAfterPublish: false
-    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish WeatherDisplay.Api Production'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   inputs:
     command: publish
     projects: 'WeatherDisplay.Api/WeatherDisplay.Api.csproj'
     publishWebProjects: false
-    arguments: '--configuration $(BuildConfiguration) --self-contained false --runtime linux-arm --output $(Build.ArtifactStagingDirectory)/Production /p:EnvironmentName=Production'
+    arguments: '--configuration $(BuildConfiguration) --self-contained false --runtime linux-arm64 --output $(Build.ArtifactStagingDirectory)/Production /p:EnvironmentName=Production'
     zipAfterPublish: false
-    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
 - task: ArchiveFiles@2
   displayName: 'Zip WeatherDisplay.Api Development'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   inputs:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/Development/WeatherDisplay.Api/'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/zips/Development/WeatherDisplay.Api_$(semVersion).zip'
     replaceExistingArchive: true
-    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
     
 - task: ArchiveFiles@2
   displayName: 'Zip WeatherDisplay.Api Production'
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   inputs:
     rootFolderOrFile: '$(Build.ArtifactStagingDirectory)/Production/WeatherDisplay.Api/'
     includeRootFolder: false
     archiveType: 'zip'
     archiveFile: '$(Build.ArtifactStagingDirectory)/zips/Production/WeatherDisplay.Api_$(semVersion).zip'
     replaceExistingArchive: true
-    condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
 
-- task: PublishCodeCoverageResults@1
-  displayName: 'Publish code coverage'
+- task: PublishCodeCoverageResults@2
+  displayName: 'Publish Code Coverage Results'
+  condition: and(succeeded(), ne(${{ parameters.skipTests }}, true))
   inputs:
-    codeCoverageTool: Cobertura
-    summaryFileLocation: '$(Build.SourcesDirectory)/CodeCoverage/Cobertura.xml'
-    reportDirectory: '$(Build.SourcesDirectory)/CodeCoverage'
+    summaryFileLocation: '$(Build.SourcesDirectory)/TestResults/**/coverage.cobertura.xml'
+    pathToSources: '$(Build.SourcesDirectory)'
+    failIfCoverageEmpty: true
 
-#- task: PublishBuildArtifacts@1
-#  displayName: 'Publish Artifact: drop'
 
 - task: PublishBuildArtifacts@1
+  condition: and(succeeded(), ne(variables['Build.Reason'], 'PullRequest'))
   inputs:
     pathToPublish: '$(Build.ArtifactStagingDirectory)/zips/'
     artifactName: zips

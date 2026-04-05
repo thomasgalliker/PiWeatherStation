@@ -15,7 +15,6 @@ using UnitsNet;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Pages.Wiewarm;
-using WeatherDisplay.Resources;
 using WeatherDisplay.Services.DeepL;
 using WeatherDisplay.Tests.Testdata;
 using Xunit;
@@ -102,7 +101,7 @@ namespace WeatherDisplay.Tests
 
             // Assert
             var bitmapStream = screen.ToStream();
-            this.testHelper.WriteFile(bitmapStream, $"{nameof(ShouldDrawSimpleTemperatureSets)}_{testName}");
+            this.testHelper.WriteFile(bitmapStream, $"{nameof(this.ShouldDrawSimpleTemperatureSets)}_{testName}");
         }
 
         internal class SimpleTemperatureSetsTestData : TheoryData<TemperatureSet[], DateTime, string>

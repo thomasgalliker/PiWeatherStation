@@ -1,37 +1,48 @@
-﻿using System;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using System;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace WeatherDisplay.Services.Astronomy
 {
-    public class PlanetaryKIndexForecastJsonConverter : JsonConverter
+    public class PlanetaryKIndexForecastJsonConverter : JsonConverter<PlanetaryKIndexForecast[]>
     {
-        public override bool CanConvert(Type objectType)
+        public override PlanetaryKIndexForecast[] Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
         {
-            return objectType == typeof(PlanetaryKIndexForecast[]);
-        }
+            using var document = JsonDocument.ParseValue(ref reader);
+            var root = document.RootElement;
 
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            var table = JArray.Load(reader);
-            var items = new PlanetaryKIndexForecast[table.Count - 1];
-            for (var i = 1; i < table.Count; i++)
+            if (root.ValueKind != JsonValueKind.Array || root.GetArrayLength() == 0)
             {
-                var row = (JArray)table[i];
-                items[i - 1] = new PlanetaryKIndexForecast
+                return Array.Empty<PlanetaryKIndexForecast>();
+            }
+
+            var firstItem = root[0];
+
+            if (firstItem.ValueKind != JsonValueKind.Object)
+            {
+                throw new JsonException($"Unsupported planetary K-index forecast payload shape: {firstItem.ValueKind}.");
+            }
+
+            var items = new PlanetaryKIndexForecast[root.GetArrayLength()];
+
+            for (var i = 0; i < root.GetArrayLength(); i++)
+            {
+                var row = root[i];
+                items[i] = new PlanetaryKIndexForecast
                 {
-                    TimeTag = DateTime.SpecifyKind(row[0].Value<DateTime>(), DateTimeKind.Utc),
-                    KpIndex = (decimal)row[1],
-                    Observed = (string)row[2],
-                    NoaaScale = (string)row[3],
+                    TimeTag = DateTime.SpecifyKind(row.GetProperty("time_tag").GetDateTime(), DateTimeKind.Utc),
+                    KpIndex = row.GetProperty("kp").GetDecimal(),
+                    Observed = row.GetProperty("observed").GetString(),
+                    NoaaScale = row.TryGetProperty("noaa_scale", out var noaaScale) && noaaScale.ValueKind != JsonValueKind.Null
+                        ? noaaScale.GetString()
+                        : null,
                 };
             }
+
             return items;
         }
 
-        public override bool CanWrite => false;
-
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+        public override void Write(Utf8JsonWriter writer, PlanetaryKIndexForecast[] value, JsonSerializerOptions options)
         {
             throw new NotImplementedException();
         }
