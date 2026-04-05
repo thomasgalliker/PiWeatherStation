@@ -68,15 +68,11 @@ namespace DisplayService.Services
             try
             {
                 var alignmentYOffset = CalculateAlignmentYOffset(canvas.DeviceClipBounds, text);
+                var fontName = string.IsNullOrWhiteSpace(text.Font) ? this.renderSettings.DefaultFont : text.Font;
 
-                var paint = RenderTools.GetPaint(
-                    string.IsNullOrWhiteSpace(text.Font) ? this.renderSettings.DefaultFont : text.Font,
-                    text.FontSize,
-                    text.FontWeight,
-                    text.FontWidth,
-                    text.ForegroundColor,
-                    text.Bold);
-                var (width, height, horizontalOffset, verticalOffset, left, top) = RenderTools.GetBounds(text.X, text.Y, text.Value, text.HorizontalTextAlignment, text.VerticalTextAlignment, paint);
+                using var paint = RenderTools.GetTextPaint(text.ForegroundColor);
+                using var font = RenderTools.GetFont(fontName, text.FontSize, text.FontWeight, text.FontWidth, text.Bold);
+                var (width, height, horizontalOffset, verticalOffset, left, top) = RenderTools.GetBounds(text.X, text.Y, text.Value, text.HorizontalTextAlignment, text.VerticalTextAlignment, font, paint);
 
 
                 verticalOffset += (int)alignmentYOffset;
@@ -89,7 +85,7 @@ namespace DisplayService.Services
 
                     if (left + width > canvasWidth)
                     {
-                        var maxFontSize = GetMaxFontSize(canvasWidth - left, null, paint.Typeface, text.Value);
+                        var maxFontSize = GetMaxFontSize(canvasWidth - left, null, font.Typeface, text.Value, paint);
                         if (text.FontSize != maxFontSize)
                         {
                             // In case we got a change in font size,
@@ -107,7 +103,7 @@ namespace DisplayService.Services
 
                     if (top + height > canvasHeight)
                     {
-                        var maxFontSize = GetMaxFontSize(null, canvasHeight - top, paint.Typeface, text.Value);
+                        var maxFontSize = GetMaxFontSize(null, canvasHeight - top, font.Typeface, text.Value, paint);
                         if (text.FontSize != maxFontSize)
                         {
                             // In case we got a change in font size,
@@ -134,7 +130,7 @@ namespace DisplayService.Services
 
                 // Draw text foreground
                 this.logger.LogDebug($"DrawText(text=\"{text.Value}\", x={textXPosition}, y={textYPosition})");
-                canvas.DrawText(text.Value, textXPosition, textYPosition, paint);
+                canvas.DrawText(text.Value, textXPosition, textYPosition, SKTextAlign.Left, font, paint);
 
                 return backgroundRect;
             }
@@ -144,7 +140,7 @@ namespace DisplayService.Services
             }
         }
 
-        private static float GetMaxFontSize(double? maxWidth, double? maxHeight, SKTypeface typeface, string text, float degreeOfCertainty = 1f, float minFontSize = 1f, float maxFontSize = 1000f)
+        private static float GetMaxFontSize(double? maxWidth, double? maxHeight, SKTypeface typeface, string text, SKPaint paint, float degreeOfCertainty = 1f, float minFontSize = 1f, float maxFontSize = 1000f)
         {
             var max = maxFontSize; // The upper bound. We know the font size is below this value
             var min = minFontSize; // The lower bound, We know the font size is equal to or above this value
@@ -153,11 +149,9 @@ namespace DisplayService.Services
             while (true)
             {
                 value = min + ((max - min) / 2); // Find the half way point between Max and Min
-                using (var ft = new SKFont(typeface, value))
-                using (var paint = new SKPaint(ft))
+                using (var font = new SKFont { Typeface = typeface, Size = value })
                 {
-                    var rect = new SKRect();
-                    var width = paint.MeasureText(text, ref rect);
+                    var width = font.MeasureText(text, out SKRect rect, paint);
                     if ((maxWidth is double maxWidthValue && rect.Width > maxWidthValue) || (maxHeight is double maxHeightValue && rect.Height > maxHeightValue)) // Measure the string size at this font size
                     {
                         // The text size is too large

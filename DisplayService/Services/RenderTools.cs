@@ -173,41 +173,15 @@ namespace DisplayService.Services
         /// <summary>
         /// Get a paint object for text
         /// </summary>
-        /// <param name="font">Font to use</param>
-        /// <param name="fontSize">Font size</param>
-        /// <param name="fontWeight">Font weight</param>
-        /// <param name="fontWidth">Font width</param>
         /// <param name="foregroundColor">Font hex color</param>
-        /// <param name="bold">Bold setting</param>
         /// <returns>Returns a paint object for the text</returns>
-        // TODO: Split this very chaotic method into several single-purpose methods
-        public static SKPaint GetPaint(string font, float fontSize, int fontWeight, int fontWidth, string foregroundColor, bool bold)
+        public static SKPaint GetTextPaint(string foregroundColor)
         {
-            if (fontSize <= 0 || fontSize > 9999)
-            {
-                throw new ArgumentOutOfRangeException(nameof(fontSize), fontSize, "Font size must be greater than zero and less than 10000");
-            }
-
-            if ((fontWeight < 100 && fontWeight != 0) || fontWeight > 900)
-            {
-                throw new ArgumentOutOfRangeException(nameof(fontWeight), fontWeight, "Font weight must be between 100 and 900");
-            }
-
-            if (fontWidth < 0 || fontWidth > 9)
-            {
-                throw new ArgumentOutOfRangeException(nameof(fontWidth), fontWidth, "Font width must be between 1 and to 9");
-            }
-
             var paint = new SKPaint
             {
-                TextSize = fontSize,
                 IsAntialias = true,
+                IsStroke = false,
             };
-
-            if (!string.IsNullOrWhiteSpace(font))
-            {
-                paint.Typeface = GetTypeface(font, fontWeight, fontWidth) ?? throw new ArgumentException("Font not found", nameof(font));
-            }
 
             if (string.IsNullOrWhiteSpace(foregroundColor))
             {
@@ -225,16 +199,43 @@ namespace DisplayService.Services
                 }
             }
 
-            paint.FakeBoldText = bold;
-            paint.IsStroke = false;
-
             return paint;
         }
 
-        public static (int width, int height, int horizontalOffset, int verticalOffset, int left, int top) GetBounds(int x, int y, string text, HorizontalAlignment horizontalTextAlignment, VerticalAlignment verticalTextAlignment, SKPaint paint)
+        public static SKFont GetFont(string font, float fontSize, int fontWeight, int fontWidth, bool bold)
         {
-            var rect = new SKRect();
-            var width = paint.MeasureText(text, ref rect);
+            if (fontSize <= 0 || fontSize > 9999)
+            {
+                throw new ArgumentOutOfRangeException(nameof(fontSize), fontSize, "Font size must be greater than zero and less than 10000");
+            }
+
+            if ((fontWeight < 100 && fontWeight != 0) || fontWeight > 900)
+            {
+                throw new ArgumentOutOfRangeException(nameof(fontWeight), fontWeight, "Font weight must be between 100 and 900");
+            }
+
+            if (fontWidth < 0 || fontWidth > 9)
+            {
+                throw new ArgumentOutOfRangeException(nameof(fontWidth), fontWidth, "Font width must be between 1 and to 9");
+            }
+
+            var textFont = new SKFont
+            {
+                Size = fontSize,
+                Embolden = bold,
+            };
+
+            if (!string.IsNullOrWhiteSpace(font))
+            {
+                textFont.Typeface = GetTypeface(font, fontWeight, fontWidth) ?? throw new ArgumentException("Font not found", nameof(font));
+            }
+
+            return textFont;
+        }
+
+        public static (int width, int height, int horizontalOffset, int verticalOffset, int left, int top) GetBounds(int x, int y, string text, HorizontalAlignment horizontalTextAlignment, VerticalAlignment verticalTextAlignment, SKFont font, SKPaint paint)
+        {
+            var width = font.MeasureText(text, out SKRect rect, paint);
             var height = rect.Height;
 
             (var horizontalOffset, var left) = CalculateHorizontalBounds(x, horizontalTextAlignment, rect, width);
