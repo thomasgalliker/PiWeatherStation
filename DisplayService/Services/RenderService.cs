@@ -69,7 +69,13 @@ namespace DisplayService.Services
             {
                 var alignmentYOffset = CalculateAlignmentYOffset(canvas.DeviceClipBounds, text);
 
-                var paint = RenderTools.GetPaint(text.Font, text.FontSize, text.FontWeight, text.FontWidth, text.ForegroundColor, text.Bold);
+                var paint = RenderTools.GetPaint(
+                    string.IsNullOrWhiteSpace(text.Font) ? this.renderSettings.DefaultFont : text.Font,
+                    text.FontSize,
+                    text.FontWeight,
+                    text.FontWidth,
+                    text.ForegroundColor,
+                    text.Bold);
                 var (width, height, horizontalOffset, verticalOffset, left, top) = RenderTools.GetBounds(text.X, text.Y, text.Value, text.HorizontalTextAlignment, text.VerticalTextAlignment, paint);
 
 

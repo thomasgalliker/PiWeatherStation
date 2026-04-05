@@ -3,6 +3,7 @@ using System;
 using System.IO;
 using System.Text.RegularExpressions;
 using DisplayService.Model;
+using DisplayService.Resources;
 using SkiaSharp;
 
 namespace DisplayService.Services
@@ -39,9 +40,34 @@ namespace DisplayService.Services
             {
                 try
                 {
-                    if (File.Exists(font))
+                    var fontPath = font;
+                    if (!Path.IsPathRooted(fontPath))
                     {
-                        typeface = SKTypeface.FromFile(font);
+                        var bundledFontPath = Path.Combine(AppContext.BaseDirectory, fontPath);
+                        if (File.Exists(bundledFontPath))
+                        {
+                            fontPath = bundledFontPath;
+                        }
+                    }
+
+                    if (File.Exists(fontPath))
+                    {
+                        typeface = SKTypeface.FromFile(fontPath);
+                    }
+                    else
+                    {
+                        using (var fontStream = Fonts.GetFont(font))
+                        {
+                            if (fontStream != null)
+                            {
+                                typeface = SKTypeface.FromStream(fontStream);
+                            }
+                        }
+                    }
+
+                    if (typeface != null)
+                    {
+                        return typeface;
                     }
                     else if (weight > 0 && width > 0)
                     {
@@ -172,8 +198,7 @@ namespace DisplayService.Services
                 throw new ArgumentOutOfRangeException(nameof(fontWidth), fontWidth, "Font width must be between 1 and to 9");
             }
 
-
-            var paint = new SKPaint()
+            var paint = new SKPaint
             {
                 TextSize = fontSize,
                 IsAntialias = true,
