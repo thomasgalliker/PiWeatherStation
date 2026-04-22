@@ -4,7 +4,7 @@ This is a demo project which uses a Raspberry Pi 4 / Zero 2 to draw some basic w
 ![](Docs/2022-28-05-DisplayPhoto2.jpg)
 
 ### Quick Setup
-The script file `update_weatherdisplay_api.sh` contains all necessary steps to prepare a new Raspberry Pi to run WeatherDisplay.Api:
+The script file `setup_weatherdisplay.sh` contains all necessary steps to prepare a new Raspberry Pi to run WeatherDisplay.Api:
 - Downloads and installs .NET runtime.
 - Downloads and installs WeatherDisplay.Api as a service. 
 - Adjusts the Raspberry Pi hardware configuration. (Enables SPI, sets dtoverlays).
@@ -13,13 +13,13 @@ The script file `update_weatherdisplay_api.sh` contains all necessary steps to p
 
 Log-in to the Raspberry Pi and run the script file as follows.
 ```
-curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh | sudo bash /dev/stdin
+curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/setup_weatherdisplay.sh | sudo bash /dev/stdin
 ```
 Append script parameters if needed:
 | Parameter | Description |
 |---|---|
 | `--pre` | Downloads pre-releases of WeatherDisplay.Api. |
-| `--update` | Updates an existing PiWeatherStation installation without reconfiguring the Raspberry Pi. |
+| `--reset` | Forces a clean setup of the device. |
 | `--debug` | Writes verbose log messages to the console (mainly used for debugging purposes). |
 | `--host` | Sets the hostname. By default, the hostname is set to `raspi<serial-number>`. The hostname can be changed later. |
 | `--framework` | Sets the target framework used to choose the .NET runtime channel. Default is `net10.0`. |
@@ -30,11 +30,16 @@ Append script parameters if needed:
 | `--help` | Shows the script help. |
 
 ```
-curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh | sudo bash /dev/stdin --debug --pre
+curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/setup_weatherdisplay.sh | sudo bash /dev/stdin --debug --pre
+```
+
+To force a full re-setup on an already provisioned device, use:
+```
+curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/setup_weatherdisplay.sh | sudo bash /dev/stdin --reset
 ```
 
 ### Extended Setup / Troubleshooting
-The following steps are fully automated in `update_weatherdisplay_api.sh`. Follow these steps if the update script cause troubles.
+The following steps are fully automated in `setup_weatherdisplay.sh`. Follow these steps if the setup script cause troubles.
 
 #### Prepare the Raspberry Pi
 - Before we install any additional library, make sure the Raspberry OS as well as the installed libraries are on the latest stable releases.
@@ -212,7 +217,7 @@ sudo systemctl start weatherdisplay.api
 ### Troubleshooting & Maintenance
 #### Update and restart the service
 If anything in the service definition (weatherdisplay.api.service file) is changed, the service needs to be stopped and restarted.
-For a regular application update on an existing device, prefer running `update_weatherdisplay_api.sh --update`. The manual procedure below is still useful for troubleshooting or custom deployments.
+For a regular application update on an existing device, run `setup_weatherdisplay.sh` without additional flags. Use `--reset` only when you intentionally want to rerun the full device setup and rotate credentials. The manual procedure below is still useful for troubleshooting or custom deployments.
 
 -  Stop the service to release any file locks or http listeners.
 ```

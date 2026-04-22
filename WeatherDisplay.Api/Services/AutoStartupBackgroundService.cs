@@ -136,7 +136,7 @@ namespace WeatherDisplay.Api.Services
                 var result = await this.autoUpdateService.CheckForUpdateAsync();
                 if (result.HasUpdate)
                 {
-                    // What about running "sudo sh update_weatherdisplay_api.sh --pre --no-reboot --debug" here instead of delegating the update steps to another service?
+                    // What about running "sudo sh setup_weatherdisplay.sh --pre --no-reboot --debug" here instead of delegating the update steps to another service?
                     var updateRequest = UpdateRequestFactory.Create(result.UpdateVersion, result.UpdateVersionSource);
                     this.autoUpdateService.StartUpdate(updateRequest);
                 }

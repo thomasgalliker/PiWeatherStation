@@ -45,8 +45,11 @@ USAGE:
     # Configures the Raspberry Pi with the latest pre-release version of PiWeatherStation
     sudo bash setup_weatherdisplay.sh --pre
 
-    # Updates an existing PiWeatherStation installation without re-running device setup
-    sudo bash setup_weatherdisplay.sh --update
+    # Updates an existing PiWeatherStation installation while preserving the current device setup
+    sudo bash setup_weatherdisplay.sh
+
+    # Forces a full reconfiguration and credential reset
+    sudo bash setup_weatherdisplay.sh --reset
 
 PARAMETERS:
     -h, --host          Sets the hostname of the system.
@@ -58,7 +61,7 @@ PARAMETERS:
 
 FLAGS:
     -p, --pre           Downloads the latest pre-release of PiWeatherStation.
-    -u, --update        Updates an existing installation without reconfiguring the Raspberry Pi.
+    -r, --reset         Forces a full Raspberry Pi reconfiguration and credential regeneration.
     -d, --debug         Prints verbose debug log messages.
     -n, --no-reboot     Does not reboot the system when the script ends.
     -h, --help          Show this help.
@@ -78,7 +81,9 @@ PiWeatherStation Setup
 debug=false
 preRelease=false
 reboot=true
-updateOnly=false
+resetRequested=false
+existingSetup=false
+performFullSetup=false
 targetFramework="net10.0"
 
 usage_error () {
@@ -103,7 +108,7 @@ if [ "$#" != 0 ]; then
       -k|--keyboard) assert_argument "$1" "$opt"; keyboard="$1"; shift;;
       -f|--framework) assert_argument "$1" "$opt"; targetFramework="$1"; shift;;
       -p|--pre) preRelease=true;;
-      -u|--update) updateOnly=true;;
+      -r|--reset) resetRequested=true;;
       -d|--debug) debug=true;;
       -n|--no-reboot) reboot=false;;
       -?|--help) showHelp; shift;;
@@ -158,19 +163,11 @@ fi
 serialNumber=$( cat /proc/cpuinfo | grep Serial | cut -d ' ' -f 2 )
 
 if ! test -v host; then
-
     host="raspi$(echo $serialNumber)"
 fi
 
 ap_ssid=""
 ap_psk=""
-if [ "$updateOnly" != "true" ]; then
-    # Generate wifi SSID and pre-shared key
-    # - The SSID should be constant therefore we use the serial number as part of it.
-    # - The PSK is a random number with a length of 8 characters. Some characters are explicitly filtered to avoid confusion (like O with 0).
-    ap_ssid="PiWeatherDisplay_$(echo $serialNumber | tail -c 7 | tr '[:lower:]' '[:upper:]')"
-    ap_psk=$(< /dev/urandom tr -dc A-Z-a-z-0-9_$ | tr -d oO0lI1 | head -c 8)
-fi
 ap_wifi_mode="g"
 ap_country_code="CH"
 ap_ip="192.168.10.1"
@@ -178,6 +175,16 @@ ap_ip_begin=$(echo "${ap_ip}" | sed -e 's/\.[0-9]\{1,3\}$//g')
 dotnetChannel=$(echo "$targetFramework" | sed 's/^net//')
 
 serviceFilePath="$systemDir"/"$serviceName.service"
+accessPointConfigFile="$workingDirectory/accesspoint@wlan0.json"
+accessPointServiceFile="$systemDir/accesspoint@.service"
+
+detect_existing_setup() {
+    if [ -f "$serviceFilePath" ] || [ -f "$accessPointConfigFile" ] || [ -f "$accessPointServiceFile" ]; then
+        return 0
+    fi
+
+    return 1
+}
 
 set_config_var() {
     awk -v key="$1" -v value="$2" '
@@ -226,7 +233,9 @@ if [ "$debug" = "true" ]; then
 Debug Variables
 =====================================================
 preRelease: $preRelease
-updateOnly: $updateOnly
+resetRequested: $resetRequested
+existingSetup: $existingSetup
+performFullSetup: $performFullSetup
 systemDir: $systemDir
 workingDirectory: $workingDirectory
 dotnetDirectory: $dotnetDirectory
@@ -236,6 +245,8 @@ bootConfig: $bootConfig
 executable: $executable
 serviceName: $serviceName
 serviceFilePath: $serviceFilePath
+accessPointConfigFile: $accessPointConfigFile
+accessPointServiceFile: $accessPointServiceFile
 downloadFile: $downloadFile
 serialNumber: $serialNumber
 host: $host
@@ -261,12 +272,31 @@ if [ ! -d $workingDirectory ]; then
     mkdir $workingDirectory
 fi
 
+if detect_existing_setup; then
+    existingSetup=true
+fi
+
+if [ "$resetRequested" = "true" ] || [ "$existingSetup" != "true" ]; then
+    performFullSetup=true
+else
+    performFullSetup=false
+fi
+
+if [ "$performFullSetup" = "true" ]; then
+    # Generate wifi SSID and pre-shared key only for full setup runs.
+    ap_ssid="PiWeatherDisplay_$(echo $serialNumber | tail -c 7 | tr '[:lower:]' '[:upper:]')"
+    ap_psk=$(< /dev/urandom tr -dc A-Z-a-z-0-9_$ | tr -d oO0lI1 | head -c 8)
+fi
+
 cd $workingDirectory
 
-if [ "$updateOnly" = "true" ]; then
-    logSuccess "Updating raspberry ${installUser}@${host}..."
-else
+if [ "$performFullSetup" = "true" ]; then
     logSuccess "Setting up raspberry ${installUser}@${host}..."
+else
+    logSuccess "Updating raspberry ${installUser}@${host}..."
+fi
+
+if [ "$performFullSetup" = "true" ]; then
     logDebug "Disabling cloud-init..."
     mkdir -p /etc/cloud
     touch /etc/cloud/cloud-init.disabled
@@ -316,7 +346,7 @@ logSuccess "Updating software..."
 apt-get update && apt-get -y upgrade
 echo ""
 
-if [ "$updateOnly" != "true" ]; then
+if [ "$performFullSetup" = "true" ]; then
     install_package "libgdiplus"
     install_package "dhcpcd"
     install_package "hostapd"
@@ -382,7 +412,7 @@ EOF
 
     # Create accesspoint service
     logDebug "Creating accesspoint service..."
-    cat > "$systemDir/accesspoint@.service" << EOF
+    cat > "$accessPointServiceFile" << EOF
 [Unit]
 Description=IEEE 802.11 ap@%i AP on %i with hostapd
 Wants=wpa_supplicant@%i.service
@@ -414,7 +444,7 @@ EOF
     rfkill unblock wlan
     systemctl start accesspoint@wlan0.service || true
 
-    bash -c "cat > $workingDirectory/accesspoint@wlan0.json" << EOF
+    bash -c "cat > $accessPointConfigFile" << EOF
 {
   "AccessPoint": {
     "SSID": "$ap_ssid",
@@ -552,20 +582,10 @@ if [ ! -z "$keyboard" ]; then
     setupcon -k --force >/dev/null 2>&1 || true
 fi
 
-if [ "$updateOnly" = "true" ]; then
+if [ "$performFullSetup" = "true" ]; then
 logSuccess "
 =====================================================
-Update is completed
-=====================================================
-
-Hostname:       ${host}
-User:           ${installUser}
-
-" >&2
-else
-logSuccess "
-=====================================================
-Installation is completed
+Setup is completed
 =====================================================
 
 Hostname:       ${host}
@@ -574,6 +594,16 @@ Password:       ${ap_psk}
 Wifi SSID:      ${ap_ssid}
 Wifi PSK:       ${ap_psk}
 Wifi IP:        ${ap_ip}
+
+" >&2
+else
+logSuccess "
+=====================================================
+Update is completed
+=====================================================
+
+Hostname:       ${host}
+User:           ${installUser}
 
 " >&2
 fi
