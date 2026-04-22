@@ -154,8 +154,11 @@ bootConfig="/boot/firmware/config.txt"
 workingDirectory="$installHome/WeatherDisplay.Api"
 executable="WeatherDisplay.Api"
 serviceName="weatherdisplay.api"
+serviceUser="$installUser"
+serviceGroup="$installUser"
 downloadFile="$workingDirectory/WeatherDisplay.Api.zip"
 userAppSettingsFile="$workingDirectory/appsettings.User.json"
+sudoersFile="/etc/sudoers.d/weatherdisplay-api"
 
 if ! test -v systemDir; then
     systemDir="/etc/systemd/system"
@@ -181,6 +184,24 @@ accessPointServiceFile="$systemDir/accesspoint@.service"
 
 detect_existing_setup() {
     if [ -f "$userAppSettingsFile" ]; then
+        return 0
+    fi
+
+    return 1
+}
+
+get_primary_ipv4_address() {
+    local primary_ip
+
+    primary_ip=$(ip -4 route get 1.1.1.1 2>/dev/null | awk '{for (i = 1; i <= NF; i++) if ($i == "src") { print $(i + 1); exit }}')
+    if [ -n "$primary_ip" ]; then
+        echo "$primary_ip"
+        return 0
+    fi
+
+    primary_ip=$(hostname -I 2>/dev/null | tr ' ' '\n' | grep -vE '^(127\.|169\.254\.)' | head -n 1)
+    if [ -n "$primary_ip" ]; then
+        echo "$primary_ip"
         return 0
     fi
 
@@ -544,8 +565,8 @@ SyslogIdentifier=$executable
 TimeoutStartSec=60
 TimeoutStopSec=20
 
-User=$installUser
-Group=$installUser
+User=$serviceUser
+Group=$serviceGroup
 
 Restart=no
 
@@ -556,6 +577,11 @@ Environment=DOTNET_ROOT=$dotnetDirectory
 [Install]
 WantedBy=multi-user.target
 EOF
+
+cat > "$sudoersFile" <<EOF
+$installUser ALL=(ALL) NOPASSWD: ALL
+EOF
+chmod 440 "$sudoersFile"
 
 if [ "${serviceStatus}" != "active" ]; then
     logDebug "Starting service $serviceName..."
@@ -582,6 +608,11 @@ if [ ! -z "$keyboard" ]; then
     setupcon -k --force >/dev/null 2>&1 || true
 fi
 
+device_ip=$(get_primary_ipv4_address || true)
+if [ -z "$device_ip" ]; then
+    device_ip="n/a"
+fi
+
 if [ "$performFullSetup" = "true" ]; then
 logSuccess "
 =====================================================
@@ -591,6 +622,7 @@ Setup is completed
 Hostname:       ${host}
 User:           ${installUser}
 Password:       ${ap_psk}
+IP Address:     ${device_ip}
 Wifi SSID:      ${ap_ssid}
 Wifi PSK:       ${ap_psk}
 Wifi IP:        ${ap_ip}
@@ -604,6 +636,7 @@ Update is completed
 
 Hostname:       ${host}
 User:           ${installUser}
+IP Address:     ${device_ip}
 
 " >&2
 fi
