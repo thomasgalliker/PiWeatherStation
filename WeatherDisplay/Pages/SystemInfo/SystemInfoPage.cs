@@ -458,7 +458,7 @@ namespace WeatherDisplay.Pages.SystemInfo
         private IEnumerable<string> GetConnectedSSIDs(INetworkInterface wlan0)
         {
             IEnumerable<string> connectedSSIDs;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 connectedSSIDs = new List<string>
                 {
@@ -476,7 +476,7 @@ namespace WeatherDisplay.Pages.SystemInfo
         private INetworkInterface GetWifiNetworkInterface()
         {
             INetworkInterface iface;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 iface = this.networkInterfaceService.GetAll()
                     .FirstOrDefault(i => i.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 && i.OperationalStatus == OperationalStatus.Up);

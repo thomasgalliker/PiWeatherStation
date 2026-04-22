@@ -56,7 +56,7 @@ namespace WeatherDisplay.Services
         private INetworkInterface GetWlanNetworkInterface()
         {
             INetworkInterface iface;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 iface = this.networkInterfaceService.GetAll()
                     .FirstOrDefault(i => i.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 && i.OperationalStatus == OperationalStatus.Up);

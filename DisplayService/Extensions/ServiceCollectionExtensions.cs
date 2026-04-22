@@ -71,7 +71,10 @@ namespace Microsoft.Extensions.DependencyInjection
             serviceCollection.AddSingleton<IRenderSettings>(s =>
             {
                 var displayOptions = s.GetRequiredService<IOptions<DisplayOptions>>().Value;
-                var renderSettings = new RenderSettings(displayOptions.Width, displayOptions.Height, displayOptions.Rotation);
+                var renderSettings = new RenderSettings(displayOptions.Width, displayOptions.Height, displayOptions.Rotation)
+                {
+                    DefaultFont = displayOptions.DefaultFont,
+                };
                 return renderSettings;
             });
 

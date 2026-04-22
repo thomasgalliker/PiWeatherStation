@@ -32,5 +32,7 @@ namespace DisplayService
         public DeviceRotation Rotation { get; private set; }
 
         public string BackgroundColor { get; set; } = "#FFFFFFFF";
+
+        public string DefaultFont { get; set; }
     }
 }
