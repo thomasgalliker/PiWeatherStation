@@ -57,7 +57,7 @@ namespace WeatherDisplay.Api.Services
 
             try
             {
-                // Create appSettings.user.json (if not exists)
+                // Create appSettings.User.json (if not exists)
                 var appSettingsUserFile = new FileInfo(Path.Combine(this.webHostEnvironment.ContentRootPath, Program.UserSpecificAppSettingsFileName));
                 if (!appSettingsUserFile.Exists)
                 {
