@@ -155,6 +155,7 @@ workingDirectory="$installHome/WeatherDisplay.Api"
 executable="WeatherDisplay.Api"
 serviceName="weatherdisplay.api"
 downloadFile="$workingDirectory/WeatherDisplay.Api.zip"
+userAppSettingsFile="$workingDirectory/appsettings.User.json"
 
 if ! test -v systemDir; then
     systemDir="/etc/systemd/system"
@@ -179,7 +180,7 @@ accessPointConfigFile="$workingDirectory/accesspoint@wlan0.json"
 accessPointServiceFile="$systemDir/accesspoint@.service"
 
 detect_existing_setup() {
-    if [ -f "$serviceFilePath" ] || [ -f "$accessPointConfigFile" ] || [ -f "$accessPointServiceFile" ]; then
+    if [ -f "$userAppSettingsFile" ]; then
         return 0
     fi
 
@@ -227,45 +228,6 @@ EOF
     fi
 }
 
-if [ "$debug" = "true" ]; then
-    echo "
-=====================================================
-Debug Variables
-=====================================================
-preRelease: $preRelease
-resetRequested: $resetRequested
-existingSetup: $existingSetup
-performFullSetup: $performFullSetup
-systemDir: $systemDir
-workingDirectory: $workingDirectory
-dotnetDirectory: $dotnetDirectory
-installUser: $installUser
-installHome: $installHome
-bootConfig: $bootConfig
-executable: $executable
-serviceName: $serviceName
-serviceFilePath: $serviceFilePath
-accessPointConfigFile: $accessPointConfigFile
-accessPointServiceFile: $accessPointServiceFile
-downloadFile: $downloadFile
-serialNumber: $serialNumber
-host: $host
-ap_ssid: $ap_ssid
-ap_psk: $ap_psk
-ap_ip: $ap_ip
-ap_ip_begin: $ap_ip_begin
-timezone: $timezone
-locale: $locale
-keyboard: $keyboard
-reboot: $reboot
-targetFramework: $targetFramework
-dotnetChannel: $dotnetChannel
-=====================================================
-" >&2
-fi
-
-#exit 1
-
 if [ ! -d $workingDirectory ]; then
     logDebug "Creating directory $workingDirectory"
     echo ""
@@ -286,6 +248,44 @@ if [ "$performFullSetup" = "true" ]; then
     # Generate wifi SSID and pre-shared key only for full setup runs.
     ap_ssid="PiWeatherDisplay_$(echo $serialNumber | tail -c 7 | tr '[:lower:]' '[:upper:]')"
     ap_psk=$(< /dev/urandom tr -dc A-Z-a-z-0-9_$ | tr -d oO0lI1 | head -c 8)
+fi
+
+if [ "$debug" = "true" ]; then
+    echo "
+=====================================================
+Debug Variables
+=====================================================
+preRelease: $preRelease
+resetRequested: $resetRequested
+existingSetup: $existingSetup
+performFullSetup: $performFullSetup
+systemDir: $systemDir
+workingDirectory: $workingDirectory
+dotnetDirectory: $dotnetDirectory
+installUser: $installUser
+installHome: $installHome
+bootConfig: $bootConfig
+executable: $executable
+serviceName: $serviceName
+serviceFilePath: $serviceFilePath
+userAppSettingsFile: $userAppSettingsFile
+accessPointConfigFile: $accessPointConfigFile
+accessPointServiceFile: $accessPointServiceFile
+downloadFile: $downloadFile
+serialNumber: $serialNumber
+host: $host
+ap_ssid: $ap_ssid
+ap_psk: $ap_psk
+ap_ip: $ap_ip
+ap_ip_begin: $ap_ip_begin
+timezone: $timezone
+locale: $locale
+keyboard: $keyboard
+reboot: $reboot
+targetFramework: $targetFramework
+dotnetChannel: $dotnetChannel
+=====================================================
+" >&2
 fi
 
 cd $workingDirectory
