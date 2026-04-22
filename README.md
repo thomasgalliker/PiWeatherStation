@@ -19,13 +19,15 @@ Append script parameters if needed:
 | Parameter | Description |
 |---|---|
 | `--pre` | Downloads pre-releases of WeatherDisplay.Api. |
+| `--update` | Updates an existing PiWeatherStation installation without reconfiguring the Raspberry Pi. |
 | `--debug` | Writes verbose log messages to the console (mainly used for debugging purposes). |
-| `--host` | Sets the hostname. By default, a portion of the hardware serial number is used as hostname. The hostname can be changed later. |
+| `--host` | Sets the hostname. By default, the hostname is set to `raspi<serial-number>`. The hostname can be changed later. |
 | `--framework` | Sets the target framework used to choose the .NET runtime channel. Default is `net10.0`. |
 | `--keyboard` | Sets the keyboard layout (e.g. "us" or "de"). |
 | `--locale` | Sets the localization/language. |
 | `--timezone` | Sets the timezone. |
 | `--no-reboot` | After the setup, a full reboot cycle is required. This parameter suppresses the reboot. This is mainly used of debugging purposes. |
+| `--help` | Shows the script help. |
 
 ```
 curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh | sudo bash /dev/stdin --debug --pre
@@ -202,7 +204,7 @@ sudo systemctl start weatherdisplay.api
 ```
 
 ### Run PiWeatherStation
-- Connect to the access point with the SSID "Pi_..." and the wifi password given during setup.
+- Connect to the access point with the SSID `PiWeatherDisplay_...` and the wifi password given during setup.
 - Access the web API with the browser: https://192.168.10.1:5001/swagger/index.html.
 - Use the API method `/api/identity/login` to get an authentication token. Press the Swagger authorize button to use the authentication token.
 - Call any other API method after successful login. 
@@ -210,7 +212,7 @@ sudo systemctl start weatherdisplay.api
 ### Troubleshooting & Maintenance
 #### Update and restart the service
 If anything in the service definition (weatherdisplay.api.service file) is changed, the service needs to be stopped and restarted.
-The same procedure is necessary if we want to re-deploy the WeatherDisplay.Api binaries.
+For a regular application update on an existing device, prefer running `update_weatherdisplay_api.sh --update`. The manual procedure below is still useful for troubleshooting or custom deployments.
 
 -  Stop the service to release any file locks or http listeners.
 ```

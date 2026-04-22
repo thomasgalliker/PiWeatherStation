@@ -104,7 +104,7 @@ if [ "$#" != 0 ]; then
       -f|--framework) assert_argument "$1" "$opt"; targetFramework="$1"; shift;;
       -p|--pre) preRelease=true;;
       -u|--update) updateOnly=true;;
-      -v|--debug) debug=true;;
+      -d|--debug) debug=true;;
       -n|--no-reboot) reboot=false;;
       -?|--help) showHelp; shift;;
       -s|--systemDir) assert_argument "$1" "$opt"; systemDir="$1"; shift;;
