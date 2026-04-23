@@ -11,10 +11,16 @@ The script file `setup_weatherdisplay.sh` contains all necessary steps to prepar
 - Configures the wifi to become an access point.
 - Sets environment variables.
 
-Log-in to the Raspberry Pi and run the script file as follows.
+Log-in to the Raspberry Pi using `ssh` and run the script file as follows.
 ```
 curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/setup_weatherdisplay.sh | sudo bash /dev/stdin
 ```
+
+From Windows, the same setup can also be started remotely via PuTTY `plink` without opening an interactive SSH session:
+```
+plink -batch -ssh -l pi -pw raspberry 192.168.101.83 "echo raspberry | sudo -S -p '' bash -c 'curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/setup_weatherdisplay.sh | bash /dev/stdin'"
+```
+
 Append script parameters if needed:
 | Parameter | Description |
 |---|---|
@@ -29,16 +35,17 @@ Append script parameters if needed:
 | `--no-reboot` | After the setup, a full reboot cycle is required. This parameter suppresses the reboot. This is mainly used of debugging purposes. |
 | `--help` | Shows the script help. |
 
+Sample usage to install the latest pre-release version of WeatherDisplay.Api with debug logging:
 ```
 curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/setup_weatherdisplay.sh | sudo bash /dev/stdin --debug --pre
 ```
 
-To force a full re-setup on an already provisioned device, use:
+To reset an already provisioned device, use following command:
 ```
 curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/setup_weatherdisplay.sh | sudo bash /dev/stdin --reset
 ```
 
-### Extended Setup / Troubleshooting
+### Manual Setup / Troubleshooting
 The following steps are fully automated in `setup_weatherdisplay.sh`. Follow these steps if the setup script cause troubles.
 
 #### Prepare the Raspberry Pi
@@ -208,7 +215,7 @@ sudo systemctl daemon-reload
 sudo systemctl start weatherdisplay.api
 ```
 
-### Run PiWeatherStation
+### Access PiWeatherStation Web API
 - Connect to the access point with the SSID `PiWeatherDisplay_...` and the wifi password given during setup.
 - Access the web API with the browser: https://192.168.10.1:5001/swagger/index.html.
 - Use the API method `/api/identity/login` to get an authentication token. Press the Swagger authorize button to use the authentication token.
