@@ -18,7 +18,7 @@ curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/deve
 
 From Windows, the same setup can also be started remotely via PuTTY `plink` without opening an interactive SSH session:
 ```
-plink -batch -ssh -l pi -pw raspberry 192.168.101.83 "echo raspberry | sudo -S -p '' bash -c 'curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/setup_weatherdisplay.sh | bash /dev/stdin'"
+plink -ssh -l pi -pw raspberry 192.168.101.83 "echo raspberry | sudo -S -p '' bash -c 'curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/setup_weatherdisplay.sh | bash /dev/stdin'"
 ```
 
 Append script parameters if needed:
