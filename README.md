@@ -284,11 +284,11 @@ content-length: 1460
 - https://github.com/Tharnas/EInkDisplayService
 - https://github.com/bezysoftware/crypto-clock
 
-
 #### Raspberry Pi Resources
 - https://www.raspberrypi.com/documentation/computers/raspberry-pi.html
 - https://desertbot.io/blog/headless-pi-zero-ssh-access-over-usb-windows
 - https://www.petecodes.co.uk/install-and-use-microsoft-dot-net-6-with-the-raspberry-pi/
+- https://www.raspberrypi.com/software/
 
 #### Microsoft .NET
 - https://docs.microsoft.com/en-us/dotnet/iot/deployment
@@ -322,3 +322,4 @@ content-length: 1460
 - https://github.com/Violetta-9/Weather/tree/master
 - https://openweathermap.org/weather-conditions
 - https://www.meteoschweiz.admin.ch/home/service-und-publikationen/beratung-und-service/meteoschweiz-app.html
+- https://win32diskimager.org
