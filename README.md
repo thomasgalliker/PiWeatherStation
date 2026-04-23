@@ -4,34 +4,49 @@ This is a demo project which uses a Raspberry Pi 4 / Zero 2 to draw some basic w
 ![](Docs/2022-28-05-DisplayPhoto2.jpg)
 
 ### Quick Setup
-The script file `update_weatherdisplay_api.sh` contains all necessary steps to prepare a new Raspberry Pi to run WeatherDisplay.Api:
-- Downloads and installs the .NET SDK.
+The script file `setup_weatherdisplay.sh` contains all necessary steps to prepare a new Raspberry Pi to run WeatherDisplay.Api:
+- Downloads and installs .NET runtime.
 - Downloads and installs WeatherDisplay.Api as a service. 
 - Adjusts the Raspberry Pi hardware configuration. (Enables SPI, sets dtoverlays).
 - Configures the wifi to become an access point.
 - Sets environment variables.
 
-Log-in to the Raspberry Pi and run the script file as follows.
+Log-in to the Raspberry Pi using `ssh` and run the script file as follows.
 ```
-curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh | sudo bash /dev/stdin
+curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/setup_weatherdisplay.sh | sudo bash /dev/stdin
 ```
+
+From Windows, the same setup can also be started remotely via PuTTY `plink` without opening an interactive SSH session:
+```
+plink -batch -ssh -l pi -pw raspberry 192.168.101.83 "echo raspberry | sudo -S -p '' bash -c 'curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/setup_weatherdisplay.sh | bash /dev/stdin'"
+```
+
 Append script parameters if needed:
 | Parameter | Description |
 |---|---|
 | `--pre` | Downloads pre-releases of WeatherDisplay.Api. |
+| `--reset` | Forces a clean setup of the device. |
 | `--debug` | Writes verbose log messages to the console (mainly used for debugging purposes). |
-| `--host` | Sets the hostname. By default, a portion of the hardware serial number is used as hostname. The hostname can be changed later. |
+| `--host` | Sets the hostname. By default, the hostname is set to `raspi<serial-number>`. The hostname can be changed later. |
+| `--framework` | Sets the target framework used to choose the .NET runtime channel. Default is `net10.0`. |
 | `--keyboard` | Sets the keyboard layout (e.g. "us" or "de"). |
 | `--locale` | Sets the localization/language. |
 | `--timezone` | Sets the timezone. |
 | `--no-reboot` | After the setup, a full reboot cycle is required. This parameter suppresses the reboot. This is mainly used of debugging purposes. |
+| `--help` | Shows the script help. |
 
+Sample usage to install the latest pre-release version of WeatherDisplay.Api with debug logging:
 ```
-curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/update_weatherdisplay_api.sh | sudo bash /dev/stdin --debug --pre
+curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/setup_weatherdisplay.sh | sudo bash /dev/stdin --debug --pre
 ```
 
-### Extended Setup / Troubleshooting
-The following steps are fully automated in `update_weatherdisplay_api.sh`. Follow these steps if the update script cause troubles.
+To reset an already provisioned device, use following command:
+```
+curl -sSL https://raw.githubusercontent.com/thomasgalliker/PiWeatherStation/develop/WeatherDisplay.Api/Scripts/setup_weatherdisplay.sh | sudo bash /dev/stdin --reset
+```
+
+### Manual Setup / Troubleshooting
+The following steps are fully automated in `setup_weatherdisplay.sh`. Follow these steps if the setup script cause troubles.
 
 #### Prepare the Raspberry Pi
 - Before we install any additional library, make sure the Raspberry OS as well as the installed libraries are on the latest stable releases.
@@ -58,10 +73,10 @@ sudo timedatectl set-timezone Europe/Zurich
 ```
 
 #### Install .NET on Raspberry Pi
-- Go to Microsoft's [dotnet download page](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) and download the appropriate version of .NET. I usually use the 32bit Version of Raspbian OS, so the appropriate .NET architecture should be ARM32.
+- Go to Microsoft's [dotnet download page](https://dotnet.microsoft.com/en-us/download/dotnet/10.0) and download the appropriate ASP.NET Core runtime version. I usually use the 32bit Version of Raspbian OS, so the appropriate .NET architecture should be ARM32.
 - The following dotnet-install.sh script simplifies the automated installation of dotnet on Linux:
 ```
-curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --version latest --channel 8.0 --install-dir /home/pi/.dotnet
+curl -sSL https://dot.net/v1/dotnet-install.sh | sudo bash /dev/stdin --runtime aspnetcore --version latest --channel 10.0 --install-dir /home/pi/.dotnet
 ```
 
 - Edit the bash profile and add following lines to the end of the file. If `export PATH` already exists, extend it instead of creating a new export. Use `sudo nano ~/.bashrc` to double check if everything is fine.
@@ -82,16 +97,12 @@ sudo reboot
 - Run `dotnet --info` to check if your .NET installation works as expected:
 ```
 pi@raspberrypi:~ $ dotnet --info
-.NET SDK (reflecting any global.json):
- Version:   8.x.xxx
- Commit:    ...
-
 Runtime Environment:
  OS Name:     raspbian
  OS Version:  11
  OS Platform: Linux
  RID:         linux-arm
- Base Path:   /home/pi/.dotnet/sdk/8.x.xxx/
+ Base Path:   /home/pi/.dotnet/shared/Microsoft.AspNetCore.App/x.y.z/
  ...
 ```
 
@@ -204,8 +215,8 @@ sudo systemctl daemon-reload
 sudo systemctl start weatherdisplay.api
 ```
 
-### Run PiWeatherStation
-- Connect to the access point with the SSID "Pi_..." and the wifi password given during setup.
+### Access PiWeatherStation Web API
+- Connect to the access point with the SSID `PiWeatherDisplay_...` and the wifi password given during setup.
 - Access the web API with the browser: https://192.168.10.1:5001/swagger/index.html.
 - Use the API method `/api/identity/login` to get an authentication token. Press the Swagger authorize button to use the authentication token.
 - Call any other API method after successful login. 
@@ -213,7 +224,7 @@ sudo systemctl start weatherdisplay.api
 ### Troubleshooting & Maintenance
 #### Update and restart the service
 If anything in the service definition (weatherdisplay.api.service file) is changed, the service needs to be stopped and restarted.
-The same procedure is necessary if we want to re-deploy the WeatherDisplay.Api binaries.
+For a regular application update on an existing device, run `setup_weatherdisplay.sh` without additional flags. Use `--reset` only when you intentionally want to rerun the full device setup and rotate credentials. The manual procedure below is still useful for troubleshooting or custom deployments.
 
 -  Stop the service to release any file locks or http listeners.
 ```
@@ -290,7 +301,7 @@ content-length: 1460
 - https://swimburger.net/blog/dotnet/how-to-run-aspnet-core-as-a-service-on-linux
 - https://docs.microsoft.com/en-us/troubleshoot/developer/webapps/aspnetcore/practice-troubleshoot-linux/2-6-run-two-aspnetcore-applications-same-time
 - https://procodeguide.com/programming/how-to-set-start-url-in-aspnet-core/
-- https://docs.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoints?view=aspnetcore-8.0
+- https://learn.microsoft.com/en-us/aspnet/core/fundamentals/servers/kestrel/endpoints?view=aspnetcore-10.0
 - https://richstokoe.com/2017/12/10/running-asp-net-core-raspbian-linux-raspberry-pi-https/
 - https://github.com/alastairgould/dotnet-core-systemd/blob/7eb500a1f1ffe4e27278edb14ef85fb0a11bf8bf/webapplication.service
 - https://dejanstojanovic.net/aspnet/2018/june/clean-service-stop-on-linux-with-net-core-21/

@@ -40,5 +40,7 @@ namespace DisplayService
         }
 
         public DeviceRotation Rotation { get; set; }
+
+        public string DefaultFont { get; set; }
     }
 }

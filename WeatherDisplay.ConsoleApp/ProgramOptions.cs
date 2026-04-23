@@ -1,24 +1,26 @@
 ﻿using System.CommandLine;
 
-namespace DisplayService.ConsoleApp
+namespace WeatherDisplay.ConsoleApp
 {
     public static class ProgramOptions
     {
         public static readonly Option<bool> ClearOption = new Option<bool>(
-            aliases: new[] { "clear", "--clear" },
-            getDefaultValue: () => false,
-            description: "Clears the display")
+            name: "--clear",
+            aliases: new[] { "clear" })
         {
-            IsRequired = false,
+            Description = "Clears the display",
+            DefaultValueFactory = _ => false,
+            Required = false,
             Arity = ArgumentArity.ZeroOrOne,
         };
 
         public static readonly Option<bool> SilentOption = new Option<bool>(
-            aliases: new[] { "silent", "--silent" },
-            getDefaultValue: () => true,
-            description: "Silences command output on standard out.")
+            name: "--silent",
+            aliases: new[] { "silent" })
         {
-            IsRequired = false,
+            Description = "Silences command output on standard out.",
+            DefaultValueFactory = _ => true,
+            Required = false,
             Arity = ArgumentArity.ZeroOrOne,
         };
     }

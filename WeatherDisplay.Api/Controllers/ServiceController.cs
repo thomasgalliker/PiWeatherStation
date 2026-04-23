@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using RaspberryPi.Services;
 using WeatherDisplay.Api.Services;
 
 namespace WeatherDisplay.Api.Controllers

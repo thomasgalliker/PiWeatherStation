@@ -46,7 +46,7 @@ namespace WeatherDisplay.Services
             var ssids = this.wpa.GetConnectedSSIDs(wlan0);
             return ssids;
         }
-        
+
         public async Task<IEnumerable<string>> GetConfiguredSSIDsAsync()
         {
             var wpaSupplicantConf = await this.wpa.GetWPASupplicantConfAsync();
@@ -56,7 +56,7 @@ namespace WeatherDisplay.Services
         private INetworkInterface GetWlanNetworkInterface()
         {
             INetworkInterface iface;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 iface = this.networkInterfaceService.GetAll()
                     .FirstOrDefault(i => i.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 && i.OperationalStatus == OperationalStatus.Up);
@@ -76,7 +76,7 @@ namespace WeatherDisplay.Services
             var psk = Guid.NewGuid().ToString("N").Substring(0, 8);
             var wlan0 = this.GetWlanNetworkInterface();
             var parsedIPAddress = IPAddress.Parse(DefaultIPAddress);
-            await this.networkManager.SetupAccessPoint(wlan0, ssid, psk, parsedIPAddress, Channel, Country);
+            await this.networkManager.SetupAccessPointAsync(wlan0, ssid, psk, parsedIPAddress, Channel, Country);
             return (ssid, psk);
         }
 
@@ -89,9 +89,8 @@ namespace WeatherDisplay.Services
                 SSID = ssid,
                 PSK = psk,
             };
-            await this.networkManager.SetupStationMode(wlan0, network);
+            await this.networkManager.ConnectToWifiNetworkAsync(wlan0, network);
         }
-
 
         public async Task RemoveWifiAsync(string ssid)
         {

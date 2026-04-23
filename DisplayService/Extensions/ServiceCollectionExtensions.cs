@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using DisplayService;
 using DisplayService.Devices;
 using DisplayService.Services;
@@ -34,10 +35,16 @@ namespace Microsoft.Extensions.DependencyInjection
             {
                 var displayOptions = s.GetRequiredService<IOptions<DisplayOptions>>().Value;
 
+                var driverType = displayOptions.DriverType;
+                if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    driverType = "NullDisplay";
+                }
+
                 IDisplay display;
                 try
                 {
-                    switch (displayOptions.DriverType)
+                    switch (driverType)
                     {
                         case "WaveShareDisplay":
                             var waveShareDisplayLogger = s.GetRequiredService<ILogger<WaveShareDisplay>>();
@@ -64,7 +71,10 @@ namespace Microsoft.Extensions.DependencyInjection
             serviceCollection.AddSingleton<IRenderSettings>(s =>
             {
                 var displayOptions = s.GetRequiredService<IOptions<DisplayOptions>>().Value;
-                var renderSettings = new RenderSettings(displayOptions.Width, displayOptions.Height, displayOptions.Rotation);
+                var renderSettings = new RenderSettings(displayOptions.Width, displayOptions.Height, displayOptions.Rotation)
+                {
+                    DefaultFont = displayOptions.DefaultFont,
+                };
                 return renderSettings;
             });
 

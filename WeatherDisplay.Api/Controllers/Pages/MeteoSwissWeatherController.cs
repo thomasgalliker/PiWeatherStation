@@ -1,7 +1,7 @@
 using MeteoSwissApi;
 using MeteoSwissApi.Models;
 using Microsoft.AspNetCore.Mvc;
-using WeatherDisplay.Api.Services.Configuration;
+using Superdev.AspNetCore.Options;
 using WeatherDisplay.Pages.MeteoSwiss;
 
 namespace WeatherDisplay.Api.Controllers.Pages
@@ -36,11 +36,11 @@ namespace WeatherDisplay.Api.Controllers.Pages
         }
 
         [HttpPost("place")]
-        public void AddPlace(MeteoSwissPlace meteoSwissPlace)
+        public async Task AddPlace(MeteoSwissPlace meteoSwissPlace)
         {
             // TODO: Input validation!
 
-            this.meteoSwissWeatherPageOptions.Update((o) =>
+            await this.meteoSwissWeatherPageOptions.UpdateAsync((o) =>
             {
                 if (o.Places.SingleOrDefault(p => p.Plz == meteoSwissPlace.Plz) is MeteoSwissPlace)
                 {
@@ -62,11 +62,11 @@ namespace WeatherDisplay.Api.Controllers.Pages
         }
 
         [HttpPut("place")]
-        public void UpdatePlace(MeteoSwissPlace meteoSwissPlace)
+        public async Task UpdatePlace(MeteoSwissPlace meteoSwissPlace)
         {
             // TODO: Input validation!
 
-            this.meteoSwissWeatherPageOptions.Update((o) =>
+            await this.meteoSwissWeatherPageOptions.UpdateAsync((o) =>
             {
                 if (meteoSwissPlace.IsCurrentPlace)
                 {
@@ -91,9 +91,9 @@ namespace WeatherDisplay.Api.Controllers.Pages
         }
 
         [HttpPut("place/current")]
-        public void SetCurrentPlace(int plz)
+        public async Task SetCurrentPlace(int plz)
         {
-            this.meteoSwissWeatherPageOptions.Update((o) =>
+            await this.meteoSwissWeatherPageOptions.UpdateAsync((o) =>
             {
                 if (o.Places.SingleOrDefault(p => p.Plz == plz) is MeteoSwissPlace existingPlace)
                 {
@@ -110,9 +110,9 @@ namespace WeatherDisplay.Api.Controllers.Pages
         }
 
         [HttpDelete("place")]
-        public void RemovePlace(int plz)
+        public async Task RemovePlace(int plz)
         {
-            this.meteoSwissWeatherPageOptions.Update((o) =>
+            await this.meteoSwissWeatherPageOptions.UpdateAsync((o) =>
             {
                 if (o.Places.SingleOrDefault(p => p.Plz == plz) is MeteoSwissPlace existingPlace)
                 {

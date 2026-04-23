@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using FluentAssertions;
 using Microsoft.Extensions.Logging;
@@ -34,9 +33,10 @@ namespace WeatherDisplay.Tests.Services.Astronomy
             this.testOutputHelper.WriteLine(ObjectDumper.Dump(planetaryKIndexForecasts, DumpStyle.CSharp));
 
             planetaryKIndexForecasts.Should().NotBeNull();
-            planetaryKIndexForecasts.Should().HaveCount(81);
+            planetaryKIndexForecasts.Should().NotBeEmpty();
             planetaryKIndexForecasts[0].TimeTag.Kind.Should().Be(DateTimeKind.Utc);
             planetaryKIndexForecasts[0].KpIndex.Should().BeInRange(0, 9);
+            planetaryKIndexForecasts.Should().OnlyContain(x => x.KpIndex >= 0 && x.KpIndex <= 9);
         }
     }
 }

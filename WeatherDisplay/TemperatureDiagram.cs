@@ -27,12 +27,7 @@ namespace WeatherDisplay
 
             var circleRadius = options.CircleRadius;
             var textPaint = options.TextPaint;
-
-            var textPaintCenterAligned = textPaint.Clone();
-            textPaintCenterAligned.TextAlign = SKTextAlign.Center;
-
-            var textPaintRightAligned = textPaint.Clone();
-            textPaintRightAligned.TextAlign = SKTextAlign.Right;
+            var textFont = options.TextFont;
 
             var axisPaint = new SKPaint
             {
@@ -121,9 +116,8 @@ namespace WeatherDisplay
                 canvas.DrawLine(labelMarkerStartPoint, labelMarkerEndPoint, axisPaint);
 
                 var labelText = xLabels[i];
-                var labelTextWidth = textPaintCenterAligned.MeasureText(labelText);
                 var labelTextPoint = new SKPoint(pointX + (pixelsPerXLabel / 2), bottomLeft.Y + 20);
-                canvas.DrawText(labelText, labelTextPoint, textPaintCenterAligned);
+                canvas.DrawText(labelText, labelTextPoint, SKTextAlign.Center, textFont, textPaint);
             }
 
             // Calculate temperature value per pixel in Y axis
@@ -152,14 +146,14 @@ namespace WeatherDisplay
                 canvas.DrawLine(new SKPoint(bottomLeft.X, topLeft.Y + (i * pixelsPerAuxiliaryLine)), new SKPoint(topRight.X, topRight.Y + (i * pixelsPerAuxiliaryLine)), auxiliaryLinePaint);
                 if (temperatureAuxiliaryLine.Value != absMaxTemp.Value && temperatureAuxiliaryLine.Value != absMinTemp.Value)
                 {
-                    canvas.DrawText(temperatureAuxiliaryLine.ToString("0"), bottomLeft.X - 20, topLeft.Y + 5 + (i * pixelsPerAuxiliaryLine), textPaintRightAligned);
+                    canvas.DrawText(temperatureAuxiliaryLine.ToString("0"), bottomLeft.X - 20, topLeft.Y + 5 + (i * pixelsPerAuxiliaryLine), SKTextAlign.Right, textFont, textPaint);
                 }
             }
 
             canvas.DrawLine(bottomLeft, new SKPoint(bottomLeft.X - 15, bottomLeft.Y), axisPaint);
             canvas.DrawLine(topLeft, new SKPoint(topLeft.X - 15, topLeft.Y), axisPaint);
-            canvas.DrawText(absMinTemp.ToString("0"), bottomLeft.X - 20, bottomLeft.Y + 5, textPaintRightAligned);
-            canvas.DrawText(absMaxTemp.ToString("0"), topLeft.X - 20, topLeft.Y + 5, textPaintRightAligned);
+            canvas.DrawText(absMinTemp.ToString("0"), bottomLeft.X - 20, bottomLeft.Y + 5, SKTextAlign.Right, textFont, textPaint);
+            canvas.DrawText(absMaxTemp.ToString("0"), topLeft.X - 20, topLeft.Y + 5, SKTextAlign.Right, textFont, textPaint);
 
             var absMaxPrecipitation = precipitation.Max();
             var absMinPrecipitation = precipitation.Min();
@@ -173,14 +167,14 @@ namespace WeatherDisplay
                 var guidelinePrecipitation = absMaxPrecipitation - (i * (minMaxPrecipitationDiff / numberOfAuxiliaryAxis));
                 if (guidelinePrecipitation != absMaxPrecipitation && guidelinePrecipitation != absMaxPrecipitation)
                 {
-                    canvas.DrawText(guidelinePrecipitation.ToString("0.00"), bottomRight.X + 20, topLeft.Y + 5 + (i * pixelsPerAuxiliaryLine), textPaint);
+                    canvas.DrawText(guidelinePrecipitation.ToString("0.00"), bottomRight.X + 20, topLeft.Y + 5 + (i * pixelsPerAuxiliaryLine), SKTextAlign.Left, textFont, textPaint);
                 }
             }
 
             canvas.DrawLine(bottomRight, new SKPoint(bottomRight.X + 15, bottomRight.Y), axisPaint);
             canvas.DrawLine(topRight, new SKPoint(bottomRight.X + 15, topLeft.Y), axisPaint);
-            canvas.DrawText(absMinPrecipitation.ToString("0.00"), bottomRight.X + 20, bottomLeft.Y + 5, textPaint);
-            canvas.DrawText(absMaxPrecipitation.ToString("0.00"), bottomRight.X + 20, topLeft.Y + 5, textPaint);
+            canvas.DrawText(absMinPrecipitation.ToString("0.00"), bottomRight.X + 20, bottomLeft.Y + 5, SKTextAlign.Left, textFont, textPaint);
+            canvas.DrawText(absMaxPrecipitation.ToString("0.00"), bottomRight.X + 20, topLeft.Y + 5, SKTextAlign.Left, textFont, textPaint);
 
             DrawCurrentDateLine(canvas, now, currentDateTimeLinePaint, topLeft, bottomLeft, firstDate, pixelsPerTempX);
 
@@ -195,7 +189,7 @@ namespace WeatherDisplay
             canvas.DrawCircle(new SKPoint(bottomLeft.X + 115, topLeft.Y - 100), 7, temperatureLinePaint);
             path3.LineTo(bottomLeft.X + 130, topLeft.Y - 100);
             canvas.DrawPath(path3, temperatureLinePaint);
-            canvas.DrawText("Temperature - °C (Left Axis)", new SKPoint(bottomLeft.X + 140, topLeft.Y - 95), textPaint);
+            canvas.DrawText("Temperature - °C (Left Axis)", new SKPoint(bottomLeft.X + 140, topLeft.Y - 95), SKTextAlign.Left, textFont, textPaint);
 
             var path4 = new SKPath();
             path4.MoveTo(bottomLeft.X + 100, topLeft.Y - 50);
@@ -203,7 +197,7 @@ namespace WeatherDisplay
             canvas.DrawCircle(new SKPoint(bottomLeft.X + 115, topLeft.Y - 50), 7, precipitationFillPaint);
             path4.LineTo(bottomLeft.X + 130, topLeft.Y - 50);
             canvas.DrawPath(path4, precipitationLinePaint);
-            canvas.DrawText("Precipitation - mm (Right Axis)", new SKPoint(bottomLeft.X + 140, topLeft.Y - 45), textPaint);
+            canvas.DrawText("Precipitation - mm (Right Axis)", new SKPoint(bottomLeft.X + 140, topLeft.Y - 45), SKTextAlign.Left, textFont, textPaint);
         }
 
         private static void DrawCurrentDateLine(SKCanvas canvas, DateTime now, SKPaint currentDateTimeLinePaint, SKPoint topLeft, SKPoint bottomLeft, DateTime firstDate, float pixelsPerTempX)

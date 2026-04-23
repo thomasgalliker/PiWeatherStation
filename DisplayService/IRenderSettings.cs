@@ -9,5 +9,7 @@
         DeviceRotation Rotation { get; }
 
         string BackgroundColor { get; }
+
+        string DefaultFont { get; }
     }
 }

@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using WeatherDisplay.Model.Wiewarm;
-using WeatherDisplay.Model.Wiewarm.Converters;
 
 namespace WeatherDisplay.Services.Wiewarm
 {
@@ -14,7 +14,7 @@ namespace WeatherDisplay.Services.Wiewarm
 
         private readonly ILogger<WiewarmService> logger;
         private readonly HttpClient httpClient;
-        private readonly JsonSerializerSettings serializerSettings;
+        private readonly JsonSerializerOptions serializerOptions;
 
         public WiewarmService(ILogger<WiewarmService> logger)
          : this(logger, new HttpClient())
@@ -25,25 +25,24 @@ namespace WeatherDisplay.Services.Wiewarm
         {
             this.logger = logger;
             this.httpClient = httpClient;
-            this.serializerSettings = new JsonSerializerSettings
+            this.serializerOptions = new JsonSerializerOptions
             {
-                NullValueHandling = NullValueHandling.Ignore,
+                NumberHandling = JsonNumberHandling.AllowReadingFromString,
+                PropertyNameCaseInsensitive = true,
             };
-
-            this.serializerSettings.Converters.Add(new TemperatureJsonConverter());
         }
 
         public async Task<Bath> GetBathByIdAsync(int badId)
         {
-            var uri = $"https://www.wiewarm.ch:443/api/v1/bad.json/{badId}";
-            this.logger.LogDebug($"GetBadByIdAsync: GET {uri}");
+            var uri = $"{Endpoint}/bad.json/{badId}";
+            this.logger.LogDebug($"GetBathByIdAsync: GET {uri}");
 
             var response = await this.httpClient.GetAsync(uri).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
 
             var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            var wiewarmBadResponse = JsonConvert.DeserializeObject<Bath>(responseJson, this.serializerSettings);
+            var wiewarmBadResponse = JsonSerializer.Deserialize<Bath>(responseJson, this.serializerOptions);
             return wiewarmBadResponse;
         }
 
@@ -61,7 +60,7 @@ namespace WeatherDisplay.Services.Wiewarm
 
             var responseJson = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
 
-            var wiewarmBadResponse = JsonConvert.DeserializeObject<IEnumerable<Bath>>(responseJson, this.serializerSettings);
+            var wiewarmBadResponse = JsonSerializer.Deserialize<IEnumerable<Bath>>(responseJson, this.serializerOptions);
             return wiewarmBadResponse;
         }
     }

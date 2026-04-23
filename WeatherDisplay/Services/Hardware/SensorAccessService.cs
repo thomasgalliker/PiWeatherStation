@@ -101,7 +101,7 @@ namespace WeatherDisplay.Services.Hardware
         {
             if (!this.initialized)
             {
-                throw new InvalidOperationException($"Use {this.GetType().Name}.{nameof(Initialize)} to initialize sensors.");
+                throw new InvalidOperationException($"Use {this.GetType().Name}.{nameof(this.Initialize)} to initialize sensors.");
             }
         }
 

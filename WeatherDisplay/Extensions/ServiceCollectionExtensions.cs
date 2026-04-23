@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Reflection;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using WeatherDisplay.Model.Settings;
 using WeatherDisplay.Pages;
 using WeatherDisplay.Services;

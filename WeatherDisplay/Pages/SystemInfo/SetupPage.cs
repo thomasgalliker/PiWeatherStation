@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.NetworkInformation;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using DisplayService.Model;
@@ -81,7 +80,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                             AdjustsFontSizeToFitHeight = true,
                             Bold = true,
                         },
-                        
+
                         // Version
                         new RenderActions.Text
                         {
@@ -258,7 +257,7 @@ namespace WeatherDisplay.Pages.SystemInfo
         private IEnumerable<ConnectedAccessPointClient> GetConnectedClients(INetworkInterface wlan0)
         {
             IEnumerable<ConnectedAccessPointClient> connectedClients;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 connectedClients = new List<ConnectedAccessPointClient>
                 {
@@ -280,7 +279,7 @@ namespace WeatherDisplay.Pages.SystemInfo
         private IEnumerable<string> GetConnectedSSIDs(INetworkInterface wlan0)
         {
             IEnumerable<string> connectedSSIDs;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 connectedSSIDs = new List<string>
                 {
@@ -298,7 +297,7 @@ namespace WeatherDisplay.Pages.SystemInfo
         private INetworkInterface GetWifiNetworkInterface()
         {
             INetworkInterface iface;
-            if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
             {
                 iface = this.networkInterfaceService.GetAll()
                     .FirstOrDefault(i => i.NetworkInterfaceType == NetworkInterfaceType.Wireless80211 && i.OperationalStatus == OperationalStatus.Up);

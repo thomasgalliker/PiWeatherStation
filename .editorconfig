@@ -1,7 +1,7 @@
 ####################################################################
-# Editor Configuration (Updated 2023-07-26)
+# Editor Configuration
 #
-# (c)2023 superdev GmbH
+# (c)2026 superdev GmbH
 ####################################################################
 
 root = true
@@ -11,14 +11,17 @@ indent_style = space
 indent_size = 2
 tab_width = 2
 
+[*.md]
+max_line_length = 140
+
 [*.cs]
 indent_style = space
 indent_size = 4
 tab_width = 4
-end_of_line = crlf
+end_of_line = lf
 trim_trailing_whitespace = true
 insert_final_newline = false
-max_line_length = 140
+max_line_length = 200
 
 csharp_indent_block_contents = true
 csharp_indent_braces = false

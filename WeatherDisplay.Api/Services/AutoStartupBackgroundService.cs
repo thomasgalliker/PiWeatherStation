@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 using NCrontab;
 using NCrontab.Scheduler;
 using NLog;
-using WeatherDisplay.Api.Services.Configuration;
+using Superdev.AspNetCore.Options;
 using WeatherDisplay.Api.Updater.Services;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.Settings;
@@ -57,18 +57,18 @@ namespace WeatherDisplay.Api.Services
 
             try
             {
-                // Create appSettings.user.json (if not exists)
+                // Create appSettings.User.json (if not exists)
                 var appSettingsUserFile = new FileInfo(Path.Combine(this.webHostEnvironment.ContentRootPath, Program.UserSpecificAppSettingsFileName));
                 if (!appSettingsUserFile.Exists)
                 {
-                    this.writableAppSettings.Update(a => AppSettings.Default);
+                    await this.writableAppSettings.UpdateAsync(a => AppSettings.Default);
                 }
 
                 // Check if there are button mappings configured
                 if (!this.appSettings.CurrentValue.ButtonMappings.Any())
                 {
                     this.logger.LogDebug($"Creating initial ButtonMappings in {appSettingsUserFile.Name}");
-                    this.writableAppSettings.UpdateProperty(a => a.ButtonMappings, AppSettings.Default.ButtonMappings);
+                    await this.writableAppSettings.UpdatePropertyAsync(a => a.ButtonMappings, AppSettings.Default.ButtonMappings);
                 }
 
                 // Check if a new accesspoint configuration file is present
@@ -87,7 +87,7 @@ namespace WeatherDisplay.Api.Services
                         accessPointSection.Bind(accessPointSettings);
 
                         this.logger.LogDebug($"Merging access point config file {accessPointConfigFile.Name} into appSettings.User.json");
-                        this.writableAppSettings.UpdateProperty(a => a.AccessPoint, accessPointSettings);
+                        await this.writableAppSettings.UpdatePropertyAsync(a => a.AccessPoint, accessPointSettings);
 
                         accessPointConfigFile.Delete();
                     }
@@ -136,7 +136,7 @@ namespace WeatherDisplay.Api.Services
                 var result = await this.autoUpdateService.CheckForUpdateAsync();
                 if (result.HasUpdate)
                 {
-                    // What about running "sudo sh update_weatherdisplay_api.sh --pre --no-reboot --debug" here instead of delegating the update steps to another service?
+                    // What about running "sudo sh setup_weatherdisplay.sh --pre --no-reboot --debug" here instead of delegating the update steps to another service?
                     var updateRequest = UpdateRequestFactory.Create(result.UpdateVersion, result.UpdateVersionSource);
                     this.autoUpdateService.StartUpdate(updateRequest);
                 }

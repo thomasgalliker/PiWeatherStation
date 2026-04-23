@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace WeatherDisplay.Api.Updater.Models
 {
@@ -19,16 +18,13 @@ namespace WeatherDisplay.Api.Updater.Models
 
         public string Arguments { get; set; }
 
-        [DefaultValue(false)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public bool RedirectStandardOutput { get; set; }
 
-        [DefaultValue(false)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public bool UseShellExecute { get; set; }
 
-        [DefaultValue(false)]
-        [JsonProperty(DefaultValueHandling = DefaultValueHandling.Ignore)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public bool CreateNoWindow { get; set; }
     }
 }

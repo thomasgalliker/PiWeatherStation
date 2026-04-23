@@ -152,19 +152,27 @@ namespace DisplayService.Services
 
         private async Task<IReadOnlyCollection<IRenderAction>> GetRenderActionsAsync(IReadOnlyCollection<Guid> scheduledTaskIds = null)
         {
-            IEnumerable<KeyValuePair<Guid, IRenderActionFactory>> renderActionFactories;
+            IEnumerable<KeyValuePair<Guid, IRenderActionFactory>> renderActionFactories = this.renderingSetup;
 
-            if (scheduledTaskIds == null)
+            if (scheduledTaskIds != null)
             {
-                renderActionFactories = this.renderingSetup;
-            }
-            else
-            {
-                renderActionFactories = this.renderingSetup.Where(s => scheduledTaskIds.Contains(s.Key));
+                renderActionFactories = renderActionFactories.Where(s => scheduledTaskIds.Contains(s.Key));
             }
 
-            var results = await Task.WhenAll(renderActionFactories.Select(x => x.Value.GetRenderActionsAsync()));
-            var renderActions = results.SelectMany(x => x).ToList();
+            var results = await Task.WhenAll(renderActionFactories.Select(async f =>
+            {
+                try
+                {
+                    return await f.Value.GetRenderActionsAsync();
+                }
+                catch (Exception ex)
+                {
+                    this.logger.LogError(ex, $"GetRenderActionsAsync failed for task {f.Key:B}");
+                    return Enumerable.Empty<IRenderAction>();
+                }
+            }));
+
+            var renderActions = results.SelectMany(r => r).ToArray();
             return renderActions;
         }
 

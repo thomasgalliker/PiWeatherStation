@@ -1,21 +1,33 @@
-﻿using WeatherDisplay.Api.Models;
+using Microsoft.Extensions.Options;
+using WeatherDisplay.Api.Models;
+using WeatherDisplay.Model.Settings;
 
 namespace WeatherDisplay.Api.Services
 {
     public class UserService : IUserService
     {
-        private readonly List<User> users = new List<User>
+        private const string DefaultUserName = "pi";
+        private readonly AccessPointSettings accessPointSettings;
+
+        public UserService(IWebHostEnvironment webHostEnvironment, IOptions<AppSettings> appSettings)
         {
-            // Hard-coded list of users. 
-            // Don't ever use this code in production!
-            // Don't ever store passwords - neither in clear text nor encrypted!
-            new User { Id = Guid.NewGuid().ToString(), Username = "pi", Password = "raspberry" },
-        };
+            this.accessPointSettings = appSettings.Value.AccessPoint;
+        }
 
         public User GetUser(string username, string password)
         {
-            var user = this.users.SingleOrDefault(x => x.Username == username && x.Password == password);
-            return user;
+            if (this.accessPointSettings.PSK != null &&
+                string.Equals(username, DefaultUserName, StringComparison.Ordinal) &&
+                string.Equals(password, this.accessPointSettings.PSK, StringComparison.Ordinal))
+            {
+                return new User
+                {
+                    Id = $"{Guid.NewGuid():B}",
+                    Username = username,
+                };
+            }
+
+            return null;
         }
     }
 }

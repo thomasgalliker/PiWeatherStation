@@ -12,16 +12,20 @@ namespace WeatherDisplay
             this.TextPaint = new SKPaint
             {
                 Color = SKColors.Black,
-                TextSize = 12,
                 IsAntialias = true,
-                FakeBoldText = false,
                 IsStroke = false,
-                TextAlign = SKTextAlign.Left,
+            };
+            this.TextFont = new SKFont
+            {
+                Size = 12,
+                Embolden = false,
             };
         }
 
         public int CircleRadius { get; set; }
 
         public SKPaint TextPaint { get; set; }
+
+        public SKFont TextFont { get; set; }
     }
 }

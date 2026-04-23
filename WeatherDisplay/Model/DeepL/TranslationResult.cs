@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace WeatherDisplay.Model.DeepL
 {
@@ -10,7 +10,7 @@ namespace WeatherDisplay.Model.DeepL
             this.Translations = new List<Translation>();
         }
 
-        [JsonProperty("translations")]
+        [JsonPropertyName("translations")]
         public IEnumerable<Translation> Translations { get; set; }
     }
 }

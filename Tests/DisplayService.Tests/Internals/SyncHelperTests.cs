@@ -1,4 +1,5 @@
-﻿using System.Linq;
+using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DisplayService.Internals;
@@ -52,63 +53,66 @@ namespace DisplayService.Tests.Internals
         {
             // Arrange
             var counter = 0;
-            var parallelTasks = 100000;
+            var parallelTasks = 64;
             var syncHelper = new SyncHelper();
-
-            Task task(int id)
-            {
-                return Task.Run(async () =>
-                {
-                    // Simulate a long running task here
-                    await Task.Delay(200);
-
-                    // Access a shared resource, variable counter
-                    Interlocked.Increment(ref counter);
-                    this.testOutputHelper.WriteLine($"Run #{id}: \t\tcounter={counter}");
-                    return counter;
-                });
-            }
+            using var ready = new CountdownEvent(parallelTasks);
+            using var start = new ManualResetEventSlim(false);
 
             // Act
             var tasks = Enumerable.Range(1, parallelTasks)
-                .Select(id => Task.Run(() => syncHelper.RunOnce(() => task(id).Wait())))
+                .Select(id => Task.Run(() =>
+                {
+                    ready.Signal();
+                    start.Wait();
+
+                    syncHelper.RunOnce(() =>
+                    {
+                        Thread.Sleep(100);
+                        var value = Interlocked.Increment(ref counter);
+                        this.testOutputHelper.WriteLine($"Run #{id}: \t\tcounter={value}");
+                    });
+                }))
                 .ToList();
+            ready.Wait();
+            start.Set();
             await Task.WhenAll(tasks);
 
             // Assert
             counter.Should().Be(1);
         }
-        
+
         [Fact]
         public async Task ShouldRunOnce_WithReturnValue()
         {
             // Arrange
             var counter = 0;
-            var parallelTasks = 100;
+            var parallelTasks = 64;
             var syncHelper = new SyncHelper();
-
-            Task<int> task(int id)
-            {
-                return Task.Run(async () =>
-                {
-                    // Simulate a long running task here
-                    await Task.Delay(10);
-
-                    // Access a shared resource, variable counter
-                    Interlocked.Increment(ref counter);
-                    this.testOutputHelper.WriteLine($"Run #{id}: \t\tcounter={counter}");
-                    return counter;
-                });
-            }
+            using var ready = new CountdownEvent(parallelTasks);
+            using var start = new ManualResetEventSlim(false);
 
             // Act
             var tasks = Enumerable.Range(1, parallelTasks)
-                .Select(id => Task.Run(() => syncHelper.RunOnce(() => task(id).Result)))
+                .Select(id => Task.Run(() =>
+                {
+                    ready.Signal();
+                    start.Wait();
+
+                    return syncHelper.RunOnce(() =>
+                    {
+                        Thread.Sleep(100);
+                        var value = Interlocked.Increment(ref counter);
+                        this.testOutputHelper.WriteLine($"Run #{id}: \t\tcounter={value}");
+                        return value;
+                    });
+                }))
                 .ToList();
+            ready.Wait();
+            start.Set();
             var results = await Task.WhenAll(tasks);
 
             // Assert
-            //counter.Should().Be(1);
+            counter.Should().Be(1);
             results.Should().HaveCount(parallelTasks);
             results.Should().AllSatisfy(i => i.Should().Be(1));
         }
@@ -118,27 +122,28 @@ namespace DisplayService.Tests.Internals
         {
             // Arrange
             var counter = 0;
-            var parallelTasks = 100000;
+            var parallelTasks = 64;
             var syncHelper = new SyncHelper();
-
-            Task task(int id)
-            {
-                return Task.Run(async () =>
-                {
-                    // Simulate a long running task here
-                    await Task.Delay(200);
-
-                    // Access a shared resource, variable counter
-                    Interlocked.Increment(ref counter);
-                    this.testOutputHelper.WriteLine($"Run #{id}: \t\tcounter={counter}");
-                    return counter;
-                });
-            }
+            var start = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+            var ready = 0;
 
             // Act
             var tasks = Enumerable.Range(1, parallelTasks)
-                .Select(id => syncHelper.RunOnceAsync(() => task(id)))
+                .Select(id => Task.Run(async () =>
+                {
+                    Interlocked.Increment(ref ready);
+                    await start.Task;
+
+                    await syncHelper.RunOnceAsync(async () =>
+                    {
+                        await Task.Delay(100);
+                        var value = Interlocked.Increment(ref counter);
+                        this.testOutputHelper.WriteLine($"Run #{id}: \t\tcounter={value}");
+                    });
+                }))
                 .ToList();
+            SpinWait.SpinUntil(() => Volatile.Read(ref ready) == parallelTasks, TimeSpan.FromSeconds(5)).Should().BeTrue();
+            start.SetResult();
             await Task.WhenAll(tasks);
 
             // Assert
@@ -150,31 +155,33 @@ namespace DisplayService.Tests.Internals
         {
             // Arrange
             var counter = 0;
-            var parallelTasks = 100000;
+            var parallelTasks = 64;
             var syncHelper = new SyncHelper();
-
-            Task<int> task(int id)
-            {
-                return Task.Run(async () =>
-                {
-                    // Simulate a long running task here
-                    await Task.Delay(10);
-
-                    // Access a shared resource, variable counter
-                    Interlocked.Increment(ref counter);
-                    this.testOutputHelper.WriteLine($"Run #{id}: \t\tcounter={counter}");
-                    return counter;
-                });
-            }
+            var start = new TaskCompletionSource(TaskCreationOptions.RunContinuationsAsynchronously);
+            var ready = 0;
 
             // Act
             var tasks = Enumerable.Range(1, parallelTasks)
-                .Select(id => syncHelper.RunOnceAsync(() => task(id)))
+                .Select(id => Task.Run(async () =>
+                {
+                    Interlocked.Increment(ref ready);
+                    await start.Task;
+
+                    return await syncHelper.RunOnceAsync(async () =>
+                    {
+                        await Task.Delay(100);
+                        var value = Interlocked.Increment(ref counter);
+                        this.testOutputHelper.WriteLine($"Run #{id}: \t\tcounter={value}");
+                        return value;
+                    });
+                }))
                 .ToList();
+            SpinWait.SpinUntil(() => Volatile.Read(ref ready) == parallelTasks, TimeSpan.FromSeconds(5)).Should().BeTrue();
+            start.SetResult();
             var results = await Task.WhenAll(tasks);
 
             // Assert
-            //counter.Should().Be(1);
+            counter.Should().Be(1);
             results.Should().HaveCount(parallelTasks);
             results.Should().AllSatisfy(i => i.Should().Be(1));
         }

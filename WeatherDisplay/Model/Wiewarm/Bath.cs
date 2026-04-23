@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 using WeatherDisplay.Model.Wiewarm.Converters;
 
 namespace WeatherDisplay.Model.Wiewarm
@@ -17,72 +17,72 @@ namespace WeatherDisplay.Model.Wiewarm
             this.WeatherInfos = new List<Weather>();
         }
 
-        [JsonProperty("badid")]
+        [JsonPropertyName("badid")]
         public int Id { get; set; }
 
-        [JsonProperty("badname")]
+        [JsonPropertyName("badname")]
         public string Name { get; set; }
 
-        [JsonProperty("kanton")]
+        [JsonPropertyName("kanton")]
         public string Canton { get; set; }
 
-        [JsonProperty("plz")]
+        [JsonPropertyName("plz")]
         public string ZipCode { get; set; }
 
-        [JsonProperty("ort")]
+        [JsonPropertyName("ort")]
         public string Place { get; set; }
 
-        [JsonProperty("adresse1")]
+        [JsonPropertyName("adresse1")]
         public string AddressLine1 { get; set; }
 
-        [JsonProperty("adresse2")]
+        [JsonPropertyName("adresse2")]
         public string AddressLine2 { get; set; }
 
-        [JsonProperty("email")]
+        [JsonPropertyName("email")]
         public string Email { get; set; }
 
-        [JsonProperty("telefon")]
+        [JsonPropertyName("telefon")]
         public string PhoneNumber { get; set; }
 
-        [JsonProperty("www")]
+        [JsonPropertyName("www")]
         public string WebsiteUrl { get; set; }
 
-        [JsonProperty("long")]
+        [JsonPropertyName("long")]
         public int Longitude { get; set; }
 
-        [JsonProperty("lat")]
+        [JsonPropertyName("lat")]
         public int Latitude { get; set; }
 
-        [JsonProperty("zeiten")]
+        [JsonPropertyName("zeiten")]
         public string OpeningHours { get; set; }
 
-        [JsonProperty("preise")]
+        [JsonPropertyName("preise")]
         public string EntryFee { get; set; }
 
-        [JsonProperty("info")]
+        [JsonPropertyName("info")]
         public string Info { get; set; }
 
-        [JsonProperty("wetterort")]
+        [JsonPropertyName("wetterort")]
         public string WeatherPlace { get; set; }
 
-        [JsonProperty("uv_station_name")]
+        [JsonPropertyName("uv_station_name")]
         public string UvStationName { get; set; }
 
-        [JsonProperty("uv_wert")]
+        [JsonPropertyName("uv_wert")]
         public int UvIndex { get; set; }
 
-        [JsonProperty("uv_date")]
+        [JsonPropertyName("uv_date")]
         [JsonConverter(typeof(WiewarmDateTimeJsonConverter))]
         public DateTime UvDate { get; set; }
 
-        [JsonProperty("becken")]
+        [JsonPropertyName("becken")]
         [JsonConverter(typeof(BasinCollectionJsonConverter))]
         public IReadOnlyCollection<Basin> Basins { get; set; }
 
-        [JsonProperty("bilder")]
+        [JsonPropertyName("bilder")]
         public IReadOnlyCollection<object> Pictures { get; set; }
 
-        [JsonProperty("wetter")]
+        [JsonPropertyName("wetter")]
         public IReadOnlyCollection<Weather> WeatherInfos { get; set; }
 
         public override string ToString()
