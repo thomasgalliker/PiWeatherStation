@@ -149,7 +149,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                                 Y = 120,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = Translations.WifiSetupIntroLabelText,
+                                Value = Translations.SetupPage_WifiIntroLabelText,
                                 FontSize = 20,
                             },
                             new RenderActions.Text
@@ -224,7 +224,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                             Y = yOffset,
                             HorizontalTextAlignment = HorizontalAlignment.Left,
                             VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"Connected to WiFi networks:",
+                            Value = Translations.SetupPage_ConnectedWifiNetworks,
                             FontSize = 20,
                         });
 

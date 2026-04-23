@@ -19,7 +19,7 @@ namespace WeatherDisplay.Resources.Strings {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Translations {
@@ -153,6 +153,24 @@ namespace WeatherDisplay.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Connected WiFi networks:.
+        /// </summary>
+        public static string SetupPage_ConnectedWifiNetworks {
+            get {
+                return ResourceManager.GetString("SetupPage_ConnectedWifiNetworks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to WiFi Access Point:.
+        /// </summary>
+        public static string SetupPage_WifiIntroLabelText {
+            get {
+                return ResourceManager.GetString("SetupPage_WifiIntroLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to UV.
         /// </summary>
         public static string UltraViolettAbbreviation {
@@ -176,15 +194,6 @@ namespace WeatherDisplay.Resources.Strings {
         public static string WifiPSKLabelText {
             get {
                 return ResourceManager.GetString("WifiPSKLabelText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Connect to following wifi network:.
-        /// </summary>
-        public static string WifiSetupIntroLabelText {
-            get {
-                return ResourceManager.GetString("WifiSetupIntroLabelText", resourceCulture);
             }
         }
         

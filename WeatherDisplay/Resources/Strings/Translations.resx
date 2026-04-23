@@ -149,6 +149,9 @@ appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places</value>
   <data name="RelativeHumiditySuffix" xml:space="preserve">
     <value>RH</value>
   </data>
+  <data name="SetupPage_ConnectedWifiNetworks" xml:space="preserve">
+    <value>Connected WiFi networks:</value>
+  </data>
   <data name="UltraViolettAbbreviation" xml:space="preserve">
     <value>UV</value>
   </data>
@@ -158,8 +161,8 @@ appsettings.User.json &gt;&gt; OpenWeatherMapPageOptions &gt;&gt; Places</value>
   <data name="WifiPSKLabelText" xml:space="preserve">
     <value>Password</value>
   </data>
-  <data name="WifiSetupIntroLabelText" xml:space="preserve">
-    <value>Connect to following wifi network:</value>
+  <data name="SetupPage_WifiIntroLabelText" xml:space="preserve">
+    <value>WiFi Access Point:</value>
   </data>
   <data name="WifiSSIDLabelText" xml:space="preserve">
     <value>SSID</value>
