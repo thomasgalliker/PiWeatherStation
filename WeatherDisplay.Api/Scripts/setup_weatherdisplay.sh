@@ -557,7 +557,7 @@ Wants=network-online.target
 [Service]
 Type=simple
 WorkingDirectory=$workingDirectory
-ExecStart=sudo $dotnetDirectory/dotnet $workingDirectory/$executable.dll
+ExecStart=$dotnetDirectory/dotnet $workingDirectory/$executable.dll
 ExecStop=/bin/kill \$MAINPID
 KillSignal=SIGTERM
 KillMode=process
@@ -578,16 +578,24 @@ Environment=DOTNET_ROOT=$dotnetDirectory
 WantedBy=multi-user.target
 EOF
 
+logDebug "Configuring passwordless sudo for $installUser..."
 cat > "$sudoersFile" <<EOF
 $installUser ALL=(ALL) NOPASSWD: ALL
 EOF
+chown root:root "$sudoersFile"
 chmod 440 "$sudoersFile"
+if ! visudo -c >/dev/null; then
+    logError "sudoers validation failed after writing $sudoersFile"
+    exit 1
+fi
+
+logDebug "Reloading systemd daemon..."
+systemctl daemon-reload
+systemctl enable $serviceName
 
 if [ "${serviceStatus}" != "active" ]; then
     logDebug "Starting service $serviceName..."
-    systemctl daemon-reload
-    systemctl enable $serviceName
-    #sudo systemctl start $serviceName
+    #systemctl start $serviceName
 fi
 
 if [ ! -z "$timezone" ]; then
