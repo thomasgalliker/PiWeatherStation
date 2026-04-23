@@ -9,6 +9,7 @@ using DisplayService.Resources;
 using DisplayService.Services;
 using Microsoft.Extensions.Options;
 using NCrontab;
+using RaspberryPi;
 using RaspberryPi.Network;
 using WeatherDisplay.Extensions;
 using WeatherDisplay.Model.Settings;
@@ -25,32 +26,41 @@ namespace WeatherDisplay.Pages.SystemInfo
         private readonly IDateTime dateTime;
         private readonly IOptionsMonitor<AppSettings> appSettings;
         private readonly IWPA wpa;
-        private readonly IAccessPoint accessPoint;
         private readonly INetworkInterfaceService networkInterfaceService;
         private readonly IQRCodeService qrCodeService;
+        private readonly ISystemInfoService systemInfoService;
 
         public SetupPage(
             IDisplayManager displayManager,
             IDateTime dateTime,
             IOptionsMonitor<AppSettings> appSettings,
             IWPA wpa,
-            IAccessPoint accessPoint,
             INetworkInterfaceService networkInterfaceService,
-            IQRCodeService qrCodeService)
+            IQRCodeService qrCodeService,
+            ISystemInfoService systemInfoService)
         {
             this.displayManager = displayManager;
             this.dateTime = dateTime;
             this.appSettings = appSettings;
             this.wpa = wpa;
-            this.accessPoint = accessPoint;
             this.networkInterfaceService = networkInterfaceService;
             this.qrCodeService = qrCodeService;
+            this.systemInfoService = systemInfoService;
         }
 
         public async Task OnNavigatedToAsync(INavigationParameters navigationParameters)
         {
+            HostInfo hostInfo;
+            if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+            {
+                hostInfo = await this.systemInfoService.GetHostInfoAsync();
+            }
+            else
+            {
+                hostInfo = new HostInfo { Hostname = "raspi_0000000000000" };
+            }
+
             var wlan0 = this.GetWifiNetworkInterface();
-            var connectedClients = this.GetConnectedClients(wlan0);
             var connectedSSIDs = this.GetConnectedSSIDs(wlan0);
 
             // Date header
@@ -149,13 +159,22 @@ namespace WeatherDisplay.Pages.SystemInfo
                                 Y = 120,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
+                                Value = $"{Translations.SetupPage_HostnameLabelText}: {hostInfo.Hostname}",
+                                FontSize = 20,
+                            },
+                            new RenderActions.Text
+                            {
+                                X = 20,
+                                Y = 160,
+                                HorizontalTextAlignment = HorizontalAlignment.Left,
+                                VerticalTextAlignment = VerticalAlignment.Top,
                                 Value = Translations.SetupPage_WifiIntroLabelText,
                                 FontSize = 20,
                             },
                             new RenderActions.Text
                             {
                                 X = 20,
-                                Y = 140,
+                                Y = 180,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
                                 Value = $"{Translations.WifiSSIDLabelText}: {accessPointSettings.SSID}",
@@ -164,7 +183,7 @@ namespace WeatherDisplay.Pages.SystemInfo
                             new RenderActions.Text
                             {
                                 X = 20,
-                                Y = 160,
+                                Y = 200,
                                 HorizontalTextAlignment = HorizontalAlignment.Left,
                                 VerticalTextAlignment = VerticalAlignment.Top,
                                 Value = $"{Translations.WifiPSKLabelText}: {accessPointSettings.PSK}",
@@ -181,43 +200,9 @@ namespace WeatherDisplay.Pages.SystemInfo
                             },
                     };
 
-                    if (this.appSettings.CurrentValue.IsDebug)
-                    {
-
-                    }
-
-                    if (connectedClients.Any())
-                    {
-                        var yOffset = 200;
-                        renderActions.Add(new RenderActions.Text
-                        {
-                            X = 20,
-                            Y = yOffset,
-                            HorizontalTextAlignment = HorizontalAlignment.Left,
-                            VerticalTextAlignment = VerticalAlignment.Top,
-                            Value = $"Connected clients:",
-                            FontSize = 20,
-                        });
-
-                        foreach (var connectedClient in connectedClients)
-                        {
-                            yOffset += 20;
-
-                            renderActions.Add(new RenderActions.Text
-                            {
-                                X = 20,
-                                Y = yOffset,
-                                HorizontalTextAlignment = HorizontalAlignment.Left,
-                                VerticalTextAlignment = VerticalAlignment.Top,
-                                Value = $"{PhysicalAddressFormat(connectedClient.MacAddress)} ({connectedClient.ConnectedTime})",
-                                FontSize = 20,
-                            });
-                        }
-                    }
-
                     if (connectedSSIDs.Any())
                     {
-                        var yOffset = 300;
+                        var yOffset = 240;
                         renderActions.Add(new RenderActions.Text
                         {
                             X = 20,
@@ -247,33 +232,6 @@ namespace WeatherDisplay.Pages.SystemInfo
                     return renderActions;
                 });
             }
-        }
-
-        private static string PhysicalAddressFormat(PhysicalAddress physicalAddress)
-        {
-            return string.Join(":", physicalAddress.GetAddressBytes().Select(b => b.ToString("X2")).ToArray());
-        }
-
-        private IEnumerable<ConnectedAccessPointClient> GetConnectedClients(INetworkInterface wlan0)
-        {
-            IEnumerable<ConnectedAccessPointClient> connectedClients;
-            if (!RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
-            {
-                connectedClients = new List<ConnectedAccessPointClient>
-                {
-                    new ConnectedAccessPointClient
-                    {
-                        MacAddress = PhysicalAddress.Parse("00-11-22-33-44-55"),
-                        ConnectedTime = TimeSpan.FromMinutes(1),
-                    }
-                };
-            }
-            else
-            {
-                connectedClients = this.accessPoint.GetConnectedClients(wlan0);
-            }
-
-            return connectedClients;
         }
 
         private IEnumerable<string> GetConnectedSSIDs(INetworkInterface wlan0)

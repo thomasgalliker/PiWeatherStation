@@ -162,6 +162,15 @@ namespace WeatherDisplay.Resources.Strings {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Device:.
+        /// </summary>
+        public static string SetupPage_HostnameLabelText {
+            get {
+                return ResourceManager.GetString("SetupPage_HostnameLabelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to WiFi Access Point:.
         /// </summary>
         public static string SetupPage_WifiIntroLabelText {
