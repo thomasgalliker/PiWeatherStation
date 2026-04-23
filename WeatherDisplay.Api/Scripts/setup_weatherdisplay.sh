@@ -10,10 +10,18 @@
 #set -o nounset
 
 # Logging
-DEFAULT='\033[0;39m'
-WHITE='\033[0;02m'
-GREEN='\033[1;32m'
-RED='\033[1;31m'
+if [ -t 1 ]; then
+    DEFAULT='\033[0;39m'
+    WHITE='\033[0;02m'
+    GREEN='\033[1;32m'
+    RED='\033[1;31m'
+else
+    # Use ANSI colors only when stdout is a real terminal
+    DEFAULT=''
+    WHITE=''
+    GREEN=''
+    RED=''
+fi
 
 export DEBIAN_FRONTEND=noninteractive
 export APT_LISTCHANGES_FRONTEND=none
