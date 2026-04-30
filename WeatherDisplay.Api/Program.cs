@@ -4,10 +4,9 @@ using System.Reflection;
 using System.Security.Authentication;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi;
 using NLog;
 using NLog.Extensions.Logging;
@@ -139,11 +138,12 @@ namespace WeatherDisplay.Api
 
             services.AddHostedService<AutoStartupBackgroundService>();
 
-            // ====== Authentification & authorization ======
+            // ====== Authentification & Authorization ======
             var identityConfigSection = builder.Configuration.GetSection(IdentityOptions.SectionName);
             services.ConfigureWritable<IdentityOptions>(identityConfigSection);
             services.Configure<UserServiceOptions>(builder.Configuration.GetSection(UserServiceOptions.SectionName));
             services.AddScoped<IUserService, UserService>();
+            services.AddSingleton<IConfigureOptions<JwtBearerOptions>, ConfigureJwtBearerOptions>();
 
             services.AddAuthorization(o => o.AddPolicy("RequireAuthenticatedUserPolicy", b => b.RequireAuthenticatedUser()));
 
@@ -155,23 +155,7 @@ namespace WeatherDisplay.Api
                     o.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
                     o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
                 })
-                .AddJwtBearer(o =>
-                {
-                    var identityOptions = identityConfigSection.Get<IdentityOptions>();
-                    o.RequireHttpsMetadata = false;
-                    o.SaveToken = true;
-                    o.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuer = true,
-                        ValidIssuer = identityOptions.JwtIssuer,
-                        ValidateAudience = true,
-                        ValidAudience = identityOptions.JwtIssuer,
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(identityOptions.JwtKey)),
-                        ValidateLifetime = true,
-                        ClockSkew = TimeSpan.FromMinutes(5)
-                    };
-                });
+                .AddJwtBearer();
 
             // ====== Configure services ======
             var app = builder.Build();
@@ -184,7 +168,7 @@ namespace WeatherDisplay.Api
                 {
                     o.JwtKey = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
                 }
-            });
+            }).GetAwaiter().GetResult();
 #endif
 
 
