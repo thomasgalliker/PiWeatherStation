@@ -1,6 +1,5 @@
 ﻿using System;
 using DisplayService.Services;
-using FluentAssertions;
 using Moq.AutoMock;
 using Xunit;
 

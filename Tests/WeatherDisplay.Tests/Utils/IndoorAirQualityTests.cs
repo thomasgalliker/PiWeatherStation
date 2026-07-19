@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using UnitsNet;
+﻿using UnitsNet;
 using WeatherDisplay.Resources.Strings;
 using WeatherDisplay.Utils;
 using Xunit;

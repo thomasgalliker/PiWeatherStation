@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using DisplayService.Internals;
-using FluentAssertions;
 using Xunit;
 using Xunit.Abstractions;
 

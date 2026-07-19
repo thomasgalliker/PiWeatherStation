@@ -1,5 +1,4 @@
 ﻿using System.Device.I2c;
-using FluentAssertions;
 using Iot.Device.Bmxx80;
 using Moq;
 using Moq.AutoMock;

@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using WeatherDisplay.Extensions;
+﻿using WeatherDisplay.Extensions;
 using Xunit;
 
 namespace WeatherDisplay.Tests.Extensions

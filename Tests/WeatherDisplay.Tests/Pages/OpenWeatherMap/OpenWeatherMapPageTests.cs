@@ -5,7 +5,6 @@ using DisplayService;
 using DisplayService.Devices;
 using DisplayService.Services;
 using DisplayService.Tests.Services;
-using FluentAssertions;
 using Iot.Device.Bmxx80;
 using Iot.Device.Bmxx80.ReadResult;
 using Microsoft.Extensions.Options;

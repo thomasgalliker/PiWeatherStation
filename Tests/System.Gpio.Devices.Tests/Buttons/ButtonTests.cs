@@ -3,7 +3,6 @@ using System.Device.Buttons;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Xunit;
 
 namespace System.Gpio.Devices.Tests.Buttons
@@ -258,20 +257,20 @@ namespace System.Gpio.Devices.Tests.Buttons
             var doublePressCounter = 0;
 
             var button = new TestButton(
-                doublePressTime: TimeSpan.FromMilliseconds(30000), 
-                holdingTime: TimeSpan.FromMilliseconds(1000), 
+                doublePressTime: TimeSpan.FromMilliseconds(30000),
+                holdingTime: TimeSpan.FromMilliseconds(1000),
                 debounceTime: TimeSpan.FromMilliseconds(10000));
 
             button.ButtonDown += (sender, e) =>
             {
                 Interlocked.Increment(ref buttonDownCounter);
             };
-            
+
             button.ButtonUp += (sender, e) =>
             {
                 Interlocked.Increment(ref buttonUpCounter);
             };
-            
+
             button.Press += (sender, e) =>
             {
                 Interlocked.Increment(ref pressedCounter);
@@ -375,7 +374,7 @@ namespace System.Gpio.Devices.Tests.Buttons
             Assert.True(holding, "holding");
             Assert.False(doublePressed, "doublePressed");
         }
-        
+
         [Fact]
         public async Task If_Button_Is_Held_Down_Longer_HoldingTimer()
         {
@@ -505,7 +504,7 @@ namespace System.Gpio.Devices.Tests.Buttons
             {
                 Interlocked.Increment(ref buttonDownCount);
             };
-            
+
             button.ButtonUp += (sender, e) =>
             {
                 Interlocked.Increment(ref buttonUpCount);

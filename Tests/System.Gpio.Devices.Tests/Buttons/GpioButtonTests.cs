@@ -1,7 +1,6 @@
 ﻿using System.Device.Buttons;
 using System.Device.Gpio;
 using System.Threading;
-using FluentAssertions;
 using Moq;
 using Xunit;
 

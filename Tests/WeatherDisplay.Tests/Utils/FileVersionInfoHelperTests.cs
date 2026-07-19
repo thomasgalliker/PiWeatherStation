@@ -1,5 +1,4 @@
-﻿using FluentAssertions;
-using WeatherDisplay.Utils;
+﻿using WeatherDisplay.Utils;
 using Xunit;
 using Xunit.Abstractions;
 

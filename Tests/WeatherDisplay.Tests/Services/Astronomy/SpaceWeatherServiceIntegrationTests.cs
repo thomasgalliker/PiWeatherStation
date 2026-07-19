@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using FluentAssertions;
 using Microsoft.Extensions.Logging;
 using WeatherDisplay.Services.Astronomy;
 using WeatherDisplay.Tests.Logging;
