@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using Iot.Device.Bmxx80.ReadResult;
 
 namespace Iot.Device.Bmxx80

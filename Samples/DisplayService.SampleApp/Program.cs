@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Reflection;
-using System.Threading.Tasks;
 using DisplayService.Devices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

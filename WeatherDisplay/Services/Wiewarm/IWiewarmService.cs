@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Threading.Tasks;
 using WeatherDisplay.Model.Wiewarm;
 
 namespace WeatherDisplay.Services.Wiewarm

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Device.I2c;
-using System.Threading.Tasks;
 using Iot.Device.Bmxx80.ReadResult;
 using UnitsNet;
 

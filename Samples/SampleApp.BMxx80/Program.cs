@@ -2,7 +2,6 @@
 using System.Device.Gpio;
 using System.Globalization;
 using System.Reflection;
-using System.Threading.Tasks;
 using Iot.Device.Scd4x;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;

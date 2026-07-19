@@ -3,8 +3,6 @@
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
 		<TargetFramework>net10.0</TargetFramework>
-		<ImplicitUsings>disable</ImplicitUsings>
-		<Nullable>disable</Nullable>
     <RollForward>LatestMajor</RollForward>
 		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
 		<TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>

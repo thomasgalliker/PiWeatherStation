@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using DisplayService.Model;
 using Microsoft.Extensions.Logging;
 using SkiaSharp;

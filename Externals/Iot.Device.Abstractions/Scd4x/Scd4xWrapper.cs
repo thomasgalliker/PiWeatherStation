@@ -1,5 +1,4 @@
 ﻿using System.Device.I2c;
-using System.Threading.Tasks;
 using UnitsNet;
 
 namespace Iot.Device.Scd4x

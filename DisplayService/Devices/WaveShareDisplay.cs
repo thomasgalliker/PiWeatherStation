@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.IO;
 using DisplayService.Internals;
 using Microsoft.Extensions.Logging;
 using Waveshare;

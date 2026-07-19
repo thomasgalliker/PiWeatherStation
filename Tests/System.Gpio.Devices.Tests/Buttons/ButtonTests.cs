@@ -1,8 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Device.Buttons;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace System.Gpio.Devices.Tests.Buttons

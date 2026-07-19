@@ -1,6 +1,5 @@
 ﻿using System;
 using System.CommandLine;
-using System.Threading.Tasks;
 using DisplayService.Services;
 
 namespace WeatherDisplay.ConsoleApp.Commands

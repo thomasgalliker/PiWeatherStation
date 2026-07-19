@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Device.I2c;
 using Iot.Device.Bmxx80;
 using Iot.Device.Scd4x;

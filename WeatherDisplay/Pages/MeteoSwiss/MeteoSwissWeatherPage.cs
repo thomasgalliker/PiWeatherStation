@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Resources;
 using DisplayService.Services;
@@ -131,6 +128,11 @@ namespace WeatherDisplay.Pages.MeteoSwiss
 
                     var dateTimeNow = this.dateTime.Now;
 
+                    // 'currentWeather.temperature' is null when MeteoSwiss reports the 32767 no-data sentinel.
+                    // Fall back to the live SwissMetNet station measurement (same station used for wind/pressure/
+                    // humidity below); a dash is shown only if neither source has a value.
+                    var currentTemperature = currentWeatherInfo.Temperature ?? latestMeasurement?.AirTemperature;
+
                     var currentWeatherRenderActions = new List<IRenderAction>
                     {
                             // Current location + current temperature
@@ -181,7 +183,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                     HorizontalTextAlignment = HorizontalAlignment.Left,
                                     VerticalTextAlignment = VerticalAlignment.Center,
                                     VerticalAlignment = VerticalAlignment.Center,
-                                    Value = MeteoFormatter.FormatTemperature(currentWeatherInfo.Temperature.Value),
+                                    Value = MeteoFormatter.FormatTemperature(currentTemperature?.Value),
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 70,
@@ -194,7 +196,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                                     HorizontalTextAlignment = HorizontalAlignment.Left,
                                     VerticalTextAlignment = VerticalAlignment.Bottom,
                                     VerticalAlignment = VerticalAlignment.Center,
-                                    Value = $"{currentWeatherInfo.Temperature:A}",
+                                    Value = $"{currentTemperature:A}",
                                     ForegroundColor = "#000000",
                                     BackgroundColor = "#FFFFFF",
                                     FontSize = 35,

@@ -1,4 +1,3 @@
-using System;
 using System.Text.Json.Serialization;
 using UnitsNet;
 using WeatherDisplay.Model.Wiewarm.Converters;

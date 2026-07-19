@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
 using DisplayService.Internals;
 using DisplayService.Services;
 using Microsoft.Extensions.Logging;

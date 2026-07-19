@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using WeatherDisplay.Api.Updater.Models;
 
 namespace WeatherDisplay.Api.Updater.Services

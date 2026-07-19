@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using WeatherDisplay.Model.Settings;
 
 namespace WeatherDisplay.Extensions

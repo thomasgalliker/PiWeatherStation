@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Device.Buttons;
 using System.Device.Gpio;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using WeatherDisplay.Extensions;

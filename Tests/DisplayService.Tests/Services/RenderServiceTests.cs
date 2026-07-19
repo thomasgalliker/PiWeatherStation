@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using DisplayService.Model;
 using DisplayService.Resources;
 using DisplayService.Services;

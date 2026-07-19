@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Resources;
 using DisplayService.Services;

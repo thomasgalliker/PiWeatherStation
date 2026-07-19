@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using DisplayService;
 using DisplayService.Devices;
 using DisplayService.Services;

@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using System.Threading;
 
 namespace System.Device.Buttons
 {

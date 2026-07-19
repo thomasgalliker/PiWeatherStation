@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace WeatherDisplay.Api.Updater.Models
 {
     public class UpdateRequestDto

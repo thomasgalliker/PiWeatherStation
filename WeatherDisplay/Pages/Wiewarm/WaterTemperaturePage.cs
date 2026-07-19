@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using DisplayService.Model;
 using DisplayService.Services;
 using Microsoft.Extensions.Options;

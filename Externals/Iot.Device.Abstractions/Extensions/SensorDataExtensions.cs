@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Iot.Device.Bmxx80.ReadResult;
 using Iot.Device.Model;
 using Iot.Device.Scd4x;

@@ -3,9 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>Iot.Device</RootNamespace>
-    <LangVersion>latest</LangVersion>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
-    <Nullable>disable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>

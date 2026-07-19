@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Reflection;
-using System.Threading.Tasks;
 using NuGet.Versioning;
 
 namespace WeatherDisplay.Api.Updater.Services
