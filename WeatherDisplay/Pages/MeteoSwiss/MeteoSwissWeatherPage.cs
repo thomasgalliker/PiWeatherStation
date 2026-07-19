@@ -92,7 +92,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                             AdjustsFontSizeToFitHeight = true,
                             Bold = true,
                         },
-                        
+
                         // Version
                         new RenderActions.Text
                         {
@@ -128,9 +128,6 @@ namespace WeatherDisplay.Pages.MeteoSwiss
 
                     var dateTimeNow = this.dateTime.Now;
 
-                    // 'currentWeather.temperature' is null when MeteoSwiss reports the 32767 no-data sentinel.
-                    // Fall back to the live SwissMetNet station measurement (same station used for wind/pressure/
-                    // humidity below); a dash is shown only if neither source has a value.
                     var currentTemperature = currentWeatherInfo.Temperature ?? latestMeasurement?.AirTemperature;
 
                     var currentWeatherRenderActions = new List<IRenderAction>
