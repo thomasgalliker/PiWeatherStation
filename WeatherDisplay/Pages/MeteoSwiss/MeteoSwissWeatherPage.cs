@@ -1,10 +1,10 @@
-﻿using System;
-using DisplayService.Model;
+﻿using DisplayService.Model;
 using DisplayService.Resources;
 using DisplayService.Services;
 using Iot.Device.Bmxx80;
 using Iot.Device.Scd4x;
 using MeteoSwissApi;
+using MeteoSwissApi.Models;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using NCrontab;
@@ -30,6 +30,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
         private readonly IOptionsMonitor<MeteoSwissWeatherPageOptions> options;
         private readonly ISensorAccessService sensorAccessService;
         private readonly IWeatherIconMapping weatherIconMapping;
+        private readonly IWarningIconMapping warningIconMapping;
 
         private MeteoSwissPlace currentPlace = null;
 
@@ -52,6 +53,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
             this.options = options;
             this.sensorAccessService = sensorAccessService;
             this.weatherIconMapping = new HighContrastWeatherIconMapping();
+            this.warningIconMapping = new HighContrastWarningIconMapping();
         }
 
         [Obsolete]
@@ -333,6 +335,10 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                             .ThenBy(a => a.ValidFrom)
                             .First();
 
+                        var warnLevelImage = mostImportantAlert.WarnLevel >= WarnLevel.Level3
+                            ? await this.meteoSwissWeatherService.GetWarningIconAsync(mostImportantAlert.WarnLevel, this.warningIconMapping)
+                            : await this.meteoSwissWeatherService.GetWarningIconAsync(WarnLevel.Level2, this.warningIconMapping);
+
                         var alertDisplayText = $"{mostImportantAlert.WarnType} ({mostImportantAlert.WarnLevel.Level}/{mostImportantAlert.WarnLevel})";
                         if (weatherInfo.Warnings.Length > 1)
                         {
@@ -341,11 +347,11 @@ namespace WeatherDisplay.Pages.MeteoSwiss
 
                         currentWeatherRenderActions.AddRange(new IRenderAction[]
                         {
-                                new RenderActions.BitmapImage
+                                new RenderActions.SvgImage
                                 {
                                     X = 20,
                                     Y = 300,
-                                    Image = Icons.Alert(),
+                                    Image = warnLevelImage,
                                     Width = 24,
                                     Height = 24,
                                     HorizontalAlignment = HorizontalAlignment.Left,
