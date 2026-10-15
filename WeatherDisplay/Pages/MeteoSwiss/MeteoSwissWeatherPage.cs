@@ -126,7 +126,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                     var dailyForecasts = forecastInfo.Forecast.OrderBy(f => f.DayDate).ToList();
                     var dailyForecastToday = dailyForecasts.First();
 
-                    var currentWeatherImage = await this.meteoSwissWeatherService.GetWeatherIconAsync(currentWeatherInfo.IconV2, this.weatherIconMapping);
+                    var currentWeatherImage = await this.meteoSwissWeatherService.GetWeatherIconAsync(currentWeatherInfo.IconV2.Value, this.weatherIconMapping);
 
                     var dateTimeNow = this.dateTime.Now;
 
@@ -652,7 +652,7 @@ namespace WeatherDisplay.Pages.MeteoSwiss
                         var dailyWeatherForecast = dailyForecasts[i];
                         var xCenter = xOffset + (widthPerDailyForecast / 2);
 
-                        var dailyWeatherImage = await this.meteoSwissWeatherService.GetWeatherIconAsync(dailyWeatherForecast.IconDayV2, this.weatherIconMapping);
+                        var dailyWeatherImage = await this.meteoSwissWeatherService.GetWeatherIconAsync(dailyWeatherForecast.IconDayV2.Value, this.weatherIconMapping);
 
                         var dailyWeatherRenderActions = new List<IRenderAction>
                         {
